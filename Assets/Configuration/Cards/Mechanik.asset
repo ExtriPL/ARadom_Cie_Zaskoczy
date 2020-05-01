@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e091ba9c80d9564d908a1b325b28acb, type: 3}
+  m_Name: Mechanik
+  m_EditorClassIdentifier: 
+  logo: {fileID: 21300000, guid: c3474897a31d63942bbc580b1d3cc3da, type: 3}
+  name: Mechanik
+  descripition: "super pi\u0119kny go\u015B\u0107"

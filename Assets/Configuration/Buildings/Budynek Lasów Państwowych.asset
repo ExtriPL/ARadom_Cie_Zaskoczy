@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b45fe9542d93c60479fedad1ca58d4b5, type: 3}
+  m_Name: "Budynek Las\xF3w Pa\u0144stwowych"
+  m_EditorClassIdentifier: 
+  fieldName: "Lasy Pa\u0144stwowe"
+  canBePlaced: 1
+  fieldHistory: 
+  tiers:
+  - name: Gotowy
+    buyPrice: 0
+    enterCost: 0
+    model: {fileID: -927199367670048503, guid: 157537afe4296b44b9f67b2a2d17848a, type: 3}
