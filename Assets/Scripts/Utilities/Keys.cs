@@ -22,7 +22,8 @@ public static class Keys
 
     public static class Popups
     {
-        public const float POPUP_MAX_EXISTING_TIME = Mathf.Infinity;
+        public const float MAX_EXISTING_TIME = 20f;
+        public const int SHOWED_AMOUNT = 1;
     }
 
     /// <summary>
