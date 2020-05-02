@@ -7,9 +7,8 @@ public class InfoBox : PopupBox
 {
     [SerializeField] private TextMeshProUGUI content;
 
-    public override void Init(Popup source)
+    public override void Init(Popup pattern)
     {
-        base.Init(source);
-        content.text = (source as InfoPopup).message;
+        base.Init(pattern);
     }
 }

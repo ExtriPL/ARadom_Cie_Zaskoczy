@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class IconBox : PopupBox
 {
-    public override void Init(Popup source)
+    public override void Init(Popup pattern)
     {
-        base.Init(source);
+        base.Init(pattern);
     }
 }
