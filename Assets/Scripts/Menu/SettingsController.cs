@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class SettingsController : MonoBehaviour
 {
     public static SettingsController instance;
-    [SerializeField] private ApplicationSettings settings;
+    [SerializeField] public ApplicationSettings settings;
+    public LanguageController languageController = new LanguageController();
 
     public AudioMixer musicMixer;
     public Slider musicSlider;

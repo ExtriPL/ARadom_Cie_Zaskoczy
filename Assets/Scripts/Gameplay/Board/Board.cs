@@ -148,8 +148,6 @@ public class Board
         return -1;
     }
 
-    
-
     /// <summary>
     /// Metoda wyszukująca numer pola.
     /// </summary>

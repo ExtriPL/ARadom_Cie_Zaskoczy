@@ -7,5 +7,12 @@ using System.Threading.Tasks;
 [System.Serializable]
 public enum IconPopupType
 {
-    None
+    /// <summary>
+    /// Brak jakiejkolwiek ikony
+    /// </summary>
+    None,
+    /// <summary>
+    /// Używa ilony określonej ręcznie w popup-ie
+    /// </summary>
+    FromSprite
 }

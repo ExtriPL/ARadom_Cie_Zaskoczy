@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f47d9708ba35745a1fb7eb9355de81, type: 3}
+  m_Name: Polish
+  m_EditorClassIdentifier: 
+  language: 0
+  words:
+  - key: ENTER_USERNAME
+    value: "Wprowad\u017A nazw\u0119!"
+  - key: USERNAME_PLACEHOLDER
+    value: "Podaj nazw\u0119 u\u017Cytkownika..."
+  - key: PLAY
+    value: Graj
+  - key: SAVED_GAMES
+    value: Zapisane gry
+  - key: AUTHORS
+    value: Autorzy
+  - key: EXIT
+    value: "Wyjd\u017A"
+  - key: SETTINGS
+    value: Ustawienia
+  - key: MUSIC
+    value: Muzyka
+  - key: SOUND_EFFECTS
+    value: "Efekty d\u017Awi\u0119kowe"
+  - key: VISUAL_EFFECTS
+    value: Efekty Wizualne
+  - key: BACK
+    value: "Powr\xF3t"
+  - key: ADD_ROOM
+    value: "Dodaj pok\xF3j"
+  - key: ROOM_ALREADY_EXISTS
+    value: "Dodaj pok\xF3j"
+  - key: START
+    value: Start
+  - key: CREATING_ROOM
+    value: "Tworz\u0119 pok\xF3j..."
+  - key: JOINING_LOBBY
+    value: "Do\u0142\u0105czanie do lobby..."
+  - key: JOINING_ROOM
+    value: "Do\u0142\u0105czanie do pokoju..."
+  - key: LEAVING_LOBBY
+    value: Opuszczanie lobby...
+  - key: PAUSE
+    value: "Wstrzymaj gr\u0119"
+  - key: ADMIN_PANEL
+    value: Panel administracyjny
+  - key: ACCOUNT
+    value: Konto bankowe
+  - key: ADMIN_PANEL
+    value: Panel administracyjny
+  - key: QUIT
+    value: "Opu\u015B\u0107 rozgrywk\u0119"
+  - key: ACCOUNT_BALANCE
+    value: Stan konta
+  - key: LOAN
+    value: "Po\u017Cyczka"
+  - key: SAVE_GAME
+    value: "Zapisz gr\u0119"
+  - key: LOAN_SIZE
+    value: "Wysoko\u015B\u0107 po\u017Cyczki"
+  - key: CONFIRM
+    value: "Potwierd\u017A"
+  - key: UNPAUSE
+    value: "Wzn\xF3w gr\u0119"

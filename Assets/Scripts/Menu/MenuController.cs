@@ -15,7 +15,7 @@ public class MenuController : MonoBehaviourPunCallbacks
 
     [SerializeField] private Button menuJoinButton;
 
-    [SerializeField] private InputField playerNameInput;
+    [SerializeField] private TMP_InputField playerNameInput;
 
     [SerializeField] private TextMeshProUGUI playerName;
 
@@ -35,7 +35,8 @@ public class MenuController : MonoBehaviourPunCallbacks
 
         PhotonNetwork.AutomaticallySyncScene = true;
 
-        menuJoinButton.GetComponentInChildren<Text>().text = "Graj";
+        //treść napisów pobrana z pliku języka przez languageController
+        menuJoinButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("PLAY");
 
         //sprawdza czy nazwa gracza zapisana w player prefs
         if (PlayerPrefs.HasKey("NickName"))
@@ -65,12 +66,13 @@ public class MenuController : MonoBehaviourPunCallbacks
         PlayerPrefs.SetString("NickName", nameInput);
         if (PhotonNetwork.NickName.Length > 1)
         {
-            menuJoinButton.GetComponentInChildren<Text>().text = "Graj";
+            //treść napisów pobrana z pliku języka przez languageController
+            menuJoinButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("PLAY");
             menuJoinButton.interactable = true;
         }
         else
         {
-            menuJoinButton.GetComponentInChildren<Text>().text = "Wprowadź nazwę";
+            menuJoinButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("ENTER_USERNAME");
             menuJoinButton.interactable = false;
         }
     }

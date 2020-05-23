@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,22 +30,22 @@ public class LobbyController : MonoBehaviourPunCallbacks
 
     #region Funkcje PHOTON
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {    
+    {
         int tempIndex;
-        foreach (RoomInfo room in roomList.ToArray()) 
+        foreach (RoomInfo room in roomList.ToArray())
         {
-            if (roomList != null) 
+            if (roomList != null)
             {
                 tempIndex = RoomList.FindIndex(x => x.Name == room.Name);  //index pokoju
-                removeOldRoom(room);        
+                removeOldRoom(room);
             }
-            else 
+            else
             {
                 tempIndex = -1;
             }
 
-            if (room.RemovedFromList) 
-            {        
+            if (room.RemovedFromList)
+            {
                 if (roomsContainer.childCount > 0)
                 {
                     GameObject gobj = roomsContainer.GetChild(tempIndex).gameObject;
@@ -54,10 +55,10 @@ public class LobbyController : MonoBehaviourPunCallbacks
             }
             else
             {
-                
+
                 RoomList.Add(room);
             }
-        }        
+        }
         ClearRoomListing();
         ListRooms();
         CheckRoomInputs();
@@ -132,11 +133,11 @@ public class LobbyController : MonoBehaviourPunCallbacks
 
         if (RoomList.Contains(existingRoom))
         {
-            createRoomButton.GetComponentInChildren<Text>().text = "Pokój już istnieje";
+            createRoomButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("ROOM_ALREADY_EXISTS");
         }
         else
         {
-            createRoomButton.GetComponentInChildren<Text>().text = "Dodaj pokój";
+            createRoomButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("ADD_ROOM");
         }
     }
 

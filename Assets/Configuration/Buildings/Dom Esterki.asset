@@ -16,15 +16,15 @@ MonoBehaviour:
   canBePlaced: 1
   fieldHistory: 
   tiers:
-  - name: 0.33
+  - name: jedna trzecia
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: f2ce7331a0c59e149b4261e788d4639a, type: 3}
-  - name: 0.5
+    model: {fileID: -927199367670048503, guid: 3b003bf7fe366d94a9621227529f9f34, type: 3}
+  - name: 'jedna '
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: a1fc7760701f90740aeee21b3bbe73b3, type: 3}
-  - name: Gotowy
+    model: {fileID: -927199367670048503, guid: c8386c15976d9d949a41978082f98157, type: 3}
+  - name: "ca\u0142y"
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: ef2d04f58fc913843947b833a883834a, type: 3}
+    model: {fileID: -927199367670048503, guid: 2a8599d8802409b4e867b43beb5dedcb, type: 3}

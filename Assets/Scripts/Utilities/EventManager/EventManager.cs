@@ -50,7 +50,6 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     private void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
-        
     }
 
     public void OnEvent(EventData photonEvent)

@@ -12,5 +12,5 @@ public struct ApplicationSettings
 {
     public float musicVolume;
     public float soundEffectsVolume;
-    public Language language;
+    public Languages language;
 }

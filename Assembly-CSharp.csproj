@@ -247,12 +247,15 @@
     <Compile Include="Assets\Resources\ExternalData\GoogleARCore\SDK\Scripts\XPAnchor.cs" />
     <Compile Include="Assets\Resources\ExternalData\GoogleARCore\SDK\Scripts\XPSession.cs" />
     <Compile Include="Assets\Resources\ExternalData\GoogleARCore\SDK\Scripts\XPTrackingState.cs" />
+    <Compile Include="Assets\Resources\ExternalData\Plugins\RemoteSettings\DriveableProperty.cs" />
+    <Compile Include="Assets\Resources\ExternalData\Plugins\RemoteSettings\RemoteSettings.cs" />
     <Compile Include="Assets\Scripts\CardUsage\Card.cs" />
     <Compile Include="Assets\Scripts\CardUsage\CardDisplay.cs" />
     <Compile Include="Assets\Scripts\CardUsage\CardsContainer.cs" />
+    <Compile Include="Assets\Scripts\Enums\FormattedElementType.cs" />
     <Compile Include="Assets\Scripts\Enums\GameState.cs" />
     <Compile Include="Assets\Scripts\Enums\IconPopupType.cs" />
-    <Compile Include="Assets\Scripts\Enums\Language.cs" />
+    <Compile Include="Assets\Scripts\Enums\Languages.cs" />
     <Compile Include="Assets\Scripts\Enums\PopupPriority.cs" />
     <Compile Include="Assets\Scripts\Enums\StackingBuildingType.cs" />
     <Compile Include="Assets\Scripts\Gameplay\AR\ARController.cs" />
@@ -285,17 +288,27 @@
     <Compile Include="Assets\Scripts\Utilities\FileManager\Serialization Classes\DiceSettings.cs" />
     <Compile Include="Assets\Scripts\Utilities\FileManager\Serialization Classes\PlayerSettings.cs" />
     <Compile Include="Assets\Scripts\Utilities\Keys.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Language\Language.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Language\LanguageController.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Language\Translate.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Language\Word.cs" />
     <Compile Include="Assets\Scripts\Utilities\LevelLoader.cs" />
     <Compile Include="Assets\Scripts\Utilities\MessageSystem\MessageLifecycle.cs" />
     <Compile Include="Assets\Scripts\Utilities\MessageSystem\MessageSystem.cs" />
     <Compile Include="Assets\Scripts\Utilities\MessageSystem\MessageType.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Pools\BasePool.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Pools\BoxPool.cs" />
+    <Compile Include="Assets\Scripts\Utilities\PopupSystem\Boxes\FormattedBox.cs" />
     <Compile Include="Assets\Scripts\Utilities\PopupSystem\Boxes\IconBox.cs" />
     <Compile Include="Assets\Scripts\Utilities\PopupSystem\Boxes\InfoBox.cs" />
     <Compile Include="Assets\Scripts\Utilities\PopupSystem\Boxes\PopupBox.cs" />
+    <Compile Include="Assets\Scripts\Utilities\PopupSystem\Boxes\QuestionBox.cs" />
     <Compile Include="Assets\Scripts\Utilities\PopupSystem\PopupSystem.cs" />
+    <Compile Include="Assets\Scripts\Utilities\PopupSystem\Popups\FormattedPopup.cs" />
     <Compile Include="Assets\Scripts\Utilities\PopupSystem\Popups\IconPopup.cs" />
     <Compile Include="Assets\Scripts\Utilities\PopupSystem\Popups\InfoPopup.cs" />
     <Compile Include="Assets\Scripts\Utilities\PopupSystem\Popups\Popup.cs" />
+    <Compile Include="Assets\Scripts\Utilities\PopupSystem\Popups\QuestionPopup.cs" />
     <None Include="Assets\Resources\ExternalData\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\Resources\ExternalData\GoogleARCore\Examples\AugmentedFaces\Materials\Shaders\AugmentedFaceOccluder.shader" />
     <None Include="Assets\Resources\ExternalData\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
@@ -356,6 +369,9 @@
     </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
       <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>

@@ -75,13 +75,13 @@ public class GameMenu : MonoBehaviour
         if (newState == GameState.paused)
         {
             MessageSystem.instance.AddMessage(Keys.Messages.GAME_HAS_BEEN_PAUSED, MessageType.MediumMessage, "pause", -1);
-            ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Wznów grę";
+            ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("UNPAUSE");
         }
         //Usuwanie komunikatu o wstrzymaniu rozgrywki po jej przywróceniu
         else if (previousState == GameState.paused && newState == GameState.running)
         {
             MessageSystem.instance.RemoveMessage("pause");
-            ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Wstrzymaj grę";
+            ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("PAUSE");
         }
     }
 

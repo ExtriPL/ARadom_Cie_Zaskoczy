@@ -118,7 +118,6 @@ public class RandomDice
         this.round = round;
     }
 
-
     /// <summary>
     /// Rzut kostką, wartość 7 jest zarezerwowana dla szansy/losu.
     /// </summary>

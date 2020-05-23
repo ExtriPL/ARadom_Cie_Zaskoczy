@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45fe9542d93c60479fedad1ca58d4b5, type: 3}
   m_Name: "Budynek Lo\u017Cy Maso\u0144skiej"
   m_EditorClassIdentifier: 
-  fieldName: "Lo\u017Ca Maso\u0144ska"
+  fieldName: "Budynek Lo\u017Cy Maso\u0144skiej"
   canBePlaced: 1
   fieldHistory: 
   tiers:
-  - name: 0.33
+  - name: jedna trzecia
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: e114b96b8cab3ba469a1f6142d6046f2, type: 3}
-  - name: 0.5
+    model: {fileID: -927199367670048503, guid: 9d5250a41e4332945abbee24cc612a6d, type: 3}
+  - name: jedna druga
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: 8567bd07a50f644449cb684317e865e1, type: 3}
-  - name: Gotowy
+    model: {fileID: -927199367670048503, guid: 6e01c2c7c1b21f244ada430e476ba09e, type: 3}
+  - name: "ca\u0142y"
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: a8d591b8a66e57940821eb4a5b493c07, type: 3}
+    model: {fileID: -927199367670048503, guid: 89f624289f744b34aa2bf1afcedeed7d, type: 3}
