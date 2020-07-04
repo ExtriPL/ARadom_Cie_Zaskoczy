@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -70,17 +70,17 @@ public class NormalBuilding : BuildingField
     /// <summary>
     /// Zwraca właściwości danego poziomu budynku
     /// </summary>
-    /// <param name="currentTier">Obecny poziom budynku (liczony od 0)</param>
+    /// <param name="tier">Obecny poziom budynku (liczony od 0)</param>
     /// <returns>Właściowości podanego poziomu budynku</returns>
-    public Tier GetTier(int currentTier)
+    public Tier GetTier(int tier)
     {
-        if (currentTier >= 0 && currentTier <= tiersCount - 1)
+        if (tier >= 0 && tier <= tiersCount - 1)
         {
-            return tiers[currentTier];
+            return tiers[tier];
         }
         else
         {
-            Debug.LogError("Poziom " + currentTier + " budynku o nazwie " + fieldName + " nie istnieje!");
+            Debug.LogError("Poziom " + tier + " budynku o nazwie " + fieldName + " nie istnieje!");
             return tiers[0];
         }
     }
@@ -92,27 +92,52 @@ public class NormalBuilding : BuildingField
 
     public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
     {
-        throw new System.NotImplementedException();
+        visualiser.ShowNextModel();
+        GameplayController.instance.board.NextTier(visualiser.placeIndex);
     }
 
     public override void OnSellBuilding(Player player, PlaceVisualiser visualiser)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
     {
-        throw new System.NotImplementedException();
+        base.OnPlayerEnter(player, visualiser);
+
+        if (player.NetworkPlayer.IsLocal)
+        {
+            if (GameplayController.instance.board.GetOwner(visualiser.placeIndex) != null)
+            {
+                //Pole ma właściciela
+
+                if (GameplayController.instance.board.GetOwner(visualiser.placeIndex).GetName() == player.GetName())
+                {
+                    //Jeżeli gracz, który jest właścicielem stanął na polu
+                    ShowUpgradePopup(player, visualiser, SettingsController.instance.languageController);
+                }
+                else
+                {
+                    //Jeżeli gracz, który nie jest właścicielem stanął na polu
+                    ShowPayPopup(player, visualiser, GetTier(GameplayController.instance.board.GetTier(visualiser.placeIndex)).enterCost);
+                }
+            }
+        }
     }
 
     public override void OnPlayerLeave(Player player, PlaceVisualiser visualiser)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void OnPlayerPassby(Player player, PlaceVisualiser visualiser)
     {
-        throw new System.NotImplementedException();
+        
+    }
+
+    public void OnUpgradeBuilding(Player player, PlaceVisualiser visualiser)
+    {
+        visualiser.ShowNextModel();
     }
 
     public override List<string> GetFieldInfo()
@@ -136,5 +161,58 @@ public class NormalBuilding : BuildingField
         
 
         return info;
+    }
+
+    public override float GetInitialPrice() => GetTier(1).buyPrice;
+
+    /// <summary>
+    /// Pokazuje wskazanemu graczowi poppup z pytaniem, czy chce on ulepszyć dane pole
+    /// </summary>
+    /// <param name="player">Gracz, któremu pokazujemy popup</param>
+    /// <param name="visualiser">Instancja visualisera, który przechowuje dane pole</param>
+    /// <param name="language">Odwołanie do LanguageControllera</param>
+    private void ShowUpgradePopup(Player player, PlaceVisualiser visualiser, LanguageController language)
+    {
+        //Tylko budynki o typie NormalBuilding można ulepszyć
+        int currentTier = GameplayController.instance.board.GetTier(visualiser.placeIndex);
+
+        //Pytamy o możliwość ulepszenia tylko wtedy, gdy istnieje następny poziom budynku
+        if (HasNextTier(currentTier))
+        {
+            float upgradePrice = GetTier(currentTier + 1).buyPrice;
+
+            //Sprawdzamy, czy gracz ma wystraczająco pieniędzy na ulepszenie
+            if (player.Money >= upgradePrice)
+            {
+                string message = language.GetWord("DO_YOU_WANT_TO_UPGRADE") + GetFieldName() + "? \n" + language.GetWord("UPGRADE_COST") + upgradePrice;
+                QuestionPopup upgrade = new QuestionPopup(message);
+
+                Popup.PopupAction yesAction = delegate (Popup source)
+                {
+                    visualiser.onAnimationEnd += delegate { GameplayController.instance.EndTurn(); };
+                    GameplayController.instance.banking.UpgradeBuilding(player, visualiser.placeIndex);
+                    Popup.Functionality.Destroy(source).Invoke(source);
+                };
+
+                Popup.PopupAction noAction = delegate (Popup source)
+                {
+                    GameplayController.instance.EndTurn();
+                    Popup.Functionality.Destroy(source).Invoke(source);
+                };
+
+                string yes = language.GetWord("YES");
+                string no = language.GetWord("NO");
+
+                upgrade.AddButton(no, noAction);
+                upgrade.AddButton(yes, yesAction);
+
+                PopupSystem.instance.AddPopup(upgrade);
+            }
+        }
+        else
+        {
+            //Jeżeli nasz budynek nie ma następnego tieru
+            GameplayController.instance.EndTurn();
+        }
     }
 }

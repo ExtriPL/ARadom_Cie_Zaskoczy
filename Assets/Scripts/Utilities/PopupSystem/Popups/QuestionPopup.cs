@@ -11,7 +11,7 @@ public class QuestionPopup : Popup
     /// <summary>
     /// Wiadomość, która jest wyświetlana przez QuestionBox-a
     /// </summary>
-    public string message { get; private set; }
+    public string message;
     public List<Tuple<string, PopupAction>> buttons { get; private set; }
 
     /// <summary>
@@ -52,11 +52,11 @@ public class QuestionPopup : Popup
     /// <param name="yesAction">Akcja wywoływana po wciśnięciu przycisku "Tak"</param>
     /// <param name="noAction">Akcja wywoływana po wciśnięciu przycisku "Nie"</param>
     /// <returns>QuestionPopup z odpowiedziami "Tak" "Nie"</returns>
-    public static QuestionPopup CreateYesNoDialog(string question, PopupAction yesAction, PopupAction noAction)
+    public static QuestionPopup CreateYesNoDialog(string question, PopupAction yesAction = null, PopupAction noAction = null)
     {
         QuestionPopup popup = new QuestionPopup(question);
-        popup.AddButton("Tak", yesAction);
-        popup.AddButton("Nie", noAction);
+        popup.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
+        popup.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
 
         return popup;
     }
@@ -67,10 +67,10 @@ public class QuestionPopup : Popup
     /// <param name="question">Pytanie, które ma zostać wyświetlone użytkownikowi</param>
     /// <param name="okAction">Akcja wywoływana po naciśnięciu przycisku "Ok"</param>
     /// <returns>>QuestionPopup z odpowiedzią "Ok"</returns>
-    public static QuestionPopup CreateOkDialog(string question, PopupAction okAction)
+    public static QuestionPopup CreateOkDialog(string question, PopupAction okAction = null)
     {
         QuestionPopup popup = new QuestionPopup(question);
-        popup.AddButton("Ok", okAction);
+        popup.AddButton("OK", okAction);
 
         return popup;
     }

@@ -1,33 +1,28 @@
 ﻿using ExitGames.Client.Photon;
 using Photon.Pun;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public class GameSession
+public class GameSession : IEventSubscribable
 {
-    private GameplayController gameplayController;
     /// <summary>
     /// Czas rozpoczęcia rozgrywki
     /// </summary>
-    public float gameStartTime
+    public float gameTime
     {
         get
         {
-            return (float)PhotonNetwork.CurrentRoom.CustomProperties["session_gameStartTime"];
+            return (float)PhotonNetwork.CurrentRoom.CustomProperties["session_gameTime"];
         }
-        private set
+        set
         {
             Hashtable table = new Hashtable();
-            table.Add("session_gameStartTime", value);
+            table.Add("session_gameTime", value);
             PhotonNetwork.CurrentRoom.SetCustomProperties(table);
         }
     }
-    /// <summary>
-    /// Czas, przez jaki toczy się rozgrywka
-    /// </summary>
-    public float currentGameTime => Time.time - gameStartTime;
-
     /// <summary>
     /// Stan gry
     /// </summary>
@@ -35,35 +30,53 @@ public class GameSession
     {
         get
         {
-            return (GameState)(int)PhotonNetwork.CurrentRoom.CustomProperties["gameState"];
+            return (GameState)(int)PhotonNetwork.CurrentRoom.CustomProperties["session_gameState"];
         }
         set
         {
             GameState previousState;
             //Zabezpieczenie przy pierwszym odpaleniu (odpowiednia zmienna nie istnieje)
-            try
-            {
-               previousState = gameState;
-            }
-            catch
-            {
-                previousState = GameState.running;
-            }
+            if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("session_gameState")) previousState = gameState;
+            else previousState = GameState.running;
 
             Hashtable table = new Hashtable();
-            table.Add("gameState", (int)value);
+            table.Add("session_gameState", (int)value);
             PhotonNetwork.CurrentRoom.SetCustomProperties(table);
-            
+
             //Wysyła informacje o zmianie stanu rozgrywki do graczy  
             GameState newState = value;
-            EventManager.instance.SendOnRoomStateChanged(previousState, newState);
+            EventManager.instance.SendOnGameStateChanged(previousState, newState);
         }
     }
 
     /// <summary>
-    /// Lista graczy na planszy
+    /// Lista ustalaąca kolejność graczy w rozgrywce
     /// </summary>
-    private List<Player> players = new List<Player>();
+    public List<string> playerOrder 
+    {
+        get 
+        {
+            List<string> list = new List<string>();
+            list.AddRange((string[])PhotonNetwork.CurrentRoom.CustomProperties["session_playerOrder"]);
+            return list;
+        }
+        set 
+        {
+            Hashtable table = new Hashtable();
+            table.Add("session_playerOrder", value.ToArray());
+            PhotonNetwork.CurrentRoom.SetCustomProperties(table);
+        }
+    }
+    /// <summary>
+    /// Lista graczy, zmapowana na ich nicki w ustalonej serwerowo kolejności
+    /// </summary>
+    private Dictionary<string, Player> players = new Dictionary<string, Player>();
+    /// <summary>
+    /// Zwraca liczbę graczy na liście
+    /// </summary>
+    /// <returns>Liczba graczy</returns>
+    public int playerCount => playerOrder.Count;
+
     /// <summary>
     /// Instancja lokalnego gracza
     /// </summary>
@@ -71,82 +84,120 @@ public class GameSession
     /// <summary>
     /// Instancja właściciela pokoju rozgrywki
     /// </summary>
-    public Photon.Realtime.Player roomOwner => PhotonNetwork.CurrentRoom.GetPlayer(PhotonNetwork.CurrentRoom.MasterClientId);
+    public Photon.Realtime.Player roomOwner => PhotonNetwork.MasterClient;
 
     #region Inicjalizacja
 
-    public void Init(GameplayController gameplayController)
+    public void Update()
     {
-        this.gameplayController = gameplayController;
-
-        LoadPlayers();
-
-        //Inicjalizacja sieci przez właściciela pokoju 
-        if(roomOwner.IsLocal)
+        //Liczeniem czasu zajmuje się właściciel pokoju
+        if (roomOwner.IsLocal)
         {
-            //Wczytywanie ustawień z pliku
-            if (gameplayController.loadedFromSave)
-            {
-                GameSave save = gameplayController.save;
-                gameState = save.gameState;
-                gameStartTime = Time.time - save.gameTime; //Obliczanie czasu w taki sposób, by obecny czas gry zgadzał się po wczytaniu gry. Przez ten sposób zmienna gameStartTime może mieć wartość ujemną
-                //Przywracanie właściwości graczy
-                foreach(PlayerSettings ps in save.players)
-                {
-                    Player p = FindPlayer(ps.nick);
-                    if(p != null)
-                    {
-                        p.SetTurnsToSkip(ps.turnsToSkip);
-                        p.SetMoney(ps.money);
-                        p.fieldId = ps.fieldId;
-                        foreach (int i in ps.fieldList) p.AddOwnership(i);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Gracz o nicku " + ps.nick + " nie jest podłączony");
-                    }
-                }
-            }
-            else
-            {
-                gameState = GameState.running;
-                gameStartTime = Time.time;
-            }
-        }
-    }
-
-    public void SaveToInstance(ref GameSave save)
-    {
-        save.gameState = gameState;
-        save.gameTime = currentGameTime;
-        save.players = new List<PlayerSettings>();
-        foreach(Player p in players)
-        {
-            PlayerSettings ps = new PlayerSettings();
-            ps.fieldId = p.fieldId;
-            ps.fieldList = p.GetOwnedFields();
-            ps.money = p.money;
-            ps.nick = p.GetName();
-            ps.turnsToSkip = p.turnsToSkip;
-            save.players.Add(ps);
+            //Czas nie jest liczony, gdy rozgrywka jest wstrzymana
+            if (gameState == GameState.running) gameTime += Time.deltaTime;
         }
     }
 
     public void SubscribeEvents()
     {
         EventManager.instance.onGameStateChanged += OnGameStateChanged;
-        EventManager.instance.onPlayerQuit += OnPlayerQuit;
+        EventManager.instance.onPlayerQuited += OnPlayerQuit;
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onGameStateChanged -= OnGameStateChanged;
-        EventManager.instance.onPlayerQuit -= OnPlayerQuit;
+        EventManager.instance.onPlayerQuited -= OnPlayerQuit;
+    }
+
+    /// <summary>
+    /// Ładowanie ustawień z pliku zapisu
+    /// </summary>
+    /// <param name="save">Informację wyciągnięte z pliku zapisu</param>
+    public void LoadFromSave(ref GameSave save)
+    {
+        gameState = save.gameState;
+        gameTime = save.gameTime;
+
+        List<string> playerOrder = new List<string>();
+        foreach (PlayerSettings ps in save.players)
+        {
+
+            Player p = FindPlayer(ps.nick);
+            if (p != null)
+            {
+                playerOrder.Add(ps.nick);
+                p.SetTurnsToSkip(ps.turnsToSkip);
+                p.SetMoney(ps.money);
+                p.PlaceId = ps.fieldId;
+                p.MainColor = new Color
+                (
+                    ps.mainColorComponents[0],
+                    ps.mainColorComponents[1],
+                    ps.mainColorComponents[2],
+                    ps.mainColorComponents[3]
+                );
+                p.BlinkColor = new Color
+                (
+                    ps.blinkColorComponents[0],
+                    ps.blinkColorComponents[1],
+                    ps.blinkColorComponents[2],
+                    ps.blinkColorComponents[3]
+                );
+                foreach (int i in ps.fieldList) p.AddOwnership(i);
+            }
+            else
+            {
+                Debug.LogWarning("Gracz o nicku " + ps.nick + " nie jest podłączony");
+            }
+        }
+
+        this.playerOrder = playerOrder;
     }
 
     #endregion Inicjalizacja
 
-    #region Eventy
+    #region Sterowanie rozgrywką
+
+    /// <summary>
+    /// Zapisywanie danych z sesji do obiektu złużącego do zapisu gry
+    /// </summary>
+    /// <param name="save">Obiekt służący do zapisu gry</param>
+    public void SaveProgress(ref GameSave save)
+    {
+        save.gameState = gameState;
+        save.gameTime = gameTime;
+        save.players = new List<PlayerSettings>();
+        foreach (string p in playerOrder)
+        {
+            Player player = FindPlayer(p);
+            PlayerSettings ps = new PlayerSettings();
+            ps.fieldId = player.PlaceId;
+            ps.fieldList = player.GetOwnedFields();
+            ps.money = player.Money;
+            ps.nick = player.GetName();
+            ps.turnsToSkip = player.TurnsToSkip;
+
+            //Kolory
+            ps.mainColorComponents = new float[4];
+            ps.mainColorComponents[0] = player.MainColor.r;
+            ps.mainColorComponents[1] = player.MainColor.g;
+            ps.mainColorComponents[2] = player.MainColor.b;
+            ps.mainColorComponents[3] = player.MainColor.a;
+
+            ps.blinkColorComponents = new float[4];
+            ps.blinkColorComponents[0] = player.BlinkColor.r;
+            ps.blinkColorComponents[1] = player.BlinkColor.g;
+            ps.blinkColorComponents[2] = player.BlinkColor.b;
+            ps.blinkColorComponents[3] = player.BlinkColor.a;
+
+            save.players.Add(ps);
+        }
+    }
+
+    #endregion Sterowanie rozgrywką
+
+    #region Obsługa eventów
 
     /// <summary>
     /// Przypisuje zmiennej wewnętrznej nowy stan gry.
@@ -172,12 +223,22 @@ public class GameSession
     /// <param name="playerName">Nazwa gracza na liście</param>
     private void OnPlayerQuit(string playerName)
     {
-        Player player = FindPlayer(playerName);
-        RemovePlayer(player.GetName());
-        MessageSystem.instance.AddMessage("<color=red>" + player.GetName() + "</color> " + Keys.Messages.PLAYER_LEAVE, MessageType.MediumMessage);
+        if (playerName != localPlayer.GetName())
+        {
+            string message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("PLAYER_LEFT");
+            if (FindPlayer(playerName).NetworkPlayer.IsInactive) message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("KICKED_FOR_INACTIVITY");
+            RemovePlayer(playerName);
+            InfoPopup playerLeft = new InfoPopup(message, 2f);
+            PopupSystem.instance.AddPopup(playerLeft);
+        }
+        else 
+        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LoadLevel(Keys.SceneNames.MAIN_MENU);
+        }
     }
 
-    #endregion Eventy
+    #endregion Obsługa eventów
 
     #region Funkcje graczy
 
@@ -188,11 +249,10 @@ public class GameSession
     /// <returns>Gracz o podanej nazwie</returns>
     public Player FindPlayer(string name)
     {
-        foreach (Player p in players)
+        if (playerOrder.Contains(name))
         {
-            if (p.GetName().Equals(name)) return p;
+            return players[name];
         }
-
         return null;
     }
 
@@ -203,17 +263,8 @@ public class GameSession
     /// <returns>Gracz o podanym numerze w kolejce</returns>
     public Player FindPlayer(int numberInQueue)
     {
-        if (numberInQueue >= 0 && numberInQueue < players.Count) return players[numberInQueue];
+        if (numberInQueue >= 0 && numberInQueue < players.Count) return players[playerOrder[numberInQueue]];
         else return null;
-    }
-
-    /// <summary>
-    /// Zwraca liczbę graczy na liście
-    /// </summary>
-    /// <returns>Liczba graczy</returns>
-    public int GetPlayersCount()
-    {
-        return players.Count;
     }
 
     /// <summary>
@@ -223,9 +274,9 @@ public class GameSession
     /// <returns>Jeżeli gracz istnieje: jego numer, jeżeli nie istnieje: -1</returns>
     public int GetPlayerNumberInQueue(string name)
     {
-        for (int i = 0; i < players.Count; i++)
-        {
-            if (players[i].GetName().Equals(name)) return i;
+        if (playerOrder.Contains(name)) 
+        { 
+            return playerOrder.IndexOf(name);
         }
 
         return -1;
@@ -247,8 +298,13 @@ public class GameSession
     /// <param name="name">Nazwa gracza</param>
     public void RemovePlayer(string name)
     {
-        Player toRemove = FindPlayer(name);
-        if (toRemove != null) players.Remove(toRemove);
+        if (playerOrder.Contains(name))
+        {
+            players.Remove(name);
+            List<string> playerOrder = this.playerOrder;
+            playerOrder.Remove(name);
+            this.playerOrder = playerOrder;
+        }
         else Debug.LogError("Gracz o podanej nazwie(" + name + ") nie istnieje");
     }
 
@@ -258,7 +314,7 @@ public class GameSession
     /// <param name="numberInQueue">Numer gracza w kolejce</param>
     public void RemovePlayer(int numberInQueue)
     {
-        if (numberInQueue >= 0 && numberInQueue < players.Count) players.RemoveAt(numberInQueue);
+        if (numberInQueue >= 0 && numberInQueue < players.Count) RemovePlayer(playerOrder[numberInQueue]);
         else Debug.LogError("Nie można usunąć gracza o podanym numerze(" + numberInQueue + ") ponieważ nie ma go na liście");
     }
 
@@ -268,19 +324,26 @@ public class GameSession
     /// <param name="player">Instancja gracza</param>
     public void RemovePlayer(Player player)
     {
-        players.Remove(player);
+        RemovePlayer(player.GetName());
     }
 
     /// <summary>
-    /// Wczytuje graczy do listy
+    /// Dodaje graczy do listy graczy
     /// </summary>
-    private void LoadPlayers()
+    /// <param name="player">Obiekt gracza</param>
+    public void AddPlayer(Player player)
     {
-        foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
-        {
-            Player player = new Player(p);
-            players.Add(player);
-        }
+        players.Add(player.GetName(), player);
+    }
+
+    /// <summary>
+    /// Funkcja służąca do wyrzucania 
+    /// </summary>
+    /// <param name="player"></param>
+    public void KickPlayer(Player player) 
+    {
+        if(GameplayController.instance.board.dice.currentPlayer == player.GetName()) GameplayController.instance.EndTurn();
+        EventManager.instance.SendOnPlayerQuited(player.GetName());
     }
 
     #endregion #Funkcje graczy

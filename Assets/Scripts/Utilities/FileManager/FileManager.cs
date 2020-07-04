@@ -129,7 +129,6 @@ public static class FileManager
         return filesNameList;
     }
 
-
     #region Tworzenie plików z domyślnymi wartościami
 
     /// <summary>
@@ -141,6 +140,7 @@ public static class FileManager
         defaultSettings.musicVolume = Keys.Files.DefaultValues.MUSIC_VOLUME;
         defaultSettings.soundEffectsVolume = Keys.Files.DefaultValues.SOUND_EFFECTS_VOLUME;
         defaultSettings.language = Keys.Files.DefaultValues.LANGUAGE;
+        defaultSettings.playerNickname = Keys.Menu.DEFAULT_USERNAME;
 
         IFormatter formatter = new BinaryFormatter();
         Stream stream = new FileStream(Keys.Files.MAIN_DIRECTORY + Keys.Files.APPLICATION_SETTINGS_FILE, FileMode.Create, FileAccess.Write);

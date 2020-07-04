@@ -1,14 +1,14 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 [System.Serializable]
-public class Board
+public class Board : IEventSubscribable
 {
-    private GameplayController gameplayController;
-
     /// <summary>
     /// Lista pól na planszy.
     /// </summary>
@@ -18,18 +18,36 @@ public class Board
     /// <summary>
     /// Kostka do gry.
     /// </summary>
-    private RandomDice dice;
+    public RandomDice dice;
+
+    /// <summary>
+    /// Słownik przypisujący miejcu na planszy tier budynku , który na nim stoi
+    /// </summary>
+    private Dictionary<int, int> tiers 
+    {
+        get 
+        {
+            return (Dictionary<int, int>)PhotonNetwork.CurrentRoom.CustomProperties["board_tiers"];
+        }
+        set
+        {
+            //Debug.Log("tiers_set");
+            Hashtable table = new Hashtable();
+            table.Add("board_tiers", value);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(table);
+        }
+    }
 
     /// <summary>
     /// Słownik przypisujący każdemu miejscu na planszy pole(tj. budynek albo pole specjalne itp.).
     /// </summary>
-    private Dictionary<int, int> places
+    public Dictionary<int, int> places
     {
         get
         {
             return (Dictionary<int, int>) PhotonNetwork.CurrentRoom.CustomProperties["board_places"];
         }
-        set
+        private set
         {
             Hashtable table = new Hashtable();
             table.Add("board_places", value);
@@ -39,52 +57,15 @@ public class Board
 
     #region Inicjalizacja
 
-    public void Init(GameplayController gameplayController)
+    public void Update()
     {
-        this.gameplayController = gameplayController;
 
-        //Inicjowanie właściwości rozgrywki przez właściciela pokoju
-        if (gameplayController.session.roomOwner.IsLocal)
-        {
-            places = new Dictionary<int, int>();
-
-            if (gameplayController.loadedFromSave)
-            {
-                GameSave save = gameplayController.save;
-                dice = new RandomDice(save.dice.last1, save.dice.last2, save.dice.currentPlayer, save.dice.amountOfRolls, save.dice.round);
-
-                Dictionary<int, int> places = new Dictionary<int, int>();
-
-                //Przypisywanie budynków odpowiednim miejscą na planszy
-                for (int i = 0; i < save.places.Keys.Count; i++)
-                {
-                    //Jeżeli nazwa jest zgodna z oczekiwaniami
-                    if (fields[save.places[i].Item1].name.Equals(save.places[i].Item2))
-                    {
-                        places.Add(i, save.places[i].Item1);
-                    }
-                    //Jeżeli nazwa budynku nie zgadza się z indeksem na liście
-                    else if (GetFieldIndex(save.places[i].Item2) != -1)
-                    {
-                        places.Add(i, GetFieldIndex(save.places[i].Item2));
-                    }
-                }
-
-                this.places = places;
-            }
-            else
-            {
-                dice = new RandomDice();
-                RandomizeFields();
-            }
-        }
-        else dice = new RandomDice();
     }
 
     /// <summary>
     /// Zapisuje odpowiednie ustawienia do obiektu GameSave znajdującego się w klasie GameplayController
     /// </summary>
-    public void SaveToInstance(ref GameSave save)
+    public void SaveProgress(ref GameSave save)
     {
         DiceSettings ds = new DiceSettings();
         ds.amountOfRolls = dice.amountOfRolls;
@@ -93,23 +74,106 @@ public class Board
         ds.last2 = dice.last2;
         ds.round = dice.round;
 
+        save.tiers = tiers;
         save.places = new Dictionary<int, System.Tuple<int, string>>();
         for (int i = 0; i < places.Keys.Count; i++) save.places.Add(i, new System.Tuple<int, string>(places[i], GetField(i).name));
 
         save.dice = ds;
     }
 
+    /// <summary>
+    /// Metoda przypisująca przypadkowe budynki do pól.
+    /// </summary>
+    public void LoadPlaces()
+    {
+        if (GameplayController.instance.session.roomOwner.IsLocal)
+        {
+            List<int> used = new List<int>();
+            Dictionary<int, int> places = new Dictionary<int, int>();
+
+            //Start zawsze musi być polem o numerze 0
+            int startIndex = GetFieldIndex("Start");
+            places.Add(0, startIndex);
+            used.Add(startIndex);
+
+            //Sprawdzanie, czy istnieje wystarczająca liczba budynków do rozpoczęcia gry
+            if (fields.Count - 1 >= Keys.Board.PLACE_COUNT)
+            {
+                for (int i = 1; i < Keys.Board.PLACE_COUNT; i++)
+                {
+                    int j;
+                    do j = Random.Range(0, fields.Count);
+                    while (used.Contains(j));
+
+                    used.Add(j);
+                    places.Add(i, j);
+                }
+
+                this.places = places;
+            }
+            else Debug.LogError("Nie ma wystarczającej ilości budynków by zainicjować grę!");
+        }
+    }
+
+    /// <summary>
+    /// Metoda ustawia startowe wartości tierów dla wszystkich budynków na planszy
+    /// </summary>
+    public void LoadTiers()
+    {
+        if (GameplayController.instance.session.roomOwner.IsLocal)
+        {
+            Dictionary<int, int> tiers = new Dictionary<int, int>();
+            for (int i = 0; i < places.Count; i++)
+            {
+                tiers.Add(i, 0);
+            }
+
+            this.tiers = tiers;
+        }
+    }
+
+    /// <summary>
+    /// Wczytywanie ustawień z pliku zapisu
+    /// </summary>
+    /// <param name="save">Obiekt zawierający dane pobrane z pliku zapisu</param>
+    public void LoadFromSave(ref GameSave save)
+    {
+        dice = new RandomDice(save.dice.last1, save.dice.last2, save.dice.currentPlayer, save.dice.amountOfRolls, save.dice.round);
+
+        Dictionary<int, int> places = new Dictionary<int, int>();
+
+        //Przypisywanie budynków odpowiednim miejscą na planszy
+        for (int i = 0; i < save.places.Keys.Count; i++)
+        {
+            //Jeżeli nazwa jest zgodna z oczekiwaniami
+            if (fields[save.places[i].Item1].name.Equals(save.places[i].Item2))
+            {
+                places.Add(i, save.places[i].Item1);
+            }
+            //Jeżeli nazwa budynku nie zgadza się z indeksem na liście
+            else if (GetFieldIndex(save.places[i].Item2) != -1)
+            {
+                places.Add(i, GetFieldIndex(save.places[i].Item2));
+            }
+
+        }
+        tiers = save.tiers;
+        this.places = places;
+    }
+
     public void SubscribeEvents()
     {
-        //EventManager.instance.onPlayerMove += MovePlayer;
+        EventManager.instance.onPlayerQuited += OnPlayerQuit;
     }
 
     public void UnsubscribeEvents()
     {
-        //EventManager.instance.onPlayerMove -= MovePlayer;
+        EventManager.instance.onPlayerQuited -= OnPlayerQuit;
     }
 
     #endregion Inicjalizacja
+
+    #region Właściowości pól na planszy
 
     /// <summary>
     /// Odnajduje budynek po jego numerze na planszy.
@@ -140,7 +204,7 @@ public class Board
     /// <returns>Indeks pola o podanej nazwie, jeżeli nie ma takiego pola, zwraca -1</returns>
     public int GetFieldIndex(string name)
     {
-        for(int i = 0; i < fields.Count; i++)
+        for (int i = 0; i < fields.Count; i++)
         {
             if (fields[i].name.Equals(name)) return i;
         }
@@ -161,14 +225,14 @@ public class Board
     /// <summary>
     /// Metoda wyszukująca gracza, który jest właścicielem danego pola.
     /// </summary>
-    /// <param name="field">Pole.</param>
-    /// <returns>Obiekt gracza, który jest właścicielem pola. Jeżeli pole nie ma właściciela, zwraca null.</returns>
-    public Player GetOwner(int field)
+    /// <param name="placeId">Pole.</param>
+    /// <returns>Obiekt gracza, który jest właścicielem tego co znajduje się na danym polu na planszy. Jeżeli pole nie ma właściciela, zwraca null.</returns>
+    public Player GetOwner(int placeId)
     {
-        for(int i = 0; i < gameplayController.session.GetPlayersCount(); i++)
+        for (int i = 0; i < GameplayController.instance.session.playerCount; i++)
         {
-            Player p = gameplayController.session.FindPlayer(i);
-            if (p.HasField(field))
+            Player p = GameplayController.instance.session.FindPlayer(i);
+            if (p.HasField(placeId))
             {
                 return p;
             }
@@ -177,47 +241,113 @@ public class Board
     }
 
     /// <summary>
+    /// Zwraca aktualny tier podanego pola
+    /// </summary>
+    /// <param name="placeId">Numer pola na planszy</param>
+    /// <returns>Tier pola</returns>
+    public int GetTier(int placeId)
+    {
+        return tiers[placeId];
+    }
+
+    /// <summary>
+    /// Oblicza dystans jaki jest między polami
+    /// </summary>
+    /// <param name="placeFrom">Numer miejsca, z którego chcemy obliczyć dystans</param>
+    /// <param name="placeTo">Numer miejsca, do którego chcemy obliczyć dystans</param>
+    /// <returns>Oblicza dystans między polami zgodnie z kierunkiem chodzenia po planszy. Zwraca -1 jeżeli wystąpi błąd</returns>
+    public int GetPlacesDistance(int placeFrom, int placeTo)
+    {
+        if (placeFrom.IsBetween(0, Keys.Board.PLACE_COUNT - 1) && placeTo.IsBetween(0, Keys.Board.PLACE_COUNT - 1))
+        {
+            if (placeTo > placeFrom) return placeTo - placeFrom;
+            else return Keys.Board.PLACE_COUNT - placeFrom + placeTo;
+        }
+        else Debug.LogError("Numery pól wykraczają poza zakres planszy");
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Oblicza, które pola znajdują się pomiędzy podanymi
+    /// </summary>
+    /// <param name="placeFrom">Miejsce, z którego chcemy rozpocząć liczenie pól</param>
+    /// <param name="placeTo">Miejsce, na którym chcemy zakończyć liczenie pól</param>
+    /// <returns></returns>
+    public List<int> GetBetweenPlaces(int placeFrom, int placeTo)
+    {
+        List<int> placesBetween = new List<int>();
+
+        if (placeFrom.IsBetween(0, Keys.Board.PLACE_COUNT - 1) && placeTo.IsBetween(0, Keys.Board.PLACE_COUNT - 1))
+        {
+            if (GetPlacesDistance(placeTo, placeFrom) > 1)
+            {
+                if (placeTo > placeFrom) placesBetween = Enumerable.Range(placeFrom + 1, placeTo - placeFrom).ToList();
+                else
+                {
+                    if (placeFrom + 1 < Keys.Board.PLACE_COUNT) placesBetween.AddRange(Enumerable.Range(placeFrom + 1, Keys.Board.PLACE_COUNT - (placeFrom + 1)));
+                    if (placeTo > 0) placesBetween.AddRange(Enumerable.Range(0, placeTo + 1));
+                }
+            }
+        }
+        else Debug.LogError("Numery pól wykraczają poza zakres planszy");
+
+        return placesBetween;
+    }
+
+    #endregion Właściowości pól na planszy
+
+    #region Sterowanie rozgrywką
+
+    /// <summary>
     /// Metoda przesuwająca gracza o daną ilość pól.
     /// </summary>
     /// <param name="p">Gracz</param>
     /// <param name="amount">Ilośc pól</param>
     public void MovePlayer(Player p, int amount)
     {
-        int fromFieldIndex = p.fieldId;
+        int fromFieldIndex = p.PlaceId;
         int toFieldIndex;
-        
+
         //Jeżeli numer pola po wykonaniu ruchu przekroczy ilość pól na planszy - 1 (indeks ostatniego pola), gracz zostanie przeniesiony na odpowiedznie pole na początku planszy.
         //Np: gracz stoi na polu 10, przesuwamy go o 5 pól, skończy na polu 3.
-        p.fieldId = (p.fieldId + amount > Keys.Board.FIELD_COUNT - 1) ? p.fieldId = (p.fieldId + amount) - (Keys.Board.FIELD_COUNT - 1) : p.fieldId + amount;
-        
-        toFieldIndex = p.fieldId;
+        p.PlaceId = (p.PlaceId + amount > Keys.Board.PLACE_COUNT - 1) ? p.PlaceId = (p.PlaceId + amount) - (Keys.Board.PLACE_COUNT - 1) : p.PlaceId + amount;
 
-        EventManager.instance.SendOnPlayerMove(p.GetName(), fromFieldIndex, toFieldIndex);
+        toFieldIndex = p.PlaceId;
+
+        EventManager.instance.SendOnPlayerMoved(p.GetName(), fromFieldIndex, toFieldIndex);
     }
 
     /// <summary>
-    /// Metoda przypisująca przypadkowe budynki do pól.
+    /// Metoda podwyższająca numer tieru budynku stającego na podanym polu
     /// </summary>
-    private void RandomizeFields()
+    /// <param name="placeId">Numer pola, na którym stoi docelowy budynek</param>
+    public void NextTier(int placeId)
     {
-        List<int> used = new List<int>();
-        Dictionary<int, int> places = new Dictionary<int, int>();
-
-        //Sprawdzanie, czy istnieje wystarczająca liczba budynków do rozpoczęcia gry
-        if (fields.Count >= Keys.Board.FIELD_COUNT)
+        if (GetField(placeId) is NormalBuilding)
         {
-            for (int i = 0; i < Keys.Board.FIELD_COUNT; i++)
-            {
-                int j;
-                do j = Random.Range(0, fields.Count);
-                while (used.Contains(j));
-
-                used.Add(j);
-                places.Add(i, j);
-            }
-
-            this.places = places;
+            tiers[placeId]++;
         }
-        else Debug.LogError("Nie ma wystarczającej ilości budynków by zainicjować grę!");
+        else
+        {
+            Debug.LogError("Wywołano metodę NextTier(), dla pola kltóre nie ma tierów!");
+        }
     }
+
+    #endregion Sterowanie rozgrywką
+
+    #region Obsługa eventów
+
+    private void OnPlayerQuit(string playerName) 
+    {
+        for (int i = 0; i < tiers.Count; i++)
+        {
+            if (GetOwner(i) == null)
+            {
+                tiers[i] = 0;
+            }
+        }
+    }
+
+    #endregion Obsługa eventów
 }

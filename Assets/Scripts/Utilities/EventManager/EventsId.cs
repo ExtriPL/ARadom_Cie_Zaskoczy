@@ -13,5 +13,12 @@ public enum EventsId
     GameStateChange,
     PlayerQuit,
     PlayerMove,
-    TurnChange
+    TurnChange,
+    PlayerAquiredBuiding,
+    Trade,
+    Auction,
+    Sync,
+    PlayerUpgradeBuilding,
+    Pay,
+    PlayerLostGame
 }

@@ -7,12 +7,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class GameMenu : MonoBehaviour
+public class GameMenu : MonoBehaviour, IEventSubscribable
 {
-    private GameplayController gameplayController;
-
-    [SerializeField] private GameObject OpenMenuButton;
-    [SerializeField] private GameObject MenuPanel;
+    [SerializeField] public GameObject OpenMenuButton;
+    [SerializeField] public GameObject MenuPanel;
     [SerializeField] private GameObject AdminPanel;
     [SerializeField] private GameObject AccountPanel;
     [SerializeField] private GameObject SettingsPanel;
@@ -24,35 +22,21 @@ public class GameMenu : MonoBehaviour
     /// <summary>
     /// Czy menu jest aktualnie otwarte.
     /// </summary>
-    public bool MenuPanelOpen { get; private set; }
+    public bool menuPanelOpen { get; private set; }
+    /// <summary>
+    /// Popup przechowujący informację o wstrzymaniu rozgrywki
+    /// </summary>
+    private InfoPopup gamePaused = null;
 
     #region Inicjalizacja
 
-    public void Init(GameplayController gameplayController)
+    public void InitMenu()
     {
-        this.gameplayController = gameplayController;
-
         MenuPanel.SetActive(false);
         OpenMenuButton.SetActive(true);
-        MenuPanelOpen = false;
+        menuPanelOpen = false;
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep; //Gdy menu jest wyłączone, ekran nigdy się nie wygasza 
-        bool isLocal = true;
-
-        try
-        {
-            isLocal = gameplayController.session.roomOwner.IsLocal;
-        }
-        catch
-        {
-            Debug.LogWarning("Gra niepodłączona do sieci");
-        }
-
-        if (!isLocal)
-        {
-            ResumeButton.interactable = false;
-            AdminPanelButton.interactable = false;
-        }
     }
 
     public void SubscribeEvents()
@@ -69,18 +53,28 @@ public class GameMenu : MonoBehaviour
 
     #region Eventy
 
+    private void OnApplicationQuit()
+    {
+        QuitGame();
+    }
+
     private void OnGameStateChanged(GameState previousState, GameState newState)
     {
         //Komunikat o wstrzymaniu rozgrywki
         if (newState == GameState.paused)
         {
-            MessageSystem.instance.AddMessage(Keys.Messages.GAME_HAS_BEEN_PAUSED, MessageType.MediumMessage, "pause", -1);
+            string gamePauesedMessage = SettingsController.instance.languageController.GetWord("GAME_PAUSED");
+            gamePaused = new InfoPopup(gamePauesedMessage, Mathf.Infinity);
+            PopupSystem.instance.AddPopup(gamePaused);
+
             ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("UNPAUSE");
         }
         //Usuwanie komunikatu o wstrzymaniu rozgrywki po jej przywróceniu
         else if (previousState == GameState.paused && newState == GameState.running)
         {
-            MessageSystem.instance.RemoveMessage("pause");
+            PopupSystem.instance.ClosePopup(gamePaused);
+            gamePaused = null;
+
             ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("PAUSE");
         }
     }
@@ -96,19 +90,19 @@ public class GameMenu : MonoBehaviour
     public void MenuState(bool active)
     {
         //Menu włącza się tylko wtedy, gdy jest aktualnie wyłączone. Analogicznie wyłącza się tylko wtedy, gdy jest włączone
-        if (active && !MenuPanelOpen)
+        if (active && !menuPanelOpen)
         {
             MenuPanel.SetActive(true);
             OpenMenuButton.SetActive(false);
             Screen.sleepTimeout = SleepTimeout.SystemSetting; //Gdy menu jest włączone, ekran wygasza się według ustawień telefonu
-            MenuPanelOpen = true;
+            menuPanelOpen = true;
         }
-        else if (!active && MenuPanelOpen)
+        else if (!active && menuPanelOpen)
         {
             MenuPanel.SetActive(false);
             OpenMenuButton.SetActive(true);
             Screen.sleepTimeout = SleepTimeout.NeverSleep; //Gdy menu jest wyłączone, ekran nigdy się nie wygasza
-            MenuPanelOpen = false;
+            menuPanelOpen = false;
         }
     }
 
@@ -119,10 +113,10 @@ public class GameMenu : MonoBehaviour
     public void SwitchGameState()
     {
         //Przełączanie stanu gry przez właściciela pokoju
-        if (gameplayController.session.roomOwner.IsLocal)
+        if (GameplayController.instance.session.roomOwner.IsLocal)
         {
-            if (gameplayController.session.gameState == GameState.running) gameplayController.session.gameState = GameState.paused;
-            else if (gameplayController.session.gameState == GameState.paused) gameplayController.session.gameState = GameState.running;
+            if (GameplayController.instance.session.gameState == GameState.running) GameplayController.instance.session.gameState = GameState.paused;
+            else if (GameplayController.instance.session.gameState == GameState.paused) GameplayController.instance.session.gameState = GameState.running;
         }
         else
         {
@@ -188,18 +182,17 @@ public class GameMenu : MonoBehaviour
     public void QuitGame()
     {
         //Jeżeli właściciel pokoju opuszcza rozgrywkę, jest ona kończona
-        if (gameplayController.session.roomOwner.IsLocal)
+        if (GameplayController.instance.session.roomOwner.IsLocal)
         {
-            //EventManager.instance.SendOnRoomOvnerQuit();
-            gameplayController.session.gameState = GameState.roomDestroyed;
+            GameplayController.instance.session.gameState = GameState.roomDestroyed;
             /*
              * Zakończenie rozgrywki
              */
         }
-        else EventManager.instance.SendOnPlayerQuit(gameplayController.session.localPlayer.GetName());
-
-        PhotonNetwork.LeaveRoom();
-        PhotonNetwork.LoadLevel(Keys.SceneNames.MAIN_MENU);
+        else
+        {
+            GameplayController.instance.session.KickPlayer(GameplayController.instance.session.localPlayer);
+        }    
     }
 
     #endregion Obsłuiga przycisków menu

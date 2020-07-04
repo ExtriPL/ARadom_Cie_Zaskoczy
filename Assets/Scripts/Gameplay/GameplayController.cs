@@ -6,11 +6,13 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using Photon.Realtime;
+using Hashtable =  ExitGames.Client.Photon.Hashtable;
 
-public class GameplayController : MonoBehaviour
+public class GameplayController : MonoBehaviour, IEventSubscribable
 {
     public static GameplayController instance;
 
+    public BankingController banking = new BankingController();
     public GameSession session = new GameSession();
     public GameMenu menu;
     public Board board = new Board();
@@ -19,24 +21,43 @@ public class GameplayController : MonoBehaviour
     /// <summary>
     /// Plik zapisu gry wczytany z pliku
     /// </summary>
-    [HideInInspector] public GameSave save;
+    private GameSave save;
+
+    private IEnumerator masterInactiveCheck;
+
+    private CommandInvoker invoker;
     /// <summary>
-    /// Określa, czy gra zostałą załadowana z pliku
+    /// Flaga określająca czy gra przeszła przez komand invoker
     /// </summary>
-    public bool loadedFromSave { get; private set; }
+    private bool gameInitialized;
+    /// <summary>
+    /// Flaga określająca, czy popup mówiący o skońceniu tury ma się pokazać graczowi
+    /// </summary>
+    public bool showEndOfTurnPopup
+    { 
+        get
+        {
+            return (bool)PhotonNetwork.CurrentRoom.CustomProperties["gameplayController_showEndOfTurnPopup"];
+        }
+        set
+        {
+            Hashtable table = new Hashtable();
+            table.Add("gameplayController_showEndOfTurnPopup", value);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(table);
+        }
+    }
 
-    private void OnEnable()
+    #region Inicjalizacja
+
+    private void Start()
     {
-        if (!instance) instance = this;
-        else Destroy(this);
+        masterInactiveCheck = MasterInactiveCheck();
+        StartCoroutine(masterInactiveCheck);
+        gameInitialized = false;
+        instance = this;
 
-        session.SubscribeEvents();
-        menu.SubscribeEvents();
-        board.SubscribeEvents();
-        /*
-         * Rozwiązać wychodzenie z aplikacji eventami pausy i focusu
-         * Jeżeli gracz wyjdzie z gry jest jednocześnie wyrzucany z listy graczy
-        */
+        AddCommands();
+        invoker.Start();
     }
 
     private void OnDisable()
@@ -44,75 +65,260 @@ public class GameplayController : MonoBehaviour
         session.UnsubscribeEvents();
         menu.UnsubscribeEvents();
         board.UnsubscribeEvents();
+        banking.UnsubscribeEvents();
+        arController.UnsubscribeEvents();
+        UnsubscribeEvents();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        if (PhotonNetwork.IsConnected)
-        {
-            Init();
+        invoker.Update();
 
-            session.Init(instance);
-            menu.Init(instance);
-            board.Init(instance);
-            arController.InitBoard();
+        if (gameInitialized)
+        {
+            session.Update();
+            board.Update();
+            arController.UpdateAR();
         }
-        else if (Application.isEditor) StartCoroutine(CreateTemporaryRoom());
-        else Debug.LogError("Nie udało połączyć się z serwerem. Prawdopodobnie gra została uruchomiona ze złej sceny");
+    }
+
+    public void SubscribeEvents()
+    {
+        EventManager.instance.onTurnChanged += OnTurnChanged;
+    }
+
+    public void UnsubscribeEvents()
+    {
+        EventManager.instance.onTurnChanged -= OnTurnChanged;
     }
 
     /// <summary>
-    /// Inicjalizacja rozgrywki
+    /// Dodaje komendy do startowego CommandInvokera
     /// </summary>
-    private void Init()
+    private void AddCommands()
     {
-        loadedFromSave = false;
-        save = new GameSave();
-
-        if (session.roomOwner.IsLocal)
+        SyncCommand sync = new SyncCommand();
+        Command temporaryRoom = new TemporaryRoomCommand();
+        Command subscribeEvents = new SubscribeEventsCommand(new List<IEventSubscribable>
         {
-            //Jeżeli jest ustawiona odpowiednia zmienna na true, stan gry ładowany jest z pliku
-            loadedFromSave = PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("loadSavedGame") && (bool)PhotonNetwork.CurrentRoom.CustomProperties["loadSavedGame"];
+            instance,
+            this.banking,
+            this.session,
+            menu,
+            this.board,
+            this.arController,
+            sync
+        });
+        Command session = new SessionCommand(this.session);
+        Command board = new BoardCommand(this.board);
+        Command gameMenu = new GameMenuCommand(menu);
+        Command banking = new BankingControllerCommand(this.banking);
+        Command arController = new ARControllerCommand(this.arController);
+        Command gameplayController = new GameplayControllerCommand(instance);
+        Command loadFromSave = new LoadFromSaveCommand();
+        Command popupSystem = new PopupSystemCommand();
 
-            if (loadedFromSave)
+        invoker = new CommandInvoker(null, null, delegate { OnExecutionFinished(); sync.UnsubscribeEvents(); });
+
+        invoker.AddCommand(temporaryRoom);
+        invoker.AddCommand(subscribeEvents);
+        invoker.AddCommand(session);
+        invoker.AddCommand(board);
+        invoker.AddCommand(gameMenu);
+        invoker.AddCommand(banking);
+        invoker.AddCommand(gameplayController);
+        invoker.AddCommand(loadFromSave);
+        invoker.AddCommand(sync);
+        invoker.AddCommand(arController);
+        invoker.AddCommand(popupSystem);
+        invoker.AddCommand(sync);
+    }
+
+    #endregion Inicjalizacja
+
+    #region Sterowanie rozgrywką
+
+    /// <summary>
+    /// Sprawdza, czy gracze są aktywni, wyrzuca nieaktywnych. Jeśli master jest nieaktywny niszczy grę.
+    /// </summary>
+    private IEnumerator InactiveCheck() 
+    {
+        while (true)
+        {
+            foreach (string playerName in session.playerOrder)
             {
-                string fileName = (string)PhotonNetwork.CurrentRoom.CustomProperties["saveFileName"];
-                FileManager.LoadGame(ref save, fileName);
+                if (session.FindPlayer(playerName).NetworkPlayer.IsInactive) session.KickPlayer(session.FindPlayer(playerName));
             }
+
+            yield return new WaitForSeconds(Keys.Session.PLAYER_TTL);
         }
     }
 
+    private IEnumerator MasterInactiveCheck() 
+    {
+        while (true)
+        {
+            if (PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("LevelLoader_startMasterName"))
+            {
+                if (PhotonNetwork.MasterClient.NickName != (string)PhotonNetwork.CurrentRoom.CustomProperties["LevelLoader_startMasterName"])
+                {
+                    PhotonNetwork.LeaveRoom();
+                    PhotonNetwork.LoadLevel(Keys.SceneNames.MAIN_MENU);
+                }
+            }
+            yield return new WaitForSeconds(Keys.Session.PLAYER_TTL);
+        }
+    }
+
+    /// <summary>
+    /// Zapisuje stan gry ze zmiennej save do pliku
+    /// </summary>
     public void SaveToInstance()
     {
         save.applicationVersion = Application.version;
-        session.SaveToInstance(ref save);
-        board.SaveToInstance(ref save);
 
         FileManager.SaveGame(save, PhotonNetwork.CurrentRoom.Name);
         MessageSystem.instance.AddMessage("<color=green>Gra zostałą zapisana</color>", MessageType.MediumMessage);
     }
 
     /// <summary>
-    /// Tworzenie tymczasowego pokoju umożliwiającego uruchomienie gry zaczynając od sceny Game
+    /// Zapisuje obecny postęp rozgrywki do zmiennej lokalnej
     /// </summary>
-    private IEnumerator CreateTemporaryRoom()
+    public void SaveProgress()
     {
-        PhotonNetwork.ConnectUsingSettings();
-        PhotonNetwork.GameVersion = Application.version;
-        yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer);
-
-        PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.NickName = Keys.DefaultRoom.NICKNAME;
-        PhotonNetwork.JoinLobby();
-
-        yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.JoinedLobby);
-
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = false, IsOpen = false, MaxPlayers = 1 };
-        PhotonNetwork.CreateRoom(Keys.DefaultRoom.ROOM_NAME, roomOptions);
-        yield return new WaitUntil(() => PhotonNetwork.NetworkClientState == ClientState.Joined);
-
-        Start();
-        Debug.LogWarning("Uruchomiono grę na awaryjnym pokoju");
+        session.SaveProgress(ref save);
+        board.SaveProgress(ref save);
     }
+
+    /// <summary>
+    /// Funkcja zaczynająca grę.
+    /// </summary>
+    private void StartGame()
+    { 
+        StartCoroutine(InactiveCheck());
+        if (session.roomOwner.IsLocal) EventManager.instance.SendOnTurnChanged("", board.dice.currentPlayer);
+    }
+
+    /// <summary>
+    /// Kończy turę obecnie aktywnego gracza i rozpoczyna kolejną.
+    /// Przed przekazaniem tury sprawdza warunki przegrania i wygrania
+    /// </summary>
+    public void EndTurn()
+    {
+        if (session.localPlayer.Money < 0f) 
+        {
+            //Przegrana gracza przez bankructwo
+
+            //Jeżeli gracz może zaciągnąć pożyczkę
+            if(banking.CanTakeLoan(session.localPlayer))
+            {
+                //Danie graczowi szansy na zaciągnięcie pożyczki, by mógł ocalić się przed bankructwem
+            }
+            else
+            {
+                //Jeżeli dojdzie do tego miejsca, gracz nie ma już żadnych szans na ratunek i przegrywa
+                EventManager.instance.SendOnPlayerLostGame(session.localPlayer.GetName());
+                session.localPlayer.IsLoser = true;
+
+                if (WinnerExists())
+                {
+                    //Informacja o wygranej jakiegoś gracza
+                    //Zakończenie rozgrywki
+                }
+                else NextTurn();
+            }
+        }
+        else NextTurn();
+    }
+
+    /// <summary>
+    /// Zmienia turę na nestępną.
+    /// </summary>
+    private void NextTurn()
+    {
+        string previousPlayer = board.dice.currentPlayer;
+        board.dice.NextTurn();
+        board.dice.RollDice();
+        string nextPlayer = board.dice.currentPlayer;
+
+        EventManager.instance.SendOnTurnChanged(previousPlayer, nextPlayer);
+    }
+
+    #endregion Sterowanie rozgrywką
+
+    #region Obsługa eventów
+
+    /// <summary>
+    /// Funkcja która realizuje event OnTurnChanged.
+    /// Przekazuje ture kolejnemu graczowi, daje mu rzut kostką oraz przemieszcza gracza.
+    /// </summary>
+    /// <param name="previousPlayerName"></param>
+    /// <param name="nextPlayerName"></param>
+    private void OnTurnChanged(string previousPlayerName, string nextPlayerName)
+    {
+        SaveProgress(); //Na samym początku tury zapisujemy postęp rozgrywki
+
+        if (session.FindPlayer(previousPlayerName) != null && session.FindPlayer(previousPlayerName).NetworkPlayer.IsLocal)
+        {
+            QuestionPopup endTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_ENDED"));
+            endTurn.AddButton("Ok", Popup.Functionality.Destroy(endTurn));
+            PopupSystem.instance.AddPopup(endTurn);
+        }
+        if (session.FindPlayer(nextPlayerName).NetworkPlayer.IsLocal)
+        {
+            QuestionPopup startTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_STARTED"));
+            startTurn.AddButton("Ok", Popup.Functionality.Destroy(startTurn));
+
+            IconPopup dice = new IconPopup(IconPopupType.None);
+            dice.onClick += Popup.Functionality.Destroy(dice);
+            Popup.PopupAction rolldice = delegate (Popup source)
+            {
+                int firstThrow = board.dice.last1;
+                int secondThrow = board.dice.last2;
+                InfoPopup rollResult = new InfoPopup(SettingsController.instance.languageController.GetWord("YOU_GOT") + firstThrow + SettingsController.instance.languageController.GetWord("AND") + secondThrow, 1.5f);
+                PopupSystem.instance.AddPopup(rollResult);
+                board.MovePlayer(session.FindPlayer(nextPlayerName), firstThrow + secondThrow);
+            };
+            dice.onClose += rolldice;
+            startTurn.onClose += Popup.Functionality.Show(dice);
+
+            PopupSystem.instance.AddPopup(startTurn);
+        }
+    }
+
+    /// <summary>
+    /// Event wywoływany gdy CommandInvoker skończy wykonywanie
+    /// </summary>
+    private void OnExecutionFinished()
+    {
+        Debug.Log("Koniec egzekucji");
+
+        gameInitialized = true;
+        StopCoroutine(masterInactiveCheck);
+        StartGame();
+    }
+
+    #endregion Obsługa eventów
+
+    #region Warunki przegranej/wygranej
+
+    /// <summary>
+    /// Sprawdza, czy istnieje zwycięzca rozgrywki
+    /// </summary>
+    /// <returns>Informacja, czy istnieje zwycięzca rozgrywki</returns>
+    private bool WinnerExists()
+    {
+        //Licza graczy, którzy dalej grają
+        int stillPlaying = 0;
+
+        for(int i = 0; i < session.playerCount; i++)
+        {
+            Player player = session.FindPlayer(i);
+            if (!player.IsLoser) stillPlaying++;
+        }
+
+       return !(session.playerCount != 1) && stillPlaying == 1; //Jeżeli gramy w pokoju dla jednego gracza (testy), jedyny gracz nie może od razu wygrać
+    }
+
+    #endregion Warunki przegranej/wygranej
 }

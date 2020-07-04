@@ -24,9 +24,19 @@ public class LanguageController
     {
         foreach (Word w in GetLang().words)
         {
-            if (w.key == key) return w.value;
+            if (w.key.ToLower() == key.ToLower()) return w.value;
         }
         //dodac lambda expression do szukania
-        return "";
+        return key;
+    }
+
+    public string GetKey(string value) 
+    {
+        foreach (Word w in GetLang().words)
+        {
+            if (w.value.ToLower() == value.ToLower()) return w.key;
+        }
+        //dodac lambda expression do szukania
+        return "Wartość: " + value +" nie istnieje!";
     }
 }

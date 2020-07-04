@@ -1,0 +1,196 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f47d9708ba35745a1fb7eb9355de81, type: 3}
+  m_Name: Polish
+  m_EditorClassIdentifier: 
+  language: 0
+  words:
+  - key: ENTER_USERNAME
+    value: "Wprowad\u017A nazw\u0119!"
+  - key: USERNAME_PLACEHOLDER
+    value: "Podaj nazw\u0119 u\u017Cytkownika..."
+  - key: PLAY
+    value: Graj
+  - key: SAVED_GAMES
+    value: Zapisane gry
+  - key: AUTHORS
+    value: Autorzy
+  - key: EXIT
+    value: "Wyjd\u017A"
+  - key: SETTINGS
+    value: Ustawienia
+  - key: MUSIC
+    value: Muzyka
+  - key: SOUND_EFFECTS
+    value: "Efekty d\u017Awi\u0119kowe"
+  - key: VISUAL_EFFECTS
+    value: Efekty Wizualne
+  - key: BACK
+    value: "Powr\xF3t"
+  - key: ADD_ROOM
+    value: "Dodaj pok\xF3j"
+  - key: ROOM_ALREADY_EXISTS
+    value: "Dodaj pok\xF3j"
+  - key: START
+    value: Start
+  - key: CREATING_ROOM
+    value: "Tworz\u0119 pok\xF3j..."
+  - key: JOINING_LOBBY
+    value: "Do\u0142\u0105czanie do lobby..."
+  - key: JOINING_ROOM
+    value: "Do\u0142\u0105czanie do pokoju..."
+  - key: LEAVING_LOBBY
+    value: Opuszczanie lobby...
+  - key: PAUSE
+    value: "Wstrzymaj gr\u0119"
+  - key: ADMIN_PANEL
+    value: Panel administracyjny
+  - key: ACCOUNT
+    value: Konto bankowe
+  - key: ADMIN_PANEL
+    value: Panel administracyjny
+  - key: QUIT
+    value: "Opu\u015B\u0107 rozgrywk\u0119"
+  - key: ACCOUNT_BALANCE
+    value: Stan konta
+  - key: LOAN
+    value: "Po\u017Cyczka"
+  - key: SAVE_GAME
+    value: "Zapisz gr\u0119"
+  - key: LOAN_SIZE
+    value: "Wysoko\u015B\u0107 po\u017Cyczki"
+  - key: CONFIRM
+    value: "Potwierd\u017A"
+  - key: UNPAUSE
+    value: "Wzn\xF3w gr\u0119"
+  - key: TURN_ENDED
+    value: "Twoja tura si\u0119 sko\u0144czy\u0142a."
+  - key: TURN_STARTED
+    value: "Twoja tura si\u0119 zacz\u0119\u0142a."
+  - key: YOU_GOT
+    value: "Wyrzuci\u0142e\u015B "
+  - key: AND
+    value: ' i '
+  - key: YOU_AQUIRED_BUILDING
+    value: "Kupi\u0142e\u015B budynek "
+  - key: PLAYER
+    value: 'Gracz '
+  - key: AQUIRED_BUILDING
+    value: " kupi\u0142 budynek"
+  - key: DO_YOU_WANT_TO_BUY
+    value: "Czy chcesz kupi\u0107 "
+  - key: PRICE
+    value: Cena
+  - key: YES
+    value: Tak
+  - key: NO
+    value: Nie
+  - key: AUCTION
+    value: Licytacja
+  - key: PASS
+    value: Pasuj
+  - key: RAISE
+    value: Podbij
+  - key: AUCTION_CURRENT_BID
+    value: 'Obecna stawka: '
+  - key: RAISED
+    value: "Podbi\u0142"
+  - key: PASSED
+    value: "Spasowa\u0142"
+  - key: YOU_RAISED
+    value: "Podbi\u0142e\u015B stawk\u0119"
+  - key: YOU_PASSED
+    value: "Ty spasowa\u0142e\u015B"
+  - key: YOU_STARTED_AUCTION
+    value: "Rozpocz\u0105\u0142e\u015B licytacj\u0119"
+  - key: STARTED_AUCTION
+    value: "rozpocz\u0105\u0142 licytacj\u0119"
+  - key: PLAYER_LEFT
+    value: " opu\u015Bci\u0142 gr\u0119"
+  - key: GAME_PAUSED
+    value: "Gra zosta\u0142a wstrzymana"
+  - key: AUCTION_ENDED
+    value: "Aukcja si\u0119 zako\u0144czy\u0142a"
+  - key: KICKED_FOR_INACTIVITY
+    value: " zosta\u0142 wyrzuconyt za nieaktywno\u015B\u0107."
+  - key: REMEMBER ME
+    value: "Zapami\u0119taj mnie"
+  - key: NO_CONNECTION
+    value: "Brak po\u0142\u0105czenia z serwerem!"
+  - key: CONNECTING
+    value: "\u0141\u0105czenie z serwerem..."
+  - key: LOGOUT
+    value: Wyloguj
+  - key: POLISH
+    value: Polski
+  - key: LANGUAGE
+    value: "J\u0119zyk"
+  - key: ENGLISH
+    value: Angielski
+  - key: GAME_WILL_RESTART
+    value: Gra zostanie uruchomiona ponownie
+  - key: SAVE
+    value: Zapisz
+  - key: RESTORE_DEFAULTS
+    value: "Przywr\xF3\u0107 domy\u015Blne"
+  - key: WELCOME
+    value: Witaj
+  - key: PROGRAMMERS
+    value: "Programi\u015Bci"
+  - key: GRAPHIC_DESIGNERS
+    value: Graficy
+  - key: GAME_DESIGNERS
+    value: Designerzy
+  - key: TEACHERS
+    value: Opiekunowie
+  - key: DO_YOU_WANT_TO_UPGRADE
+    value: "Czy chcesz ulepszy\u0107 "
+  - key: UPGRADE_COST
+    value: 'Koszt ulepszenia: '
+  - key: NEW_ROOM
+    value: "Nowy Pok\xF3j"
+  - key: ROOMS
+    value: 'Pokoje:'
+  - key: CREATE_ROOM
+    value: "Stw\xF3rz Pok\xF3j"
+  - key: ROOM_NAME
+    value: Nazwa pokoju
+  - key: PLAYER_COUNT
+    value: "Ilo\u015B\u0107 graczy"
+  - key: PASSWORD
+    value: "Has\u0142o"
+  - key: CREATE
+    value: "Utw\xF3rz"
+  - key: LOAD_FROM_SAVE
+    value: "Wczytaj gr\u0119"
+  - key: PLAYERS
+    value: 'Gracze:'
+  - key: START_GAME
+    value: "Rozpocznij gr\u0119"
+  - key: YOU_MUST_PAY
+    value: "P\u0142acisz graczowi "
+  - key: FOR_STAY_ON_PLACE
+    value: " za stani\u0119cie na jego pole"
+  - key: COST
+    value: 'Koszt: '
+  - key: PAID
+    value: " zap\u0142aci\u0142 ci "
+  - key: FOR_STAND
+    value: " za stani\u0119cie na twoim polu."
+  - key: YOU_RECEIVED
+    value: "Otrzyma\u0142e\u015B "
+  - key: FOR_PASSING_START
+    value: " za przej\u015Bcie przez start"
+  - key: KICK
+    value: "Wyrzu\u0107"
+  - key: READY
+    value: Gotowy

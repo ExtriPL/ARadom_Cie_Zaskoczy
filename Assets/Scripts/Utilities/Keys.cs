@@ -6,20 +6,24 @@ using UnityEngine;
 public static class Keys
 {
     /// <summary>
-    /// Wiadomości wyświetlane przez MessageSystem.
+    /// Menu
     /// </summary>
-    public static class Messages
+    public static class Menu
     {
         /// <summary>
-        /// Komunikat wyświetlany podczas wstrzymania gry.
+        /// 
         /// </summary>
-        public const string GAME_HAS_BEEN_PAUSED = "<color=red>Gra została wstrzymana</color>";
-        /// <summary>
-        /// Komunikat wyświetlany przy wychodzeniu gracza z rozgrywki.
-        /// </summary>
-        public const string PLAYER_LEAVE = "<color=red>opuścił grę</color>";
+        public const int USERNAME_MIN_LENGTH = 3;
+        public const string DEFAULT_USERNAME = "";
+        public const int MAX_MUSIC_VOLUME = 100;
+        public const int ROOM_NAME_MIN_LENGTH = 3;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        public const int MIN_PLAYERS_COUNT = 1;
+#else
+        public const int MIN_PLAYERS_COUNT = 2;
+#endif
+        public const int MAX_PLAYERS_COUNT = 6;
     }
-
     public static class Popups
     {
         /// <summary>
@@ -75,7 +79,7 @@ public static class Keys
         /// <summary>
         /// Ilość pól na planszy.
         /// </summary>
-        public const int FIELD_COUNT = 18;
+        public const int PLACE_COUNT = 18;
         /// <summary>
         /// Liczba boków wielokąta, jakim jest plansza.
         /// </summary>
@@ -83,7 +87,7 @@ public static class Keys
         /// <summary>
         /// Liczba pól przypadająca na każdą stronę planszy.
         /// </summary>
-        public const int FIELDS_PER_SIDE = FIELD_COUNT / BOARD_SIDES + 1;
+        public const int FIELDS_PER_SIDE = PLACE_COUNT / BOARD_SIDES + 1;
         /// <summary>
         /// Szerokość prostokąta, w który wpisany jest wielokąt. Kierunek tego wymiaru (boku prostokąta) jest zgodny z kierunkiem boku wielokąta tworzącego planszę
         /// </summary>
@@ -139,7 +143,7 @@ public static class Keys
             /// <summary>
             /// Grubość obiektu odpowiedzialnego za podświetlenie
             /// </summary>
-            public const float THICKNESS = 0.001f;
+            public const float THICKNESS = 0.01f;
             /// <summary>
             /// Przesunięcie kąta obrotu boków podświetlenia (by móc je wyrównać)
             /// angel = anioł, angle = kąt, trzeba to poprawić dzbanie
@@ -148,7 +152,19 @@ public static class Keys
             /// <summary>
             /// Okreś cyklu świecenia podawany w sekundach
             /// </summary>
-            public const float SHINING_PERIOD = 6f;
+            public const float SHINING_PERIOD = 3f;
+            /// <summary>
+            /// Domyśłny kolor niektywnego pola / kolor boku pola, na który nie przypadł żaden gracz. Również kolor, który przyjmuje pole, gdy żaden graczn na nim nie stoi
+            /// </summary>
+            public static Color INACTIVE_COLOR = new Color(1f, 1f, 1f, 0f);
+            /// <summary>
+            /// Drugoplanowy polor podświetlenia dla graczy
+            /// </summary>
+            public static Color SECONDARY_COLOR = new Color(0f, 0f, 0f, 0f);
+            /// <summary>
+            /// Czas, przez który wyświetla się animacja podświetlenia, gdy gracz przechodzi nad polem
+            /// </summary>
+            public const float ANIMATION_STAY_TIME = 0.2f;
         }
     }
 
@@ -158,6 +174,7 @@ public static class Keys
     public static class SceneNames
     {
         public const string MAIN_MENU = "MainMenu";
+        public const string GAME = "Game";
     }
 
     /// <summary>
@@ -181,6 +198,18 @@ public static class Keys
         /// Maksymalna ilość możliwa do wyrzucenia przez kostke.
         /// </summary>
         public const int MAX_DICE_VALUE = 6;
+        /// <summary>
+        /// Kwota, o jaką można podbić w trakcie licytacji
+        /// </summary>
+        public const float RAISE_BID_VALUE = 100f;
+        /// <summary>
+        /// Ilość pieniędzy otrzymywana przez gracza za przejście przez start
+        /// </summary>
+        public const float PASS_START_MONEY = 100f;
+        /// <summary>
+        /// Ilość pieniędzy, jaką otrzymuje gracz biorąc pożyczkę
+        /// </summary>
+        public const float LOAN_AMOUNT = 100f;
     }
 
     public static class Files
@@ -208,12 +237,12 @@ public static class Keys
         /// </summary>
         public static class DefaultValues
         {
-            #region ApplicationSettings
+#region ApplicationSettings
 
             /// <summary>
             /// Głośność muzyki.
             /// </summary>
-            public const float MUSIC_VOLUME = -20f;
+            public const float MUSIC_VOLUME = 20f;
             /// <summary>
             /// Głośność efektów dźwiękowych.
             /// </summary>
@@ -223,7 +252,7 @@ public static class Keys
             /// </summary>
             public const Languages LANGUAGE = Languages.Polish;
 
-            #endregion ApplicationSettings
+#endregion ApplicationSettings
         }
     }
     /// <summary>
@@ -239,5 +268,10 @@ public static class Keys
         /// Nazwa pokoju
         /// </summary>
         public const string ROOM_NAME = "caseOfEmergency";
+    }
+
+    public static class Session 
+    {
+        public const int PLAYER_TTL = 5;
     }
 }

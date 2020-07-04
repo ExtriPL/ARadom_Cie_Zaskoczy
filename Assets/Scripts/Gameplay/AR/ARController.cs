@@ -1,4 +1,5 @@
 ﻿using GoogleARCore;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine;
 using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
-public class ARController : MonoBehaviour
+public class ARController : MonoBehaviour, IEventSubscribable
 {
     /// <summary>
     /// Obiekt przechowujący odwołanie do planszy wyświetlanej przez AR
@@ -20,27 +21,79 @@ public class ARController : MonoBehaviour
     /// <summary>
     /// Lista wszystkich pól wyświetlonych na planszy
     /// </summary>
-    private List<PlaceVisualiser> fields = new List<PlaceVisualiser>();
+    private List<PlaceVisualiser> places = new List<PlaceVisualiser>();
     /// <summary>
     /// Lista wczytanych obrazów na scenie
     /// </summary>
     private List<AugmentedImage> tempPlaceImages = new List<AugmentedImage>();
 
-    private void OnDisable()
-    {
-        foreach (PlaceVisualiser visualiser in fields) visualiser.UnsubscribeEvents();
-    }
+    #region Inicjalizacja
 
-    private void Awake()
-    {
-        Application.targetFrameRate = Keys.Gameplay.TARGET_FRAMERATE; //Ustawienie stałego framerate-u
-    }
-
-    private void Update()
+    public void UpdateAR()
     {
         FindTriggers();
         OnScreenClick();
     }
+
+    /// <summary>
+    /// Inicjalizuje w przestrzeni AR plansze i pola się na niej znajdujące
+    /// </summary>
+    public void InitBoard()
+    {
+        board = new GameObject("Board"); //Tworzenie instancji planszy
+        board.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
+#if !UNITY_EDITOR
+        board.gameObject.SetActive(false);
+#endif
+
+        //Tworzenie obiektu przechowującego środkowy budynek
+        centerBuilding = new GameObject("centerBuilding");
+        centerBuilding.GetComponent<Transform>().parent = board.GetComponent<Transform>();
+        float BuildingScaleFactor = Keys.Board.SCALLING_FACTOR * Keys.Board.CENTER_BUILDING_SCALE_MULTIPLIER;
+        centerBuilding.GetComponent<Transform>().localScale *= BuildingScaleFactor;
+        centerBuilding.AddComponent<BoxCollider>();
+        centerBuilding.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH * BuildingScaleFactor, Keys.Board.FIELD_WIDTH * BuildingScaleFactor, Keys.Board.FIELD_HEIGHT * BuildingScaleFactor)) / (Keys.Board.SCALLING_FACTOR * BuildingScaleFactor);
+        centerBuilding.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH * BuildingScaleFactor / (Keys.Board.SCALLING_FACTOR * BuildingScaleFactor) / 2f);
+        centerBuilding.GetComponent<BoxCollider>().isTrigger = true;
+
+        //Uzupełnianie planszy budynkami
+        for (int i = 0; i < Keys.Board.PLACE_COUNT; i++)
+        {
+            GameObject field = new GameObject("field" + i); //Tworzenie obiektu pola
+            field.GetComponent<Transform>().parent = board.GetComponent<Transform>(); //Przypisywanie obiektu do planszy
+            field.AddComponent<PlaceVisualiser>();
+            
+            field.GetComponent<PlaceVisualiser>().SubscribeEvents();
+            places.Add(field.GetComponent<PlaceVisualiser>()); //Dodawanie pola do listy pól na wyświetlonych na planszy
+
+            //Dodawanie collidera do wykrywania raycastów
+            field.AddComponent<BoxCollider>();
+            field.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH, Keys.Board.FIELD_HEIGHT, Keys.Board.FIELD_WIDTH)) / Keys.Board.SCALLING_FACTOR;
+            field.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH / Keys.Board.SCALLING_FACTOR / 2f);
+            field.GetComponent<BoxCollider>().isTrigger = true;
+
+            //Skalowanie i obracanie, by dostosować planszę
+            field.GetComponent<Transform>().localPosition = GetFieldPosition(i);
+            field.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0f, GetBuildingRotation(i) / Mathf.PI * 180);
+            field.GetComponent<Transform>().localScale *= Keys.Board.SCALLING_FACTOR;
+
+            field.GetComponent<PlaceVisualiser>().Init(GameplayController.instance.board.GetField(i), i);
+        }
+    }
+
+    public void SubscribeEvents()
+    {
+
+    }
+
+    public void UnsubscribeEvents()
+    {
+        foreach (PlaceVisualiser visualiser in places) visualiser.UnsubscribeEvents();
+    }
+
+    #endregion Inicjalizacja
+
+    #region Obsługa AR
 
     /// <summary>
     /// Odnajduje triggery i na ich podstawie tworzy instancje PlaceVisualiser
@@ -59,64 +112,21 @@ public class ARController : MonoBehaviour
                 {
                     Anchor anchor = image.CreateAnchor(image.CenterPose); //Kotwica służąca do utrzymywania śledzenia przez ARCore, jest powiązana z obrazem w bazie danych
                     board.gameObject.SetActive(true);
-                    board.GetComponent<Transform>().parent = anchor.GetComponent<Transform>();
+                    board.GetComponent<Transform>().SetParent(anchor.GetComponent<Transform>());
                     board.GetComponent<Transform>().localPosition = new Vector3();
                 }
                 //Gdy obrazek zniknie z pola widzenia, plansza jest ukrywana
                 else if (image.TrackingState == TrackingState.Stopped && image.Name.Equals(Keys.Board.AR_IMAGE_NAME))
                 {
                     board.gameObject.SetActive(false);
-                    board.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
+                    board.GetComponent<Transform>().SetParent(gameObject.GetComponent<Transform>());
                 }
             }
             else
             {
                 board.gameObject.SetActive(false);
-                board.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
+                board.GetComponent<Transform>().SetParent(gameObject.GetComponent<Transform>());
             }
-        }
-    }
-
-    /// <summary>
-    /// Inicjalizuje w przestrzeni AR plansze i pola się na niej znajdujące
-    /// </summary>
-    public void InitBoard()
-    {
-        board = new GameObject("Board"); //Tworzenie instancji planszy
-        board.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
-        board.gameObject.SetActive(false);
-
-        //Tworzenie obiektu przechowującego środkowy budynek
-        centerBuilding = new GameObject("centerBuilding");
-        centerBuilding.GetComponent<Transform>().parent = board.GetComponent<Transform>();
-        float BuildingScaleFactor = Keys.Board.SCALLING_FACTOR * Keys.Board.CENTER_BUILDING_SCALE_MULTIPLIER;
-        centerBuilding.GetComponent<Transform>().localScale *= BuildingScaleFactor;
-        centerBuilding.AddComponent<BoxCollider>();
-        centerBuilding.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH * BuildingScaleFactor, Keys.Board.FIELD_WIDTH * BuildingScaleFactor, Keys.Board.FIELD_HEIGHT * BuildingScaleFactor)) / (Keys.Board.SCALLING_FACTOR * BuildingScaleFactor);
-        centerBuilding.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH * BuildingScaleFactor / (Keys.Board.SCALLING_FACTOR * BuildingScaleFactor) / 2f);
-        centerBuilding.GetComponent<BoxCollider>().isTrigger = true;
-
-        //Uzupełnianie planszy budynkami
-        for (int i = 0; i < Keys.Board.FIELD_COUNT; i++)
-        {
-            GameObject field = new GameObject("field" + i); //Tworzenie obiektu pola
-            field.GetComponent<Transform>().parent = board.GetComponent<Transform>(); //Przypisywanie obiektu do planszy
-
-            field.AddComponent<PlaceVisualiser>();
-            field.GetComponent<PlaceVisualiser>().Init(GameplayController.instance.board.GetField(i), i);
-            field.GetComponent<PlaceVisualiser>().SubscribeEvents();
-            fields.Add(field.GetComponent<PlaceVisualiser>()); //Dodawanie pola do listy pól na wyświetlonych na planszy
-
-            //Dodawanie collidera do wykrywania raycastów
-            field.AddComponent<BoxCollider>();
-            field.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH, Keys.Board.FIELD_HEIGHT, Keys.Board.FIELD_WIDTH)) / Keys.Board.SCALLING_FACTOR;
-            field.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH / Keys.Board.SCALLING_FACTOR / 2f);
-            field.GetComponent<BoxCollider>().isTrigger = true;
-
-            //Skalowanie i obracanie, by dostosować planszę
-            field.GetComponent<Transform>().localPosition = GetFieldPosition(i);
-            field.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0f, GetBuildingRotation(i) / Mathf.PI * 180);
-            field.GetComponent<Transform>().localScale *= Keys.Board.SCALLING_FACTOR;
         }
     }
 
@@ -152,11 +162,24 @@ public class ARController : MonoBehaviour
     }
 
     /// <summary>
+    /// Zwraca PlaceVisualiser sterujący podanym polem
+    /// </summary>
+    /// <param name="placeIndex">Pole, którego PlaceVisualiser chcemy znaleźć</param>
+    public PlaceVisualiser GetVisualiser(int placeIndex)
+    {
+        return places.Find(place => place.placeIndex == placeIndex);
+    }
+
+    #endregion Obsługa AR
+
+    #region Obsługa eventów
+
+    /// <summary>
     /// Funkcja wykrywająca kliknięcia na ekranie i wywołująca na odpowienich obiektach event kliknięcia
     /// </summary>
     private void OnScreenClick()
     {
-        if (!GameplayController.instance.menu.MenuPanelOpen)
+        if (!GameplayController.instance.menu.menuPanelOpen)
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
@@ -209,4 +232,6 @@ public class ARController : MonoBehaviour
             }
         }
     }
+
+    #endregion Obsługa eventów
 }

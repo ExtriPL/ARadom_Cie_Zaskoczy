@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 [System.Serializable]
 public struct PlayerSettings
@@ -27,5 +28,12 @@ public struct PlayerSettings
     /// Lista pól, które posiada gracz
     /// </summary>
     public List<int> fieldList;
-    //Dodać implementacje GUID
+    /// <summary>
+    /// Kolor jasny gracza
+    /// </summary>
+    public float[] blinkColorComponents;
+    /// <summary>
+    /// Kolor ciemny gracza?
+    /// </summary>
+    public float[] mainColorComponents;
 }

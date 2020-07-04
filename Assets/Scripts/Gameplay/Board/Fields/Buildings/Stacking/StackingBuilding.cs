@@ -55,6 +55,8 @@ public abstract class StackingBuilding : BuildingField
     /// <returns>Grupa budynku specjalnego</returns>
     public StackingBuildingType GetStackingType() => stackingType;
 
+    public override float GetInitialPrice() => GetBuyPrice();
+
     public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
     {
         //Jeżeli kupimy budynek, który należy do tej samej grupy budynków stackujących, wywołujemy funkcje OnSameGroupBuy
@@ -75,4 +77,28 @@ public abstract class StackingBuilding : BuildingField
     public abstract void OnSameGroupBuy(Player player, PlaceVisualiser visualiser);
 
     public abstract void OnSameGroupSell(Player player, PlaceVisualiser visualiser);
+
+    public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
+    {
+        base.OnPlayerEnter(player, visualiser);
+
+        if(player.NetworkPlayer.IsLocal)
+        {
+            if (GameplayController.instance.board.GetOwner(visualiser.placeIndex) != null)
+            {
+                //Pole ma właściciela
+
+                if (GameplayController.instance.board.GetOwner(visualiser.placeIndex).GetName() == player.GetName())
+                {
+                    //Jeżeli gracz, który jest właścicielem stanął na polu, zmieniamy ture na następną
+                    GameplayController.instance.EndTurn();
+                }
+                else
+                {
+                    //Jeżeli gracz, który nie jest właścicielem stanął na polu
+                    ShowPayPopup(player, visualiser, enterCost);
+                }
+            }
+        } 
+    }
 }

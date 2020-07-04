@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class RandomDice
 {
+    #region Właściwości kostki
+
     /// <summary>
-    /// Wynik ostatniego rzutu kostką.
+    /// Wynik ostatniego rzutu pierwszą kostką.
     /// </summary>
     public int last1
     {
@@ -13,7 +15,6 @@ public class RandomDice
         {
             return (int)PhotonNetwork.CurrentRoom.CustomProperties["dice_last1"];
         }
-
         private set
         {
             Hashtable table = new Hashtable();
@@ -22,13 +23,15 @@ public class RandomDice
         }
     }
 
+    /// <summary>
+    /// Wynik ostatniego rzutu drugą kostką.
+    /// </summary>
     public int last2
     {
         get
         {
             return (int)PhotonNetwork.CurrentRoom.CustomProperties["dice_last2"];
         }
-
         private set
         {
             Hashtable table = new Hashtable();
@@ -40,13 +43,12 @@ public class RandomDice
     /// <summary>
     /// Numer gracza którego jest teraz kolejka.
     /// </summary>
-    public int currentPlayer
+    public string currentPlayer
     {
         get
         {
-            return (int)PhotonNetwork.CurrentRoom.CustomProperties["dice_currentPlayer"];
+            return (string)PhotonNetwork.CurrentRoom.CustomProperties["dice_currentPlayer"];
         }
-
         private set
         {
             Hashtable table = new Hashtable();
@@ -64,7 +66,6 @@ public class RandomDice
         {
             return (int)PhotonNetwork.CurrentRoom.CustomProperties["dice_amountOfRolls"];
         }
-
         private set
         {
             Hashtable table = new Hashtable();
@@ -90,26 +91,25 @@ public class RandomDice
         }
     }
 
+    #endregion Właściwości kostki
+
     /// <summary>
     /// Konstruktor iniciujący domyślne wartośći
     /// </summary>
     public RandomDice()
     {
-        last1 = 0;
-        last2 = 0;
-        currentPlayer = 0;
-        amountOfRolls = 0;
-        round = 0;
+        //Konstruktor dla graczy, którzy nie są adminem
     }
 
     /// <summary>
     /// Konstruktor inicionujący wartości wczytane z pliku
     /// </summary>
-    /// <param name="last">Ostatni wynik rzutu kośćmi</param>
+    /// <param name="last1">Ostatni wynik rzutu pierwszej kostki</param>
+    /// <param name="last2">Ostatni wynik rzutu drugiej kostki</param>
     /// <param name="currentPlayer">Numer obecnego gracza</param>
     /// <param name="amountOfRolls">Ile razy odbywały się rzuty kością</param>
     /// <param name="round">Obecna runda</param>
-    public RandomDice(int last1, int last2, int currentPlayer, int amountOfRolls, int round)
+    public RandomDice(int last1, int last2, string currentPlayer, int amountOfRolls, int round)
     {
         this.last1 = last1;
         this.last2 = last2;
@@ -134,18 +134,19 @@ public class RandomDice
     /// </summary>
     public void NextTurn()
     {
+        GameSession session = GameplayController.instance.session;
         do
         {
-            if (currentPlayer < GameplayController.instance.session.GetPlayersCount() - 1)
+            if (session.playerOrder.IndexOf(currentPlayer) < GameplayController.instance.session.playerCount - 1)
             {
-                currentPlayer++;
+                currentPlayer = session.playerOrder[session.playerOrder.IndexOf(currentPlayer) + 1];
             }
             else
             {
-                currentPlayer = 0;
+                currentPlayer = session.playerOrder[0];
                 round++;
             }
-            if (GameplayController.instance.session.FindPlayer(currentPlayer).turnsToSkip != 0)
+            if (GameplayController.instance.session.FindPlayer(currentPlayer).TurnsToSkip != 0)
             {
                 GameplayController.instance.session.FindPlayer(currentPlayer).SubstractTurnToSkip();
             }

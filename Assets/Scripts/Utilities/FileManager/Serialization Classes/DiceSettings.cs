@@ -9,8 +9,7 @@ public struct DiceSettings
 {
     public int last1;
     public int last2;
-    public int currentPlayer;
+    public string currentPlayer;
     public int amountOfRolls;
     public int round;
 }
-

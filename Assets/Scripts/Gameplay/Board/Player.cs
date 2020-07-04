@@ -1,87 +1,95 @@
 ﻿using ExitGames.Client.Photon;
+using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class Player
 {
+    #region Właściwości gracza
+
     /// <summary>
     /// Sieciowa instancja gracza w photonie.
     /// </summary>
-    public Photon.Realtime.Player networkPlayer { get; private set; }
+    public Photon.Realtime.Player NetworkPlayer { get; private set; }
 
     /// <summary>
     /// Ilość tur do pominięcia.
     /// </summary>
-    public int turnsToSkip
+    public int TurnsToSkip
     {
-        get 
-        {
-            return (int)networkPlayer.CustomProperties["turnsToSkip"];
-        } 
-
+        get => (int)NetworkPlayer.CustomProperties["turnsToSkip"];
         private set
         {
             Hashtable table = new Hashtable();
             table.Add("turnsToSkip", value);
-            networkPlayer.SetCustomProperties(table);
+            NetworkPlayer.SetCustomProperties(table);
         }
     }
 
     /// <summary>
     /// Ilość pieniędzy, które posiada gracz.
     /// </summary>
-    public float money 
-    { 
-        get
-        {
-            return (float)networkPlayer.CustomProperties["money"];
-        }
-
+    public float Money
+    {
+        get => (float)NetworkPlayer.CustomProperties["money"];
         private set
         {
             Hashtable table = new Hashtable();
             table.Add("money", value);
-            networkPlayer.SetCustomProperties(table);
+            NetworkPlayer.SetCustomProperties(table);
         }
-    
     }
-       
+
     /// <summary>
     /// Pole na którym stoi obecnie gracz.
     /// </summary>
-    public int fieldId
+    public int PlaceId
     {
-        get
-        {
-            return (int)networkPlayer.CustomProperties["fieldId"];
-        }
-
+        get => (int)NetworkPlayer.CustomProperties["fieldId"];
         set
         {
             Hashtable table = new Hashtable();
             table.Add("fieldId", value);
-            networkPlayer.SetCustomProperties(table);
+            NetworkPlayer.SetCustomProperties(table);
         }
+    }
 
+    /// <summary>
+    /// Lista pól, które posiada gracz. 
+    /// </summary>
+    private List<int> FieldList
+    {
+        get
+        {
+            List<int> list = new List<int>();
+            list.AddRange((int[])NetworkPlayer.CustomProperties["fieldList"]);
+            return list;
+        }
+        set
+        {
+            Hashtable table = new Hashtable();
+            table.Add("fieldList", value.ToArray());
+            NetworkPlayer.SetCustomProperties(table);
+        }
     }
 
     /// <summary>
     ///  Kolor przydzielony graczowi
     /// </summary>
-    public Color mainColor
+    public Color MainColor
     {
         get
         {
             //Pobieranie koloru z odpowiednich zmiennych zapisanych na serwerze
-            float r = (float)networkPlayer.CustomProperties["mainColor_r"];
-            float g = (float)networkPlayer.CustomProperties["mainColor_g"];
-            float b = (float)networkPlayer.CustomProperties["mainColor_b"];
-            float a = (float)networkPlayer.CustomProperties["mainColor_a"];
+            float r = (float)NetworkPlayer.CustomProperties["mainColor_r"];
+            float g = (float)NetworkPlayer.CustomProperties["mainColor_g"];
+            float b = (float)NetworkPlayer.CustomProperties["mainColor_b"];
+            float a = (float)NetworkPlayer.CustomProperties["mainColor_a"];
 
             return new Color(r, g, b, a);
         }
-        private set
+        set
         {
             float r = value.r;
             float g = value.g;
@@ -96,26 +104,26 @@ public class Player
                 { "mainColor_a", a }
             };
 
-            networkPlayer.SetCustomProperties(table);
+            NetworkPlayer.SetCustomProperties(table);
         }
     }
 
     /// <summary>
     ///  Kolor przydzielony graczowi służący do podświetlenia aktywnego pola
     /// </summary>
-    public Color blinkColor
+    public Color BlinkColor
     {
         get
         {
             //Pobieranie koloru z odpowiednich zmiennych zapisanych na serwerze
-            float r = (float)networkPlayer.CustomProperties["blinkColor_r"];
-            float g = (float)networkPlayer.CustomProperties["blinkColor_g"];
-            float b = (float)networkPlayer.CustomProperties["blinkColor_b"];
-            float a = (float)networkPlayer.CustomProperties["blinkColor_a"];
+            float r = (float)NetworkPlayer.CustomProperties["blinkColor_r"];
+            float g = (float)NetworkPlayer.CustomProperties["blinkColor_g"];
+            float b = (float)NetworkPlayer.CustomProperties["blinkColor_b"];
+            float a = (float)NetworkPlayer.CustomProperties["blinkColor_a"];
 
             return new Color(r, g, b, a);
         }
-        private set
+        set
         {
             float r = value.r;
             float g = value.g;
@@ -130,78 +138,66 @@ public class Player
                 { "blinkColor_a", a }
             };
 
-            networkPlayer.SetCustomProperties(table);
+            NetworkPlayer.SetCustomProperties(table);
         }
     }
 
     /// <summary>
-    /// Lista pól, które posiada gracz. 
+    /// Określa, czy gracz przegrał grę.
     /// </summary>
-    private List<int> fieldList
+    public bool IsLoser
     {
-        get
-        {
-            List<int> list = new List<int>();
-            list.AddRange((int[])networkPlayer.CustomProperties["fieldList"]);
-            return list;
-        }
-
+        get => (bool)NetworkPlayer.CustomProperties["isLoser"];
         set
         {
             Hashtable table = new Hashtable();
-            table.Add("fieldList", value.ToArray());
-            networkPlayer.SetCustomProperties(table);
+            table.Add("isLoser", value);
+            NetworkPlayer.SetCustomProperties(table);
         }
-
     }
-    
+
+    /// <summary>
+    /// Określa, czy gracz w ciągu całej rozgrywki wziął kiedykolwiek pożyczkę
+    /// </summary>
+    public bool TookLoan
+    {
+        get => (bool)NetworkPlayer.CustomProperties["tookLoan"];
+        set
+        {
+            Hashtable table = new Hashtable();
+            table.Add("tookLoan", value);
+            NetworkPlayer.SetCustomProperties(table);
+        }
+    }
+
+    #endregion Właściwości gracza
+
+    /// <summary>
+    /// Funckja do inicjalizacji gracza przez osoby, nie będące właścicielem pokoju
+    /// </summary>
+    /// <param name="networkPlayer">Sieciowa instancja gracza</param>
     public Player(Photon.Realtime.Player networkPlayer)
     {
-        this.networkPlayer = networkPlayer;
-        money = Keys.Gameplay.START_MONEY;
-        turnsToSkip = 0;
-        fieldId = 0;
-        fieldList = new List<int>();
-        mainColor = Color.white;
-        blinkColor = Color.black;
+        this.NetworkPlayer = networkPlayer;
     }
 
+    /// <summary>
+    /// Funkcja do inicjalizacja gracza przez właściciela pokoju
+    /// </summary>
+    /// <param name="networkPlayer">Sieciowa instancja gracza</param>
+    /// <param name="mainColor">Główny kolor gracza</param>
+    /// <param name="blinkColor">Kolor mrygania gracza</param>
     public Player(Photon.Realtime.Player networkPlayer, Color mainColor, Color blinkColor)
     {
-        this.networkPlayer = networkPlayer;
-        money = Keys.Gameplay.START_MONEY;
-        turnsToSkip = 0;
-        fieldId = 0;
-        fieldList = new List<int>();
-        this.mainColor = mainColor;
-        this.blinkColor = blinkColor;
-    }
-
-    /// <summary>
-    /// Zwięszka kwote pieniędzy o wartość.
-    /// </summary>
-    /// <param name="value">Wartość zmiany</param>
-    public void IncreaseMoney(float value)
-    {
-        money += value;
-    }
-
-    /// <summary>
-    /// Zmniejsza kwote pieniędzy o wartość.
-    /// </summary>
-    /// <param name="value">Wartość zmiany</param>
-    public void DecreaseMoney(float value)
-    {
-        money -= value;
-    }
-
-    /// <summary>
-    /// Przypisuje wartości money podaną wartość.
-    /// </summary>
-    /// <param name="value">Przypisywana wartość</param>
-    public void SetMoney(float value)
-    {
-        money = value;
+        NetworkPlayer = networkPlayer;
+        Money = Keys.Gameplay.START_MONEY;
+        TurnsToSkip = 0;
+        PlaceId = 0;
+        FieldList = new List<int>();
+        MainColor = mainColor;
+        BlinkColor = blinkColor;
+        IsLoser = false;
+        TookLoan = false;
     }
 
     /// <summary>
@@ -210,8 +206,41 @@ public class Player
     /// <returns></returns>
     public string GetName()
     {
-        return networkPlayer.NickName;
+        return NetworkPlayer.NickName;
     }
+
+    #region Zarządzanie pieniędzmi
+
+    /// <summary>
+    /// Zwięszka kwote pieniędzy o wartość.
+    /// </summary>
+    /// <param name="value">Wartość zmiany</param>
+    public void IncreaseMoney(float value)
+    {
+        Money += Mathf.Abs(value);
+    }
+
+    /// <summary>
+    /// Zmniejsza kwote pieniędzy o wartość.
+    /// </summary>
+    /// <param name="value">Wartość zmiany</param>
+    public void DecreaseMoney(float value)
+    {
+        Money -= Mathf.Abs(value);
+    }
+
+    /// <summary>
+    /// Przypisuje wartości money podaną wartość.
+    /// </summary>
+    /// <param name="value">Przypisywana wartość</param>
+    public void SetMoney(float value)
+    {
+        Money = value;
+    }
+
+    #endregion Zarządzanie pieniędzmi
+
+    #region Zarządzanie polami
 
     /// <summary>
     /// Dodaje graczowi pole o danym ID.
@@ -219,7 +248,7 @@ public class Player
     /// <param name="fieldId">ID pola</param>
     public void AddOwnership(int fieldId)
     {
-        if (!fieldList.Contains(fieldId))
+        if (!FieldList.Contains(fieldId))
         {
             AddToFieldList(fieldId);
         }
@@ -231,7 +260,7 @@ public class Player
     /// <param name="fieldId">ID pola</param>
     public void RemoveOwnership(int fieldId)
     {
-        if (fieldList.Contains(fieldId))
+        if (FieldList.Contains(fieldId))
         {
             RemoveFromFieldList(fieldId);
         }
@@ -243,11 +272,11 @@ public class Player
     /// <param name="fieldId"></param>
     private void AddToFieldList(int fieldId)
     {
-        int[] array = fieldList.ToArray();
+        int[] array = FieldList.ToArray();
         List<int> list = new List<int>();
         list.AddRange(array);
         list.Add(fieldId);
-        fieldList = list;
+        FieldList = list;
     }
 
     /// <summary>
@@ -256,11 +285,11 @@ public class Player
     /// <param name="fieldId"></param>
     private void RemoveFromFieldList(int fieldId)
     {
-        int[] array = fieldList.ToArray();
+        int[] array = FieldList.ToArray();
         List<int> list = new List<int>();
         list.AddRange(array);
         list.Remove(fieldId);
-        fieldList = list;
+        FieldList = list;
     }
 
     /// <summary>
@@ -268,16 +297,26 @@ public class Player
     /// </summary>
     /// <param name="fieldId"></param>
     /// <returns></returns>
-    public bool HasField(int fieldId) => fieldList.Contains(fieldId);
+    public bool HasField(int fieldId) => FieldList.Contains(fieldId);
+
+    /// <summary>
+    /// Zwraca liste posiadanych przez gracza miejsc na planszy
+    /// </summary>
+    /// <returns>Lista miejsc na planszy, które posiada gracz</returns>
+    public List<int> GetOwnedFields() => FieldList;
+
+    #endregion Zarządzanie polami
+
+    #region Zarządzanie turami
 
     /// <summary>
     /// Odejmuje jedną turę od ilości tur do pominięcia.
     /// </summary>
     public void SubstractTurnToSkip()
     {
-        if (turnsToSkip > 0)
+        if (TurnsToSkip > 0)
         {
-            turnsToSkip--;
+            TurnsToSkip--;
 
         }
         else 
@@ -292,7 +331,7 @@ public class Player
     /// <param name="amountOfTurnsToSkip">Ilość tur do pominięcia.</param>
     public void SetTurnsToSkip(int amountOfTurnsToSkip)
     {
-        turnsToSkip = amountOfTurnsToSkip;
+        TurnsToSkip = amountOfTurnsToSkip;
     }
 
     /// <summary>
@@ -301,7 +340,7 @@ public class Player
     /// <param name="amountofTurnsToSkip">Ilość tur do pominięcia</param>
     public void AddTurnsToSkip(int amountofTurnsToSkip)
     {
-        turnsToSkip +=amountofTurnsToSkip;
+        TurnsToSkip +=amountofTurnsToSkip;
     }
 
     /// <summary>
@@ -309,8 +348,8 @@ public class Player
     /// </summary>
     public void ResetTurnsToSkip()
     {
-        turnsToSkip = 0;
+        TurnsToSkip = 0;
     }
 
-    public List<int> GetOwnedFields() => fieldList;
+    #endregion Zarządzanie turami
 }

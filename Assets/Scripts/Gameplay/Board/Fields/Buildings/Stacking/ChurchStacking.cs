@@ -16,17 +16,18 @@ public class ChurchStacking : StackingBuilding
 
     public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        base.OnPlayerEnter(player, visualiser);
     }
 
     public override void OnPlayerLeave(Player player, PlaceVisualiser visualiser)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public override void OnPlayerPassby(Player player, PlaceVisualiser visualiser)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
@@ -41,12 +42,12 @@ public class ChurchStacking : StackingBuilding
 
     public override void OnSameGroupBuy(Player player, PlaceVisualiser visualiser)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public override void OnSameGroupSell(Player player, PlaceVisualiser visualiser)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public override List<string> GetFieldInfo()

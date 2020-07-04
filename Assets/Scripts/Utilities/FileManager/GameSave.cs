@@ -36,6 +36,11 @@ public struct GameSave
     /// </summary>
     public Dictionary<int, Tuple<int, string>> places;
 
+    /// <summary>
+    /// Przypisanie pól na planszy do tierów ich budynków
+    /// </summary>
+    public Dictionary<int, int> tiers;
+
     public bool IsCompatible()
     {
         return Application.version == applicationVersion;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class LevelLoader : MonoBehaviour
     public GameObject loadingScreen;
     public Slider slider;
     public Text progressText;
+    [SerializeField] private string mainGameSceneName;
 
     public void LoadLevel(int sceneIndex)
     {
@@ -29,6 +31,18 @@ public class LevelLoader : MonoBehaviour
             progressText.text = progress * 100f + "%";
 
             yield return null;
+        }
+        StartGame();
+    }
+
+
+    public void StartGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.LoadLevel(mainGameSceneName);
         }
     }
 }

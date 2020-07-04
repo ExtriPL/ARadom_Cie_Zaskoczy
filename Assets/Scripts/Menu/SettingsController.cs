@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.RemoteConfig;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -13,21 +14,21 @@ public class SettingsController : MonoBehaviour
     public AudioMixer musicMixer;
     public Slider musicSlider;
     public Slider soundEffectsSlider;
+    public AudioSource buttonAudioSource;
 
+    
     private void Start()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
-
-        Init();
     }
-
-    private void Init()
+    public void Init()
     {
         FileManager.LoadApplicationSettings(ref settings);
         FindReferences();
         LoadSavedApplicationSettings();
+        buttonAudioSource = gameObject.GetComponents<AudioSource>()[1];
     }
 
     /// <summary>
@@ -46,21 +47,17 @@ public class SettingsController : MonoBehaviour
     private void LoadSavedApplicationSettings()
     {
         SetMusicVolume(settings.musicVolume);
-        if (musicSlider) musicSlider.SetValueWithoutNotify(settings.musicVolume);
         SetSoundEffectsVolume(settings.soundEffectsVolume);
-        if (soundEffectsSlider) soundEffectsSlider.SetValueWithoutNotify(settings.soundEffectsVolume);
     }
 
     public void SetMusicVolume(float volume)
     {
-        musicMixer.SetFloat("MusicVolume", volume);
-        settings.musicVolume = volume;
+        GetComponents<AudioSource>()[0].volume = volume/ Keys.Menu.MAX_MUSIC_VOLUME;
     }
 
     public void SetSoundEffectsVolume(float volume)
     {
-        musicMixer.SetFloat("SoundEffectsVolume", volume);
-        settings.soundEffectsVolume = volume;
+        GetComponents<AudioSource>()[1].volume = volume/Keys.Menu.MAX_MUSIC_VOLUME;
     }
 
     public void SaveSettingsToFile()

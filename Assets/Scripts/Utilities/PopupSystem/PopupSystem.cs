@@ -32,21 +32,13 @@ public class PopupSystem : MonoBehaviour
         { typeof(QuestionBox), typeof(QuestionPopup) },
         { typeof(FormattedBox), typeof(FormattedPopup) }
     };
-    private Dictionary<Type, BoxPool> boxPools = new Dictionary<Type, BoxPool>();
+    public Dictionary<Type, BoxPool> boxPools = new Dictionary<Type, BoxPool>();
 
-    // Start is called before the first frame update
-    void Start()
+    #region Inicjalizacja
+
+    private void OnEnable()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
-
-        CreatePools();
-
-        QuestionPopup popup = new QuestionPopup("Test");
-        popup.AddButton("Morele", Popup.Functionality.DebugMeesage("Trele morele"));
-        popup.AddButton("Nie morele");
-
-        AddPopup(popup);
+        instance = this;
     }
 
     private void OnDestroy()
@@ -54,26 +46,41 @@ public class PopupSystem : MonoBehaviour
         DestroyPools();
     }
 
+    void Start()
+    {
+
+    }
+
     /// <summary>
     /// Tworzy pule obiektów o wszystkich dostępnych typach
     /// </summary>
-    private void CreatePools()
+    public void CreatePools()
     {
         boxPools.Add(typeof(IconBox), new BoxPool(gameObject, IconBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
         boxPools.Add(typeof(InfoBox), new BoxPool(gameObject, InfoBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
         boxPools.Add(typeof(QuestionBox), new BoxPool(gameObject, QuestionBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
         boxPools.Add(typeof(FormattedBox), new BoxPool(gameObject, FormattedBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
-
-        foreach (BoxPool pool in boxPools.Values.ToList()) pool.Init();
     }
 
     /// <summary>
     /// Niszczy pule obiektów o wszystkich dostępnych typach
     /// </summary>
-    private void DestroyPools()
+    public void DestroyPools()
     {
         foreach (BoxPool pool in boxPools.Values.ToList()) pool.Deinit();
     }
+
+    /// <summary>
+    /// Inicjuje pule wszystkich dostępnych typów popup-ów
+    /// </summary>
+    public void InitPools()
+    {
+        foreach (BoxPool pool in boxPools.Values.ToList()) pool.Init();
+    }
+
+    #endregion Inicjalizacja
+
+    #region Obsługa popup-ów
 
     /// <summary>
     /// Dodaje popup-a do kolejki wyświetlania. Zostanie on wyświetlony natychmiast, gdy będzie na niego miejsce na ekranie
@@ -107,6 +114,26 @@ public class PopupSystem : MonoBehaviour
         else popupQueue.Add(popup);
 
         CheckScreenAccessibility();
+    }
+
+    /// <summary>
+    /// Zamyka podany popupbox
+    /// </summary>
+    /// <param name="box">Popupbox, który ma zostać zamknięty</param>
+    public void ClosePopup(PopupBox box)
+    {
+        showedPopups.Remove(box);
+        boxPools[box.GetType()].ReturnObject(box.gameObject);
+        CheckScreenAccessibility();
+    }
+
+    /// <summary>
+    /// Zamyka popupbox, który zawiera podany pattern
+    /// </summary>
+    /// <param name="source">Popup, który jest zawarty w popupbox-ie</param>
+    public void ClosePopup(Popup source)
+    {
+        showedPopups.FirstOrDefault(box => box.source == source)?.Close();
     }
 
     /// <summary>
@@ -155,36 +182,25 @@ public class PopupSystem : MonoBehaviour
         for(int i = 0; i < popupQueue.Count; i++)
         {
             Type pt = popupQueue[i].GetType();
+            //Jeżeli zgadza się typ
             if (pt.Equals(type))
             {
-                toShow = popupQueue[i];
-                popupQueue.RemoveAt(i);
+                if (popupQueue[i].showDelay <= 0)
+                {
+                    toShow = popupQueue[i];
+                    popupQueue.RemoveAt(i);
+
+                }
+                else if (GameplayController.instance.session.gameState == GameState.running) popupQueue[i].showDelay -= Time.deltaTime;
+
                 break;
             }
         }
 
         ForcePopup(toShow);
-    }
+    }  
 
-    /// <summary>
-    /// Zamyka podany popupbox
-    /// </summary>
-    /// <param name="box">Popupbox, który ma zostać zamknięty</param>
-    public void ClosePopup(PopupBox box)
-    {
-        showedPopups.Remove(box);
-        boxPools[box.GetType()].ReturnObject(box.gameObject);
-        CheckScreenAccessibility();
-    }
-
-    /// <summary>
-    /// Zamyka popupbox, który zawiera podany pattern
-    /// </summary>
-    /// <param name="source">Popup, który jest zawarty w popupbox-ie</param>
-    public void ClosePopup(Popup source)
-    {
-        showedPopups.FirstOrDefault(box => box.source == source)?.Close();
-    }
+    #endregion Obsługa popup-ów
 
     /// <summary>
     /// Oblicza liczbę popupbox-ów o podanym typie

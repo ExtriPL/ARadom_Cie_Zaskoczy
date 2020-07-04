@@ -23,7 +23,11 @@ public abstract class Popup
     /// <summary>
     /// Czas wyświetlania popup-u
     /// </summary>
-    public float lifeSpan { get; private set; }
+    public float lifeSpan;
+    /// <summary>
+    /// Czas o jaki jest opóźnione wyświetlenie popup-u gdy ten już znajdzie się na pierwszym miejscu w kolejce
+    /// </summary>
+    public float showDelay;
     /// <summary>
     /// Priorytet wyświetlania Popup-u
     /// </summary>
@@ -84,6 +88,20 @@ public abstract class Popup
             PopupAction destroy = delegate (Popup source)
             {
                 PopupSystem.instance.ClosePopup(popup);
+            };
+
+            return destroy;
+        }
+
+        /// <summary>
+        /// Zamyka box-a zaaierającego popup źródłowy
+        /// </summary>
+        /// <returns></returns>
+        public static PopupAction Destroy()
+        {
+            PopupAction destroy = delegate (Popup source)
+            {
+                PopupSystem.instance.ClosePopup(source);
             };
 
             return destroy;

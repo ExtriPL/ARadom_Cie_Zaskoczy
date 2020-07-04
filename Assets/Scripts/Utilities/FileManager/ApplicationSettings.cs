@@ -13,4 +13,5 @@ public struct ApplicationSettings
     public float musicVolume;
     public float soundEffectsVolume;
     public Languages language;
+    public string playerNickname;
 }

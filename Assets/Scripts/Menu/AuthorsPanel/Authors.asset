@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d071cc4bde52504fbd756b502aeeae6, type: 3}
+  m_Name: Authors
+  m_EditorClassIdentifier: 
+  authors:
+  - name: Filip
+    surname: Murawski
+    proffesion: 0
+    website: 
+  - name: Jakub
+    surname: Boniecki
+    proffesion: 0
+    website: 
+  - name: "Pawe\u0142"
+    surname: "Czapczy\u0144ski"
+    proffesion: 0
+    website: 
+  - name: Albert
+    surname: Gawin
+    proffesion: 0
+    website: 
+  - name: Wiktor
+    surname: "Czerwi\u0144ski"
+    proffesion: 1
+    website: 
+  - name: Mateusz
+    surname: "Wi\u015Bniewski"
+    proffesion: 1
+    website: 
+  - name: Konrad
+    surname: Kustra
+    proffesion: 1
+    website: 
+  - name: Mateusz
+    surname: Ciupa
+    proffesion: 1
+    website: 
+  - name: Kacper
+    surname: "O\u015Bko"
+    proffesion: 1
+    website: 
+  - name: Martin
+    surname: Gregorczyk
+    proffesion: 1
+    website: 
+  - name: Tymoteusz
+    surname: "Stefa\u0144ski"
+    proffesion: 1
+    website: 
+  - name: Daniel
+    surname: Tomasik
+    proffesion: 2
+    website: 
+  - name: Bartosz
+    surname: Koniarczyk
+    proffesion: 2
+    website: 
+  - name: Dobry
+    surname: Flow
+    proffesion: 2
+    website: 
+  - name: "\u0141ukasz"
+    surname: Gierek
+    proffesion: 3
+    website: 
+  - name: Katarzyna
+    surname: Grabowska
+    proffesion: 3
+    website: 
+  - name: Barbara
+    surname: "G\u0142uch"
+    proffesion: 3
+    website: 

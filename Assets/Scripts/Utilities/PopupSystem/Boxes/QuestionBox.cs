@@ -16,7 +16,7 @@ public class QuestionBox : PopupBox
     private BasePool buttonPool;
     private List<GameObject> showedButtons = new List<GameObject>();
 
-    private void PreInit()
+    public override void InitBox()
     {
         buttonPool = new BasePool(buttons, null, Keys.Popups.QUESTIONBOX_BUTTONS_AMOUNT);
         List<GameObject> poolObjects = new List<GameObject>(); //Lista obiektów podpiętych na starcie do obiektu buttons
@@ -30,7 +30,7 @@ public class QuestionBox : PopupBox
 
     public override void Init(Popup source)
     {
-        if (buttonPool == null) PreInit();
+        if (buttonPool == null) InitBox();
         base.Init(source);
         QuestionPopup popup = source as QuestionPopup;
         message.text = popup.message;
@@ -40,12 +40,13 @@ public class QuestionBox : PopupBox
     public override void Deinit()
     {
         message.text = "QuestionBox";
-        
+
         //Zwracanie użytych przycisków do puli
-        for(int i = 0; i < showedButtons.Count; i++)
+        for (int i = showedButtons.Count - 1; i >= 0; i--)
         {
             GameObject button = showedButtons[i];
-            showedButtons[i] = null;
+            button.GetComponent<Button>().onClick.RemoveAllListeners();
+            button.GetComponentInChildren<TextMeshProUGUI>().text = "";
             buttonPool.ReturnObject(button);
         }
 
@@ -69,6 +70,8 @@ public class QuestionBox : PopupBox
             {
                 button.Item2?.Invoke(source);
             });
+
+            showedButtons.Add(gameObject);
         }
     }
 }

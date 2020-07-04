@@ -38,6 +38,8 @@ public class BasePool
         this.capacity = capacity;
     }
 
+    #region Inicjalizacja
+
     /// <summary>
     /// Inicjalizacja podstawowych właściwości puli i tworzenie obiektów o podanym patternie
     /// </summary>
@@ -66,17 +68,19 @@ public class BasePool
     /// </summary>
     public virtual void Deinit()
     {
-        for(int i = capacity - 1; i > 0; i--)
+        for(int i = poolObjects.Count - 1; i > 0; i--)
         {
             UnityEngine.Object.Destroy(poolObjects[i]);
             poolObjects.RemoveAt(i);
         }
     }
 
+    #endregion Inicjalizacja
+
     /// <summary>
     /// Dodaje podstawowy obiekt do puli
     /// </summary>
-    private void AddObject()
+    protected virtual void AddObject()
     {
         GameObject poolObject = UnityEngine.Object.Instantiate(pattern, parentObject.GetComponent<Transform>()); //Tworzenie nowego obiektu według patternu
         poolObject.SetActive(false); //Wyłączanie obiektu na start
@@ -97,8 +101,8 @@ public class BasePool
             capacity++;
         }
 
-        GameObject poolObject = poolObjects[poolObjects.Count - 1]; //Wyciąganie obiektu z puli
-        poolObjects.RemoveAt(poolObjects.Count - 1); //Usuwanie pobranego obiektu z listy dostępnych obiektów
+        GameObject poolObject = poolObjects[0]; //Wyciąganie obiektu z puli
+        poolObjects.RemoveAt(0); //Usuwanie pobranego obiektu z listy dostępnych obiektów
         poolObject.SetActive(true);
 
         return poolObject;
@@ -111,6 +115,6 @@ public class BasePool
     public virtual void ReturnObject(GameObject poolObject)
     {
         poolObject.SetActive(false);
-        poolObjects.Add(poolObject);
+        poolObjects.Insert(0, poolObject);
     }
 }

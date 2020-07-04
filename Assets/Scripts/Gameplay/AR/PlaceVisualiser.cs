@@ -1,14 +1,14 @@
 ﻿using GoogleARCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class PlaceVisualiser : MonoBehaviour
+public class PlaceVisualiser : MonoBehaviour, IAnimable
 {
-    /// <summary>
-    /// Model aktualnie wyświetlany na polu
-    /// </summary>
-    public GameObject model;
+    private ARController ARController;
+
     /// <summary>
     /// Ustawienia pola
     /// </summary>
@@ -16,25 +16,44 @@ public class PlaceVisualiser : MonoBehaviour
     /// <summary>
     /// Numer pola na planszy
     /// </summary>
-    [SerializeField] private int placeIndex;
+    public int placeIndex { get; private set; }
 
-    private ARController ARController;
+    [SerializeField]
+    /// <summary>
+    /// Model aktualnie wyświetlany na polu
+    /// </summary>
+    private List<GameObject> models = new List<GameObject>();
+    /// <summary>
+    /// Numer modelu aktualnie wyświetlanego przez PlaceVisualiser
+    /// </summary>
+    private int showedModel = 0;
 
     /// <summary>
     /// Lista graczy znajdujących się aktualnie na polu
     /// </summary>
-    private List<Player> playersOnField = new List<Player>();
+    private List<string> playersOnField = new List<string>();
     /// <summary>
     /// Lista materiałów obiektów tworzących światła na polu
     /// </summary>
     private List<Material> backlightsList = new List<Material>();
-
+    /// <summary>
+    /// Odwołanie do gracza, który stoi na polu i jednocześnie jest jego kolejka
+    /// </summary>
     private Player activePlayer = null;
+    /// <summary>
+    /// Współczynnik podświetlenia
+    /// </summary>
+    private float tParameter = 0f;
+    private float startShiningTime;
 
-    private void Update()
-    {
-        Shine();
-    }
+    /// <summary>
+    /// Akcje, które mają się wywołać gdy animacja się rozpocznie
+    /// </summary>
+    public Action onAnimationStart;
+    /// <summary>
+    /// Akcje, które mają się wywołać gdy animacja się skończy
+    /// </summary>
+    public Action onAnimationEnd;
 
     #region Inicjalizacja
 
@@ -49,19 +68,60 @@ public class PlaceVisualiser : MonoBehaviour
         this.placeIndex = placeIndex;
 
         ARController = GameplayController.instance.arController;
-
-        model = Instantiate(field.GetStartModel(), gameObject.GetComponent<Transform>());
+        InitModels();
 
         CreateBacklight();
+
+        //Inicjalizacja podświetlenia startowego
+        for (int i = 0; i < GameplayController.instance.session.playerCount; i++)
+        {
+            Player player = GameplayController.instance.session.FindPlayer(i);
+            if (player.PlaceId == placeIndex) playersOnField.Add(player.GetName());
+        }
+
+        Player activePlayer = GameplayController.instance.session.FindPlayer(GameplayController.instance.board.dice.currentPlayer);
+        if (activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
+        else DeactivateField();
+
+        //if (placeIndex == 10) StartCoroutine(Shine(GameplayController.instance.session.localPlayer, true));
+    }
+
+    private void Update()
+    {
+        Shine();
     }
 
     /// <summary>
-    /// Subskrybcja eventów
+    /// Inicjuje modele stojące na polu
     /// </summary>
+    private void InitModels()
+    {
+        GameObject startModel = Instantiate(field.GetStartModel(), gameObject.GetComponent<Transform>());
+        models.Add(startModel);
+        if (field is NormalBuilding)
+        {
+            startModel.SetActive(false);
+            startModel.GetComponent<Transform>().Rotate(new Vector3(0f, 0f, -gameObject.GetComponent<Transform>().rotation.eulerAngles.z));
+            NormalBuilding nb = field as NormalBuilding;
+            for(int i = 1; i < nb.tiersCount; i++)
+            {
+                GameObject model = Instantiate(nb.tiers[i].model, gameObject.GetComponent<Transform>());
+                model.SetActive(false);
+                models.Add(model);
+            }
+        }
+
+        //Przywracanie budynku po wczytaniu save
+        ShowModel(GameplayController.instance.board.GetTier(placeIndex));
+    }
+
     public void SubscribeEvents()
     {
-        EventManager.instance.onPlayerMove += OnPlayerMove;
-        EventManager.instance.onTurnChange += OnTurnChange;
+        EventManager.instance.onPlayerMoved += OnPlayerMove;
+        EventManager.instance.onTurnChanged += OnTurnChange;
+        EventManager.instance.onPlayerQuited += OnPlayerQuit;
+        EventManager.instance.onAquiredBuilding += OnAquiredBuilding;
+        EventManager.instance.onUpgradedBuilding += OnUpgradeBuilding;
     }
 
     /// <summary>
@@ -69,8 +129,11 @@ public class PlaceVisualiser : MonoBehaviour
     /// </summary>
     public void UnsubscribeEvents()
     {
-        EventManager.instance.onPlayerMove -= OnPlayerMove;
-        EventManager.instance.onTurnChange -= OnTurnChange;
+        EventManager.instance.onPlayerMoved -= OnPlayerMove;
+        EventManager.instance.onTurnChanged -= OnTurnChange;
+        EventManager.instance.onPlayerQuited -= OnPlayerQuit;
+        EventManager.instance.onAquiredBuilding -= OnAquiredBuilding;
+        EventManager.instance.onUpgradedBuilding -= OnUpgradeBuilding;
     }
 
     #endregion Inicjalizacja
@@ -85,31 +148,22 @@ public class PlaceVisualiser : MonoBehaviour
     /// <param name="toPlaceIndex">Numer pola, na które przeszedł gracz</param>
     private void OnPlayerMove(string playerName, int fromPlaceIndex, int toPlaceIndex)
     {
+        if (GameplayController.instance.board.dice.amountOfRolls == 0) return;
         if (fromPlaceIndex == placeIndex)
         {
             field.OnPlayerLeave(GameplayController.instance.session.FindPlayer(playerName), this);
-            playersOnField.Remove(GameplayController.instance.session.FindPlayer(playerName));
+            playersOnField.Remove(playerName);
             DeactivateField();
         }
         else if (toPlaceIndex == placeIndex)
         {
-            field.OnPlayerEnter(GameplayController.instance.session.FindPlayer(playerName), this);
-            playersOnField.Add(GameplayController.instance.session.FindPlayer(playerName));
-            ActivateField(GameplayController.instance.session.FindPlayer(playerName));
+            playersOnField.Add(playerName);
         }
 
-        //Numer pola z jest mniejszy od numeru pola do i numer tego pola (this) zawiera się pomiędzy nimi
-        bool betweenMinMax = toPlaceIndex > fromPlaceIndex && placeIndex > fromPlaceIndex && placeIndex <= toPlaceIndex;
-
-        //Numer pola zawiera się międzyy 0 a do
-        bool between0To = placeIndex >= 0 && placeIndex <= toPlaceIndex;
-        //Numer pola zawiera się między z a ostatnim polem
-        bool betweenFrom0 = placeIndex > fromPlaceIndex && placeIndex < Keys.Board.FIELD_COUNT;
-        //Numer pola z jest większy od numeru pola do i numer tego pola (this) zawiera się pomiędzy nimi
-        bool betweenMaxMin = fromPlaceIndex > toPlaceIndex && (betweenFrom0 || between0To);
-
-        //Jeżeli numer pola jest pomiędzy polami z i do
-        if (betweenMinMax || betweenMaxMin) field.OnPlayerPassby(GameplayController.instance.session.FindPlayer(playerName), this);
+        if(GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
+        {
+            StartCoroutine(ActivationInterval(GameplayController.instance.session.FindPlayer(playerName), GameplayController.instance.board.GetPlacesDistance(fromPlaceIndex, placeIndex), toPlaceIndex));
+        }
     }
 
     /// <summary>
@@ -119,11 +173,11 @@ public class PlaceVisualiser : MonoBehaviour
     /// <param name="currentPlayerName">Gracz, którego tura się zaczeła</param>
     private void OnTurnChange(string previousPlayerName, string currentPlayerName)
     {
-        Player previousPlayer = GameplayController.instance.session.FindPlayer(previousPlayerName);
         Player currentPlayer = GameplayController.instance.session.FindPlayer(currentPlayerName);
 
-        if (playersOnField.Contains(previousPlayer)) DeactivateField();
-        if (playersOnField.Contains(currentPlayer)) ActivateField(currentPlayer);
+        //Sterowanie podświetleniem aktywnego gracza
+        if (playersOnField.Contains(previousPlayerName)) DeactivateField();
+        if (playersOnField.Contains(currentPlayerName)) ActivateField(currentPlayer);
     }
 
     /// <summary>
@@ -153,6 +207,60 @@ public class PlaceVisualiser : MonoBehaviour
         centerModel.name = field.GetFieldName();
     }
 
+    /// <summary>
+    /// Obsługa eventu wyjścia gracza z pokoju
+    /// </summary>
+    /// <param name="playerName">Nick gracza, który wychodzi z gry</param>
+    private void OnPlayerQuit(string playerName)
+    {
+        //Zrestartowanie modelu do stanu początkowego
+        if (showedModel != 0 && GameplayController.instance.board.GetTier(placeIndex) == 0) ShowModel(0);
+
+        //Usuwanie podświetlenia gracza, który właśnie wyszedł
+        playersOnField.Remove(playerName);
+        Player activePlayer = GameplayController.instance.session.FindPlayer(GameplayController.instance.board.dice.currentPlayer);
+        if (activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
+        else DeactivateField();
+    }
+
+    /// <summary>
+    /// Obsługa eventu kupna pola
+    /// </summary>
+    /// <param name="playerName">Nazwa gracza, który kupił pole</param>
+    /// <param name="placeId">Id pola, które zostało kupione</param>
+    private void OnAquiredBuilding(string playerName, int placeId)
+    {
+        //Jeżeli pole obsługiwane przez ten PlaceVisualiser zostało kupione
+        if(placeIndex == placeId)
+        {
+            if (field is BuildingField)
+            {
+                BuildingField buildingField = field as BuildingField;
+
+                onAnimationEnd += delegate { buildingField.OnBuyBuilding(GameplayController.instance.session.FindPlayer(playerName), this); };
+                AnimateEntrance();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Obsługa eventu ulepszenia pola
+    /// </summary>
+    /// <param name="playerName">Nazwa gracza, który ulepszył pole</param>
+    /// <param name="placeId"></param>
+    private void OnUpgradeBuilding(string playerName, int placeId)
+    {
+        if(placeIndex == placeId)
+        {
+            if (field is NormalBuilding)
+            {
+                NormalBuilding upgradeBuilding = field as NormalBuilding;
+
+                onAnimationEnd += delegate { upgradeBuilding.OnUpgradeBuilding(GameplayController.instance.session.FindPlayer(playerName), this); };
+                AnimateEntrance();
+            }
+        } 
+    }
 
     #endregion Obsługa eventów
 
@@ -164,7 +272,7 @@ public class PlaceVisualiser : MonoBehaviour
     private void CreateBacklight()
     {
         GameObject backlights = new GameObject("Backlights"); //Obiekt przechowujący światła
-        backlights.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
+        backlights.GetComponent<Transform>().SetParent(gameObject.GetComponent<Transform>());
 
         for (int i = 0; i < Keys.Board.BOARD_SIDES; i++)
         {
@@ -177,9 +285,9 @@ public class PlaceVisualiser : MonoBehaviour
 
             //Tworzenie odpowiedniego obiektu
             GameObject light = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            light.GetComponent<Transform>().parent = backlights.GetComponent<Transform>();
+            light.GetComponent<Transform>().SetParent(backlights.GetComponent<Transform>());
             light.GetComponent<Transform>().localPosition = v;
-            light.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0f, 0f, -rotationAngel / Mathf.PI * 180));
+            light.GetComponent<Transform>().localRotation = Quaternion.Euler(new Vector3(0f, 0f, -rotationAngel / Mathf.PI * 180));
             light.GetComponent<Transform>().localScale = new Vector3(Keys.Board.FIELD_SIDE_LENGHT / Keys.Board.SCALLING_FACTOR, Keys.Board.Backlight.THICKNESS, Keys.Board.Backlight.THICKNESS);
 
             //Ustawianie jego startowego koloru
@@ -190,6 +298,10 @@ public class PlaceVisualiser : MonoBehaviour
 
             backlightsList.Add(light.GetComponent<Renderer>().material);
         }
+
+        backlights.GetComponent<Transform>().localPosition = new Vector3();
+        backlights.GetComponent<Transform>().localRotation = Quaternion.Euler(new Vector3());
+        backlights.GetComponent<Transform>().localScale = new Vector3(1f, 1f, 1f);
     }
 
     /// <summary>
@@ -197,15 +309,17 @@ public class PlaceVisualiser : MonoBehaviour
     /// </summary>
     private void RecreateLights()
     {
+        //Ustawienie koloru dla graczy stojących na polu
         for(int i = 0; i < playersOnField.Count; i++)
         {
-            Color playerColor = playersOnField[i].mainColor;
+            Color playerColor = GameplayController.instance.session.FindPlayer(playersOnField[i]).MainColor;
             backlightsList[i].color = new Color(playerColor.r, playerColor.g, playerColor.b);
         }
 
+        //Dla wszystkich części pola, na których nie przypada żaden gracz, ustawiany jest domyślny kolor
         for(int i = playersOnField.Count; i < backlightsList.Count; i++)
         {
-            backlightsList[i].color = new Color(1f, 1f, 1f, 0f);
+            backlightsList[i].color = Keys.Board.Backlight.INACTIVE_COLOR;
         }
     }
 
@@ -217,14 +331,16 @@ public class PlaceVisualiser : MonoBehaviour
     {
         foreach(Material back in backlightsList)
         {
-            back.color = activePlayer.mainColor;
+            back.color = activePlayer.MainColor;
         }
 
         this.activePlayer = activePlayer;
+        startShiningTime = Time.time - (Keys.Board.Backlight.SHINING_PERIOD / Mathf.PI) * Mathf.Acos(Mathf.Sqrt(tParameter));
     }
 
     private void DeactivateField()
     {
+        //if (activePlayer != null) StartCoroutine(Shine(activePlayer, true, tParameter));
         activePlayer = null;
         RecreateLights();
     }
@@ -236,13 +352,137 @@ public class PlaceVisualiser : MonoBehaviour
     {
         if (activePlayer != null)
         {
-            foreach (Material back in backlightsList)
-            {
-                float t = Mathf.Pow(Mathf.Cos(Time.time * (2 * Mathf.PI) / Keys.Board.Backlight.SHINING_PERIOD), 2f);
-                back.color = Color.Lerp(activePlayer.mainColor, activePlayer.blinkColor, t);
-            }
+            tParameter = Mathf.Pow(Mathf.Cos((Time.time - startShiningTime) * Mathf.PI / Keys.Board.Backlight.SHINING_PERIOD), 2f);
+            
+            foreach (Material back in backlightsList) back.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, tParameter);
+        }
+    }
+
+    /// <summary>
+    /// Miga światłami obecnie aktywnego gracza
+    /// </summary>
+    /// <param name="activePlayer">Gracz, z którego ma pobrać kolor</param>
+    /// <param name="turn">Jeżeli true - wyłacza podświetlenie, jeżeli false - włącza podświetlenie</param>
+    /// <param name="shiftT">Współczynnik przesunięcia sekwencji.</param>
+    private IEnumerator Shine(Player activePlayer, bool turn, float shiftT = 0f)
+    {
+        float startTime = Time.time;
+        float halfPeriod = Keys.Board.Backlight.SHINING_PERIOD / 2f;
+        float shift = turn ? halfPeriod : 0f;
+
+        //Wykonujemy pętle przez połowę okresu świecenia
+        while (Time.time - startTime < halfPeriod)
+        {
+            float time = Time.time - startTime;
+
+            float t = Mathf.Pow(Mathf.Cos((time + shift) * Mathf.PI / Keys.Board.Backlight.SHINING_PERIOD), 2f) + shiftT;
+            foreach (Material back in backlightsList) back.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, t);
+
+            yield return null;
+        }
+
+        tParameter = turn ? 1f : 0f;
+    }
+
+    /// <summary>
+    /// Aktywuje sekwencje podświetlenia pól, przez które przechodzi gracz (sekwencja przypomina ciągnącego się wężyka)
+    /// </summary>
+    /// <param name="activePlayer">Gracz, który przechodzi nad polami</param>
+    /// <param name="distanceFromStart">Odległość od pola, z którego gracz się rusza</param>
+    /// <param name="targetPlace">Pole, na które gracz się rusza</param>
+    /// <returns></returns>
+    private IEnumerator ActivationInterval(Player activePlayer, int distanceFromStart, int targetPlace)
+    {
+        yield return new WaitForSeconds(Keys.Board.Backlight.SHINING_PERIOD / 2f);
+        yield return new WaitForSeconds(Keys.Board.Backlight.ANIMATION_STAY_TIME * (distanceFromStart - 1)); //Oczekiwanie na minięcie animacji poprzednich pól
+        
+        StartCoroutine(Shine(activePlayer, false));
+        field.OnPlayerPassby(GameplayController.instance.session.FindPlayer(activePlayer.GetName()), this);
+
+        yield return new WaitForSeconds(Keys.Board.Backlight.SHINING_PERIOD / 2f);
+        yield return new WaitForSeconds(Keys.Board.Backlight.ANIMATION_STAY_TIME * (distanceFromStart - 1));
+
+
+        if (placeIndex != targetPlace)
+        {
+            StartCoroutine(Shine(activePlayer, true, tParameter));
+            yield return new WaitForSeconds(Keys.Board.Backlight.SHINING_PERIOD / 2f);
+            DeactivateField();
+        }
+        else
+        {
+            ActivateField(activePlayer);
+            field.OnPlayerEnter(GameplayController.instance.session.FindPlayer(activePlayer.GetName()), this);
         }
     }
 
     #endregion Podświetlenie pól
+
+    #region Zarządzanie wyświetlanym modelem
+
+    /// <summary>
+    /// Pokazuje następny model na liście
+    /// </summary>
+    public void ShowNextModel()
+    {
+        if (showedModel == models.Count - 1) ShowModel(0);
+        else ShowModel(showedModel + 1);
+    }
+
+    public void ShowModel(int id)
+    {  
+        if (id < models.Count) 
+        {
+            models[showedModel]?.SetActive(false);
+            showedModel = id;
+            models[showedModel]?.SetActive(true);
+        }
+        else Debug.LogError("Podano nieprawidłowy numer modelu!");
+    }
+
+    #endregion Zarządzanie wyświetlanym modelem
+
+    #region Animacje
+
+    /// <summary>
+    /// Wywołuje animacje wejściową przekazując jej jako parametry akcje zapisane w PlaceVisualiserze.
+    /// Akcje te są czyszczone po przekazaniu
+    /// </summary>
+    private void AnimateEntrance()
+    {
+        StartCoroutine(AnimateEntrance(onAnimationStart, onAnimationEnd));
+        onAnimationStart = null;
+        onAnimationEnd = null;
+    }
+
+    /// <summary>
+    /// Wywołuje animacje wyjściową przekazując jej jako parametry akcje zapisane w PlaceVisualiserze.
+    /// Akcje te są czyszczone po przekazaniu
+    /// </summary>
+    private void AnimateExit()
+    {
+        StartCoroutine(AnimateExit(onAnimationStart, onAnimationEnd));
+        onAnimationStart = null;
+        onAnimationEnd = null;
+    }
+
+    public IEnumerator AnimateEntrance(Action onAnimationBegin = null, Action onAnimationEnd = null)
+    {
+        onAnimationBegin?.Invoke();
+
+        yield return null;
+
+        onAnimationEnd?.Invoke();
+    }
+
+    public IEnumerator AnimateExit(Action onAnimationBegin = null, Action onAnimationEnd = null)
+    {
+        onAnimationBegin?.Invoke();
+
+        yield return null;
+
+        onAnimationEnd?.Invoke();
+    }
+
+    #endregion Animacje
 }
