@@ -18,7 +18,6 @@ public class MainMenuController : MonoBehaviour
 
     private void Update()
     {
-
     }
 
     #region Inicjalizacja
@@ -59,10 +58,12 @@ public class MainMenuController : MonoBehaviour
     {
         foreach (GameObject panel in panels) 
         {
+            if (panel.GetComponent<IPanelInitable>() is IEventSubscribable) panel.GetComponent<IEventSubscribable>().UnsubscribeEvents();
             panel.SetActive(false);
         }
         //przejscie
         panels[panelId].SetActive(true);
+        if (panels[panelId].GetComponent<IPanelInitable>() is IEventSubscribable) panels[panelId].GetComponent<IEventSubscribable>().SubscribeEvents();
         panels[panelId].GetComponent<IPanelInitable>().Init(this);
         //Animacja
     }

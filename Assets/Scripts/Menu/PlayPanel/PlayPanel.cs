@@ -9,7 +9,7 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IPanelInitable
     private BasePool basePool;
     public GameObject content;
     public GameObject template;
-    private List<RoomInfo> roomList = new List<RoomInfo>();
+    public List<RoomInfo> roomList = new List<RoomInfo>();
     MainMenuController mainMenuController;
 
 
@@ -21,17 +21,30 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IPanelInitable
     public void Init(MainMenuController mainMenuController)
     {
         this.mainMenuController = mainMenuController;
+
+        for (int i = 0; i < roomList.Count; i++) 
+        {
+            if (roomList[i].PlayerCount == 0) roomList.RemoveAt(i);
+        }
         PhotonNetwork.JoinLobby();
     }
-
+    public override void OnConnectedToMaster()
+    {
+        base.OnConnectedToMaster();
+        PhotonNetwork.JoinLobby();
+    }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("OnRoomListUpdate");
         foreach (RoomInfo roomInfo in roomList.ToArray())
         {
             if (!this.roomList.Contains(roomInfo))
             {
-                basePool.TakeObject().GetComponent<RoomListing>().Init(roomInfo, basePool, mainMenuController);
-                this.roomList.Add(roomInfo);
+                if (roomInfo.PlayerCount != 0)
+                {
+                    basePool.TakeObject().GetComponent<RoomListing>().Init(roomInfo, this, basePool, mainMenuController);
+                    this.roomList.Add(roomInfo);
+                }
             }
         }
     }

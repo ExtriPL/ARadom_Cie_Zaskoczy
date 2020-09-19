@@ -20,6 +20,9 @@ public class GameplayControllerEditor : Editor
     int GiveRangeBuildingStartPlaceID = 0;
     int GiveRangeBuildingEndPlaceID = 0;
 
+    int ChangeDiceRoll1 = 1;
+    int ChangeDiceRoll2 = 1;
+
     bool playersOpen = false;
     bool placesOpen = false;
     bool diceOpen = false;
@@ -270,6 +273,25 @@ public class GameplayControllerEditor : Editor
                     }
                 }
             }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.LabelField("Warp player");
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Dice Roll 1");
+            EditorGUILayout.LabelField("Dice Roll 2");
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+
+            ChangeDiceRoll1 = EditorGUILayout.IntField(ChangeDiceRoll1);
+            ChangeDiceRoll2 = EditorGUILayout.IntField(ChangeDiceRoll2);
+
+            if (GUILayout.Button("GO"))
+            {
+                GameplayController.instance.board.dice.SetLast(ChangeDiceRoll1, ChangeDiceRoll2);
+            }
+
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();

@@ -15,7 +15,5 @@ MonoBehaviour:
   fieldName: Katedra
   canBePlaced: 1
   fieldHistory: 
-  model: {fileID: -927199367670048503, guid: 74ab86b710a350a4bb700a062f06831e, type: 3}
-  buyPrice: 0
-  enterCost: 0
-  stackingEnterCost: 0
+  model: {fileID: -927199367670048503, guid: 1fccc56b2d54bd043bb870797cb10459, type: 3}
+  stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

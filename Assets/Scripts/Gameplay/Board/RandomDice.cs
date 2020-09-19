@@ -1,5 +1,7 @@
 ﻿using ExitGames.Client.Photon;
+using JetBrains.Annotations;
 using Photon.Pun;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class RandomDice
@@ -39,6 +41,8 @@ public class RandomDice
             PhotonNetwork.CurrentRoom.SetCustomProperties(table);
         }
     }
+
+    public RollResult rollResult { get => new RollResult(last1, last2); }
 
     /// <summary>
     /// Numer gracza którego jest teraz kolejka.
@@ -150,11 +154,116 @@ public class RandomDice
             {
                 GameplayController.instance.session.FindPlayer(currentPlayer).SubstractTurnToSkip();
             }
-            else
+            else if(!session.FindPlayer(currentPlayer).IsLoser)
             {
                 break;
             }
         }
         while (true);
+    }
+
+    public void SetLast(int last1, int last2)
+    {
+        this.last1 = last1;
+        this.last2 = last2;
+    }
+}
+
+[System.Serializable]
+public class RollResult
+{
+    [SerializeField, Tooltip("Wynik rzutu kostką"), Range(0, 6)]
+    private int roll1 = 0, roll2 = 0;
+    /// <summary>
+    /// Tryb porównywanie wyników rzutu
+    /// </summary>
+    public enum ValidationType
+    {
+        /// <summary>
+        /// Rzuty są tożsame, gdy mają takie same wyniki na odpowiednich miejscach
+        /// </summary>
+        OneToOne,
+        /// <summary>
+        /// Rzuty są tożsame, gdy mają te same wartości. Kolejność wartości nie musi się zgadzać
+        /// </summary>
+        CorrectValue,
+        /// <summary>
+        /// Rzuty są tożsame, gdy jeden z wyników pokrywa się
+        /// </summary>
+        SingleCorrect,
+        /// <summary>
+        /// Rzuty są tożsame, gdy wynik rzutu to para
+        /// </summary>
+        Pair,
+        /// <summary>
+        /// Rzuty są tożsame, gdy suma wyrzuconych oczek się zgadza
+        /// </summary>
+        Sum,
+        /// <summary>
+        /// Jest tożsame z każdym możliwym RollResult
+        /// </summary>
+        Any
+    }
+    [SerializeField, Tooltip("Typ walidacji wyników rzutu kostką")]
+    private ValidationType validation = ValidationType.CorrectValue;
+
+    public RollResult(int roll1, int roll2)
+    {
+        this.roll1 = roll1;
+        this.roll2 = roll2;
+    }
+
+    public RollResult(ValidationType validation)
+    {
+        this.validation = validation;
+    }
+
+    public RollResult(int roll1, int roll2, ValidationType validation)
+    {
+        this.roll1 = roll1;
+        this.roll2 = roll2;
+        this.validation = validation;
+    }
+
+    /// <summary>
+    /// Wynik pierwszego rzutu kostką
+    /// </summary>
+    public int Roll1 { get => roll1; }
+    /// <summary>
+    /// Wynik drugiego rzutu kostką
+    /// </summary>
+    public int Roll2 { get => roll2; }
+    /// <summary>
+    /// Suma obu rzutów
+    /// </summary>
+    public int Sum { get => roll1 + roll2; }
+
+    public override bool Equals(object obj)
+    {
+        if (!(obj is RollResult)) return false;
+        RollResult result = obj as RollResult;
+
+        switch (validation)
+        {
+            case ValidationType.OneToOne:
+                return roll1 == result.roll1 && roll2 == result.roll2;
+            case ValidationType.CorrectValue:
+                return (roll1 == result.roll1 || roll1 == result.roll2) && (roll2 == result.roll1 || roll2 == result.roll2);
+            case ValidationType.SingleCorrect:
+                return roll1 == result.roll1 || roll2 == result.roll2;
+            case ValidationType.Pair:
+                return result.roll1 == result.roll2 || validation == result.validation;
+            case ValidationType.Sum:
+                return (roll1 + roll2) == (result.roll1 + result.roll2);
+            case ValidationType.Any:
+                return true;
+        }
+
+        return base.Equals(obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
     }
 }

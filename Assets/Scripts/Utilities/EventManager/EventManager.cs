@@ -11,13 +11,6 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     public static EventManager instance;
 
     #region Eventy
-
-    /*public delegate void RoomOvnerQuit();
-    /// <summary>
-    /// Event jest wywoływany, gdy właściciel pokoju wyjdzie z niego
-    /// </summary>
-    public event RoomOvnerQuit onRoomOvnerQuit;*/
-
     public delegate void GameStateChanged(GameState previousState, GameState newState);
     /// <summary>
     /// Event jest wywoływany, gdy zmieni się stan gry
@@ -34,11 +27,21 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// </summary>
     public event PlayerEvent onPlayerLostGame;
 
-    public delegate void PlayerMove(string playerName, int fromPlaceIndex, int toPlaceINdex);
+    public delegate void PlayerReady(string playerName, bool ready);
+    /// <summary>
+    /// Event służący do ustalenia gotowości gracza w pokoju
+    /// </summary>
+    public event PlayerReady onPlayerReady;
+
+    public delegate void PlayerDisplacement(string playerName, int fromPlaceIndex, int toPlaceINdex);
     /// <summary>
     /// Event jest wywoływany, gdy gracz jest przesuwany na planszy.
     /// </summary>
-    public event PlayerMove onPlayerMoved;
+    public event PlayerDisplacement onPlayerMoved;
+    /// <summary>
+    /// Event jest wywoływany, gdy gracz zostanie przeteleportowany
+    /// </summary>
+    public event PlayerDisplacement onPlayerTeleported;
     
     public delegate void TurnChange(string previousPlayerName, string currentPlayerName);
     /// <summary>
@@ -110,13 +113,26 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// <summary>
     /// Wysyła event o wyjściu gracza, który nie jest właścicielem, z pokoju
     /// </summary>
-    /// <param name="player">Obiekt gracza na liście graczy w GamePlayController</param>
+    /// <param name="playerName">Nazwa gracza</param>
     public void SendOnPlayerQuited(string playerName)
     {
         object[] data = { playerName };
         RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerQuit, data, raiseOptions, sendOptions);
+    }
+
+    /// <summary>
+    /// Wysyła event o zmianie gotowości gracza
+    /// </summary>
+    /// <param name="playerName">Nazwa gracza</param>
+    public void SendOnPlayerReady(string playerName, bool ready)
+    {
+        Debug.Log(playerName + ":" + ready);
+        object[] data = { playerName, ready };
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent((byte)EventsId.PlayerReady, data, raiseOptions, sendOptions);
     }
 
     /// <summary>
@@ -131,6 +147,20 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerMove, data, raiseOptions, sendOptions);
+    }
+
+    /// <summary>
+    /// Wysyła event o poruszeniu się gracza
+    /// </summary>
+    /// <param name="playerName">Nazwa gracza</param>
+    /// <param name="fromPlaceIndex">Numer pola, z którego poruszył się gracz</param>
+    /// <param name="toPlaceIndex">Numer pola, na które poruszył się gracz</param>
+    public void SendOnPlayerTeleported(string playerName, int fromPlaceIndex, int toPlaceIndex)
+    {
+        object[] data = { playerName, fromPlaceIndex, toPlaceIndex };
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent((byte)EventsId.PlayerTeleport, data, raiseOptions, sendOptions);
     }
 
     /// <summary>
@@ -159,9 +189,14 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerAquiredBuiding, data, raiseOptions, sendOptions);
     }
 
-    public void SendOnPlayerUpgradedBuilding(string playerName, int placeid)
+    /// <summary>
+    /// Wywyła przez sieć informację o ulepszeniu budynku przez gracza
+    /// </summary>
+    /// <param name="playerName">Nazwa gracza, który ulepszył budynek</param>
+    /// <param name="placeId">Numer pola na planszy, które zostało ulepszone</param>
+    public void SendOnPlayerUpgradedBuilding(string playerName, int placeId)
     {
-        object[] data = { playerName, placeid };
+        object[] data = { playerName, placeId };
         RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerUpgradeBuilding, data, raiseOptions, sendOptions);
@@ -317,6 +352,23 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     object[] data = (object[])photonEvent.CustomData;
                     string playerName = (string)data[0];
                     onPlayerLostGame?.Invoke(playerName);
+                }
+                break;
+            case (byte)EventsId.PlayerReady:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    string playerName = (string)data[0];
+                    bool ready = (bool)data[1];
+                    onPlayerReady?.Invoke(playerName, ready);
+                }
+                break;
+            case (byte)EventsId.PlayerTeleport:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    string playerName = (string)data[0];
+                    int fromFieldIndex = (int)data[1];
+                    int toFieldIndex = (int)data[2];
+                    onPlayerTeleported?.Invoke(playerName, fromFieldIndex, toFieldIndex);
                 }
                 break;
         }

@@ -37,7 +37,7 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IPanelInitable
 
     #region Photon
     public override void OnConnectedToMaster()
-    { 
+    {
         loginButton.interactable = (nickInputText.text.Trim().Length >= Keys.Menu.USERNAME_MIN_LENGTH);
         connectingText.SetActive(false);
         if (SettingsController.instance.settings.playerNickname != Keys.Menu.DEFAULT_USERNAME)

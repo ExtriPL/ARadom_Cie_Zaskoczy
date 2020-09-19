@@ -20,5 +20,7 @@ public enum EventsId
     Sync,
     PlayerUpgradeBuilding,
     Pay,
-    PlayerLostGame
+    PlayerLostGame,
+    PlayerReady,
+    PlayerTeleport
 }

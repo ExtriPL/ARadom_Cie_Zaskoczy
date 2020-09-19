@@ -15,7 +15,5 @@ MonoBehaviour:
   fieldName: "Ko\u015Bci\xF3\u0142 Bernardyn\xF3w"
   canBePlaced: 1
   fieldHistory: 
-  model: {fileID: -927199367670048503, guid: bf9fd90adba983a4cad95dae66888135, type: 3}
-  buyPrice: 0
-  enterCost: 0
-  stackingEnterCost: 0
+  model: {fileID: -927199367670048503, guid: d7a325497b4c62444b88460eda9db441, type: 3}
+  stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

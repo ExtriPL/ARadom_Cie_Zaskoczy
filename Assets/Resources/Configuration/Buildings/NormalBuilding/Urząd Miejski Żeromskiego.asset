@@ -20,15 +20,15 @@ MonoBehaviour:
     buyPrice: 0
     enterCost: 0
     model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
-  - name: jedna trzecia
-    buyPrice: 0
-    enterCost: 0
-    model: {fileID: -927199367670048503, guid: ee1267be89b6c7f4eb24e59268aea579, type: 3}
-  - name: jedna druga
-    buyPrice: 0
-    enterCost: 0
-    model: {fileID: -927199367670048503, guid: 050d66e43ebe5bc46bdc01e337da2b75, type: 3}
-  - name: "ca\u0142y"
-    buyPrice: 0
-    enterCost: 0
-    model: {fileID: -927199367670048503, guid: b9cbefd8b682bbe42ad0945739a0485b, type: 3}
+  - name: Tier 1
+    buyPrice: 1600
+    enterCost: 500
+    model: {fileID: -927199367670048503, guid: b4baa01005a49ba498d99c0495b445d3, type: 3}
+  - name: Tier 2
+    buyPrice: 800
+    enterCost: 800
+    model: {fileID: -927199367670048503, guid: 4a2a2da03a7bd4a428a616308f9c8a83, type: 3}
+  - name: Tier 3
+    buyPrice: 1200
+    enterCost: 1200
+    model: {fileID: -927199367670048503, guid: 79bb22772b2735d4cb009e65ec71fc3f, type: 3}

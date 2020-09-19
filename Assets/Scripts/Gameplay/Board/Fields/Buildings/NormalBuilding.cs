@@ -50,20 +50,24 @@ public class NormalBuilding : BuildingField
     /// <summary>
     /// Pozwala określić, czy istnieje następny poziom budynku
     /// </summary>
-    /// <param name="currentTier">Obecny poziom budynku (liczony od 0)</param>
+    /// <param name="placeId">Obecny poziom budynku (liczony od 0)</param>
     /// <returns>Czy istnieje następny poziom budynku</returns>
-    public bool HasNextTier(int currentTier)
+    public bool HasNextTier(int placeId)
     {
+        int currentTier = GameplayController.instance.board.GetTier(placeId);
+
         return currentTier >= 0 && currentTier < tiersCount - 1;
     }
 
     /// <summary>
     /// Pozwala określić, czy istnieje poprzedni poziom budynku
     /// </summary>
-    /// <param name="currentTier">Obecny poziom budynku (liczony od 0)</param>
+    /// <param name="placeId">Obecny poziom budynku (liczony od 0)</param>
     /// <returns>Czy istnieje poprzedni poziom budynku</returns>
-    public bool HasPreviousTier(int currentTier)
+    public bool HasPreviousTier(int placeId)
     {
+        int currentTier = GameplayController.instance.board.GetTier(placeId);
+
         return currentTier <= tiersCount - 1 && currentTier > 0;
     }
 
@@ -140,29 +144,6 @@ public class NormalBuilding : BuildingField
         visualiser.ShowNextModel();
     }
 
-    public override List<string> GetFieldInfo()
-    {
-        List<string> info = new List<string>
-        {
-            this.fieldName,
-            GetTier(0).buyPrice.ToString(),
-            GetTier(0).enterCost.ToString()
-        };
-
-        int index = GameplayController.instance.board.GetPlaceIndex(this);
-        if (GameplayController.instance.board.GetOwner(index) != null) 
-        {
-            info.Add(GameplayController.instance.board.GetOwner(index).GetName());
-        }
-        else 
-        {
-            info.Add("Budynek nie ma właściciela!");
-        }
-        
-
-        return info;
-    }
-
     public override float GetInitialPrice() => GetTier(1).buyPrice;
 
     /// <summary>
@@ -177,7 +158,7 @@ public class NormalBuilding : BuildingField
         int currentTier = GameplayController.instance.board.GetTier(visualiser.placeIndex);
 
         //Pytamy o możliwość ulepszenia tylko wtedy, gdy istnieje następny poziom budynku
-        if (HasNextTier(currentTier))
+        if (HasNextTier(visualiser.placeIndex) && player.Money >= GameplayController.instance.banking.GetUpgradePrice(visualiser.placeIndex))
         {
             float upgradePrice = GetTier(currentTier + 1).buyPrice;
 
@@ -211,7 +192,7 @@ public class NormalBuilding : BuildingField
         }
         else
         {
-            //Jeżeli nasz budynek nie ma następnego tieru
+            //Jeżeli nasz budynek nie ma następnego tieru, albo nie stać nas, by go ulepszyć
             GameplayController.instance.EndTurn();
         }
     }

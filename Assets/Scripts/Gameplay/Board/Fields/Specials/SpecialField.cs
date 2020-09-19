@@ -12,9 +12,4 @@ public abstract class SpecialField : Field
     private GameObject model;
 
     public override GameObject GetStartModel() => model;
-
-    /// <summary>
-    /// Wywołuje akcje charakterystyczne dla danego typu pola specjalnego
-    /// </summary>
-    public abstract void SpecialActions();
 }

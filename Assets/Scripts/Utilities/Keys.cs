@@ -79,7 +79,7 @@ public static class Keys
         /// <summary>
         /// Ilość pól na planszy.
         /// </summary>
-        public const int PLACE_COUNT = 18;
+        public const int PLACE_COUNT = 24;
         /// <summary>
         /// Liczba boków wielokąta, jakim jest plansza.
         /// </summary>
@@ -189,7 +189,7 @@ public static class Keys
         /// <summary>
         /// Ilość pieniędzy, jaką dostają gracze na start.
         /// </summary>
-        public const float START_MONEY = 100;
+        public const float START_MONEY = 5000f;
         /// <summary>
         /// Minimalna ilość możliwa do wyrzucenia przez kostke.
         /// </summary>
@@ -205,11 +205,11 @@ public static class Keys
         /// <summary>
         /// Ilość pieniędzy otrzymywana przez gracza za przejście przez start
         /// </summary>
-        public const float PASS_START_MONEY = 100f;
+        public const float PASS_START_MONEY = 500f;
         /// <summary>
-        /// Ilość pieniędzy, jaką otrzymuje gracz biorąc pożyczkę
+        /// Bufer pieniędzy, który przyznawany jest po wzięciu pożyczki. Ma umożliwić dalszą grę
         /// </summary>
-        public const float LOAN_AMOUNT = 100f;
+        public const float LOAN_BUFFER = 400;
     }
 
     public static class Files

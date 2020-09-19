@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class RoomPanel : MonoBehaviourPunCallbacks, IPanelInitable
+public class RoomPanel : MonoBehaviourPunCallbacks, IPanelInitable, IEventSubscribable
 {
     private BasePool basePool;
     public GameObject content;
@@ -23,9 +23,13 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IPanelInitable
     public void Init(MainMenuController mainMenuController)
     {
         this.mainMenuController = mainMenuController;
-        startGameButton.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
-        if (PhotonNetwork.IsMasterClient) startGameButton.GetComponent<Button>().interactable = PhotonNetwork.CurrentRoom.PlayerCount >= Keys.Menu.MIN_PLAYERS_COUNT;
 
+        //Ustawianie przycisku rozpoczęcia gry na nieaktywny dla graczy, którzy nie są masterem
+        startGameButton.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
+        //Wyłączanie możliwości rozpoczęcia gry bez spełnienia wymagań co do  ilości i gotowości graczy
+        if (PhotonNetwork.IsMasterClient) startGameButton.GetComponent<Button>().interactable = false;
+
+        //ładowanie graczy
         foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
         {
             basePool.TakeObject().gameObject.GetComponent<PlayerListing>().Init(mainMenuController, player, basePool);
@@ -34,12 +38,14 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IPanelInitable
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         basePool.TakeObject().gameObject.GetComponent<PlayerListing>().Init(mainMenuController, newPlayer, basePool);
-        startGameButton.GetComponent<Button>().interactable = PhotonNetwork.CurrentRoom.PlayerCount >= Keys.Menu.MIN_PLAYERS_COUNT && PhotonNetwork.IsMasterClient;
+        CheckPlayerReadyStatus();
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        startGameButton.GetComponent<Button>().interactable = PhotonNetwork.CurrentRoom.PlayerCount >= Keys.Menu.MIN_PLAYERS_COUNT && PhotonNetwork.IsMasterClient;
+        //jeżeli wyjdzie master, gracz który zostaje nowym masterem zaczyna widzieć przycisk rozpoczęcia gry
+        startGameButton.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
+        CheckPlayerReadyStatus();
     }
 
     public void StartGame()
@@ -54,11 +60,38 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IPanelInitable
 
     public void LeaveRoom()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-        {
-            Debug.Log("PlayerCount == 1");
-            PhotonNetwork.CurrentRoom.IsVisible = false;
-        }
         PhotonNetwork.LeaveRoom();
+    }
+
+    public void OnPlayerReady(string playerName, bool ready)
+    {
+        CheckPlayerReadyStatus();
+    }
+
+    private void CheckPlayerReadyStatus() 
+    {
+        float readyPlayerCount = 0f;
+        foreach (Photon.Realtime.Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            if (player.CustomProperties.ContainsKey("Room_PlayerReady") && (bool)player.CustomProperties["Room_PlayerReady"]) readyPlayerCount++;
+        }
+        startGameButton.GetComponent<Button>().interactable = PhotonNetwork.CurrentRoom.PlayerCount >= Keys.Menu.MIN_PLAYERS_COUNT && readyPlayerCount >= PhotonNetwork.CurrentRoom.PlayerCount/2.0f;
+    }
+
+//#if UNITY_EDITOR || DEVELOPMENT_BUILD
+//startGameButton.GetComponent<Button>().interactable = true;
+//#endif
+
+    public void SubscribeEvents()
+    {
+        EventManager.instance.onPlayerReady += null;
+        EventManager.instance.onPlayerReady += OnPlayerReady;
+        Debug.Log("RoomPanel:SubscribeEvents");
+    }
+
+    public void UnsubscribeEvents()
+    {
+        EventManager.instance.onPlayerReady -= OnPlayerReady;
+        Debug.Log("RoomPanel:UnsubcribeEvents");
     }
 }

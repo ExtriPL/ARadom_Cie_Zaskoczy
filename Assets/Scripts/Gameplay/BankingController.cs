@@ -25,6 +25,10 @@ public class BankingController : IEventSubscribable
     /// </summary>
     private List<string> raisers = new List<string>();
     /// <summary>
+    /// Lista graczy, którzy mogą brać udział w aukcji
+    /// </summary>
+    private List<string> auctionPlayers = new List<string>();
+    /// <summary>
     /// Informacje odebrane w ostatnim evencie OnAuction
     /// </summary>
     private Tuple<string, int, string, float, string> auctionData;
@@ -35,7 +39,12 @@ public class BankingController : IEventSubscribable
     {
         auctionPopup = null;
         language = SettingsController.instance.languageController;
-        for (int i = 0; i < GameplayController.instance.session.playerCount; i++) bidders.Add(GameplayController.instance.session.FindPlayer(i).GetName()); //Dodawanie wszystkich graczy do licytacji
+        //Dodawanie wszystkich graczy do licytacji
+        for (int i = 0; i < GameplayController.instance.session.playerCount; i++)
+        {
+            auctionPlayers.Add(GameplayController.instance.session.FindPlayer(i).GetName());
+            bidders.Add(GameplayController.instance.session.FindPlayer(i).GetName());
+        }
     }
 
     public void SubscribeEvents()
@@ -44,6 +53,7 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAuction += OnAuction;
         EventManager.instance.onPlayerQuited += OnPlayerQuit;
         EventManager.instance.onPay += OnPay;
+        EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
     }
 
     public void UnsubscribeEvents()
@@ -52,6 +62,7 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAuction -= OnAuction;
         EventManager.instance.onPlayerQuited -= OnPlayerQuit;
         EventManager.instance.onPay -= OnPay;
+        EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
     }
 
     #endregion Inicjalizacja
@@ -114,10 +125,10 @@ public class BankingController : IEventSubscribable
         NormalBuilding upgradeBuilding = GameplayController.instance.board.GetField(placeId) as NormalBuilding;
 
         //Sprawdzanie, czy budynek zawiera następny tier
-        if (upgradeBuilding.HasNextTier(GameplayController.instance.board.GetTier(placeId)))
+        if (upgradeBuilding.HasNextTier(placeId))
         {
+            player.DecreaseMoney(GetUpgradePrice(placeId));
             GameplayController.instance.board.NextTier(placeId);
-            player.DecreaseMoney(upgradeBuilding.GetTier(GameplayController.instance.board.GetTier(placeId)).buyPrice);
             EventManager.instance.SendOnPlayerUpgradedBuilding(player.GetName(), placeId);
         }
         else Debug.LogError("Budynek nie zawiera następnego tieru");
@@ -149,7 +160,39 @@ public class BankingController : IEventSubscribable
     /// <returns>Możliwość wzięcia pożyczki przez gracza</returns>
     public bool CanTakeLoan(Player player)
     {
-        return !player.TookLoan && (player.Money + Keys.Gameplay.LOAN_AMOUNT >= 0);
+        return !player.TookLoan;
+    }
+
+    /// <summary>
+    /// Zaciąga pożyczkę dla podanego gracza. Pożyczkę można wziąć tylko wtedy, gdy gracz zbankrutował
+    /// </summary>
+    /// <param name="player">Gracz, który bierze pożyczkę</param>
+    public void TakeLoan(Player player)
+    {
+        if (player != null)
+        {
+            player.TookLoan = true;
+            player.OutstandingAmount = -player.Money;
+            player.SetMoney(Keys.Gameplay.LOAN_BUFFER);
+        }
+        else Debug.LogError("Gracz, który bierze pożyczkę, nie może być nullem");
+    }
+
+    /// <summary>
+    /// Zwraca koszt ulepszenia pola, które znajduje się pod podanym numerem
+    /// </summary>
+    /// <param name="placeId">Numer pola, które jest ulepszane</param>
+    /// <returns>Cena ulepszenia pola</returns>
+    public float GetUpgradePrice(int placeId)
+    {
+        Field field = GameplayController.instance.board.GetField(placeId);
+        if (field is NormalBuilding)
+            return (field as NormalBuilding).GetTier(GameplayController.instance.board.GetTier(placeId) + 1).buyPrice;
+        else
+        {
+            Debug.LogError("Pole o id " + placeId + " nie jest polem, które można ulepszyć.");
+            return 0;
+        }
     }
 
     #endregion Funkcje bankowości
@@ -194,9 +237,12 @@ public class BankingController : IEventSubscribable
 
     private void OnPlayerQuit(string playerName) 
     {
-        if(bidders.Contains(playerName))bidders.Remove(playerName);
-        if(raisers.Contains(playerName))raisers.Remove(playerName);
-        if (auctionPopup != null && GameplayController.instance.session.roomOwner.IsLocal) EventManager.instance.SendOnAuction(auctionData.Item1, auctionData.Item2, "", auctionData.Item4, playerName);
+        RemoveFromAuction(playerName);
+    }
+
+    private void OnPlayerLostGame(string playerName)
+    {
+        RemoveFromAuction(playerName);
     }
 
     private void OnPay(string payerName, string receiverName, float amount)
@@ -277,8 +323,8 @@ public class BankingController : IEventSubscribable
 
         PopupSystem.instance.ClosePopup(auctionPopup);
         auctionPopup = null;
-        bidders.Clear();
-        for (int i = 0; i < GameplayController.instance.session.playerCount; i++) bidders.Add(GameplayController.instance.session.FindPlayer(i).GetName()); //Dodawanie wszystkich graczy do licytacji
+        raisers.Clear();
+        bidders = new List<string>(auctionPlayers); //Dodawanie wszystkich graczy do licytacji
     }
 
     /// <summary>
@@ -344,6 +390,19 @@ public class BankingController : IEventSubscribable
 
         }
         PopupSystem.instance.AddPopup(auctionPopup);
+    }
+
+    /// <summary>
+    /// Usuwa gracza z możliwości udziału w aukcji
+    /// </summary>
+    /// <param name="playerName">Gracz, którego chcemy usunąć z aukcji</param>
+    private void RemoveFromAuction(string playerName)
+    {
+        if (auctionPlayers.Contains(playerName)) auctionPlayers.Remove(playerName);
+        if (bidders.Contains(playerName)) bidders.Remove(playerName);
+        if (raisers.Contains(playerName)) raisers.Remove(playerName);
+        if (auctionPopup != null && GameplayController.instance.session.roomOwner.IsLocal) 
+            EventManager.instance.SendOnAuction(auctionData.Item1, auctionData.Item2, "", auctionData.Item4, playerName);
     }
 
     #endregion Aukcja

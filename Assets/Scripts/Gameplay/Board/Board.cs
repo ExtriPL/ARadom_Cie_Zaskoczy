@@ -1,10 +1,12 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class Board : IEventSubscribable
@@ -97,13 +99,13 @@ public class Board : IEventSubscribable
             used.Add(startIndex);
 
             //Sprawdzanie, czy istnieje wystarczająca liczba budynków do rozpoczęcia gry
-            if (fields.Count - 1 >= Keys.Board.PLACE_COUNT)
+            if (fields.Count >= Keys.Board.PLACE_COUNT)
             {
                 for (int i = 1; i < Keys.Board.PLACE_COUNT; i++)
                 {
                     int j;
                     do j = Random.Range(0, fields.Count);
-                    while (used.Contains(j));
+                    while (used.Contains(j) || !fields[j].CanBePlaced());
 
                     used.Add(j);
                     places.Add(i, j);
@@ -295,6 +297,35 @@ public class Board : IEventSubscribable
         return placesBetween;
     }
 
+    /// <summary>
+    /// Zlicza liczbe pól o podanym typie w posiadaniu podanego gracza
+    /// </summary>
+    /// <param name="owner">Osoba, której pola liczymy</param>
+    /// <param name="fieldType">Typ pól, które liczymy</param>
+    /// <returns>Liczba pól o podanym typie w posiadaniu podanego gracza</returns>
+    public int CountPlacesOfType(Player owner, Type fieldType)
+    {
+        int amount = 0;
+
+        foreach (int fieldId in owner.GetOwnedFields())
+            amount += GetField(fieldId).GetType().Equals(fieldType) ? 1 : 0;
+
+        return amount;
+    }
+
+    /// <summary>
+    /// Zlicza liczbę pól w posiadaniu właściciela i typie podanego pola
+    /// </summary>
+    /// <param name="placeId">Numer pola, które chcemy sprawdzić</param>
+    /// <returns>Ilość pól o typie podanego w posiadaniu właściciela</returns>
+    public int CountPlacesOfType(int placeId)
+    {
+        Player owner = GetOwner(placeId);
+        Type fieldType = GetField(placeId).GetType();
+
+        return CountPlacesOfType(owner, fieldType);
+    }
+
     #endregion Właściowości pól na planszy
 
     #region Sterowanie rozgrywką
@@ -302,20 +333,41 @@ public class Board : IEventSubscribable
     /// <summary>
     /// Metoda przesuwająca gracza o daną ilość pól.
     /// </summary>
-    /// <param name="p">Gracz</param>
+    /// <param name="player">Gracz</param>
     /// <param name="amount">Ilośc pól</param>
-    public void MovePlayer(Player p, int amount)
+    public void MovePlayer(Player player, int amount)
     {
-        int fromFieldIndex = p.PlaceId;
-        int toFieldIndex;
-
         //Jeżeli numer pola po wykonaniu ruchu przekroczy ilość pól na planszy - 1 (indeks ostatniego pola), gracz zostanie przeniesiony na odpowiedznie pole na początku planszy.
         //Np: gracz stoi na polu 10, przesuwamy go o 5 pól, skończy na polu 3.
-        p.PlaceId = (p.PlaceId + amount > Keys.Board.PLACE_COUNT - 1) ? p.PlaceId = (p.PlaceId + amount) - (Keys.Board.PLACE_COUNT - 1) : p.PlaceId + amount;
+        int toFieldIndex = (player.PlaceId + amount > Keys.Board.PLACE_COUNT - 1) ? player.PlaceId = (player.PlaceId + amount) - (Keys.Board.PLACE_COUNT - 1) : player.PlaceId + amount;   
 
-        toFieldIndex = p.PlaceId;
+        MovePlayerTo(player, toFieldIndex);
+    }
 
-        EventManager.instance.SendOnPlayerMoved(p.GetName(), fromFieldIndex, toFieldIndex);
+    /// <summary>
+    /// Przesuwa gracza na określone pole
+    /// </summary>
+    /// <param name="player">Gracz, którego chcemy przesunąć</param>
+    /// <param name="placeId">Miejsce, na które chcemy przesunąć gracza</param>
+    public void MovePlayerTo(Player player, int placeId)
+    {
+        int fromPlaceId = player.PlaceId;
+        player.PlaceId = placeId;
+
+        EventManager.instance.SendOnPlayerMoved(player.GetName(), fromPlaceId, placeId);
+    }
+
+    /// <summary>
+    /// Teleportuje gracza na podane miejsce
+    /// </summary>
+    /// <param name="player">Gracz, którego teleportujemy</param>
+    /// <param name="placeId">Miejsce, na które teleportujemy gracza</param>
+    public void TeleportPlayer(Player player, int placeId)
+    {
+        int fromPlaceId = player.PlaceId;
+        player.PlaceId = placeId;
+
+        EventManager.instance.SendOnPlayerTeleported(player.GetName(), fromPlaceId, placeId);
     }
 
     /// <summary>
@@ -326,11 +378,28 @@ public class Board : IEventSubscribable
     {
         if (GetField(placeId) is NormalBuilding)
         {
+            //By przypisanie wartości zadziałało na słowniku, trzeba go wyciągnąć z sieci, zmodyfikować i znów wsadzić
+            Dictionary<int, int> tiers = new Dictionary<int, int>(this.tiers);
             tiers[placeId]++;
+            this.tiers = new Dictionary<int, int>(tiers);
         }
         else
         {
             Debug.LogError("Wywołano metodę NextTier(), dla pola kltóre nie ma tierów!");
+        }
+    }
+
+    public void SetTier(int placeId, int tier)
+    {
+        if (GetField(placeId) is NormalBuilding)
+        {
+            Dictionary<int, int> tiers = new Dictionary<int, int>(this.tiers);
+            tiers[placeId] = tier;
+            this.tiers = new Dictionary<int, int>(tiers);
+        }
+        else
+        {
+            Debug.LogError("Wywołano metodę SetTier(), dla pola kltóre nie ma tierów!");
         }
     }
 
@@ -343,9 +412,7 @@ public class Board : IEventSubscribable
         for (int i = 0; i < tiers.Count; i++)
         {
             if (GetOwner(i) == null)
-            {
-                tiers[i] = 0;
-            }
+                SetTier(i, 0);
         }
     }
 

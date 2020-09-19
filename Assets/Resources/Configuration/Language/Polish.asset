@@ -194,3 +194,21 @@ MonoBehaviour:
     value: "Wyrzu\u0107"
   - key: READY
     value: Gotowy
+  - key: LOST_THE_GAME
+    value: " przegra\u0142 gr\u0119"
+  - key: YOU_LOST_THE_GAME
+    value: "Zbankrutowa\u0142e\u015B i przegra\u0142e\u015B gr\u0119"
+  - key: LAST_CHANCE_WANT_TO_TAKE_LOAN
+    value: "Zbankrutowa\u0142e\u015B. Czy chcesz wzi\u0105\u0107 po\u017Cyczk\u0119
+      na dalsz\u0105 gr\u0119?"
+  - key: GAME_ENDED
+    value: "Rozgrywka zako\u0144czy\u0142a si\u0119."
+  - key: WINNER_IS
+    value: "Zwyci\u0119zc\u0105 zostaje "
+  - key: YOU_WON_GAME
+    value: "Wygra\u0142e\u015B gr\u0119."
+  - key: START_MONEY_FOR_LOAN_PAYOFF
+    value: "Sp\u0142acasz rat\u0119 po\u017Cyczki pieni\u0119dzmi za przej\u015Bcie
+      przez start."
+  - key: YOU_PAID_OFF_YOUR_LOAN
+    value: "Sp\u0142aci\u0142e\u015B swoj\u0105 po\u017Cyczk\u0119"

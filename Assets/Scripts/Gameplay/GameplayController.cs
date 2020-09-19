@@ -85,11 +85,15 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     public void SubscribeEvents()
     {
         EventManager.instance.onTurnChanged += OnTurnChanged;
+        EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
+        EventManager.instance.onGameStateChanged += OnGameStateChanged;
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onTurnChanged -= OnTurnChanged;
+        EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
+        EventManager.instance.onGameStateChanged -= OnGameStateChanged;
     }
 
     /// <summary>
@@ -213,19 +217,13 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
             if(banking.CanTakeLoan(session.localPlayer))
             {
                 //Danie graczowi szansy na zaciągnięcie pożyczki, by mógł ocalić się przed bankructwem
+                ShowLastChanceLoanMessage();
             }
             else
             {
                 //Jeżeli dojdzie do tego miejsca, gracz nie ma już żadnych szans na ratunek i przegrywa
-                EventManager.instance.SendOnPlayerLostGame(session.localPlayer.GetName());
-                session.localPlayer.IsLoser = true;
-
-                if (WinnerExists())
-                {
-                    //Informacja o wygranej jakiegoś gracza
-                    //Zakończenie rozgrywki
-                }
-                else NextTurn();
+                LosePlayer();
+                CheckWin();
             }
         }
         else NextTurn();
@@ -298,26 +296,151 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         StartGame();
     }
 
+    /// <summary>
+    /// Wyświetla stosowne komunikaty przy wowołaniu eventu przegranej gracza
+    /// </summary>
+    /// <param name="playerName">Gracz, który przegrał grę</param>
+    private void OnPlayerLostGame(string playerName)
+    {
+        Player player = session.FindPlayer(playerName);
+        LanguageController language = SettingsController.instance.languageController;
+
+        //Gracz, który przegrał, jest graczem lokalnym
+        if (player.NetworkPlayer.IsLocal)
+        {
+            string message = language.GetWord("YOU_LOST_THE_GAME");
+            QuestionPopup playerLostGame = QuestionPopup.CreateOkDialog(message, Popup.Functionality.Destroy());
+
+            PopupSystem.instance.AddPopup(playerLostGame);
+        }
+        else
+        {
+            string message = language.GetWord("PLAYER") + playerName + language.GetWord("LOST_THE_GAME");
+            InfoPopup playerLostGame = new InfoPopup(message, 1.5f);
+
+            PopupSystem.instance.AddPopup(playerLostGame);
+        }
+    }
+
+    private void OnGameStateChanged(GameState previousState, GameState newState)
+    {
+        if(newState == GameState.ended)
+        {
+            LanguageController language = SettingsController.instance.languageController;
+
+            Player winner = GetWinner();
+            string message;
+            if (winner != null)
+            {
+                if (winner.NetworkPlayer.IsLocal) message = language.GetWord("YOU_WON_GAME");
+                else message = language.GetWord("GAME_ENDED") + " " + language.GetWord("WINNER_IS") + winner.GetName();
+            }
+            else message = language.GetWord("GAME_ENDED");
+
+            QuestionPopup endGame = QuestionPopup.CreateOkDialog(message, delegate { menu.QuitGame(); } );
+            PopupSystem.instance.AddPopup(endGame);
+        }
+    }
+
     #endregion Obsługa eventów
 
-    #region Warunki przegranej/wygranej
+    #region Warunki przegranej/wygranej  
+
+    /// <summary>
+    /// Pokazuje popup, mówiący o bankructwie i dający szanse wzięcia pożyczki pozwalającej na dalszą grę
+    /// </summary>
+    private void ShowLastChanceLoanMessage()
+    {
+        LanguageController language = SettingsController.instance.languageController;
+        string message = language.GetWord("LAST_CHANCE_WANT_TO_TAKE_LOAN");
+
+        Popup.PopupAction yesAction = delegate (Popup source)
+        {
+            banking.TakeLoan(session.localPlayer);
+            EndTurn();
+            Popup.Functionality.Destroy().Invoke(source);
+        };
+        Popup.PopupAction noAction = delegate (Popup source)
+        {
+            LosePlayer();
+            CheckWin();
+            Popup.Functionality.Destroy().Invoke(source);
+        };
+
+        QuestionPopup lastChange = QuestionPopup.CreateYesNoDialog(message, yesAction, noAction);
+        PopupSystem.instance.AddPopup(lastChange);
+    }
+
+    /// <summary>
+    /// Zmienia status gracza na przegrany
+    /// </summary> 
+    private void LosePlayer()
+    {
+        session.localPlayer.IsLoser = true;
+
+        //Odbieranie pól graczowi
+        foreach (int placeId in session.localPlayer.GetOwnedFields())
+        {
+            if (board.GetField(placeId) is NormalBuilding)
+                board.SetTier(placeId, 0);
+        }
+
+        session.localPlayer.ClearOwnership();
+        session.localPlayer.PlaceId = -1;
+
+        EventManager.instance.SendOnPlayerLostGame(session.localPlayer.GetName());
+    }
+
+    /// <summary>
+    /// Sprawdza, czy istnieje zwycięzca gry. Jeżeli tak jest wyświetla komunikat. Jeżeli nie, rozpoczyna kolejną turę
+    /// </summary>
+    private void CheckWin()
+    {
+        if (WinnerExists())
+        {
+            //Informacja o wygranej jakiegoś gracza
+            //Zakończenie rozgrywki
+            session.gameState = GameState.ended;
+        }
+        else NextTurn();
+    }
+
+    /// <summary>
+    /// Zwraca instancję gracza, który wygrał grę.
+    /// Jeżeli taki gracz nie istnieje, zwraca null.
+    /// </summary>
+    /// <returns>Instancja wygrywającego gracza</returns>
+    public Player GetWinner()
+    {
+        //Warunek musi tutaj być, by w przypadku, gdy gra się dalej toczy, funkcja nie zwróciła instancji pierwszego dalej grającego gracza
+        if (WinnerExists())
+        {
+            for(int i = 0; i < session.playerCount; i++)
+            {
+                Player player = session.FindPlayer(i);
+                if (!player.IsLoser) return player;
+            }
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// Sprawdza, czy istnieje zwycięzca rozgrywki
     /// </summary>
     /// <returns>Informacja, czy istnieje zwycięzca rozgrywki</returns>
-    private bool WinnerExists()
+    public bool WinnerExists()
     {
         //Licza graczy, którzy dalej grają
         int stillPlaying = 0;
 
-        for(int i = 0; i < session.playerCount; i++)
+        for (int i = 0; i < session.playerCount; i++)
         {
             Player player = session.FindPlayer(i);
             if (!player.IsLoser) stillPlaying++;
         }
 
-       return !(session.playerCount != 1) && stillPlaying == 1; //Jeżeli gramy w pokoju dla jednego gracza (testy), jedyny gracz nie może od razu wygrać
+        return stillPlaying <= 1; //Istnieje zwycięzca, gdy liczba grających osób jest równa 1. Gdy jest mniejsza od jednego gra się kończy ze zwycięzcą równym null
     }
 
     #endregion Warunki przegranej/wygranej

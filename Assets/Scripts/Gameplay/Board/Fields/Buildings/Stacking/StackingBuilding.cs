@@ -10,63 +10,47 @@ public abstract class StackingBuilding : BuildingField
     [SerializeField, Tooltip("Model budynku stojącego na polu")]
     private GameObject model;
     /// <summary>
-    /// Cena zakupu pola
+    /// Ustawienia budynku typu stacking
     /// </summary>
-    [SerializeField, Tooltip("Cena zakupu pola")]
-    private float buyPrice;
-    /// <summary>
-    /// Ilość pieniędzy, jaką zapłaci gracz za wejście na pole
-    /// </summary>
-    [SerializeField, Tooltip("Ilość pieniędzy, jaką zapłaci gracz za wejście na pole")]
-    private float enterCost;
-    /// <summary>
-    /// O ile zwiększa się koszt wejścia na pole, przy posiadaniu tego budynku w grupie budynków typu Stacking
-    /// </summary>
-    [SerializeField, Tooltip("O ile zwiększa się koszt wejścia na pole, przy posiadaniu tego budynku w grupie budynków typu Stacking")]
-    private float stackingEnterCost;
-    /// <summary>
-    /// Grupa budynków specjalnych, do których należy pole
-    /// </summary>
-    protected StackingBuildingType stackingType;
-
+    [SerializeField, Tooltip("Ustawienia budynków typu stacking")]
+    protected StackingSettings stackingSettings;
     public override GameObject GetStartModel() => model;
 
     /// <summary>
     /// Zwraca cenę zakupu pola
     /// </summary>
     /// <returns>Cena zakupu pola</returns>
-    public float GetBuyPrice() => buyPrice;
-
-    /// <summary>
-    /// Podstawowy koszt wejścia na pole, jeżeli jest ono w posiadaniu jakiegoś gracza
-    /// </summary>
-    /// <returns>Podstawowy koszt wejścia na pole</returns>
-    public float GetEnterCost() => enterCost;
-
-    /// <summary>
-    /// O ile zwiększa się koszt wejścia na pole, przy posiadaniu tego budynku w grupie budynków typu Stacking
-    /// </summary>
-    /// <returns>Zwiększenie kosztu wejścia na pola w grupie</returns>
-    public float GetStackingEnterCost() => stackingEnterCost;
+    public float BuyPrice { get => stackingSettings.BuyPrice; }
 
     /// <summary>
     /// Grupa budynków specjalnych, do których należy pole
     /// </summary>
     /// <returns>Grupa budynku specjalnego</returns>
-    public StackingBuildingType GetStackingType() => stackingType;
+    public StackingBuildingType StackingType { get => stackingSettings.StackingType; }
 
-    public override float GetInitialPrice() => GetBuyPrice();
+    public override float GetInitialPrice() => BuyPrice;
+
+    /// <summary>
+    /// Koszt wejścia na pole, jeżeli jest ono w posiadaniu jakiegoś gracza
+    /// </summary>
+    /// <param name="placeId">Numer pola na planszy</param>
+    /// <returns></returns>
+    public float GetEnterCost(int placeId)
+    {
+        int buildingCount = GameplayController.instance.board.CountPlacesOfType(placeId);
+        return stackingSettings.GetEnterCost(buildingCount);
+    }
 
     public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
     {
         //Jeżeli kupimy budynek, który należy do tej samej grupy budynków stackujących, wywołujemy funkcje OnSameGroupBuy
-        if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).GetStackingType() == GetStackingType()) OnSameGroupBuy(player, visualiser);
+        if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).StackingType == StackingType) OnSameGroupBuy(player, visualiser);
     }
 
     public override void OnSellBuilding(Player player, PlaceVisualiser visualiser)
     {
         //Jeżeli sprzedamy budynek, który należy do tej samej grupy budynków stackujących, wywołujemy funkcje OnSameGroupSell
-        if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).GetStackingType() == GetStackingType()) OnSameGroupBuy(player, visualiser);
+        if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).StackingType == StackingType) OnSameGroupBuy(player, visualiser);
     }
 
     /// <summary>
@@ -96,7 +80,7 @@ public abstract class StackingBuilding : BuildingField
                 else
                 {
                     //Jeżeli gracz, który nie jest właścicielem stanął na polu
-                    ShowPayPopup(player, visualiser, enterCost);
+                    ShowPayPopup(player, visualiser, GetEnterCost(visualiser.placeIndex));
                 }
             }
         } 

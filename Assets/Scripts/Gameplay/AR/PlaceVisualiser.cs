@@ -17,6 +17,10 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
     /// Numer pola na planszy
     /// </summary>
     public int placeIndex { get; private set; }
+    /// <summary>
+    /// Flaga określająca, czy pole jest widoczne
+    /// </summary>
+    private bool visible;
 
     [SerializeField]
     /// <summary>
@@ -35,7 +39,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
     /// <summary>
     /// Lista materiałów obiektów tworzących światła na polu
     /// </summary>
-    private List<Material> backlightsList = new List<Material>();
+    private List<GameObject> backlightsList = new List<GameObject>();
     /// <summary>
     /// Odwołanie do gracza, który stoi na polu i jednocześnie jest jego kolejka
     /// </summary>
@@ -66,6 +70,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
     {
         this.field = field;
         this.placeIndex = placeIndex;
+        visible = true;
 
         ARController = GameplayController.instance.arController;
         InitModels();
@@ -122,6 +127,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         EventManager.instance.onPlayerQuited += OnPlayerQuit;
         EventManager.instance.onAquiredBuilding += OnAquiredBuilding;
         EventManager.instance.onUpgradedBuilding += OnUpgradeBuilding;
+        EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
     }
 
     /// <summary>
@@ -134,6 +140,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         EventManager.instance.onPlayerQuited -= OnPlayerQuit;
         EventManager.instance.onAquiredBuilding -= OnAquiredBuilding;
         EventManager.instance.onUpgradedBuilding -= OnUpgradeBuilding;
+        EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
     }
 
     #endregion Inicjalizacja
@@ -195,16 +202,26 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         }
         GameObject centerModel;
 
-        if (field is NormalBuilding)
+        ARController.centerBuilding.SetActive(true);
+
+        if (field is NormalBuilding normalBuilding)
         {
-            centerModel = Instantiate(((NormalBuilding)field).GetTier(((NormalBuilding)field).tiersCount - 1).model, ARController.centerBuilding.GetComponent<Transform>());
+            if (GameplayController.instance.board.GetTier(placeIndex) > 0)
+            {
+                centerModel = Instantiate(normalBuilding.GetTier(normalBuilding.tiersCount - 1).model, ARController.centerBuilding.GetComponent<Transform>());
+                centerModel.name = normalBuilding.GetFieldName();
+            }
+            else
+            {
+                ARController.centerBuilding.SetActive(false);
+            }
         }
         else
         {
-            
             centerModel = Instantiate(field.GetStartModel(), ARController.centerBuilding.GetComponent<Transform>());
+            centerModel.name = field.GetFieldName();
         }
-        centerModel.name = field.GetFieldName();
+        
     }
 
     /// <summary>
@@ -217,10 +234,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         if (showedModel != 0 && GameplayController.instance.board.GetTier(placeIndex) == 0) ShowModel(0);
 
         //Usuwanie podświetlenia gracza, który właśnie wyszedł
-        playersOnField.Remove(playerName);
-        Player activePlayer = GameplayController.instance.session.FindPlayer(GameplayController.instance.board.dice.currentPlayer);
-        if (activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
-        else DeactivateField();
+        RemovePlayerFromField(playerName);
     }
 
     /// <summary>
@@ -262,6 +276,18 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         } 
     }
 
+    /// <summary>
+    /// Obsługa eventu przegranej gracza
+    /// </summary>
+    /// <param name="playerName"></param>
+    private void OnPlayerLostGame(string playerName)
+    {
+        //Zrestartowanie modelu do stanu początkowego
+        if (showedModel != 0 && GameplayController.instance.board.GetTier(placeIndex) == 0) ShowModel(0);
+
+        RemovePlayerFromField(playerName);
+    }
+
     #endregion Obsługa eventów
 
     #region Podświetlenie pól
@@ -296,7 +322,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
 
             light.GetComponent<Renderer>().material = startMaterial;
 
-            backlightsList.Add(light.GetComponent<Renderer>().material);
+            backlightsList.Add(light);
         }
 
         backlights.GetComponent<Transform>().localPosition = new Vector3();
@@ -313,13 +339,13 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         for(int i = 0; i < playersOnField.Count; i++)
         {
             Color playerColor = GameplayController.instance.session.FindPlayer(playersOnField[i]).MainColor;
-            backlightsList[i].color = new Color(playerColor.r, playerColor.g, playerColor.b);
+            backlightsList[i].GetComponent<Renderer>().material.color = new Color(playerColor.r, playerColor.g, playerColor.b);
         }
 
         //Dla wszystkich części pola, na których nie przypada żaden gracz, ustawiany jest domyślny kolor
         for(int i = playersOnField.Count; i < backlightsList.Count; i++)
         {
-            backlightsList[i].color = Keys.Board.Backlight.INACTIVE_COLOR;
+            backlightsList[i].GetComponent<Renderer>().material.color = Keys.Board.Backlight.INACTIVE_COLOR;
         }
     }
 
@@ -329,9 +355,9 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
     /// <param name="activeColor"></param>
     private void ActivateField(Player activePlayer)
     {
-        foreach(Material back in backlightsList)
+        foreach(GameObject back in backlightsList)
         {
-            back.color = activePlayer.MainColor;
+            back.GetComponent<Renderer>().material.color = activePlayer.MainColor;
         }
 
         this.activePlayer = activePlayer;
@@ -354,7 +380,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         {
             tParameter = Mathf.Pow(Mathf.Cos((Time.time - startShiningTime) * Mathf.PI / Keys.Board.Backlight.SHINING_PERIOD), 2f);
             
-            foreach (Material back in backlightsList) back.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, tParameter);
+            foreach (GameObject back in backlightsList) back.GetComponent<Renderer>().material.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, tParameter);
         }
     }
 
@@ -376,7 +402,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
             float time = Time.time - startTime;
 
             float t = Mathf.Pow(Mathf.Cos((time + shift) * Mathf.PI / Keys.Board.Backlight.SHINING_PERIOD), 2f) + shiftT;
-            foreach (Material back in backlightsList) back.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, t);
+            foreach (GameObject back in backlightsList) back.GetComponent<Renderer>().material.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, t);
 
             yield return null;
         }
@@ -416,6 +442,34 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         }
     }
 
+    /// <summary>
+    /// Ukrywa podświetlenie pola
+    /// </summary>
+    private void HideBacklights()
+    {
+        foreach (GameObject back in backlightsList) back.SetActive(false);
+    }
+
+    /// <summary>
+    /// Pokazuje podświetlenie pola
+    /// </summary>
+    private void ShowBacklights()
+    {
+        foreach (GameObject back in backlightsList) back.SetActive(true);
+    }
+
+    /// <summary>
+    /// Usuwa podświetlenie gracza z pola
+    /// </summary>
+    /// <param name="playerName">Gracz, któego chcemy usunąć</param>
+    private void RemovePlayerFromField(string playerName)
+    {
+        playersOnField.Remove(playerName);
+        Player activePlayer = GameplayController.instance.session.FindPlayer(GameplayController.instance.board.dice.currentPlayer);
+        if (activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
+        else DeactivateField();
+    }
+
     #endregion Podświetlenie pól
 
     #region Zarządzanie wyświetlanym modelem
@@ -429,15 +483,27 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         else ShowModel(showedModel + 1);
     }
 
-    public void ShowModel(int id)
+    /// <summary>
+    /// Pokazuje wybrany model
+    /// </summary>
+    /// <param name="id">Numer modelu, który chcemy pokazać</param>
+    private void ShowModel(int id)
     {  
         if (id < models.Count) 
         {
             models[showedModel]?.SetActive(false);
             showedModel = id;
-            models[showedModel]?.SetActive(true);
+            if(visible) models[showedModel]?.SetActive(true);
         }
         else Debug.LogError("Podano nieprawidłowy numer modelu!");
+    }
+
+    /// <summary>
+    /// Ukrywa obecnie wyświetlony model budynku
+    /// </summary>
+    private void HideModel()
+    {
+        models[showedModel].SetActive(false);
     }
 
     #endregion Zarządzanie wyświetlanym modelem
@@ -485,4 +551,24 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
     }
 
     #endregion Animacje
+
+    /// <summary>
+    /// Przełącza widoczność pola
+    /// </summary>
+    /// <param name="visible">Zmienna określająca, czy pole ma być widoczne</param>
+    public void ToggleVisibility(bool visible)
+    {
+        if(visible)
+        {
+            ShowModel(showedModel);
+            ShowBacklights();
+        }
+        else
+        {
+            HideModel();
+            HideBacklights();
+        }
+
+        this.visible = visible;
+    }
 }

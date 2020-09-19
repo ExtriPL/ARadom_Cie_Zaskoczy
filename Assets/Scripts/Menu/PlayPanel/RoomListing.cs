@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,20 +12,27 @@ public class RoomListing: MonoBehaviourPunCallbacks
     private RoomInfo roomInfo;
     private BasePool pool;
     private MainMenuController mainMenuController;
-    public void Init(RoomInfo roomInfo, BasePool pool, MainMenuController mainMenuController) 
+    PlayPanel playPanel;
+    public void Init(RoomInfo roomInfo, PlayPanel playPanel, BasePool pool, MainMenuController mainMenuController) 
     {
         this.mainMenuController = mainMenuController;
         this.roomInfo = roomInfo;
         this.pool = pool;
+        this.playPanel = playPanel;
         Refresh();
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        if ((roomList.Find(x => x.Name == roomInfo.Name).RemovedFromList)) Deinit(); else Refresh();
+        if (!(roomList.Contains(roomInfo)) || (roomList.Find(x => x.Name == roomInfo.Name).RemovedFromList)) Deinit();
+        else
+        {
+            Refresh();
+        }
     }
 
     public void Deinit() 
     {
+        playPanel.roomList.Remove(roomInfo);
         roomInfo = null;
         pool.ReturnObject(gameObject);
     }
@@ -40,8 +48,10 @@ public class RoomListing: MonoBehaviourPunCallbacks
 
     public void JoinRoom() 
     {
-        PhotonNetwork.JoinRoom(roomInfo.Name);
-        
+        Hashtable table = new Hashtable();
+        table.Add("Room_PlayerReady", false);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(table);
+        PhotonNetwork.JoinRoom(roomInfo.Name);   
     }
 
     public override void OnJoinedRoom()

@@ -170,6 +170,20 @@ public class Player
         }
     }
 
+    /// <summary>
+    /// Kwota pożyczki pozostała do zapłaty
+    /// </summary>
+    public float OutstandingAmount
+    {
+        get => (float)NetworkPlayer.CustomProperties["outstandingAmount"];
+        set
+        {
+            Hashtable table = new Hashtable();
+            table.Add("outstandingAmount", value);
+            NetworkPlayer.SetCustomProperties(table);
+        }
+    }
+
     #endregion Właściwości gracza
 
     /// <summary>
@@ -198,6 +212,7 @@ public class Player
         BlinkColor = blinkColor;
         IsLoser = false;
         TookLoan = false;
+        OutstandingAmount = 0;
     }
 
     /// <summary>
@@ -264,6 +279,11 @@ public class Player
         {
             RemoveFromFieldList(fieldId);
         }
+    }
+
+    public void ClearOwnership()
+    {
+        FieldList = new List<int>();
     }
 
     /// <summary>

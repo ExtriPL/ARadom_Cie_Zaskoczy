@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SettingsPanel : MonoBehaviour,IPanelInitable
+public class SettingsPanel : MonoBehaviourPunCallbacks, IPanelInitable
 {
     //Zmienne pomocnicze
     private MainMenuController mainMenuController;
@@ -95,14 +96,19 @@ public class SettingsPanel : MonoBehaviour,IPanelInitable
         if (restartGame) //Jeżeli został zmieniony język, przeładowujemy całą grę
         {
             PhotonNetwork.Disconnect();
-            SceneManager.LoadScene(Keys.SceneNames.MAIN_MENU, LoadSceneMode.Single);
         }
         else //Jeżeli nie, przechodzimy do MenuPanelu
         {
             mainMenuController.OpenPanel(1);
         }
     }
-    
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        base.OnDisconnected(cause);
+        SceneManager.LoadScene(Keys.SceneNames.MAIN_MENU, LoadSceneMode.Single);
+    }
+
     public void SetDefaults() 
     {
         //Ustawianie opisu Slidera muzyki, oraz wczytanie jego wartości z wartości domyślnych

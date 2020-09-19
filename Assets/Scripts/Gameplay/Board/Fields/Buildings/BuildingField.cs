@@ -6,6 +6,9 @@ using UnityEngine.Events;
 
 public abstract class BuildingField : Field
 {
+    [SerializeField, Tooltip("Historia budynku"), TextArea]
+    protected string fieldHistory;
+
     /// <summary>
     /// Zdarzenie wywoływane przy zakupie pola
     /// </summary>
@@ -45,36 +48,44 @@ public abstract class BuildingField : Field
     /// <param name="visualiser">Instancja visualisera, który przechowuje dane pole</param>
     private void ShowBuyPopup(Player player, PlaceVisualiser visualiser)
     {
-        LanguageController language = SettingsController.instance.languageController;
-        //popup o mozliwosci kupienia pola od banku
-        string message = language.GetWord("DO_YOU_WANT_TO_BUY") + GetFieldName() + "\n" + language.GetWord("PRICE") + ":" + GetInitialPrice() + "?";
-
-        QuestionPopup wantToBuy = new QuestionPopup(message);
-        Popup.PopupAction yesAction = delegate (Popup source)
+        if (player.Money >= GetInitialPrice())
         {
+            LanguageController language = SettingsController.instance.languageController;
+            //popup o mozliwosci kupienia pola od banku
+            string message = language.GetWord("DO_YOU_WANT_TO_BUY") + GetFieldName() + "\n" + language.GetWord("PRICE") + ":" + GetInitialPrice() + "?";
+
+            QuestionPopup wantToBuy = new QuestionPopup(message);
+            Popup.PopupAction yesAction = delegate (Popup source)
+            {
             //gracz chce kupic pole wiec jest mu przydzielane z banku
             GameplayController.instance.banking.AquireBuilding(player, player.PlaceId);
-            source.onClose = null;
-            visualiser.onAnimationEnd += delegate { GameplayController.instance.EndTurn(); };
-            Popup.Functionality.Destroy(wantToBuy).Invoke(source);
-        };
-        Popup.PopupAction noAction = delegate (Popup source)
-        {
+                source.onClose = null;
+                visualiser.onAnimationEnd += delegate { GameplayController.instance.EndTurn(); };
+                Popup.Functionality.Destroy(wantToBuy).Invoke(source);
+            };
+            Popup.PopupAction noAction = delegate (Popup source)
+            {
             //gracz nie chce kupic pola od banku
             //event wywołujący panel licytacji
             Popup.Functionality.Destroy(wantToBuy).Invoke(source);
-        };
-        Popup.PopupAction auctionAction = delegate
-        {
-            EventManager.instance.SendOnAuction(player.GetName(), player.PlaceId, "", GetInitialPrice(), player.GetName());
-        };
+            };
+            Popup.PopupAction auctionAction = delegate
+            {
+                EventManager.instance.SendOnAuction(player.GetName(), player.PlaceId, "", GetInitialPrice(), player.GetName());
+            };
 
-        string yes = language.GetWord("YES");
-        string no = language.GetWord("NO");
-        wantToBuy.AddButton(no, noAction);
-        wantToBuy.AddButton(yes, yesAction);
-        wantToBuy.onClose += auctionAction;
-        PopupSystem.instance.AddPopup(wantToBuy);
+            string yes = language.GetWord("YES");
+            string no = language.GetWord("NO");
+            wantToBuy.AddButton(no, noAction);
+            wantToBuy.AddButton(yes, yesAction);
+            wantToBuy.onClose += auctionAction;
+            PopupSystem.instance.AddPopup(wantToBuy);
+        }
+        else
+        {
+            //Jeżeli nie stać nas na kupienie budynku, rozpoczyna się licytacja
+            EventManager.instance.SendOnAuction(player.GetName(), visualiser.placeIndex, "", GetInitialPrice(), player.GetName());
+        }
     }
 
     protected void ShowPayPopup(Player player, PlaceVisualiser visualiser, float cost)
@@ -92,8 +103,14 @@ public abstract class BuildingField : Field
 
         QuestionPopup payPopup = QuestionPopup.CreateOkDialog(message, Popup.Functionality.Destroy());
 
-        payPopup.onClick += onClose;
+        payPopup.onClose += onClose;
 
         PopupSystem.instance.AddPopup(payPopup);
     }
+
+    /// <summary>
+    /// Historia budynku, który stoi na danym polu
+    /// </summary>
+    /// <returns>Historia budynku</returns>
+    public string FieldHistory { get => fieldHistory; }
 }

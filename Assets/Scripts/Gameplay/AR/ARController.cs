@@ -3,6 +3,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 #if UNITY_EDITOR
 using Input = GoogleARCore.InstantPreviewInput;
@@ -27,6 +28,11 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// </summary>
     private List<AugmentedImage> tempPlaceImages = new List<AugmentedImage>();
 
+    /// <summary>
+    /// Panel z informacjami o wybranym budynku
+    /// </summary>
+    [SerializeField] private GameObject buildingInfoPanel;
+
     #region Inicjalizacja
 
     public void UpdateAR()
@@ -42,9 +48,6 @@ public class ARController : MonoBehaviour, IEventSubscribable
     {
         board = new GameObject("Board"); //Tworzenie instancji planszy
         board.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
-#if !UNITY_EDITOR
-        board.gameObject.SetActive(false);
-#endif
 
         //Tworzenie obiektu przechowującego środkowy budynek
         centerBuilding = new GameObject("centerBuilding");
@@ -79,6 +82,10 @@ public class ARController : MonoBehaviour, IEventSubscribable
 
             field.GetComponent<PlaceVisualiser>().Init(GameplayController.instance.board.GetField(i), i);
         }
+
+#if !UNITY_EDITOR
+        ToggleBoardVisibility(false);
+#endif
     }
 
     public void SubscribeEvents()
@@ -111,20 +118,20 @@ public class ARController : MonoBehaviour, IEventSubscribable
                 if (image.TrackingState == TrackingState.Tracking && image.Name.Equals(Keys.Board.AR_IMAGE_NAME))
                 {
                     Anchor anchor = image.CreateAnchor(image.CenterPose); //Kotwica służąca do utrzymywania śledzenia przez ARCore, jest powiązana z obrazem w bazie danych
-                    board.gameObject.SetActive(true);
+                    ToggleBoardVisibility(true);
                     board.GetComponent<Transform>().SetParent(anchor.GetComponent<Transform>());
                     board.GetComponent<Transform>().localPosition = new Vector3();
                 }
                 //Gdy obrazek zniknie z pola widzenia, plansza jest ukrywana
                 else if (image.TrackingState == TrackingState.Stopped && image.Name.Equals(Keys.Board.AR_IMAGE_NAME))
                 {
-                    board.gameObject.SetActive(false);
+                    ToggleBoardVisibility(false);
                     board.GetComponent<Transform>().SetParent(gameObject.GetComponent<Transform>());
                 }
             }
             else
             {
-                board.gameObject.SetActive(false);
+                ToggleBoardVisibility(false);
                 board.GetComponent<Transform>().SetParent(gameObject.GetComponent<Transform>());
             }
         }
@@ -170,6 +177,15 @@ public class ARController : MonoBehaviour, IEventSubscribable
         return places.Find(place => place.placeIndex == placeIndex);
     }
 
+    /// <summary>
+    /// Przełącza widoczność planszy
+    /// </summary>
+    /// <param name="visible">Określa, czy plansza ma być widoczna</param>
+    private void ToggleBoardVisibility(bool visible)
+    {
+        foreach (PlaceVisualiser visualiser in places) visualiser.ToggleVisibility(visible);
+    }
+
     #endregion Obsługa AR
 
     #region Obsługa eventów
@@ -184,7 +200,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
             for (int i = 0; i < Input.touchCount; i++)
             {
                 //Wykrywa tylko kliknięcia, które się rozpoczęły
-                if (Input.GetTouch(i).phase == TouchPhase.Began)
+                if (Input.GetTouch(i).phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(i).fingerId))
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
                     if (Physics.Raycast(ray, out RaycastHit hit))
@@ -195,7 +211,6 @@ public class ARController : MonoBehaviour, IEventSubscribable
                         //Jeśli trafimy w budynek centralny to wywołujemy funkcję
                         else if(hit.collider.gameObject.name == "centerBuilding")
                         {
-                            //do zaimplementowania
                             string name = "";
                             foreach (Transform child in hit.collider.gameObject.GetComponentsInChildren<Transform>()) 
                             {
@@ -205,16 +220,9 @@ public class ARController : MonoBehaviour, IEventSubscribable
                                     break;
                                 }
                             }
-                            Field field = GameplayController.instance.board.GetField(name);
-
-                            string message="";
-                            foreach (string info in field.GetFieldInfo())
-                            {
-                                message += info + "||";
-                            }
-                            MessageSystem.instance.AddMessage(message, MessageType.LongMessage);
-                            MessageSystem.instance.AddMessage("OOF", MessageType.LongMessage);
-
+                            Field field = GameplayController.instance.board.GetField(name); //interesujące nas pole
+                            buildingInfoPanel.GetComponent<BuildingInfoPanel>().FillBuildingInfo(field);
+                            buildingInfoPanel.GetComponent<BuildingInfoPanel>().Open();
                         }
                     }
                     else

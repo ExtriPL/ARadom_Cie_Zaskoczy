@@ -29,8 +29,7 @@ public class PopupSystem : MonoBehaviour
     {
         { typeof(IconBox), typeof(IconPopup) },
         { typeof(InfoBox), typeof(InfoPopup) },
-        { typeof(QuestionBox), typeof(QuestionPopup) },
-        { typeof(FormattedBox), typeof(FormattedPopup) }
+        { typeof(QuestionBox), typeof(QuestionPopup) }
     };
     public Dictionary<Type, BoxPool> boxPools = new Dictionary<Type, BoxPool>();
 
@@ -59,7 +58,6 @@ public class PopupSystem : MonoBehaviour
         boxPools.Add(typeof(IconBox), new BoxPool(gameObject, IconBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
         boxPools.Add(typeof(InfoBox), new BoxPool(gameObject, InfoBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
         boxPools.Add(typeof(QuestionBox), new BoxPool(gameObject, QuestionBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
-        boxPools.Add(typeof(FormattedBox), new BoxPool(gameObject, FormattedBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
     }
 
     /// <summary>

@@ -8,12 +8,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Church", menuName = "ARadom/Field/Building/Stacking/Church")]
 public class ChurchStacking : StackingBuilding
 {
-    ChurchStacking()
-    {
-        //Ustawienie typu budynku stackującego
-        stackingType = StackingBuildingType.Church;
-    }
-
     public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
     {
         //throw new NotImplementedException();
@@ -50,24 +44,4 @@ public class ChurchStacking : StackingBuilding
         //throw new NotImplementedException();
     }
 
-    public override List<string> GetFieldInfo()
-    {
-        List<string> info = new List<string>
-        {
-            "jestem kościołem"
-        };
-
-        int index = GameplayController.instance.board.GetPlaceIndex(this);
-        if (GameplayController.instance.board.GetOwner(index) != null)
-        {
-            info.Add(GameplayController.instance.board.GetOwner(index).GetName());
-        }
-        else
-        {
-            info.Add("Budynek nie ma właściciela!");
-        }
-
-
-        return info;
-    }
 }

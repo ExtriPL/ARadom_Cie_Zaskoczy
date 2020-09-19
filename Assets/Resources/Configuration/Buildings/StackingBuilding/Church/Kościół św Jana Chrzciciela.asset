@@ -15,7 +15,5 @@ MonoBehaviour:
   fieldName: "Ko\u015Bci\xF3\u0142 \u015Bw Jana Chrzciciela"
   canBePlaced: 1
   fieldHistory: 
-  model: {fileID: -927199367670048503, guid: 8fb8dab117660ea42a93bb2d9d30c0f9, type: 3}
-  buyPrice: 0
-  enterCost: 0
-  stackingEnterCost: 0
+  model: {fileID: -927199367670048503, guid: 788d38d705421c54fafe3c7dd667c080, type: 3}
+  stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}
