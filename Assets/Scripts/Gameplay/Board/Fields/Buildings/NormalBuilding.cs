@@ -96,13 +96,10 @@ public class NormalBuilding : BuildingField
 
     public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
     {
+        base.OnBuyBuilding(player, visualiser);
+
         visualiser.ShowNextModel();
         GameplayController.instance.board.NextTier(visualiser.placeIndex);
-    }
-
-    public override void OnSellBuilding(Player player, PlaceVisualiser visualiser)
-    {
-        
     }
 
     public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
@@ -127,16 +124,6 @@ public class NormalBuilding : BuildingField
                 }
             }
         }
-    }
-
-    public override void OnPlayerLeave(Player player, PlaceVisualiser visualiser)
-    {
-        
-    }
-
-    public override void OnPlayerPassby(Player player, PlaceVisualiser visualiser)
-    {
-        
     }
 
     public void OnUpgradeBuilding(Player player, PlaceVisualiser visualiser)

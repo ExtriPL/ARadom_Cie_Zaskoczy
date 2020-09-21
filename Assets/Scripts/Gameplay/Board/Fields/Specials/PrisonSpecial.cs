@@ -10,19 +10,4 @@ public class PrisonSpecial : SpecialField
 {
     [SerializeField, Tooltip("Lista rzutów, które uwalniają z więzienia")]
     private List<RollResult> freeingThrows = new List<RollResult>();
-
-    public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
-    {
-        
-    }
-
-    public override void OnPlayerLeave(Player player, PlaceVisualiser visualiser)
-    {
-        
-    }
-
-    public override void OnPlayerPassby(Player player, PlaceVisualiser visualiser)
-    {
-        
-    }
 }

@@ -43,12 +43,16 @@ public abstract class StackingBuilding : BuildingField
 
     public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
     {
+        base.OnBuyBuilding(player, visualiser);
+
         //Jeżeli kupimy budynek, który należy do tej samej grupy budynków stackujących, wywołujemy funkcje OnSameGroupBuy
         if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).StackingType == StackingType) OnSameGroupBuy(player, visualiser);
     }
 
     public override void OnSellBuilding(Player player, PlaceVisualiser visualiser)
     {
+        base.OnSellBuilding(player, visualiser);
+
         //Jeżeli sprzedamy budynek, który należy do tej samej grupy budynków stackujących, wywołujemy funkcje OnSameGroupSell
         if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).StackingType == StackingType) OnSameGroupBuy(player, visualiser);
     }
@@ -58,9 +62,9 @@ public abstract class StackingBuilding : BuildingField
     /// </summary>
     /// <param name="player">Gracz, który kupił pole</param>
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
-    public abstract void OnSameGroupBuy(Player player, PlaceVisualiser visualiser);
+    public virtual void OnSameGroupBuy(Player player, PlaceVisualiser visualiser) { }
 
-    public abstract void OnSameGroupSell(Player player, PlaceVisualiser visualiser);
+    public virtual void OnSameGroupSell(Player player, PlaceVisualiser visualiser) { }
 
     public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
     {

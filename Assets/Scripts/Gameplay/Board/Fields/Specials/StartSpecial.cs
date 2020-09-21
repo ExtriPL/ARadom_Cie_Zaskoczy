@@ -5,24 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Start", menuName = "ARadom/Field/Special/Start")]
 public class StartSpecial : SpecialField
 {
-
-    public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
-    {
-
-    }
-
-    public override void OnPlayerLeave(Player player, PlaceVisualiser visualiser)
-    {
-        
-    }
-
     public override void OnPlayerPassby(Player player, PlaceVisualiser visualiser)
     {
+        base.OnPlayerPassby(player, visualiser);
         if(player.NetworkPlayer.IsLocal)
-            PassMoney(player, visualiser);
+            GivePassMoney(player);
     }
 
-    private void PassMoney(Player player, PlaceVisualiser visualiser)
+    private void GivePassMoney(Player player)
     {
         LanguageController language = SettingsController.instance.languageController;
         string message;

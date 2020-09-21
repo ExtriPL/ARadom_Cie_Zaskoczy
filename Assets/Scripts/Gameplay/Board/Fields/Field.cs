@@ -20,21 +20,21 @@ public abstract class Field : ScriptableObject
     /// </summary>
     /// <param name="player">Gracz, który wywołał zdarzenie</param>
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
-    public abstract void OnPlayerEnter(Player player, PlaceVisualiser visualiser);
+    public virtual void OnPlayerEnter(Player player, PlaceVisualiser visualiser) { }
 
     /// <summary>
     /// Zdarzenia wywoływane, gdy gracz zejdzie z pola
     /// </summary>
     /// <param name="player">Gracz, który wywołał zdarzenie</param>
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
-    public abstract void OnPlayerLeave(Player player, PlaceVisualiser visualiser);
+    public virtual void OnPlayerLeave(Player player, PlaceVisualiser visualiser) { }
 
     /// <summary>
     /// Zdarzenie wywoływane, gdy gracz przejdzie przez pole
     /// </summary>
     /// <param name="player">Gracz, który wywołał zdarzenie</param>
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
-    public abstract void OnPlayerPassby(Player player, PlaceVisualiser visualiser);
+    public virtual void OnPlayerPassby(Player player, PlaceVisualiser visualiser) { }
 
     /// <summary>
     /// Funkcja zwraca model domyślny stojący na danym polu
