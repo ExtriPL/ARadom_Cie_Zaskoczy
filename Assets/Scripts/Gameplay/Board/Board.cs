@@ -294,12 +294,6 @@ public class Board : IEventSubscribable
         }
         else Debug.LogError("Numery pól wykraczają poza zakres planszy");
 
-        string report = "";
-        foreach (int place in placesBetween)
-            report += place + "; ";
-
-        Debug.Log("from: " + placeFrom + "| to: " + placeTo +  "| " + report);
-
         return placesBetween;
     }
 
@@ -359,7 +353,6 @@ public class Board : IEventSubscribable
     {
         int fromPlaceId = player.PlaceId;
         player.PlaceId = placeId;
-        Debug.Log("from: " + fromPlaceId + "| to: " + placeId);
 
         EventManager.instance.SendOnPlayerMoved(player.GetName(), fromPlaceId, placeId);
     }
