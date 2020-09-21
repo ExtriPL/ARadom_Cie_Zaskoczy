@@ -14,14 +14,14 @@ public abstract class BuildingField : Field
     /// </summary>
     /// <param name="player">Gracz, który kupił pole</param>
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
-    public virtual void OnBuyBuilding(Player player, PlaceVisualiser visualiser) { }
+    public virtual void OnBuy(Player player, PlaceVisualiser visualiser) { }
 
     /// <summary>
     /// Zdarzenie wywoływane przy sprzedaniu pola
     /// </summary>
     /// <param name="player">Gracz, który sprzedał pole</param>
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
-    public virtual void OnSellBuilding(Player player, PlaceVisualiser visualiser) { }
+    public virtual void OnSell(Player player, PlaceVisualiser visualiser) { }
 
     /// <summary>
     /// Zwraca cene najniższej wersji budynku
@@ -29,9 +29,9 @@ public abstract class BuildingField : Field
     /// <returns></returns>
     public abstract float GetInitialPrice();
 
-    public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
+    public override void OnEnter(Player player, PlaceVisualiser visualiser)
     {
-        base.OnPlayerEnter(player, visualiser);
+        base.OnEnter(player, visualiser);
         if(player.NetworkPlayer.IsLocal)
         { 
             if(GameplayController.instance.board.GetOwner(visualiser.placeIndex) == null)

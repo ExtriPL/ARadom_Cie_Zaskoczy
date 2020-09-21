@@ -94,17 +94,17 @@ public class NormalBuilding : BuildingField
         return GetTier(0).model;
     }
 
-    public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
+    public override void OnBuy(Player player, PlaceVisualiser visualiser)
     {
-        base.OnBuyBuilding(player, visualiser);
+        base.OnBuy(player, visualiser);
 
         visualiser.ShowNextModel();
         GameplayController.instance.board.NextTier(visualiser.placeIndex);
     }
 
-    public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
+    public override void OnEnter(Player player, PlaceVisualiser visualiser)
     {
-        base.OnPlayerEnter(player, visualiser);
+        base.OnEnter(player, visualiser);
 
         if (player.NetworkPlayer.IsLocal)
         {
@@ -126,7 +126,7 @@ public class NormalBuilding : BuildingField
         }
     }
 
-    public void OnUpgradeBuilding(Player player, PlaceVisualiser visualiser)
+    public void OnUpgrade(Player player, PlaceVisualiser visualiser)
     {
         visualiser.ShowNextModel();
     }

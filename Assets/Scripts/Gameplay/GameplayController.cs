@@ -255,33 +255,6 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     private void OnTurnChanged(string previousPlayerName, string nextPlayerName)
     {
         SaveProgress(); //Na samym początku tury zapisujemy postęp rozgrywki
-
-        if (session.FindPlayer(previousPlayerName) != null && session.FindPlayer(previousPlayerName).NetworkPlayer.IsLocal)
-        {
-            QuestionPopup endTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_ENDED"));
-            endTurn.AddButton("Ok", Popup.Functionality.Destroy(endTurn));
-            PopupSystem.instance.AddPopup(endTurn);
-        }
-        if (session.FindPlayer(nextPlayerName).NetworkPlayer.IsLocal)
-        {
-            QuestionPopup startTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_STARTED"));
-            startTurn.AddButton("Ok", Popup.Functionality.Destroy(startTurn));
-
-            IconPopup dice = new IconPopup(IconPopupType.None);
-            dice.onClick += Popup.Functionality.Destroy(dice);
-            Popup.PopupAction rolldice = delegate (Popup source)
-            {
-                int firstThrow = board.dice.last1;
-                int secondThrow = board.dice.last2;
-                InfoPopup rollResult = new InfoPopup(SettingsController.instance.languageController.GetWord("YOU_GOT") + firstThrow + SettingsController.instance.languageController.GetWord("AND") + secondThrow, 1.5f);
-                PopupSystem.instance.AddPopup(rollResult);
-                board.MovePlayer(session.FindPlayer(nextPlayerName), firstThrow + secondThrow);
-            };
-            dice.onClose += rolldice;
-            startTurn.onClose += Popup.Functionality.Show(dice);
-
-            PopupSystem.instance.AddPopup(startTurn);
-        }
     }
 
     /// <summary>

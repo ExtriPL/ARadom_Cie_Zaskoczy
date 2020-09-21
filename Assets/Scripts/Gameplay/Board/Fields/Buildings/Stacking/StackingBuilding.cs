@@ -41,17 +41,17 @@ public abstract class StackingBuilding : BuildingField
         return stackingSettings.GetEnterCost(buildingCount);
     }
 
-    public override void OnBuyBuilding(Player player, PlaceVisualiser visualiser)
+    public override void OnBuy(Player player, PlaceVisualiser visualiser)
     {
-        base.OnBuyBuilding(player, visualiser);
+        base.OnBuy(player, visualiser);
 
         //Jeżeli kupimy budynek, który należy do tej samej grupy budynków stackujących, wywołujemy funkcje OnSameGroupBuy
         if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).StackingType == StackingType) OnSameGroupBuy(player, visualiser);
     }
 
-    public override void OnSellBuilding(Player player, PlaceVisualiser visualiser)
+    public override void OnSell(Player player, PlaceVisualiser visualiser)
     {
-        base.OnSellBuilding(player, visualiser);
+        base.OnSell(player, visualiser);
 
         //Jeżeli sprzedamy budynek, który należy do tej samej grupy budynków stackujących, wywołujemy funkcje OnSameGroupSell
         if (visualiser.field is StackingBuilding && (visualiser.field as StackingBuilding).StackingType == StackingType) OnSameGroupBuy(player, visualiser);
@@ -66,9 +66,9 @@ public abstract class StackingBuilding : BuildingField
 
     public virtual void OnSameGroupSell(Player player, PlaceVisualiser visualiser) { }
 
-    public override void OnPlayerEnter(Player player, PlaceVisualiser visualiser)
+    public override void OnEnter(Player player, PlaceVisualiser visualiser)
     {
-        base.OnPlayerEnter(player, visualiser);
+        base.OnEnter(player, visualiser);
 
         if(player.NetworkPlayer.IsLocal)
         {

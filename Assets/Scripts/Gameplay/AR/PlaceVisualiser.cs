@@ -158,7 +158,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         if (GameplayController.instance.board.dice.amountOfRolls == 0) return;
         if (fromPlaceIndex == placeIndex)
         {
-            field.OnPlayerLeave(GameplayController.instance.session.FindPlayer(playerName), this);
+            field.OnLeave(GameplayController.instance.session.FindPlayer(playerName), this);
             playersOnField.Remove(playerName);
             DeactivateField();
         }
@@ -181,10 +181,19 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
     private void OnTurnChange(string previousPlayerName, string currentPlayerName)
     {
         Player currentPlayer = GameplayController.instance.session.FindPlayer(currentPlayerName);
+        Player previousPlayer = GameplayController.instance.session.FindPlayer(previousPlayerName);
 
         //Sterowanie podświetleniem aktywnego gracza
-        if (playersOnField.Contains(previousPlayerName)) DeactivateField();
-        if (playersOnField.Contains(currentPlayerName)) ActivateField(currentPlayer);
+        if (playersOnField.Contains(previousPlayerName))
+        {
+            field.OnEnd(previousPlayer, this);
+            DeactivateField();
+        }
+        if (playersOnField.Contains(currentPlayerName))
+        {
+            field.OnAwake(currentPlayer, this);
+            ActivateField(currentPlayer);
+        }
     }
 
     /// <summary>
@@ -251,7 +260,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
             {
                 BuildingField buildingField = field as BuildingField;
 
-                onAnimationEnd += delegate { buildingField.OnBuyBuilding(GameplayController.instance.session.FindPlayer(playerName), this); };
+                onAnimationEnd += delegate { buildingField.OnBuy(GameplayController.instance.session.FindPlayer(playerName), this); };
                 AnimateEntrance();
             }
         }
@@ -270,7 +279,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
             {
                 NormalBuilding upgradeBuilding = field as NormalBuilding;
 
-                onAnimationEnd += delegate { upgradeBuilding.OnUpgradeBuilding(GameplayController.instance.session.FindPlayer(playerName), this); };
+                onAnimationEnd += delegate { upgradeBuilding.OnUpgrade(GameplayController.instance.session.FindPlayer(playerName), this); };
                 AnimateEntrance();
             }
         } 
@@ -423,7 +432,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         yield return new WaitForSeconds(Keys.Board.Backlight.ANIMATION_STAY_TIME * (distanceFromStart - 1)); //Oczekiwanie na minięcie animacji poprzednich pól
         
         StartCoroutine(Shine(activePlayer, false));
-        field.OnPlayerPassby(GameplayController.instance.session.FindPlayer(activePlayer.GetName()), this);
+        field.OnPassby(GameplayController.instance.session.FindPlayer(activePlayer.GetName()), this);
 
         yield return new WaitForSeconds(Keys.Board.Backlight.SHINING_PERIOD / 2f);
         yield return new WaitForSeconds(Keys.Board.Backlight.ANIMATION_STAY_TIME * (distanceFromStart - 1));
@@ -438,7 +447,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         else
         {
             ActivateField(activePlayer);
-            field.OnPlayerEnter(GameplayController.instance.session.FindPlayer(activePlayer.GetName()), this);
+            field.OnEnter(GameplayController.instance.session.FindPlayer(activePlayer.GetName()), this);
         }
     }
 

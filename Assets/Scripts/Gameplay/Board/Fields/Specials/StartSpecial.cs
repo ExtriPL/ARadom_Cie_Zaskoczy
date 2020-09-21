@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Start", menuName = "ARadom/Field/Special/Start")]
 public class StartSpecial : SpecialField
 {
-    public override void OnPlayerPassby(Player player, PlaceVisualiser visualiser)
+    public override void OnPassby(Player player, PlaceVisualiser visualiser)
     {
-        base.OnPlayerPassby(player, visualiser);
+        base.OnPassby(player, visualiser);
         if(player.NetworkPlayer.IsLocal)
             GivePassMoney(player);
     }
