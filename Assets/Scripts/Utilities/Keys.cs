@@ -91,7 +91,7 @@ public static class Keys
         /// <summary>
         /// Szerokość prostokąta, w który wpisany jest wielokąt. Kierunek tego wymiaru (boku prostokąta) jest zgodny z kierunkiem boku wielokąta tworzącego planszę
         /// </summary>
-        public const float FIELD_WIDTH = 0.075f * SCALLING_FACTOR;
+        public const float FIELD_WIDTH = 0.0887f * SCALLING_FACTOR;
         /// <summary>
         /// Wysokość prostokąta, w który wpisany jest wielokąt. Kierunek tego wymiaru (boku prostokąta) jest prostopadły do boku wielokąta tworzącego planszę i skierowany radialnie do środka planszy
         /// </summary>
@@ -116,7 +116,7 @@ public static class Keys
         /// <summary>
         /// Rozmiar planszy w rzeczywistości.
         /// </summary>
-        public const float BOARD_REAL_SIZE = 0.375f;
+        public const float BOARD_REAL_SIZE = 0.8268f;
         /// <summary>
         /// Rozmiar planszy podany w bazie danych obrazków na potrzeby wykrywania triggerów.
         /// </summary>
