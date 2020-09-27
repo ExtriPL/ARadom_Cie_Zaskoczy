@@ -26,6 +26,10 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// Event jest wywoływany, gdy jeden z graczy przegra grę
     /// </summary>
     public event PlayerEvent onPlayerLostGame;
+    /// <summary>
+    /// Event jest wywoływany, gdy jeden z graczy zostanie uwięziony w więzieniu
+    /// </summary>
+    public event PlayerEvent onPlayerImprisoned;
 
     public delegate void PlayerReady(string playerName, bool ready);
     /// <summary>
@@ -258,6 +262,15 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerLostGame, data, raiseOptions, sendOptions);
     }
 
+    public void SendOnPlayerImprisoned(string playerName)
+    {
+        object[] data = { playerName };
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+
+        PhotonNetwork.RaiseEvent((byte)EventsId.PlayerImprison, data, raiseOptions, sendOptions);
+    }
+
     #endregion Wysyłanie eventów sieciowych
 
     /// <summary>
@@ -369,6 +382,14 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     int fromFieldIndex = (int)data[1];
                     int toFieldIndex = (int)data[2];
                     onPlayerTeleported?.Invoke(playerName, fromFieldIndex, toFieldIndex);
+                }
+                break;
+            case (byte)EventsId.PlayerImprison:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    string playerName = (string)data[0];
+
+                    onPlayerImprisoned?.Invoke(playerName);
                 }
                 break;
         }

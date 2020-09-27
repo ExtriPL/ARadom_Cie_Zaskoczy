@@ -42,6 +42,9 @@ public class RandomDice
         }
     }
 
+    /// <summary>
+    /// Wynik ostatnich rzutów kostką
+    /// </summary>
     public RollResult rollResult { get => new RollResult(last1, last2); }
 
     /// <summary>

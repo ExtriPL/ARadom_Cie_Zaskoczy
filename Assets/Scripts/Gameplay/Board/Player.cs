@@ -184,6 +184,26 @@ public class Player
         }
     }
 
+    /// <summary>
+    /// Czy gracz znajduje się obecnie w więzieniu
+    /// </summary>
+    public bool Imprisoned
+    {
+        get
+        {
+            return (bool)NetworkPlayer.CustomProperties["Imprisoned"];
+        }
+        set
+        {
+            Hashtable table = new Hashtable()
+            {
+                { "Imprisoned" , value }
+            };
+
+            NetworkPlayer.SetCustomProperties(table);
+        }
+    }
+
     #endregion Właściwości gracza
 
     /// <summary>
@@ -213,6 +233,7 @@ public class Player
         IsLoser = false;
         TookLoan = false;
         OutstandingAmount = 0;
+        Imprisoned = false;
     }
 
     /// <summary>

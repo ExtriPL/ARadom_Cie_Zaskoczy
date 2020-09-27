@@ -212,3 +212,10 @@ MonoBehaviour:
       przez start."
   - key: YOU_PAID_OFF_YOUR_LOAN
     value: "Sp\u0142aci\u0142e\u015B swoj\u0105 po\u017Cyczk\u0119"
+  - key: YOU_ARE_IN_PRISON
+    value: "Jeste\u015B w wi\u0119zieniu. Rzu\u0107 kostk\u0105 by si\u0119 uwolni\u0107"
+  - key: YOU_ARE_FREE
+    value: "Uda\u0142o ci si\u0119 wyrzuci\u0107 odpowiedni\u0105 liczb\u0119 oczek.
+      Jeste\u015B wolny!"
+  - key: NOT_THIS_TIME
+    value: "Tym razem si\u0119 nie uda\u0142o. Zostajesz w wi\u0119zieniu"

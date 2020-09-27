@@ -41,7 +41,7 @@ public class Board : IEventSubscribable
     }
 
     /// <summary>
-    /// Słownik przypisujący każdemu miejscu na planszy pole(tj. budynek albo pole specjalne itp.).
+    /// Słownik przypisujący każdemu miejscu na planszy pole(tj. budynek albo pole specjalne itp.). Numer na planszy => Numer pola w fields
     /// </summary>
     public Dictionary<int, int> places
     {
@@ -222,6 +222,52 @@ public class Board : IEventSubscribable
     public int GetPlaceIndex(Field field)
     {
         return places.FirstOrDefault(x => fields[x.Value] == field).Key;
+    }
+
+    /// <summary>
+    /// Zwraca numer pola o podanej nazwie na planszy
+    /// </summary>
+    /// <param name="name">Nazwa pola</param>
+    /// <returns>Numer pola na planszy</returns>
+    public int GetPlaceIndex(string name)
+    {
+        Field field = GetField(name);
+        if (field != null)
+            return GetPlaceIndex(field);
+        else
+            return -1;
+    }
+
+    /// <summary>
+    /// Sprawdza, czy na planszy znajduje się pole o podanym typie
+    /// </summary>
+    /// <param name="type">Typ pola</param>
+    /// <returns>Czy na planszy znajduje się pole o danym typie</returns>
+    public bool PlaceExists(Type type)
+    {
+        foreach(int index in places.Keys)
+        {
+            if (GetField(index).GetType().Equals(type))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Sprawdza, czy na planszy znajduje się pole o podanej nazwie
+    /// </summary>
+    /// <param name="name">Nazwa pola</param>
+    /// <returns>Czy na planszy znajduje się pole o danym typie</returns>
+    public bool PlaceExists(string name)
+    {
+        foreach (int index in places.Keys)
+        {
+            if (GetField(index).GetFieldName().Equals(name))
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>
