@@ -198,7 +198,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     /// Funkcja zaczynająca grę.
     /// </summary>
     private void StartGame()
-    { 
+    {
         StartCoroutine(InactiveCheck());
         if (session.roomOwner.IsLocal) EventManager.instance.SendOnTurnChanged("", board.dice.currentPlayer);
     }
@@ -240,6 +240,25 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         string nextPlayer = board.dice.currentPlayer;
 
         EventManager.instance.SendOnTurnChanged(previousPlayer, nextPlayer);
+    }
+
+    public void Impison(Player player)
+    {
+        if (board.PlaceExists("Prison"))
+        {
+            int placeIndex = board.GetPlaceIndex("Prison");
+            board.TeleportPlayer(player, placeIndex);
+            player.Imprisoned = true;
+            EventManager.instance.SendOnPlayerImprisoned(player.GetName());
+        }
+        else
+            Debug.LogError("Brak więzienia na planszy!");
+    }
+
+    public void Imprison(string playerName)
+    {
+        Player player = session.FindPlayer(playerName);
+        Impison(player);
     }
 
     #endregion Sterowanie rozgrywką

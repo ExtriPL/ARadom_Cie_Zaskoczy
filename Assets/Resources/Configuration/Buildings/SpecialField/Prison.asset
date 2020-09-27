@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Prison
   m_EditorClassIdentifier: 
   fieldName: Prison
-  canBePlaced: 0
-  model: {fileID: 0}
+  canBePlaced: 1
+  model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
   freeingThrows:
   - roll1: 1
     roll2: 6

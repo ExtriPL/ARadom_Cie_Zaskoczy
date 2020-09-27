@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class PlaceVisualiser : MonoBehaviour, IAnimable
+public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
 {
     private ARController ARController;
 
@@ -128,6 +128,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         EventManager.instance.onAquiredBuilding += OnAquiredBuilding;
         EventManager.instance.onUpgradedBuilding += OnUpgradeBuilding;
         EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
+        EventManager.instance.onPlayerTeleported += OnPlayerTeleported;
     }
 
     /// <summary>
@@ -141,6 +142,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         EventManager.instance.onAquiredBuilding -= OnAquiredBuilding;
         EventManager.instance.onUpgradedBuilding -= OnUpgradeBuilding;
         EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
+        EventManager.instance.onPlayerTeleported -= OnPlayerTeleported;
     }
 
     #endregion Inicjalizacja
@@ -156,6 +158,22 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
     private void OnPlayerMove(string playerName, int fromPlaceIndex, int toPlaceIndex)
     {
         if (GameplayController.instance.board.dice.amountOfRolls == 0) return;
+        OnPlayerTeleported(playerName, fromPlaceIndex, toPlaceIndex);
+
+        if(GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
+        {
+            StartCoroutine(ActivationInterval(GameplayController.instance.session.FindPlayer(playerName), GameplayController.instance.board.GetPlacesDistance(fromPlaceIndex, placeIndex), toPlaceIndex));
+        }
+    }
+
+    /// <summary>
+    /// Zdarzenia wywoływane gdy gracz zostanie przeniesiony
+    /// </summary>
+    /// <param name="playerName">Nazwa gracza</param>
+    /// <param name="fromPlaceIndex">Numer pola, z którego ruszał się gracz</param>
+    /// <param name="toPlaceIndex">Numer pola, na które przeszedł gracz</param>
+    private void OnPlayerTeleported(string playerName, int fromPlaceIndex, int toPlaceIndex)
+    {
         if (fromPlaceIndex == placeIndex)
         {
             field.OnLeave(GameplayController.instance.session.FindPlayer(playerName), this);
@@ -165,11 +183,6 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable
         else if (toPlaceIndex == placeIndex)
         {
             playersOnField.Add(playerName);
-        }
-
-        if(GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
-        {
-            StartCoroutine(ActivationInterval(GameplayController.instance.session.FindPlayer(playerName), GameplayController.instance.board.GetPlacesDistance(fromPlaceIndex, placeIndex), toPlaceIndex));
         }
     }
 

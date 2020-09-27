@@ -22,5 +22,6 @@ public enum EventsId
     Pay,
     PlayerLostGame,
     PlayerReady,
-    PlayerTeleport
+    PlayerTeleport,
+    PlayerImprison
 }
