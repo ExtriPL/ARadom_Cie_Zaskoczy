@@ -72,7 +72,6 @@
     <Compile Include="Assets\Editor\RemoteSettings\RemoteSettingsManager.cs" />
     <Compile Include="Assets\Editor\ServerSettingsInspector.cs" />
     <Compile Include="Assets\Editor\TranslateEditor.cs" />
-    <Compile Include="Assets\Resources\ExternalData\GoogleARCore\Examples\Common\Scripts\Editor\PointcloudVisualizerEditor.cs" />
     <Compile Include="Assets\Resources\ExternalData\GoogleARCore\SDK\InstantPreview\Scripts\Editor\InstantPreviewBugReport.cs" />
     <Compile Include="Assets\Resources\ExternalData\GoogleARCore\SDK\Scripts\Editor\ARCoreAnalytics.cs" />
     <Compile Include="Assets\Resources\ExternalData\GoogleARCore\SDK\Scripts\Editor\ARCoreAnalyticsGUI.cs" />
