@@ -77,10 +77,10 @@
     <Compile Include="Assets\Resources\ExternalData\Photon\PhotonChat\Code\IChatClientListener.cs" />
     <None Include="Assets\Resources\ExternalData\Photon\PhotonChat\Code\PhotonChat.asmdef" />
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -265,41 +265,38 @@
     <Reference Include="UnityEditor.Android.Extensions">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.UWP.Extensions">
-      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/GoogleARCore/SDK/Plugins/Google.Protobuf.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/GoogleARCore/SDK/Plugins/Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Google.IOSResolver_v1.2.122.0">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.122.0.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.122.0.dll</HintPath>
     </Reference>
     <Reference Include="Google.JarResolver_v1.2.122.0">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.JarResolver_v1.2.122.0.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.JarResolver_v1.2.122.0.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandler">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandlerImpl_v1.2.122.0">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.122.0.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.122.0.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

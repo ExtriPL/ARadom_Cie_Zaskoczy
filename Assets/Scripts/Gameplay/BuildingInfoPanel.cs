@@ -16,8 +16,8 @@ public class BuildingInfoPanel : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("k")) Open();
-        if (Input.GetKeyDown("j")) Close();
+        //if (Input.GetKeyDown("k")) Open();
+        //if (Input.GetKeyDown("j")) Close();
     }
     public void FillBuildingInfo(Field field) 
     {
