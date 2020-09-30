@@ -104,70 +104,70 @@
     <None Include="Assets\Resources\ExternalData\GoogleARCore\Editor\ARCoreiOSDependencies.template" />
     <None Include="Assets\Resources\ExternalData\PlayServicesResolver\Editor\play-services-resolver_v1.2.122.0.txt" />
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RemoteConfig.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.RemoteConfig.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.RemoteConfig.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-weaver.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RemoteConfig">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.RemoteConfig.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.RemoteConfig.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -358,44 +358,41 @@
     <Reference Include="UnityEditor.Android.Extensions">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.UWP.Extensions">
-      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/GoogleARCore/SDK/Plugins/Google.Protobuf.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/GoogleARCore/SDK/Plugins/Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Google.IOSResolver_v1.2.122.0">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.122.0.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.122.0.dll</HintPath>
     </Reference>
     <Reference Include="Google.JarResolver_v1.2.122.0">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.JarResolver_v1.2.122.0.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.JarResolver_v1.2.122.0.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandler">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
     </Reference>
     <Reference Include="Google.VersionHandlerImpl_v1.2.122.0">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.122.0.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Assets/Resources/ExternalData/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.122.0.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>D:/kuba/Programowanie/Projekty Unity/ARadom Cie Zaskoczy/ARadom cie zaskoczy/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Users/Filip/Unity/ARadom cie zaskoczy/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.8f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
