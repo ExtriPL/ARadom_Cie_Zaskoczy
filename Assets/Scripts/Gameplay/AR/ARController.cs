@@ -119,8 +119,9 @@ public class ARController : MonoBehaviour, IEventSubscribable
                 {
                     Anchor anchor = image.CreateAnchor(image.CenterPose); //Kotwica służąca do utrzymywania śledzenia przez ARCore, jest powiązana z obrazem w bazie danych
                     ToggleBoardVisibility(true);
-                    board.GetComponent<Transform>().SetParent(anchor.GetComponent<Transform>());
-                    board.GetComponent<Transform>().localPosition = new Vector3();
+                    board.transform.SetParent(anchor.GetComponent<Transform>());
+                    board.transform.localPosition = Vector3.zero;
+                    board.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
                 }
                 //Gdy obrazek zniknie z pola widzenia, plansza jest ukrywana
                 else if (image.TrackingState == TrackingState.Stopped && image.Name.Equals(Keys.Board.AR_IMAGE_NAME))
