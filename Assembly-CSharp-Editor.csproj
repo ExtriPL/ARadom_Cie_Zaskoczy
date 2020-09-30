@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\ChanceCardEditor.cs" />
     <Compile Include="Assets\Editor\GameplayControllerEditor.cs" />
     <Compile Include="Assets\Editor\LanguageEditor.cs" />
     <Compile Include="Assets\Editor\RemoteSettings\DriveablePropertyDrawer.cs" />

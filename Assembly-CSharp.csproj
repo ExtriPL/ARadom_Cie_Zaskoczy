@@ -217,6 +217,10 @@
     <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Buildings\Stacking\StackingBuilding.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Buildings\Stacking\StackingSettings.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Field.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Specials\Chance\Actions\ActionCard.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Specials\Chance\Actions\MoneyAction.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Specials\Chance\ChanceCard.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Specials\Chance\ChanceSpecial.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Specials\PrisonSpecial.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Specials\SpecialField.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Board\Fields\Specials\StartSpecial.cs" />
