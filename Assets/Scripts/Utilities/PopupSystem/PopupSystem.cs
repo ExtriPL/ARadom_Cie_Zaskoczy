@@ -12,7 +12,6 @@ public class PopupSystem : MonoBehaviour
     [SerializeField, Tooltip("Obiekt przechowujący wzór IconBox-u")] private GameObject IconBoxPrefab;
     [SerializeField, Tooltip("Obiekt przechowujący wzór InfoBox-u")] private GameObject InfoBoxPrefab;
     [SerializeField, Tooltip("Obiekt przechowujący wzór QuestionBox-u")] private GameObject QuestionBoxPrefab;
-    [SerializeField, Tooltip("Obiekt przechowujący wzór FormattedBox-u")] private GameObject FormattedBoxPrefab;
 
     /// <summary>
     /// Lista przechowująca wszystkie popup-y w kolejce w celu wyświetlenia ich, gdy na ekranie zrobi się miejsce
