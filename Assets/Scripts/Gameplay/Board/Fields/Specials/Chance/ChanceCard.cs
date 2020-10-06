@@ -11,9 +11,9 @@ using UnityEngine;
 public class ChanceCard : ScriptableObject
 {
     [SerializeField]
-    private string cardName;
-    [SerializeField, TextArea]
-    private string content;
+    private string cardNameKey;
+    [SerializeField]
+    private string contentKey;
     [SerializeField, Tooltip("Określa, czy karta może zostać użyta")]
     private bool active;
     [HideInInspector]
@@ -24,6 +24,18 @@ public class ChanceCard : ScriptableObject
     /// </summary>
     /// <returns>Możliwość użycia karty</returns>
     public bool IsActive() => active;
+
+    /// <summary>
+    /// Zwraca nazwę karty
+    /// </summary>
+    /// <returns>Nazwa karty</returns>
+    public string GetCardNameKey() => cardNameKey;
+
+    /// <summary>
+    /// Zwraca treść karty
+    /// </summary>
+    /// <returns>Treść karty</returns>
+    public string GetCardContentKey() => contentKey;
 
     /// <summary>
     /// Wywołuje wszystkie akcje przypisane do karty
@@ -44,6 +56,7 @@ public class ChanceCard : ScriptableObject
     /// <param name="caller">Gracz, dla którego otwierane jest okno z kartą</param>
     public void OpenCard(Player caller)
     {
-        Debug.LogError("Zaimplementować wyświetlanie karty");
+        ChancePopup popup = new ChancePopup(this, caller);
+        PopupSystem.instance.AddPopup(popup);
     }
 }

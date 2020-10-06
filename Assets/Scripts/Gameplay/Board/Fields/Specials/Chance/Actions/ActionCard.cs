@@ -33,6 +33,25 @@ public abstract class ActionCard
                     card = new MoneyAction(payer, receiver, value);
                 }
                 break;
+            case ActionType.Wait:
+                {
+                    WaitAction.WaitActor target = (WaitAction.WaitActor)Enum.Parse(typeof(WaitAction.WaitActor), form.variables[0]);
+                    int rounds = int.Parse(form.variables[1]);
+
+                    card = new WaitAction(target, rounds);
+                }
+                break;
+            case ActionType.Move:
+                {
+                    MoveAction.Mode mode = (MoveAction.Mode)Enum.Parse(typeof(MoveAction.Mode), form.variables[0]);
+                    int byAmount = int.Parse(form.variables[1]);
+                    MoveAction.ToTarget toTarget = (MoveAction.ToTarget)Enum.Parse(typeof(MoveAction.ToTarget), form.variables[2]);
+                    int targetId = int.Parse(form.variables[3]);
+                    MoveAction.PlaceTypeTarget targetType = (MoveAction.PlaceTypeTarget)Enum.Parse(typeof(MoveAction.PlaceTypeTarget), form.variables[4]);
+
+                    card = new MoveAction(mode, byAmount, toTarget, targetId, targetType);
+                }
+                break;
         }
 
         return card;
@@ -43,7 +62,9 @@ public abstract class ActionCard
     /// </summary>
     public enum ActionType
     {
-        Money
+        Money,
+        Wait,
+        Move
     }
 }
 

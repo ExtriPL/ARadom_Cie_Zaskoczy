@@ -8,7 +8,17 @@ using UnityEngine;
 [Serializable]
 public class MoneyAction : ActionCard
 {
-    public MoneyActor payer, receiver;
+    /// <summary>
+    /// Osoba, która jest źródłem pieniędzy
+    /// </summary>
+    public MoneyActor payer;
+    /// <summary>
+    /// Osoba, która otrzyma pieniądze
+    /// </summary>
+    public MoneyActor receiver;
+    /// <summary>
+    /// Ilość pieniędzy, jaka zostanie wymieniona
+    /// </summary>
     public float amount;
 
     public MoneyAction(MoneyActor payer, MoneyActor receiver, float amount)
