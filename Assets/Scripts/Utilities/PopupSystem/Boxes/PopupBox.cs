@@ -16,10 +16,7 @@ public abstract class PopupBox : MonoBehaviour
         if (source != null && GameplayController.instance.session.gameTime - lifeStartTime >= source.lifeSpan) Close();
     }
 
-    public virtual void InitBox()
-    {
-
-    }
+    public virtual void InitBox() {}
 
     /// <summary>
     /// Inicjuje box-a zawierającego popup o podanym typie
