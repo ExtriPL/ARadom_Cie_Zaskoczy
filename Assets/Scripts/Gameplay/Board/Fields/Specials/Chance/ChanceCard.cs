@@ -48,6 +48,9 @@ public class ChanceCard : ScriptableObject
             ActionCard action = ActionCard.Create(actionString);
             action.Call(caller);
         }
+        
+        //Po wywołaniu wszystkich akcji przekazuje dalej. Trzeba poprawić, bo niektóre akcje mogą przejmować dalej kontrolę nad przebiegiem rozgrywki
+        GameplayController.instance.EndTurn();
     }
 
     /// <summary>
