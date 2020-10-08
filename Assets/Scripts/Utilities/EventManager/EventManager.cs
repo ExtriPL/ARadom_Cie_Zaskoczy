@@ -73,7 +73,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// </summary>
     public event Auction onAuction;
 
-    public delegate void Sync(int syncNumber, string source, string target);
+    public delegate void Sync(int syncNumber, string source, string target, int syncCommand);
     /// <summary>
     /// Event służący do synchronizacji wczytywania
     /// </summary>
@@ -227,9 +227,9 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// <param name="syncNumber">Numer synchronizacj. 0 - wysyłamy zapytanie o synchronizację, 1 - odpowiadamy na zapytanie o synchronizację</param>
     /// <param name="source">Nazwa gracza, który wysyła event</param>
     /// <param name="target">Nazwa gracza, do którego jest wysyłany event</param>
-    public void SendSyncEvent(int syncNumber, string source, string target)
+    public void SendSyncEvent(int syncNumber, string source, string target, int syncCommand)
     {
-        object[] data = { syncNumber, source, target };
+        object[] data = { syncNumber, source, target, syncCommand };
         RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent((byte)EventsId.Sync, data, raiseOptions, sendOptions);
@@ -340,7 +340,8 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     int syncNumber = (int)data[0];
                     string source = (string)data[1];
                     string target = (string)data[2];
-                    onSync?.Invoke(syncNumber, source, target);
+                    int syncCommand = (int)data[3];
+                    onSync?.Invoke(syncNumber, source, target, syncCommand);
                 }
                 break;
             case (byte)EventsId.PlayerUpgradeBuilding:

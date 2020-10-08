@@ -101,7 +101,8 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     /// </summary>
     private void AddCommands()
     {
-        SyncCommand sync = new SyncCommand();
+        SyncCommand sync0 = new SyncCommand(0);
+        SyncCommand sync1 = new SyncCommand(1);
         Command temporaryRoom = new TemporaryRoomCommand();
         Command subscribeEvents = new SubscribeEventsCommand(new List<IEventSubscribable>
         {
@@ -111,7 +112,8 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
             menu,
             this.board,
             this.arController,
-            sync
+            sync0,
+            sync1
         });
         Command session = new SessionCommand(this.session);
         Command board = new BoardCommand(this.board);
@@ -122,7 +124,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         Command loadFromSave = new LoadFromSaveCommand();
         Command popupSystem = new PopupSystemCommand();
 
-        invoker = new CommandInvoker(null, null, delegate { OnExecutionFinished(); sync.UnsubscribeEvents(); });
+        invoker = new CommandInvoker(delegate (Command command) { Debug.Log("Started: " + command.commandName); }, delegate(Command command) { Debug.Log("Ended: " + command.commandName); }, delegate { OnExecutionFinished(); sync0.UnsubscribeEvents(); sync1.UnsubscribeEvents(); });
 
         invoker.AddCommand(temporaryRoom);
         invoker.AddCommand(subscribeEvents);
@@ -132,10 +134,10 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         invoker.AddCommand(banking);
         invoker.AddCommand(gameplayController);
         invoker.AddCommand(loadFromSave);
-        invoker.AddCommand(sync);
+        invoker.AddCommand(sync0);
         invoker.AddCommand(arController);
         invoker.AddCommand(popupSystem);
-        invoker.AddCommand(sync);
+        invoker.AddCommand(sync1);
     }
 
     #endregion Inicjalizacja
