@@ -162,7 +162,21 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
 
         if(GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
         {
-            StartCoroutine(ActivationInterval(GameplayController.instance.session.FindPlayer(playerName), GameplayController.instance.board.GetPlacesDistance(fromPlaceIndex, placeIndex), toPlaceIndex));
+            Player player = GameplayController.instance.session.FindPlayer(playerName);
+
+            //Jeżeli obiekt jest nieaktywny, StartCoroutine nie zadziała, co wywoła błędy
+            if(gameObject.activeInHierarchy)
+                StartCoroutine(ActivationInterval(player, GameplayController.instance.board.GetPlacesDistance(fromPlaceIndex, placeIndex), toPlaceIndex));
+            else
+            {
+                if (placeIndex != toPlaceIndex)
+                    DeactivateField();
+                else
+                {
+                    ActivateField(player);
+                    field.OnEnter(player, this);
+                }
+            }
         }
     }
 
@@ -366,9 +380,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
 
         //Dla wszystkich części pola, na których nie przypada żaden gracz, ustawiany jest domyślny kolor
         for(int i = playersOnField.Count; i < backlightsList.Count; i++)
-        {
             backlightsList[i].GetComponent<Renderer>().material.color = Keys.Board.Backlight.INACTIVE_COLOR;
-        }
     }
 
     /// <summary>
@@ -402,12 +414,13 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
         {
             tParameter = Mathf.Pow(Mathf.Cos((Time.time - startShiningTime) * Mathf.PI / Keys.Board.Backlight.SHINING_PERIOD), 2f);
             
-            foreach (GameObject back in backlightsList) back.GetComponent<Renderer>().material.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, tParameter);
+            foreach (GameObject back in backlightsList) 
+                back.GetComponent<Renderer>().material.color = Color.Lerp(activePlayer.MainColor, activePlayer.BlinkColor, tParameter);
         }
     }
 
     /// <summary>
-    /// Miga światłami obecnie aktywnego gracza
+    /// Miga światłami gracza przechodzącego przez pola
     /// </summary>
     /// <param name="activePlayer">Gracz, z którego ma pobrać kolor</param>
     /// <param name="turn">Jeżeli true - wyłacza podświetlenie, jeżeli false - włącza podświetlenie</param>
@@ -460,7 +473,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
         else
         {
             ActivateField(activePlayer);
-            field.OnEnter(GameplayController.instance.session.FindPlayer(activePlayer.GetName()), this);
+            field.OnEnter(activePlayer, this);
         }
     }
 
@@ -469,7 +482,8 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// </summary>
     private void HideBacklights()
     {
-        foreach (GameObject back in backlightsList) back.SetActive(false);
+        foreach (GameObject back in backlightsList)
+            back.SetActive(false);
     }
 
     /// <summary>
@@ -477,7 +491,8 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// </summary>
     private void ShowBacklights()
     {
-        foreach (GameObject back in backlightsList) back.SetActive(true);
+        foreach (GameObject back in backlightsList)
+            back.SetActive(true);
     }
 
     /// <summary>
@@ -538,7 +553,9 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// </summary>
     private void AnimateEntrance()
     {
-        StartCoroutine(AnimateEntrance(onAnimationStart, onAnimationEnd));
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(AnimateEntrance(onAnimationStart, onAnimationEnd));
+
         onAnimationStart = null;
         onAnimationEnd = null;
     }
@@ -549,7 +566,9 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// </summary>
     private void AnimateExit()
     {
-        StartCoroutine(AnimateExit(onAnimationStart, onAnimationEnd));
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(AnimateExit(onAnimationStart, onAnimationEnd));
+
         onAnimationStart = null;
         onAnimationEnd = null;
     }

@@ -52,4 +52,9 @@ public class PrisonSpecial : SpecialField
         else
             base.OnAwake(player, visualiser);
     }
+
+    public override void OnEnter(Player player, PlaceVisualiser visualiser)
+    {
+        GameplayController.instance.EndTurn();
+    }
 }

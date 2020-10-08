@@ -25,7 +25,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
     private List<PlaceVisualiser> places = new List<PlaceVisualiser>();
     /// <summary>
     /// Lista wczytanych obrazów na scenie
-    /// </summary>
+    /// </summary>lse
     private List<AugmentedImage> tempPlaceImages = new List<AugmentedImage>();
 
     /// <summary>
@@ -184,7 +184,8 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// <param name="visible">Określa, czy plansza ma być widoczna</param>
     private void ToggleBoardVisibility(bool visible)
     {
-        foreach (PlaceVisualiser visualiser in places) visualiser.ToggleVisibility(visible);
+        foreach (PlaceVisualiser visualiser in places)
+            visualiser.ToggleVisibility(visible);
     }
 
     #endregion Obsługa AR

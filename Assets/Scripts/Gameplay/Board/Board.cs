@@ -457,7 +457,7 @@ public class Board : IEventSubscribable
     {
         for (int i = 0; i < tiers.Count; i++)
         {
-            if (GetOwner(i) == null)
+            if ((GetOwner(i) == null) && (GetField(i) is NormalBuilding))
                 SetTier(i, 0);
         }
     }
