@@ -34,7 +34,7 @@ public class SessionCommand : GroupCommand
                     session.lastGameTime = 0;
                 }
             },
-            delegate { return PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("session_gameState") && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("session_gameTime"); }
+            delegate { return PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("session_gameState") && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("session_lastGameTime"); }
             );
         //Command sessionVariables = new SessionVariablesCommand(session);
 
