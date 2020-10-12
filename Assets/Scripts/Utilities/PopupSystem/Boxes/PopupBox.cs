@@ -13,7 +13,7 @@ public abstract class PopupBox : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (source != null && GameplayController.instance.session.gameTime - lifeStartTime >= source.lifeSpan) Close();
+        if (source != null && GameplayController.instance.session.currentGameTime - lifeStartTime >= source.lifeSpan) Close();
     }
 
     public virtual void InitBox() {}
@@ -26,7 +26,7 @@ public abstract class PopupBox : MonoBehaviour
     {
         this.source = source;
         source.onOpen?.Invoke(source);
-        lifeStartTime = GameplayController.instance.session.gameTime;
+        lifeStartTime = GameplayController.instance.session.currentGameTime;
     }
 
     /// <summary>

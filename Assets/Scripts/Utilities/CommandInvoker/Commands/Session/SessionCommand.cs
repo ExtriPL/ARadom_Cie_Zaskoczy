@@ -31,7 +31,7 @@ public class SessionCommand : GroupCommand
                 if (session.roomOwner.IsLocal)
                 {
                     session.gameState = GameState.running;
-                    session.gameTime = 0;
+                    session.lastGameTime = 0;
                 }
             },
             delegate { return PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("session_gameState") && PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("session_gameTime"); }

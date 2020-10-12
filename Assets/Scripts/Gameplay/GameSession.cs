@@ -8,21 +8,35 @@ using UnityEngine;
 public class GameSession : IEventSubscribable
 {
     /// <summary>
-    /// Czas rozpoczęcia rozgrywki
+    /// Łączny czas rozgrywki
     /// </summary>
     public float gameTime
     {
+        get => lastGameTime + currentGameTime;
+    }
+    /// <summary>
+    /// Czas rozgrywki, który upłynął od jej rozpoczęcia, do ostatniego zapisania savea
+    /// </summary>
+    public float lastGameTime 
+    { 
         get
         {
-            return (float)PhotonNetwork.CurrentRoom.CustomProperties["session_gameTime"];
+            return (float)PhotonNetwork.CurrentRoom.CustomProperties["session_lastGameTime"];
         }
         set
         {
-            Hashtable table = new Hashtable();
-            table.Add("session_gameTime", value);
+            Hashtable table = new Hashtable()
+            {
+                { "session_lastGameTime", value }
+            };
+
             PhotonNetwork.CurrentRoom.SetCustomProperties(table);
         }
     }
+    /// <summary>
+    /// Czass gry, który upłynął od ostatniego wczytania savea
+    /// </summary>
+    public float currentGameTime { get; private set; }
     /// <summary>
     /// Stan gry
     /// </summary>
@@ -90,12 +104,8 @@ public class GameSession : IEventSubscribable
 
     public void Update()
     {
-        //Liczeniem czasu zajmuje się właściciel pokoju
-        if (roomOwner.IsLocal)
-        {
-            //Czas nie jest liczony, gdy rozgrywka jest wstrzymana
-            if (gameState == GameState.running) gameTime += Time.deltaTime;
-        }
+        //Czas nie jest liczony, gdy rozgrywka jest wstrzymana
+        if (gameState == GameState.running) currentGameTime += Time.deltaTime;
     }
 
     public void SubscribeEvents()
@@ -117,7 +127,7 @@ public class GameSession : IEventSubscribable
     public void LoadFromSave(ref GameSave save)
     {
         gameState = save.gameState;
-        gameTime = save.gameTime;
+        lastGameTime = save.gameTime;
 
         List<string> playerOrder = new List<string>();
         foreach (PlayerSettings ps in save.players)
@@ -129,7 +139,7 @@ public class GameSession : IEventSubscribable
                 playerOrder.Add(ps.nick);
                 p.SetTurnsToSkip(ps.turnsToSkip);
                 p.SetMoney(ps.money);
-                p.PlaceId = ps.fieldId;
+                p.PlaceId = ps.placedId;
                 p.MainColor = new Color
                 (
                     ps.mainColorComponents[0],
@@ -144,6 +154,10 @@ public class GameSession : IEventSubscribable
                     ps.blinkColorComponents[2],
                     ps.blinkColorComponents[3]
                 );
+                p.IsLoser = ps.isLoser;
+                p.TookLoan = ps.tookLoan;
+                p.OutstandingAmount = ps.outstandingAmount;
+                p.Imprisoned = ps.imprisoned;
                 foreach (int i in ps.fieldList) p.AddOwnership(i);
             }
             else
@@ -172,7 +186,7 @@ public class GameSession : IEventSubscribable
         {
             Player player = FindPlayer(p);
             PlayerSettings ps = new PlayerSettings();
-            ps.fieldId = player.PlaceId;
+            ps.placedId = player.PlaceId;
             ps.fieldList = player.GetOwnedFields();
             ps.money = player.Money;
             ps.nick = player.GetName();
@@ -190,6 +204,11 @@ public class GameSession : IEventSubscribable
             ps.blinkColorComponents[1] = player.BlinkColor.g;
             ps.blinkColorComponents[2] = player.BlinkColor.b;
             ps.blinkColorComponents[3] = player.BlinkColor.a;
+
+            ps.isLoser = player.IsLoser;
+            ps.tookLoan = player.TookLoan;
+            ps.outstandingAmount = player.OutstandingAmount;
+            ps.imprisoned = player.Imprisoned;
 
             save.players.Add(ps);
         }
