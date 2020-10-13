@@ -10,7 +10,7 @@ public class CommandInvoker
     private Queue<Command> commandQueue = new Queue<Command>();
     private Action<Command> onCommandStarted;
     private Action<Command> onCommandFinished;
-    private Action onExecutionFinished;
+    public Action onExecutionFinished;
 
     /// <summary>
     /// Konstruktor CommandInvokera

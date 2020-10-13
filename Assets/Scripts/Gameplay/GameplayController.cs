@@ -25,11 +25,11 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
     private IEnumerator masterInactiveCheck;
 
-    private CommandInvoker invoker;
+    public CommandInvoker invoker;
     /// <summary>
     /// Flaga określająca czy gra przeszła przez komand invoker
     /// </summary>
-    private bool gameInitialized;
+    public bool gameInitialized { get; private set; }
     /// <summary>
     /// Flaga określająca, czy popup mówiący o skońceniu tury ma się pokazać graczowi
     /// </summary>

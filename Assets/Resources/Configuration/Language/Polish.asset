@@ -154,8 +154,6 @@ MonoBehaviour:
     value: Opiekunowie
   - key: DO_YOU_WANT_TO_UPGRADE
     value: "Czy chcesz ulepszy\u0107 "
-  - key: UPGRADE_COST
-    value: 'Koszt ulepszenia: '
   - key: NEW_ROOM
     value: "Nowy Pok\xF3j"
   - key: ROOMS
@@ -219,3 +217,11 @@ MonoBehaviour:
       Jeste\u015B wolny!"
   - key: NOT_THIS_TIME
     value: "Tym razem si\u0119 nie uda\u0142o. Zostajesz w wi\u0119zieniu"
+  - key: LEVEL
+    value: Poziom
+  - key: BUY_PRICE
+    value: Cena kupna
+  - key: UPGRADE_COST
+    value: Koszt ulepszenia
+  - key: OWNER
+    value: "W\u0142a\u015Bciciel"
