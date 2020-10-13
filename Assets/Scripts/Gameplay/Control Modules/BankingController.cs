@@ -285,10 +285,7 @@ public class BankingController : IEventSubscribable
             if (GameplayController.instance.session.FindPlayer(bidders[0]).NetworkPlayer.IsLocal)
             {
                 if (raisers.Contains(bidders[0]))
-                {
-                    GameplayController.instance.arController.GetVisualiser(placeId).onAnimationEnd += delegate { GameplayController.instance.EndTurn(); };
                     AquireBuilding(GameplayController.instance.session.FindPlayer(bidders[0]), placeId);
-                }
                 else
                 {
                     if (GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
@@ -297,12 +294,10 @@ public class BankingController : IEventSubscribable
                         QuestionPopup buyQuestion = new QuestionPopup(message);
                         Popup.PopupAction noAction = delegate (Popup source)
                         {
-                            GameplayController.instance.EndTurn();
                             Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
                         };
                         Popup.PopupAction yesAction = delegate (Popup source)
                         {
-                            GameplayController.instance.arController.GetVisualiser(placeId).onAnimationEnd += delegate { GameplayController.instance.EndTurn(); };
                             AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
                             Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
                         };
@@ -319,9 +314,13 @@ public class BankingController : IEventSubscribable
                 PopupSystem.instance.AddPopup(auctionEnded);
             }
         }
-        else GameplayController.instance.EndTurn();
 
         PopupSystem.instance.ClosePopup(auctionPopup);
+        ClearAuction();
+    }
+
+    public void ClearAuction()
+    {
         auctionPopup = null;
         raisers.Clear();
         bidders = new List<string>(auctionPlayers); //Dodawanie wszystkich graczy do licytacji

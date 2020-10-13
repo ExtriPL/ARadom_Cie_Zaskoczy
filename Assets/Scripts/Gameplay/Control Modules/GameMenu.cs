@@ -19,6 +19,9 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     [SerializeField] private Button AccountPanelButton;
     [SerializeField] private Button SettingsPanelButton;
 
+    [SerializeField] private Button NextTurnButton;
+    [SerializeField] private TextMeshProUGUI NextTurnButtonTimer;
+
     /// <summary>
     /// Czy menu jest aktualnie otwarte.
     /// </summary>
@@ -193,6 +196,44 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
         {
             GameplayController.instance.session.KickPlayer(GameplayController.instance.session.localPlayer);
         }    
+    }
+
+    /// <summary>
+    /// Przełącza stan włączenie przycisku następnej tury
+    /// </summary>
+    /// <param name="active">Stan włączenia przycisku</param>
+    public void SetActiveNextTurnButton(bool active)
+    {
+        if(!NextTurnButton.gameObject.activeInHierarchy)
+            NextTurnButton.gameObject.SetActive(active);
+    }
+
+    /// <summary>
+    /// Ustawia możliwośc wciśnięcia przycisku zmiany tury
+    /// </summary>
+    /// <param name="interactable">Czy przycisk może zostać wciśnięty</param>
+    public void SetInteractableNextTurnButton(bool interactable)
+    {
+        NextTurnButton.interactable = interactable;
+    }
+
+    /// <summary>
+    /// Przełącza stan włączenia licznika przy przycisku zakończenia tury
+    /// </summary>
+    /// <param name="time">Czas, który został do automatycznego skończenia tury</param>
+    public void SetActiveNextTurnButtonTimer(bool active)
+    {
+        if(!NextTurnButtonTimer.gameObject.activeInHierarchy)
+            NextTurnButtonTimer.gameObject.SetActive(active);
+    }
+
+    /// <summary>
+    /// Ustawia wskaźnik timera
+    /// </summary>
+    /// <param name="time">Czas pozostały do końca rundy</param>
+    public void SetNextTurnButtonTimer(int time)
+    {
+        NextTurnButtonTimer.text = time.ToString();
     }
 
     #endregion Obsłuiga przycisków menu

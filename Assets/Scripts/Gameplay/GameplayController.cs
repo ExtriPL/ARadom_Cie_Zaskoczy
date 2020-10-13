@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using TMPro;
-using UnityEngine.UI;
-using System;
-using Photon.Realtime;
-using Hashtable =  ExitGames.Client.Photon.Hashtable;
 
 public class GameplayController : MonoBehaviour, IEventSubscribable
 {
@@ -17,6 +12,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     public GameMenu menu;
     public Board board = new Board();
     public ARController arController;
+    public FlowController flow = new FlowController();
 
     /// <summary>
     /// Plik zapisu gry wczytany z pliku
@@ -30,22 +26,6 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     /// Flaga określająca czy gra przeszła przez komand invoker
     /// </summary>
     private bool gameInitialized;
-    /// <summary>
-    /// Flaga określająca, czy popup mówiący o skońceniu tury ma się pokazać graczowi
-    /// </summary>
-    public bool showEndOfTurnPopup
-    { 
-        get
-        {
-            return (bool)PhotonNetwork.CurrentRoom.CustomProperties["gameplayController_showEndOfTurnPopup"];
-        }
-        set
-        {
-            Hashtable table = new Hashtable();
-            table.Add("gameplayController_showEndOfTurnPopup", value);
-            PhotonNetwork.CurrentRoom.SetCustomProperties(table);
-        }
-    }
 
     #region Inicjalizacja
 
@@ -67,6 +47,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         board.UnsubscribeEvents();
         banking.UnsubscribeEvents();
         arController.UnsubscribeEvents();
+        flow.UnsubscribeEvents();
         UnsubscribeEvents();
     }
 
@@ -76,6 +57,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
         if (gameInitialized)
         {
+            flow.Update();
             session.Update();
             board.Update();
             arController.UpdateAR();
@@ -112,6 +94,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
             menu,
             this.board,
             this.arController,
+            this.flow,
             sync0,
             sync1
         });
@@ -141,7 +124,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     }
 
     #endregion Inicjalizacja
-
+    
     #region Sterowanie rozgrywką
 
     /// <summary>
@@ -153,7 +136,8 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         {
             foreach (string playerName in session.playerOrder)
             {
-                if (session.FindPlayer(playerName).NetworkPlayer.IsInactive) session.KickPlayer(session.FindPlayer(playerName));
+                if (session.FindPlayer(playerName).NetworkPlayer.IsInactive)
+                    session.KickPlayer(session.FindPlayer(playerName));
             }
 
             yield return new WaitForSeconds(Keys.Session.PLAYER_TTL);
@@ -202,46 +186,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     private void StartGame()
     {
         StartCoroutine(InactiveCheck());
-        if (session.roomOwner.IsLocal) EventManager.instance.SendOnTurnChanged("", board.dice.currentPlayer);
-    }
-
-    /// <summary>
-    /// Kończy turę obecnie aktywnego gracza i rozpoczyna kolejną.
-    /// Przed przekazaniem tury sprawdza warunki przegrania i wygrania
-    /// </summary>
-    public void EndTurn()
-    {
-        if (session.localPlayer.Money < 0f) 
-        {
-            //Przegrana gracza przez bankructwo
-
-            //Jeżeli gracz może zaciągnąć pożyczkę
-            if(banking.CanTakeLoan(session.localPlayer))
-            {
-                //Danie graczowi szansy na zaciągnięcie pożyczki, by mógł ocalić się przed bankructwem
-                ShowLastChanceLoanMessage();
-            }
-            else
-            {
-                //Jeżeli dojdzie do tego miejsca, gracz nie ma już żadnych szans na ratunek i przegrywa
-                LosePlayer();
-                CheckWin();
-            }
-        }
-        else NextTurn();
-    }
-
-    /// <summary>
-    /// Zmienia turę na nestępną.
-    /// </summary>
-    private void NextTurn()
-    {
-        string previousPlayer = board.dice.currentPlayer;
-        board.dice.NextTurn();
-        board.dice.RollDice();
-        string nextPlayer = board.dice.currentPlayer;
-
-        EventManager.instance.SendOnTurnChanged(previousPlayer, nextPlayer);
+        flow.StartGame();
     }
 
     public void Impison(Player player)
@@ -269,7 +214,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
     /// <summary>
     /// Funkcja która realizuje event OnTurnChanged.
-    /// Przekazuje ture kolejnemu graczowi, daje mu rzut kostką oraz przemieszcza gracza.
+    /// Zapisuje postęp gry na samym początku tury
     /// </summary>
     /// <param name="previousPlayerName"></param>
     /// <param name="nextPlayerName"></param>
@@ -341,62 +286,23 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     #region Warunki przegranej/wygranej  
 
     /// <summary>
-    /// Pokazuje popup, mówiący o bankructwie i dający szanse wzięcia pożyczki pozwalającej na dalszą grę
-    /// </summary>
-    private void ShowLastChanceLoanMessage()
-    {
-        LanguageController language = SettingsController.instance.languageController;
-        string message = language.GetWord("LAST_CHANCE_WANT_TO_TAKE_LOAN");
-
-        Popup.PopupAction yesAction = delegate (Popup source)
-        {
-            banking.TakeLoan(session.localPlayer);
-            EndTurn();
-            Popup.Functionality.Destroy().Invoke(source);
-        };
-        Popup.PopupAction noAction = delegate (Popup source)
-        {
-            LosePlayer();
-            CheckWin();
-            Popup.Functionality.Destroy().Invoke(source);
-        };
-
-        QuestionPopup lastChange = QuestionPopup.CreateYesNoDialog(message, yesAction, noAction);
-        PopupSystem.instance.AddPopup(lastChange);
-    }
-
-    /// <summary>
     /// Zmienia status gracza na przegrany
     /// </summary> 
-    private void LosePlayer()
+    public void LosePlayer(Player player)
     {
-        session.localPlayer.IsLoser = true;
+        player.IsLoser = true;
 
         //Odbieranie pól graczowi
-        foreach (int placeId in session.localPlayer.GetOwnedFields())
+        foreach (int placeId in player.GetOwnedFields())
         {
             if (board.GetField(placeId) is NormalBuilding)
                 board.SetTier(placeId, 0);
         }
 
-        session.localPlayer.ClearOwnership();
-        session.localPlayer.PlaceId = -1;
+        player.ClearOwnership();
+        player.PlaceId = -1;
 
-        EventManager.instance.SendOnPlayerLostGame(session.localPlayer.GetName());
-    }
-
-    /// <summary>
-    /// Sprawdza, czy istnieje zwycięzca gry. Jeżeli tak jest wyświetla komunikat. Jeżeli nie, rozpoczyna kolejną turę
-    /// </summary>
-    private void CheckWin()
-    {
-        if (WinnerExists())
-        {
-            //Informacja o wygranej jakiegoś gracza
-            //Zakończenie rozgrywki
-            session.gameState = GameState.ended;
-        }
-        else NextTurn();
+        EventManager.instance.SendOnPlayerLostGame(player.GetName());
     }
 
     /// <summary>

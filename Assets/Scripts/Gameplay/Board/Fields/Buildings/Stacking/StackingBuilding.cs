@@ -76,12 +76,7 @@ public abstract class StackingBuilding : BuildingField
             {
                 //Pole ma właściciela
 
-                if (GameplayController.instance.board.GetOwner(visualiser.placeIndex).GetName() == player.GetName())
-                {
-                    //Jeżeli gracz, który jest właścicielem stanął na polu, zmieniamy ture na następną
-                    GameplayController.instance.EndTurn();
-                }
-                else
+                if (GameplayController.instance.board.GetOwner(visualiser.placeIndex).GetName() != player.GetName())
                 {
                     //Jeżeli gracz, który nie jest właścicielem stanął na polu
                     ShowPayPopup(player, visualiser, GetEnterCost(visualiser.placeIndex));
