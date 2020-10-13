@@ -10,6 +10,7 @@ using UnityEngine;
 public class SyncCommand : Command, IEventSubscribable//GroupCommand
 {
     private float lastTime;
+    private int syncCommand;
 
     /// <summary>
     /// string - nazwa gracza
@@ -21,9 +22,11 @@ public class SyncCommand : Command, IEventSubscribable//GroupCommand
     /// <summary>
     /// Komenda służąca do zapewnienia synchronizacji między różnymi graczami
     /// </summary>
-    public SyncCommand(Action<Command> onStageStarted = null, Action<Command> onStageFinished = null)
-        : base ("Sync"/*, onStageStarted, onStageFinished*/)
-    {}
+    public SyncCommand(int syncCommand,Action<Command> onStageStarted = null, Action<Command> onStageFinished = null)
+        : base ("Sync")
+    {
+        this.syncCommand = syncCommand;
+    }
 
     public override void StartExecution(Action<Command> OnCommandFinished)
     {
@@ -53,7 +56,7 @@ public class SyncCommand : Command, IEventSubscribable//GroupCommand
                 {
                     if (!players[playerName].Item1)
                     {
-                        EventManager.instance.SendSyncEvent(0, GameplayController.instance.session.localPlayer.GetName(), playerName);
+                        EventManager.instance.SendSyncEvent(0, GameplayController.instance.session.localPlayer.GetName(), playerName, syncCommand);
                         canPass = false;
                     }
                     else
@@ -86,14 +89,17 @@ public class SyncCommand : Command, IEventSubscribable//GroupCommand
         EventManager.instance.onSync -= OnSync;
     }
 
-    private void OnSync(int syncNumber, string source, string target)
+    private void OnSync(int syncNumber, string source, string target, int syncCommand)
     {
+        if (this.syncCommand != syncCommand)
+            return;
+
         if (players.ContainsKey(source) && GameplayController.instance.session.FindPlayer(target).NetworkPlayer.IsLocal)
         {
             if (syncNumber == 0)
             {
                 players[source] = Tuple.Create(players[source].Item1, true);
-                EventManager.instance.SendSyncEvent(1, target, source);
+                EventManager.instance.SendSyncEvent(1, target, source, syncCommand);
             }
             else if (syncNumber == 1)
             {

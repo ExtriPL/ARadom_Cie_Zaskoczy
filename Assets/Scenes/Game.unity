@@ -2583,7 +2583,7 @@ MonoBehaviour:
     type: 3}
   QuestionBoxPrefab: {fileID: 8668617577274463088, guid: e98973f6e81af6841bd6eec86ab00d73,
     type: 3}
-  FormattedBoxPrefab: {fileID: 4828347179860030217, guid: 8ce35d7a5dabb7b4f9c28a5142e22638,
+  ChanceBoxPrefab: {fileID: 7983886057969742084, guid: f08385d30f763e243bddf345a86c9bc6,
     type: 3}
 --- !u!1 &610264588
 GameObject:
@@ -5429,6 +5429,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7584c43145e625141997550114f18ad5, type: 2}
     - {fileID: 11400000, guid: 18742337ae515de47b8d412edb392741, type: 2}
     - {fileID: 11400000, guid: c9aff0e742fdee048b4d130042f029e5, type: 2}
+    - {fileID: 11400000, guid: 6f2bb51e118669a4b9d6d3d37b7c6f09, type: 2}
   arController: {fileID: 1110553158}
 --- !u!114 &1110553157
 MonoBehaviour:
