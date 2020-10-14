@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Piotr\xF3wka"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Grodzisko powsta\u0142o w 2 po\u0142owie X wieku w celu strze\u017Cenia
+    brodu na rzece Mlecznej na skrzy\u017Cowaniu szlak\xF3w handlowych wiod\u0105cych
+    z Ma\u0142opolski na Mazowsze i przez Lublin na Ru\u015B. Radom by\u0142 w\xF3wczas
+    wa\u017Cnym o\u015Brodkiem osadniczym, znajduj\u0105cym si\u0119 pod w\u0142adz\u0105
+    mo\u017Cnow\u0142adczego w\u0142adyki, a potem siedzib\u0105 kasztelanii, kt\xF3ra
+    strzeg\u0142a pa\u0144stwa przed naje\u017Ad\u017Acami ze wschodu i p\xF3\u0142nocnego
+    wschodu (Ja\u0107wingowie, Litwini, Tatarzy)."
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +29,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 4800
     enterCost: 1500
-    model: {fileID: -927199367670048503, guid: f11e6c89d8cf8ef41a851a45761f542d, type: 3}
+    model: {fileID: -927199367670048503, guid: b0c1a9de7d90e544c9756ac0485aa478, type: 3}
   - name: Tier 2
     buyPrice: 2400
     enterCost: 2450
-    model: {fileID: -927199367670048503, guid: ec8e7fa32203a084685245d84cf46e46, type: 3}
+    model: {fileID: -927199367670048503, guid: b0c1a9de7d90e544c9756ac0485aa478, type: 3}
   - name: Tier 3
     buyPrice: 3600
     enterCost: 2950
-    model: {fileID: -927199367670048503, guid: 2bfd2a4bf93b278488fcc78796d67679, type: 3}
+    model: {fileID: -927199367670048503, guid: b0c1a9de7d90e544c9756ac0485aa478, type: 3}

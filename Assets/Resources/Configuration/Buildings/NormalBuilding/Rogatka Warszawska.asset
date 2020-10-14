@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Rogatka Warszawska
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Rogatka warszawska powsta\u0142a z za\u0142o\u017Ce\u0144 planu
+    regulacyjnego z 1822 roku.\r\nTa kwadratowa,klasycystyczna budowla zacz\u0119\u0142a
+    powstawa\u0107 w 1820 jako drewniana rogatka ale w 1834 zast\u0105piono j\u0105
+    dzisiaj znanym stylem. Od okresu mi\u0119dzywojennego do dzi\u015B pe\u0142ni\u0142
+    r\xF3\u017Cne funkcj\u0119 m.in. kostnic\u0119 . Obecnie to jest Galeria Rogatka
+    Wydzia\u0142u Sztuki UTH.\r"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +28,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 2600
     enterCost: 850
-    model: {fileID: -927199367670048503, guid: f6774fe7898229e4c924db7c6a884239, type: 3}
+    model: {fileID: -927199367670048503, guid: 472c8795d82714241a6743a97f50beae, type: 3}
   - name: Tier 2
     buyPrice: 1300
     enterCost: 1450
-    model: {fileID: -927199367670048503, guid: 8b4990ad971c1ed44aa927f4c4a54070, type: 3}
+    model: {fileID: -927199367670048503, guid: 472c8795d82714241a6743a97f50beae, type: 3}
   - name: Tier 3
     buyPrice: 1950
     enterCost: 1600
-    model: {fileID: -927199367670048503, guid: b282cfec441eda147894c8bcf28bc508, type: 3}
+    model: {fileID: -927199367670048503, guid: 472c8795d82714241a6743a97f50beae, type: 3}

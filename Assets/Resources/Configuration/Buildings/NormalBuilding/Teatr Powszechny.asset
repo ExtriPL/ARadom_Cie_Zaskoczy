@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Teatr Powszechny
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Teatr Powszechny im. Jana Kochanowskiego w Radomiu \u2013 teatr
+    dramatyczny z siedzib\u0105 w Radomiu, za\u0142o\u017Cony w 1976 roku. Instytucja
+    kultury miasta Radomia.\nHistoria teatru w Radomiu si\u0119ga XVIII wieku, kiedy
+    to w gmachu kolegium Pijar\xF3w dzia\u0142a\u0142 teatr amatorski. Pierwszy teatr
+    zawodowy dawa\u0142 przedstawienia w zaje\u017Adzie usytuowanym przy Lubelskim
+    Przedmie\u015Bciu (obecnie ulica \u017Beromskiego 2). Pierwszym budynkiem teatralnym
+    w Radomiu by\u0142 zaadaptowany na ten cel w 1809 roku pobenedykty\u0144ski ko\u015Bci\xF3\u0142
+    pw. Wniebowzi\u0119cia Naj\u015Bwi\u0119tszej Marii Panny (obecnie ko\u015Bci\xF3\u0142
+    ewangelicko-augusburski)."
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +31,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 5000
     enterCost: 1800
-    model: {fileID: -927199367670048503, guid: 312c6e35219907c46b41e9c87a2e4ba6, type: 3}
+    model: {fileID: -927199367670048503, guid: 16661df4064a526418a579a44a7736f3, type: 3}
   - name: Tier 2
     buyPrice: 2500
     enterCost: 2600
-    model: {fileID: -927199367670048503, guid: 16fdba72d68e9744d9ae9e7a8e156474, type: 3}
+    model: {fileID: -927199367670048503, guid: 16661df4064a526418a579a44a7736f3, type: 3}
   - name: Tier 3
     buyPrice: 3750
     enterCost: 3000
-    model: {fileID: -927199367670048503, guid: e43cee58c10f88f40bffdfb271b6de24, type: 3}
+    model: {fileID: -927199367670048503, guid: 16661df4064a526418a579a44a7736f3, type: 3}

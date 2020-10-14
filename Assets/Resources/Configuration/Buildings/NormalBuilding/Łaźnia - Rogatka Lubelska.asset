@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "\u0141a\u017Ania - Rogatka Lubelska"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: ". Rogatka Lubelska  powsta\u0142a w 1829 r. Ten zabytek stoj\u0105cy
+    przy zbiegu Ul. \u017Beromskiego i S\u0142owackiego, by\u0142 skutkiem planu
+    regulacyjnego Radomia z 1822.\r\nKiedy\u015B to by\u0142a rogatka(punkt poboru
+    op\u0142at celnych),p\xF3\u017Aniej w roku 1926 \u0142a\u017Ania.\r\nObecnie
+    jest to dwupi\u0119trowy\r\n modernistyczny budynek w kt\xF3rym fasada jest jedynym
+    elementem dawnej rogatki.\r"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +28,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 3200
     enterCost: 980
-    model: {fileID: -927199367670048503, guid: 8bc7281f1b3e4694e9e22c5b97f15d5a, type: 3}
+    model: {fileID: -927199367670048503, guid: 009d0c0c0ca28e445a5a9bc627fee629, type: 3}
   - name: Tier 2
     buyPrice: 1600
     enterCost: 1750
-    model: {fileID: -927199367670048503, guid: 924e8200e1e35564cb946fb1aad5f762, type: 3}
+    model: {fileID: -927199367670048503, guid: 009d0c0c0ca28e445a5a9bc627fee629, type: 3}
   - name: Tier 3
     buyPrice: 2400
     enterCost: 1850
-    model: {fileID: -927199367670048503, guid: b4cac98a5ef6e0b4f898f6f0b9182873, type: 3}
+    model: {fileID: -927199367670048503, guid: 009d0c0c0ca28e445a5a9bc627fee629, type: 3}

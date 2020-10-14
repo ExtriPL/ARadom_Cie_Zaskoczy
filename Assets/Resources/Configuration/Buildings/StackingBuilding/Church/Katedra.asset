@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Katedra
   canBePlaced: 1
-  fieldHistory: 
-  model: {fileID: -927199367670048503, guid: 1fccc56b2d54bd043bb870797cb10459, type: 3}
+  fieldHistory: "Katedra Opieki Naj\u015Bwi\u0119tszej Maryi Panny w Radomiu \u2013
+    neogotycka katedra projektu J\xF3zefa Piusa Dzieko\u0144skiego. Powstawa\u0142a
+    w latach 1894-1911. W 1911 by\u0142a oddana w stanie surowym,a na pe\u0142ne
+    uko\u0144czenie trzeba by\u0142o czeka\u0107 do  1989 roku. 4 czerwca 1991 roku
+    katedr\u0119 odwiedzi\u0142 papie\u017C Jan Pawe\u0142 II."
+  model: {fileID: -927199367670048503, guid: 37bbb31f594eef94caa0aa8cad156241, type: 3}
   stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

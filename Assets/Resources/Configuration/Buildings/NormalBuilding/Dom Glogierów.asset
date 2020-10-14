@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Dom Glogier\xF3w"
   canBePlaced: 0
-  fieldHistory: 
+  fieldHistory: "Dom Glogier\xF3w w Radomiu \u2013 powsta\u0142y w 1914 by\u0142
+    projektem J\xF3zefa Piusa Dzieko\u0144skiego, by\u0142 on przedstawicielem polskiego
+    historyzmu i by\u0142 na zlecenie senatora II RP, Macieja Glogiera"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +25,12 @@ MonoBehaviour:
   - name: jedna trzecia
     buyPrice: 600
     enterCost: 150
-    model: {fileID: -927199367670048503, guid: 08975dd3df5ceb5449eb931befcaca31, type: 3}
+    model: {fileID: -927199367670048503, guid: e72889022226de843a3e69f24a73bbd5, type: 3}
   - name: dwie trzecie
     buyPrice: 300
     enterCost: 250
-    model: {fileID: -927199367670048503, guid: 08975dd3df5ceb5449eb931befcaca31, type: 3}
+    model: {fileID: -927199367670048503, guid: e72889022226de843a3e69f24a73bbd5, type: 3}
   - name: "Ca\u0142y"
     buyPrice: 450
     enterCost: 550
-    model: {fileID: -927199367670048503, guid: 08975dd3df5ceb5449eb931befcaca31, type: 3}
+    model: {fileID: -927199367670048503, guid: e72889022226de843a3e69f24a73bbd5, type: 3}

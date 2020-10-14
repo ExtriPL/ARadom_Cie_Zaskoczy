@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Ko\u015Bci\xF3\u0142 \u015Bw. Wac\u0142awa"
   canBePlaced: 1
-  fieldHistory: 
-  model: {fileID: -927199367670048503, guid: 201f4291d836a63498af6d7ea1fd8a60, type: 3}
+  fieldHistory: "Ko\u015Bci\xF3\u0142 (Parafia) \u015Bw. Wac\u0142awa w Radomiu zosta\u0142
+    wzniesiony w 1216 i ufundowany przez ksi\u0119cia Leszka Bia\u0142ego. Wzniesiony
+    z palonej ceg\u0142y jako ko\u015Bci\xF3\u0142 parafialny a nast\u0119pnie w
+    1440 zosta\u0142 r cz\u0119\u015Bciowo przebudowany w styl gotycki. W okresie
+    mi\u0119dzywojennym by\u0142 u\u017Cytkowany jako dom starc\xF3w. Obecnie pe\u0142ni
+    funkcj\u0119 sakralne."
+  model: {fileID: -927199367670048503, guid: 28ba261ecb84f5d42b01bc0af139d87f, type: 3}
   stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}
