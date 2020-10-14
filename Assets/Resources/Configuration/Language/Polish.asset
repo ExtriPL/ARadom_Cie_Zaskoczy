@@ -219,3 +219,165 @@ MonoBehaviour:
       Jeste\u015B wolny!"
   - key: NOT_THIS_TIME
     value: "Tym razem si\u0119 nie uda\u0142o. Zostajesz w wi\u0119zieniu"
+  - key: CLOSE
+    value: Zamknij
+  - key: CHANCE_CARD_MAKLOWICZ_TITLE
+    value: "Mak\u0142owicz"
+  - key: CHANCE_CARD_MAKLOWICZ_CONTENT
+    value: "Spotka\u0142e\u015B s\u0142ynnego radomskiego Mak\u0142owicza. Musisz
+      skosztowa\u0107 jego s\u0142ynnej opowie\u015Bci i czeka\u0107 jedn\u0105 kolejk\u0119"
+  - key: CHANCE_CARD_GRENADE_FACTORY_TITLE
+    value: "Wytw\xF3rnia granat\xF3w"
+  - key: CHANCE_CARD_GRENADE_FACTORY_CONTENT
+    value: "Znalaz\u0142e\u015B wej\u015Bcie do starej wytw\xF3rni granat\xF3w. Otrzymujesz
+      dodatkowy rzut kostk\u0105."
+  - key: CHANCE_CARD_ROAD_JAM_TITLE
+    value: Korek drogowy
+  - key: CHANCE_CARD_ROAD_JAM_CONTENT
+    value: "Niestety napotka\u0142e\u015B korek i czekasz kolejk\u0119."
+  - key: CHANCE_CARD_TICKET_INSPECTION_TITLE
+    value: "Kontrola bilet\xF3w"
+  - key: CHANCE_CARD_TICKET_INSPECTION_CONTENT
+    value: "Z\u0142apa\u0142 ci\u0119 kanar w autobusie. Oddajesz banku 300 groszy
+      radomskich."
+  - key: CHANCE_CARD_HOSPITAL_TITLE
+    value: Szpital
+  - key: CHANCE_CARD_HOSPITAL_CONTENT
+    value: "Chore dzieci w szpitalu potrzebuj\u0105 twojej pomocy. Oddaj na ich rzecz
+      450 groszy."
+  - key: CHANCE_CARD_LOTTERY_TITLE
+    value: Loteria
+  - key: CHANCE_CARD_LOTTERY_CONTENT
+    value: "Wygra\u0142e\u015B totolotka. Otrzymujesz od banku 350 groszy."
+  - key: CHANCE_CARD_ROAD_TITLE
+    value: Droga
+  - key: CHANCE_CARD_ROAD_CONTENT
+    value: "Wyjecha\u0142e\u015B na rynek drog\u0105 pod pr\u0105d. Cofasz si\u0119
+      o trzy pola."
+  - key: CHANCE_CARD_DISABLED_PLACE_TITLE
+    value: "Miejsce dla niepe\u0142nosprawnych"
+  - key: CHANCE_CARD_DISABLED_PLACE_CONTENT
+    value: "Zatrzyma\u0142e\u015B si\u0119 na miejscu dla niepe\u0142nosprawnych
+      i dosta\u0142e\u015B mandat w wysoko\u015Bci 300 groszy."
+  - key: CHANCE_CARD_START_TITLE
+    value: 'Start '
+  - key: CHANCE_CARD_START_CONTENT
+    value: Idziesz na start
+  - key: CHANCE_CARD_INAPPROPRIATE_BEHAVIOUR_TITLE
+    value: Nieodpowiednie zachowanie
+  - key: CHANCE_CARD_INAPPROPRIATE_BEHAVIOUR_CONTENT
+    value: "Twoje zachowanie w muzeum Jacka Malczewskiego by\u0142o naganne. Tracisz
+      kolejk\u0119."
+  - key: CHANCE_CARD_AIRPORT_TITLE
+    value: Lotnisko
+  - key: CHANCE_CARD_AIRPORT_CONTENT
+    value: "Modernizujesz lotnisko. Od ka\u017Cdego z graczy pobierasz 15 groszy
+      radomskich."
+  - key: CHANCE_CARD_BIKE_LANE_TITLE
+    value: "Droga dla rower\xF3w"
+  - key: CHANCE_CARD_BIKE_LANE_CONTENT
+    value: "Budujesz nowe drogi dla rower\xF3w. Wp\u0142a\u0107 do banku miasta 550
+      groszy radomskich."
+  - key: CHANCE_CARD_VR_GOGGLES_TITLE
+    value: Gogle VR
+  - key: CHANCE_CARD_VR_GOGGLES_CONTENT
+    value: "Spotka\u0142e\u015B nauczyciela, kt\xF3ry pom\xF3g\u0142 ci rozwi\u0105za\u0107
+      problem z okularami VR. Dostajesz dodatkowy rzut kostk\u0105"
+  - key: CHANCE_CARD_SPEED_CAMERA_TITLE
+    value: Fotoradar
+  - key: CHANCE_CARD_SPEED_CAMERA_CONTENT
+    value: "Za szybko jecha\u0142e\u015B rowerem miejskim i z\u0142apa\u0142 ci\u0119
+      fotoradar. P\u0142acisz 250 groszy radomskich."
+  - key: CHANCE_CARD_CARD_TITLE
+    value: Karta
+  - key: CHANCE_CARD_CARD_CONTENT
+    value: "P\u0142acisz za wyci\u0105gni\u0119t\u0105 kart\u0119 80 groszy."
+  - key: CHANCE_CARD_BIRTHDAY_TITLE
+    value: Urodziny
+  - key: CHANCE_CARD_BIRTHDAY_CONTENT
+    value: "Masz dzisiaj urodziny. Ka\u017Cdy z graczy podarowuje ci 50 groszy radomskich."
+  - key: CHANCE_CARD_KEKE_TITLE
+    value: "K\u0119ke"
+  - key: CHANCE_CARD_KEKE_CONTENT
+    value: "Spotka\u0142e\u015B K\u0119kiego i otrzyma\u0142e\u015B autograf na nowej
+      p\u0142ycie. Otrzymujesz dodatkowy rzut kostk\u0105."
+  - key: CHANCE_CARD_MCDONALDS_TITLE
+    value: McDonald's
+  - key: CHANCE_CARD_MCDONALDS_CONTENT
+    value: "Znalaz\u0142e\u015B kupon do McDonald's. Idziesz 3 pola do przodu."
+  - key: CHANCE_CARD_BACKWARDS_TITLE
+    value: "Ca\u0142a wstecz!"
+  - key: CHANCE_CARD_BACKWARDS_CONTENT
+    value: "Cofnij si\u0119 o 2 pola."
+  - key: CHANCE_CARD_AHEAD_TITLE
+    value: "Ca\u0142a do przodu!"
+  - key: CHANCE_CARD_AHEAD_CONTENT
+    value: "Rusz si\u0119 o 4 pola do przodu."
+  - key: CHANCE_CARD_DESTROYED_COMPUTERS_TITLE
+    value: Zniszczone komputery
+  - key: CHANCE_CARD_DESTROYED_COMPUTERS_CONTENT
+    value: "Jako odszkodowanie za zniszczenie komputer\xF3w w ZST p\u0142acisz 350
+      groszy."
+  - key: CHANCE_CARD_SCHOLARSHIP_TITLE
+    value: Stypendium
+  - key: CHANCE_CARD_SCHOLARSHIP_CONTENT
+    value: "Za dobre wyniki w nauce otrzymujesz stypendium naukowe w wysoko\u015Bci
+      600 groszy radomskich."
+  - key: CHANCE_CARD_CASSEROLLES_TITLE
+    value: Zapiekanki
+  - key: CHANCE_CARD_CASSEROLLES_CONTENT
+    value: "Pod\u0105\u017Caj\u0105c szlakiem ko\u015Bciuszki skoczy\u0142e\u015B
+      na zapiekanki. Idziesz 2 pola do przodu."
+  - key: CHANCE_CARD_ERROR_TITLE
+    value: "B\u0142\u0105d"
+  - key: CHANCE_CARD_ERROR_CONTENT
+    value: "\u0179le zaprogramowa\u0142e\u015B gr\u0119 i wywala b\u0142\u0105d.
+      Musisz poczeka\u0107 kolejk\u0119."
+  - key: CHANCE_CARD_GRAPHICS_TITLE
+    value: Grafika
+  - key: CHANCE_CARD_GRAPHICS_CONTENT
+    value: "Twoi graficy w szkole zrobili pi\u0119kn\u0105 grafik\u0119. Bank wyp\u0142aca
+      ci 450 groszy radomskich."
+  - key: CHANCE_CARD_DUMP_ON_TITLE
+    value: Zrzutka
+  - key: CHANCE_CARD_DUMP_ON_CONTENT
+    value: "Robicie zrzutk\u0119 na jedzenie i picie. Ka\u017Cdy z graczy p\u0142aci
+      po 200 groszy radomskich."
+  - key: CHANCE_CARD_BANK_MISTAKE_TITLE
+    value: "Pomy\u0142ka bankowa"
+  - key: CHANCE_CARD_BANK_MISTAKE_CONTENT
+    value: "Bank pomyli\u0142 si\u0119 na twoj\u0105 korzy\u015B\u0107. Otrzymujesz
+      500 groszy radomskich."
+  - key: CHANCE_CARD_INHERITANCE_TITLE
+    value: Spadek
+  - key: CHANCE_CARD_INHERITANCE_CONTENT
+    value: Otrzymujesz w spadku 650 groszy radomskich.
+  - key: CHANCE_CARD_SHOPPING_MALL_TITLE
+    value: "Galeria S\u0142oneczna"
+  - key: CHANCE_CARD_SHOPPING_MALL_CONTENT
+    value: "Poszed\u0142e\u015B do GS i znalaz\u0142e\u015B rabat w kieszeni. Otrzymujesz
+      dodatkowy rzut kostk\u0105"
+  - key: CHANCE_CARD_THEATER_TITLE
+    value: Teatr
+  - key: CHANCE_CARD_THEATER_CONTENT
+    value: "Zabra\u0142e\u015B przyjaci\xF3\u0142 do teatru powszechnego im. Jana
+      Kochanowskiego w Radomiu. Kupujesz im bilety i p\u0142acisz ka\u017Cdemu po
+      20 groszy radomskich."
+  - key: CHANCE_CARD_HONORARY_TITLE_TITLE
+    value: "Tytu\u0142 honorowy"
+  - key: CHANCE_CARD_HONORARY_TITLE_CONTENT
+    value: "Otrzymujesz tytu\u0142 honorowego mieszka\u0144ca Radomia. Ka\u017Cdy
+      gracz, w akcie szacunku, daje ci po 20 groszy radomskich."
+  - key: CHANCE_CARD_LOST_TIME_TITLE
+    value: Stracony czas
+  - key: CHANCE_CARD_LOST_TIME_CONTENT
+    value: "Utkn\u0105\u0142e\u015B na radomskim lotnisku. Tracisz kolejk\u0119."
+  - key: CHANCE_CARD_ROBBERY_TITLE
+    value: "Kradzie\u017C"
+  - key: CHANCE_CARD_ROBBERY_CONTENT
+    value: "Chytra baba z Radomia ukrad\u0142a twoj\u0105 ulubion\u0105 oran\u017Cade.
+      Tracisz 20 groszy radomskich na zakup nowej."
+  - key: CHANCE_CARD_BAD_TAXI_TITLE
+    value: "Z\u0142a taks\xF3wka"
+  - key: CHANCE_CARD_BAD_TAXI_CONTENT
+    value: "Tw\xF3j taks\xF3wkarz pomyli\u0142 drogi. Cofnij si\u0119 o 4 pola."

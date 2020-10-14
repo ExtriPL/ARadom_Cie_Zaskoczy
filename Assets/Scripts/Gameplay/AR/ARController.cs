@@ -25,7 +25,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
     private List<PlaceVisualiser> places = new List<PlaceVisualiser>();
     /// <summary>
     /// Lista wczytanych obrazów na scenie
-    /// </summary>
+    /// </summary>lse
     private List<AugmentedImage> tempPlaceImages = new List<AugmentedImage>();
 
     /// <summary>
@@ -119,8 +119,9 @@ public class ARController : MonoBehaviour, IEventSubscribable
                 {
                     Anchor anchor = image.CreateAnchor(image.CenterPose); //Kotwica służąca do utrzymywania śledzenia przez ARCore, jest powiązana z obrazem w bazie danych
                     ToggleBoardVisibility(true);
-                    board.GetComponent<Transform>().SetParent(anchor.GetComponent<Transform>());
-                    board.GetComponent<Transform>().localPosition = new Vector3();
+                    board.transform.SetParent(anchor.GetComponent<Transform>());
+                    board.transform.localPosition = Vector3.zero;
+                    board.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
                 }
                 //Gdy obrazek zniknie z pola widzenia, plansza jest ukrywana
                 else if (image.TrackingState == TrackingState.Stopped && image.Name.Equals(Keys.Board.AR_IMAGE_NAME))
@@ -183,7 +184,8 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// <param name="visible">Określa, czy plansza ma być widoczna</param>
     private void ToggleBoardVisibility(bool visible)
     {
-        foreach (PlaceVisualiser visualiser in places) visualiser.ToggleVisibility(visible);
+        foreach (PlaceVisualiser visualiser in places)
+            visualiser.ToggleVisibility(visible);
     }
 
     #endregion Obsługa AR

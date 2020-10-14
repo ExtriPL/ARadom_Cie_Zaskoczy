@@ -32,6 +32,7 @@ public abstract class BuildingField : Field
     public override void OnEnter(Player player, PlaceVisualiser visualiser)
     {
         base.OnEnter(player, visualiser);
+
         if(player.NetworkPlayer.IsLocal)
         { 
             if(GameplayController.instance.board.GetOwner(visualiser.placeIndex) == null)
@@ -58,17 +59,16 @@ public abstract class BuildingField : Field
             QuestionPopup wantToBuy = new QuestionPopup(message);
             Popup.PopupAction yesAction = delegate (Popup source)
             {
-            //gracz chce kupic pole wiec jest mu przydzielane z banku
-            GameplayController.instance.banking.AquireBuilding(player, player.PlaceId);
+                //gracz chce kupic pole wiec jest mu przydzielane z banku
+                GameplayController.instance.banking.AquireBuilding(player, player.PlaceId);
                 source.onClose = null;
-                visualiser.onAnimationEnd += delegate { GameplayController.instance.EndTurn(); };
                 Popup.Functionality.Destroy(wantToBuy).Invoke(source);
             };
             Popup.PopupAction noAction = delegate (Popup source)
             {
-            //gracz nie chce kupic pola od banku
-            //event wywołujący panel licytacji
-            Popup.Functionality.Destroy(wantToBuy).Invoke(source);
+                //gracz nie chce kupic pola od banku
+                //event wywołujący panel licytacji
+                Popup.Functionality.Destroy(wantToBuy).Invoke(source);
             };
             Popup.PopupAction auctionAction = delegate
             {
@@ -99,7 +99,6 @@ public abstract class BuildingField : Field
         Popup.PopupAction onClose = delegate (Popup source)
         {
             GameplayController.instance.banking.Pay(player, owner, cost);
-            GameplayController.instance.EndTurn();
         };
 
         QuestionPopup payPopup = QuestionPopup.CreateOkDialog(message, Popup.Functionality.Destroy());

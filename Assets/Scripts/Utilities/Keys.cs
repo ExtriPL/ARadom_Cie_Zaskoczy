@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public static class Keys
@@ -38,37 +36,6 @@ public static class Keys
         /// Ilość przycisków, jaką jest w stanie wyświetlić QuestionBox
         /// </summary>
         public const int QUESTIONBOX_BUTTONS_AMOUNT = 4;
-
-        /// <summary>
-        /// Domyślne ustawienia popup-u typu Formatted
-        /// </summary>
-        public static class Formated
-        {
-            /// <summary>
-            /// Domyślna szerokość FormattedBox-u
-            /// </summary>
-            public static float DEFAULT_WIDTH = 600f;
-            /// <summary>
-            /// Domyślna wysokość FormattedBox-u
-            /// </summary>
-            public static float DEFAULT_HEIGHT = 1000f;
-            /// <summary>
-            /// Domyślna szerokość zawartości FormattedBox-u
-            /// </summary>
-            public static float DEFAULT_CONTENT_WIDTH = 600f;
-            /// <summary>
-            /// Domyślna wysokość zawartości FormattedBox-u
-            /// </summary>
-            public static float DEFAULT_CONTENT_HEIGHT = 1000f;
-            /// <summary>
-            /// Domyślna wysokość linii FormattedBox-u
-            /// </summary>
-            public static float DEFUALT_LINE_HEIGHT = 10f;
-            /// <summary>
-            /// Domyślny symbol pustki FormattedBox-u
-            /// </summary>
-            public static string EMPTY_SYMBOL = "_empty";
-        }
     }
 
     /// <summary>
@@ -273,5 +240,24 @@ public static class Keys
     public static class Session 
     {
         public const int PLAYER_TTL = 5;
+    }
+
+    /// <summary>
+    /// Domyślne ustawienia przepływu gry
+    /// </summary>
+    public static class Flow
+    {
+        /// <summary>
+        /// Czas, po jakim pokaże się przycisk zakończenia tury
+        /// </summary>
+        public const float SHOW_TIME = 30f;
+        /// <summary>
+        /// Czas, po którym tura zakończy się automatycznie
+        /// </summary>
+        public const float END_TIME = 120f;
+        /// <summary>
+        /// Czas przed zakończeniem tury, po którego osiągnięciu włącza się licznik pokazujący, ile jeszcze zostało tury
+        /// </summary>
+        public const float COUNTING_TIME = 15f;
     }
 }

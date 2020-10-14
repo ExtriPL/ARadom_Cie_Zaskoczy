@@ -35,7 +35,6 @@ public struct GameSave
     /// Rozmieszczenie budynków na planszy. Klucz to pozycja na planszy a wartość to para(int + string) określająca co to za pole (int - pozycja na liście pól, string - nazwa pola)
     /// </summary>
     public Dictionary<int, Tuple<int, string>> places;
-
     /// <summary>
     /// Przypisanie pól na planszy do tierów ich budynków
     /// </summary>

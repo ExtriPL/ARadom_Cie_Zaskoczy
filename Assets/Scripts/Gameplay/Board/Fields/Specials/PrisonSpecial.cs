@@ -38,10 +38,6 @@ public class PrisonSpecial : SpecialField
                 else
                 {
                     QuestionPopup noFree = QuestionPopup.CreateOkDialog(language.GetWord("NOT_THIS_TIME"), Popup.Functionality.Destroy());
-                    noFree.onClose += delegate (Popup source2)
-                    {
-                        GameplayController.instance.EndTurn();
-                    };
 
                     PopupSystem.instance.AddPopup(noFree);
                 }

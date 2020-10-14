@@ -25,6 +25,12 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
         playerNickname.text = player.NickName;
         if (player.CustomProperties.ContainsKey("Room_PlayerReady")) readyButton.GetComponent<Toggle>().isOn = (bool)player.CustomProperties["Room_PlayerReady"];
         else readyButton.GetComponent<Toggle>().isOn = false;
+
+        if (player.IsLocal)
+        {
+            readyButton.GetComponent<Toggle>().isOn = false;
+            PlayerReady(false);
+        }
     }
 
     public void Deinit()

@@ -53,8 +53,15 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IPanelInitable
 
     public void Create()
     {
+        StartCoroutine(WaitForLobby());
+    }
+
+    private IEnumerator WaitForLobby()
+    {
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+
         string roomSize = playerCountInputField.text.Replace("\u200B", "");
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = (byte)int.Parse(roomSize)};
+        RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = (byte)int.Parse(roomSize) };
         PhotonNetwork.CreateRoom(nameInputField.text, roomOptions, null);
     }
 

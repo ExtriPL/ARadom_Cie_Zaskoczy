@@ -7,9 +7,7 @@ using UnityEngine;
 
 public class WaitCommand : Command
 {
-    private bool finished = false;
     private float time;
-
     private float startTime;
 
     public WaitCommand(float time)

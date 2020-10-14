@@ -48,10 +48,17 @@ public class RoomListing: MonoBehaviourPunCallbacks
 
     public void JoinRoom() 
     {
+        StartCoroutine(WaitForLobby());
+    }
+
+    private IEnumerator WaitForLobby()
+    {
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+
         Hashtable table = new Hashtable();
         table.Add("Room_PlayerReady", false);
         PhotonNetwork.LocalPlayer.SetCustomProperties(table);
-        PhotonNetwork.JoinRoom(roomInfo.Name);   
+        PhotonNetwork.JoinRoom(roomInfo.Name);
     }
 
     public override void OnJoinedRoom()

@@ -23,7 +23,7 @@ public struct PlayerSettings
     /// <summary>
     /// Numer pola, na którym stoi gracz
     /// </summary>
-    public int fieldId;
+    public int placedId;
     /// <summary>
     /// Lista pól, które posiada gracz
     /// </summary>
@@ -36,4 +36,20 @@ public struct PlayerSettings
     /// Kolor ciemny gracza?
     /// </summary>
     public float[] mainColorComponents;
+    /// <summary>
+    /// Określa, czy gracz przegrał grę
+    /// </summary>
+    public bool isLoser;
+    /// <summary>
+    /// Czy gracz wziął pożyczkę wciągu gry
+    /// </summary>
+    public bool tookLoan;
+    /// <summary>
+    /// Kwota pożyczki, która pozostała do zapłaty
+    /// </summary>
+    public float outstandingAmount;
+    /// <summary>
+    /// Czy gracz jest obecnie w więzieniu
+    /// </summary>
+    public bool imprisoned;
 }
