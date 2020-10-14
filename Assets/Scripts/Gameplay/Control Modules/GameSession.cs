@@ -361,7 +361,11 @@ public class GameSession : IEventSubscribable
     /// <param name="player"></param>
     public void KickPlayer(Player player) 
     {
-        if(GameplayController.instance.board.dice.currentPlayer == player.GetName()) GameplayController.instance.EndTurn();
+        if (GameplayController.instance.board.dice.currentPlayer == player.GetName())
+        {
+            GameplayController.instance.LosePlayer(player);
+            GameplayController.instance.flow.CheckWin();
+        }
         EventManager.instance.SendOnPlayerQuited(player.GetName());
     }
 

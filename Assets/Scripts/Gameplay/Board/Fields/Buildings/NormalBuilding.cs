@@ -157,14 +157,12 @@ public class NormalBuilding : BuildingField
 
                 Popup.PopupAction yesAction = delegate (Popup source)
                 {
-                    visualiser.onAnimationEnd += delegate { GameplayController.instance.EndTurn(); };
                     GameplayController.instance.banking.UpgradeBuilding(player, visualiser.placeIndex);
                     Popup.Functionality.Destroy(source).Invoke(source);
                 };
 
                 Popup.PopupAction noAction = delegate (Popup source)
                 {
-                    GameplayController.instance.EndTurn();
                     Popup.Functionality.Destroy(source).Invoke(source);
                 };
 
@@ -176,11 +174,6 @@ public class NormalBuilding : BuildingField
 
                 PopupSystem.instance.AddPopup(upgrade);
             }
-        }
-        else
-        {
-            //Jeżeli nasz budynek nie ma następnego tieru, albo nie stać nas, by go ulepszyć
-            GameplayController.instance.EndTurn();
         }
     }
 }

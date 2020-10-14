@@ -20,7 +20,11 @@ public abstract class Field : ScriptableObject
     /// </summary>
     /// <param name="player">Gracz, który wywołał zdarzenie</param>
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
-    public virtual void OnEnter(Player player, PlaceVisualiser visualiser) { }
+    public virtual void OnEnter(Player player, PlaceVisualiser visualiser)
+    {
+        if (this is IFlowControlable)
+            GameplayController.instance.flow.Enqueue(this as IFlowControlable, new object[] { player, visualiser });
+    }
 
     /// <summary>
     /// Zdarzenia wywoływane, gdy gracz zejdzie z pola
@@ -42,29 +46,8 @@ public abstract class Field : ScriptableObject
     /// <param name="player">Instancja gracza</param>
     /// <param name="visualiser">Instancja pola</param>
     public virtual void OnAwake(Player player, PlaceVisualiser visualiser) 
-    { 
-        if(player.NetworkPlayer.IsLocal)
-        {
-            Board board = GameplayController.instance.board;
-
-            QuestionPopup startTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_STARTED"));
-            startTurn.AddButton("Ok", Popup.Functionality.Destroy(startTurn));
-
-            IconPopup dice = new IconPopup(IconPopupType.None);
-            dice.onClick += Popup.Functionality.Destroy(dice);
-            Popup.PopupAction rolldice = delegate (Popup source)
-            {
-                int firstThrow = board.dice.last1;
-                int secondThrow = board.dice.last2;
-                InfoPopup rollResult = new InfoPopup(SettingsController.instance.languageController.GetWord("YOU_GOT") + firstThrow + SettingsController.instance.languageController.GetWord("AND") + secondThrow, 1.5f);
-                PopupSystem.instance.AddPopup(rollResult);
-                board.MovePlayer(player, firstThrow + secondThrow);
-            };
-            dice.onClose += rolldice;
-            startTurn.onClose += Popup.Functionality.Show(dice);
-
-            PopupSystem.instance.AddPopup(startTurn);
-        }
+    {
+        GameplayController.instance.flow.DefaultBegining();
     }
 
     /// <summary>
@@ -72,15 +55,7 @@ public abstract class Field : ScriptableObject
     /// </summary>
     /// <param name="player">Instancja gracza</param>
     /// <param name="visualiser">Instancja pola</param>
-    public virtual void OnEnd(Player player, PlaceVisualiser visualiser)
-    {
-        if (player.NetworkPlayer.IsLocal)
-        {
-            QuestionPopup endTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_ENDED"));
-            endTurn.AddButton("Ok", Popup.Functionality.Destroy(endTurn));
-            PopupSystem.instance.AddPopup(endTurn);
-        }
-    }
+    public virtual void OnEnd(Player player, PlaceVisualiser visualiser) {}
 
     /// <summary>
     /// Funkcja zwraca model domyślny stojący na danym polu

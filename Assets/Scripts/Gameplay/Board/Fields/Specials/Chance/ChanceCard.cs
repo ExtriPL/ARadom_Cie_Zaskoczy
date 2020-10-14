@@ -48,9 +48,6 @@ public class ChanceCard : ScriptableObject
             ActionCard action = ActionCard.Create(actionString);
             action.Call(caller);
         }
-        
-        //Po wywołaniu wszystkich akcji przekazuje dalej. Trzeba poprawić, bo niektóre akcje mogą przejmować dalej kontrolę nad przebiegiem rozgrywki
-        GameplayController.instance.EndTurn();
     }
 
     /// <summary>
@@ -59,6 +56,14 @@ public class ChanceCard : ScriptableObject
     /// <param name="caller">Gracz, dla którego otwierane jest okno z kartą</param>
     public void OpenCard(Player caller)
     {
+        //Sprawdzanie, czy któraś z akcji karty nie przejmuje kontroli nad przepływem
+        foreach(ActionString actionString in actionStrings)
+        {
+            ActionCard action = ActionCard.Create(actionString);
+            if (action is IFlowControlable)
+                GameplayController.instance.flow.Enqueue(action as IFlowControlable, new object[] { caller });
+        }
+
         ChancePopup popup = new ChancePopup(this, caller);
         PopupSystem.instance.AddPopup(popup);
     }

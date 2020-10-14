@@ -25,6 +25,7 @@ public class ChanceSpecial : SpecialField
         {
             int index = Random.Range(0, cards.Count - 1);
             ChanceCard card = cards[index];
+            cards.RemoveAt(index);
 
             if(card.IsActive())
             {
