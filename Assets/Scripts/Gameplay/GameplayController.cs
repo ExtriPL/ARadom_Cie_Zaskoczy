@@ -21,11 +21,11 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
     private IEnumerator masterInactiveCheck;
 
-    private CommandInvoker invoker;
+    public CommandInvoker invoker;
     /// <summary>
     /// Flaga określająca czy gra przeszła przez komand invoker
     /// </summary>
-    private bool gameInitialized;
+    public bool gameInitialized { get; private set; }
 
     #region Inicjalizacja
 

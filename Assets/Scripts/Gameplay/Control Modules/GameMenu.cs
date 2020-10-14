@@ -204,8 +204,7 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     /// <param name="active">Stan włączenia przycisku</param>
     public void SetActiveNextTurnButton(bool active)
     {
-        if(!NextTurnButton.gameObject.activeInHierarchy)
-            NextTurnButton.gameObject.SetActive(active);
+        NextTurnButton.gameObject.SetActive(active);
     }
 
     /// <summary>
@@ -223,8 +222,7 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     /// <param name="time">Czas, który został do automatycznego skończenia tury</param>
     public void SetActiveNextTurnButtonTimer(bool active)
     {
-        if(!NextTurnButtonTimer.gameObject.activeInHierarchy)
-            NextTurnButtonTimer.gameObject.SetActive(active);
+        NextTurnButtonTimer.gameObject.SetActive(active);
     }
 
     /// <summary>

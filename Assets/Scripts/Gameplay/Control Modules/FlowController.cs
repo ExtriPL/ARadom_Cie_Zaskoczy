@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class FlowController : IEventSubscribable
 {
     private GameplayController gameplayController;
@@ -45,6 +46,7 @@ public class FlowController : IEventSubscribable
     public void StartGame()
     {
         gameplayController = GameplayController.instance;
+        ResetSettings();
         if (gameplayController.session.roomOwner.IsLocal)
             EventManager.instance.SendOnTurnChanged("", gameplayController.board.dice.currentPlayer);
     }
@@ -63,7 +65,7 @@ public class FlowController : IEventSubscribable
             //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
             if(time >= endTime - countingTime)
             {
-                GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - countingTime));
+                GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - time));
                 GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
             }
 
@@ -184,8 +186,6 @@ public class FlowController : IEventSubscribable
     private void End()
     {
         ResetSettings();
-        GameplayController.instance.menu.SetActiveNextTurnButton(false);
-        GameplayController.instance.menu.SetActiveNextTurnButtonTimer(false);
         /*
          Zamykanie popupów z oznaczeniem do zamknięcia na koniec tury gracza
          Zmienianie obecnie aktywnego gracza
@@ -205,6 +205,10 @@ public class FlowController : IEventSubscribable
         showTime = Keys.Flow.SHOW_TIME;
         endTime = Keys.Flow.END_TIME;
         countingTime = Keys.Flow.COUNTING_TIME;
+        beginTime = Time.time;
+
+        GameplayController.instance.menu.SetActiveNextTurnButton(false);
+        GameplayController.instance.menu.SetActiveNextTurnButtonTimer(false);
     }
 
     /// <summary>
