@@ -77,6 +77,9 @@ public class ChanceCardEditor : Editor
     /// </summary>
     private void RecreateActions(ChanceCard card)
     {
+        if (card.actionStrings == null)
+            card.actionStrings = new List<ActionString>();
+
         if (actionIsOpen.Count == 0)
         {
             foreach (ActionString actionString in card.actionStrings)

@@ -297,8 +297,6 @@ public class FlowController : IEventSubscribable
     {
         if(CurrentPlayer.NetworkPlayer.IsLocal)
         {
-            
-
             QuestionPopup startTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_STARTED"));
             startTurn.AddButton("Ok", Popup.Functionality.Destroy(startTurn));
             startTurn.onClose += delegate { PopupSystem.instance.ShowDice(RollResult()); };
