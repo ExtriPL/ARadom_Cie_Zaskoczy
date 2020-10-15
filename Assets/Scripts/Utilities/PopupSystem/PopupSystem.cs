@@ -10,7 +10,6 @@ public class PopupSystem : MonoBehaviour
     public static PopupSystem instance;
 
     [SerializeField, Tooltip("Obiekt przechowujący wzór IconBox-u")] private GameObject IconBoxPrefab;
-    [SerializeField, Tooltip("Obiekt przechowujący wzór InfoBox-u")] private GameObject InfoBoxPrefab;
     [SerializeField, Tooltip("Obiekt przechowujący wzór QuestionBox-u")] private GameObject QuestionBoxPrefab;
     [SerializeField, Tooltip("Obiekt przechowujący wzór ChanceBox-u")] private GameObject ChanceBoxPrefab;
 
@@ -28,11 +27,12 @@ public class PopupSystem : MonoBehaviour
     private readonly Dictionary<Type, Type> boxTypes = new Dictionary<Type, Type>()
     {
         { typeof(IconBox), typeof(IconPopup) },
-        { typeof(InfoBox), typeof(InfoPopup) },
         { typeof(QuestionBox), typeof(QuestionPopup) },
         { typeof(ChanceBox), typeof(ChancePopup) }
     };
     public Dictionary<Type, BoxPool> boxPools = new Dictionary<Type, BoxPool>();
+
+    private IconBox diceBox;
 
     #region Inicjalizacja
 
@@ -56,10 +56,9 @@ public class PopupSystem : MonoBehaviour
     /// </summary>
     public void CreatePools()
     {
-        boxPools.Add(typeof(IconBox), new BoxPool(gameObject, IconBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
-        boxPools.Add(typeof(InfoBox), new BoxPool(gameObject, InfoBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
-        boxPools.Add(typeof(QuestionBox), new BoxPool(gameObject, QuestionBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
-        boxPools.Add(typeof(ChanceBox), new BoxPool(gameObject, ChanceBoxPrefab, Keys.Popups.SHOWED_AMOUNT));
+        boxPools.Add(typeof(IconBox), new BoxPool(gameObject, IconBoxPrefab, Keys.Popups.ICON_SHOWED_AMOUNT));
+        boxPools.Add(typeof(QuestionBox), new BoxPool(gameObject, QuestionBoxPrefab, 1));
+        boxPools.Add(typeof(ChanceBox), new BoxPool(gameObject, ChanceBoxPrefab, 1));
     }
 
     /// <summary>
@@ -67,7 +66,8 @@ public class PopupSystem : MonoBehaviour
     /// </summary>
     public void DestroyPools()
     {
-        foreach (BoxPool pool in boxPools.Values.ToList()) pool.Deinit();
+        foreach (BoxPool pool in boxPools.Values.ToList())
+            pool.Deinit();
     }
 
     /// <summary>
@@ -75,7 +75,8 @@ public class PopupSystem : MonoBehaviour
     /// </summary>
     public void InitPools()
     {
-        foreach (BoxPool pool in boxPools.Values.ToList()) pool.Init();
+        foreach (BoxPool pool in boxPools.Values.ToList())
+            pool.Init();
     }
 
     #endregion Inicjalizacja
@@ -93,25 +94,7 @@ public class PopupSystem : MonoBehaviour
             Debug.LogError("Nastąpiła próba dodania pustego popup-u");
             return;
         }
-        if (popupQueue.Count > 0)
-        {
-            //Wstawianie popup-u na odpowiednie miejsce w zależności od priorytetu
-            for (int i = 0; i < popupQueue.Count; i++)
-            {
-                if (popupQueue[i].priority < popup.priority)
-                {
-                    popupQueue.Insert(i, popup);
-                    break;
-                }
-                //Jeżeli ma niższy priorytet, bądź taki sam jak obiekty na końcu listy, popup jest wstawiany na sam koniec kolejki
-                else if (i == popupQueue.Count - 1)
-                {
-                    popupQueue.Add(popup);
-                    break;
-                }
-            }
-        }
-        else popupQueue.Add(popup);
+        popupQueue.Add(popup);
 
         CheckScreenAccessibility();
     }
@@ -122,7 +105,8 @@ public class PopupSystem : MonoBehaviour
     /// <param name="box">Popupbox, który ma zostać zamknięty</param>
     public void ClosePopup(PopupBox box)
     {
-        showedPopups.Remove(box);
+        if(showedPopups.Contains(box)) 
+           showedPopups.Remove(box);
         boxPools[box.GetType()].ReturnObject(box.gameObject);
         CheckScreenAccessibility();
     }
@@ -133,7 +117,13 @@ public class PopupSystem : MonoBehaviour
     /// <param name="source">Popup, który jest zawarty w popupbox-ie</param>
     public void ClosePopup(Popup source)
     {
-        showedPopups.FirstOrDefault(box => box.source == source)?.Close();
+        if(diceBox != null && diceBox.source == source)
+        {
+            diceBox.Close();
+            diceBox = null;
+        }
+        else
+            showedPopups.FirstOrDefault(box => box.source == source)?.Close();
     }
 
     /// <summary>
@@ -163,11 +153,28 @@ public class PopupSystem : MonoBehaviour
     /// </summary>
     private void CheckScreenAccessibility()
     {
-        //Dla każdego z typów sprawdzamy wszystkie wyświetlone obiekty
-        foreach(Type type in boxTypes.Keys)
+        foreach(Type type in boxTypes.Values)
         {
             int amount = CountShowedPopups(type);
-            if (amount < Keys.Popups.SHOWED_AMOUNT) ShowPopup(boxTypes[type]);
+
+            if (type.Equals(typeof(IconPopup)))
+            {
+                if (amount < Keys.Popups.ICON_SHOWED_AMOUNT)
+                    ShowPopup(type);
+                else
+                {
+                    CloseWhatNeeded(type);
+                    if (amount < Keys.Popups.ICON_SHOWED_AMOUNT)
+                        ShowPopup(type);
+                }
+            }
+            else
+            {
+                if(CountPopupsInQueue(type) > 0)
+                    CloseWhatNeeded(type);
+                if (amount < 1)
+                    ShowPopup(type);
+            }
         }
     }
 
@@ -177,28 +184,49 @@ public class PopupSystem : MonoBehaviour
     /// <param name="type"></param>
     private void ShowPopup(Type type)
     {
-        Popup toShow = null;
-
         for(int i = 0; i < popupQueue.Count; i++)
         {
             Type pt = popupQueue[i].GetType();
             //Jeżeli zgadza się typ
             if (pt.Equals(type))
             {
-                if (popupQueue[i].showDelay <= 0)
-                {
-                    toShow = popupQueue[i];
-                    popupQueue.RemoveAt(i);
-
-                }
-                else if (GameplayController.instance.session.gameState == GameState.running) popupQueue[i].showDelay -= Time.deltaTime;
+                ForcePopup(popupQueue[i]);
+                popupQueue.RemoveAt(i);
 
                 break;
             }
         }
+    }
 
-        ForcePopup(toShow);
-    }  
+    /// <summary>
+    /// Jeżeli jest możliwe, zamyka obecnie wyświetlony popup, o podanym typie
+    /// </summary>
+    /// <param name="type">Typ popupu, który ma zostać zamknięty</param>
+    private void CloseWhatNeeded(Type type)
+    {
+        foreach(PopupBox box in showedPopups)
+        {
+            if(box.source.GetType().Equals(type) && box.source.CloseMode == AutoCloseMode.NewAppears)
+            {
+                ClosePopup(box);
+                break;
+            }
+        }
+    }
+
+    public void ShowDice(Popup.PopupAction diceAction)
+    {
+        IconPopup dicePopup = new IconPopup(IconPopupType.Dice, diceAction);
+
+        GameObject dice = boxPools[typeof(IconBox)].TakeObject();
+        diceBox = dice.GetComponent<IconBox>();
+        diceBox.Init(dicePopup);
+        RectTransform rect = dice.GetComponent<RectTransform>();
+
+        rect.anchoredPosition = new Vector2(0, 270f);
+        rect.anchorMin = new Vector2(0.5f, 0);
+        rect.anchorMax = new Vector2(0.5f, 0);
+    }
 
     #endregion Obsługa popup-ów
 
@@ -213,7 +241,7 @@ public class PopupSystem : MonoBehaviour
 
         foreach (PopupBox box in showedPopups)
         {
-            if (box.GetType().Equals(type)) amount++;
+            if (box.source.GetType().Equals(type)) amount++;
         }
 
         return amount;

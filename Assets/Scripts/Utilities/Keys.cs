@@ -25,13 +25,9 @@ public static class Keys
     public static class Popups
     {
         /// <summary>
-        /// Maksymalny domyślny czas istnienia popup-u
-        /// </summary>
-        public const float MAX_EXISTING_TIME = 20f;
-        /// <summary>
         /// Ilość popup-ów tego samego typu, które mogą zostać jednocześnie wyświetlone
         /// </summary>
-        public const int SHOWED_AMOUNT = 1;
+        public const int ICON_SHOWED_AMOUNT = 3;
         /// <summary>
         /// Ilość przycisków, jaką jest w stanie wyświetlić QuestionBox
         /// </summary>

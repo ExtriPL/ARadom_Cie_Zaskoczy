@@ -41,7 +41,7 @@ public class StartSpecial : SpecialField
             message = language.GetWord("YOU_RECEIVED") + Keys.Gameplay.PASS_START_MONEY + language.GetWord("FOR_PASSING_START");
         }
 
-        InfoPopup gainMoney = new InfoPopup(message, 1.5f);
+        IconPopup gainMoney = new IconPopup(IconPopupType.Money, message);
 
         PopupSystem.instance.AddPopup(gainMoney);
     }

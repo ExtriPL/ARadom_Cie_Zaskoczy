@@ -25,10 +25,6 @@ public class SaveListing : MonoBehaviourPunCallbacks
         {
             StartCoroutine(WaitUntilJoinedLobby());
         }
-        else
-        {
-            MessageSystem.instance.AddMessage("<color=red>Nie było pliku gry, który można wczytać</color>", MessageType.MediumMessage);
-        }
     }
 
     IEnumerator WaitUntilJoinedLobby()

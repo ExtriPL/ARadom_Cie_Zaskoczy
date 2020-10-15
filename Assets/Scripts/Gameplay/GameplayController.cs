@@ -107,7 +107,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         Command loadFromSave = new LoadFromSaveCommand();
         Command popupSystem = new PopupSystemCommand();
 
-        invoker = new CommandInvoker(delegate (Command command) { Debug.Log("Started: " + command.commandName); }, delegate(Command command) { Debug.Log("Ended: " + command.commandName); }, delegate { OnExecutionFinished(); sync0.UnsubscribeEvents(); sync1.UnsubscribeEvents(); });
+        invoker = new CommandInvoker(null, null, delegate { OnExecutionFinished(); sync0.UnsubscribeEvents(); sync1.UnsubscribeEvents(); });
 
         invoker.AddCommand(temporaryRoom);
         invoker.AddCommand(subscribeEvents);
@@ -168,7 +168,6 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         save.applicationVersion = Application.version;
 
         FileManager.SaveGame(save, PhotonNetwork.CurrentRoom.Name);
-        MessageSystem.instance.AddMessage("<color=green>Gra zostałą zapisana</color>", MessageType.MediumMessage);
     }
 
     /// <summary>
@@ -248,14 +247,14 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         if (player.NetworkPlayer.IsLocal)
         {
             string message = language.GetWord("YOU_LOST_THE_GAME");
-            QuestionPopup playerLostGame = QuestionPopup.CreateOkDialog(message, Popup.Functionality.Destroy());
+            QuestionPopup playerLostGame = QuestionPopup.CreateOkDialog(message);
 
             PopupSystem.instance.AddPopup(playerLostGame);
         }
         else
         {
             string message = language.GetWord("PLAYER") + playerName + language.GetWord("LOST_THE_GAME");
-            InfoPopup playerLostGame = new InfoPopup(message, 1.5f);
+            IconPopup playerLostGame = new IconPopup(IconPopupType.PlayerLost, message);
 
             PopupSystem.instance.AddPopup(playerLostGame);
         }

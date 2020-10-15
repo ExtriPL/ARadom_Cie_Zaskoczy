@@ -22,8 +22,8 @@ public class QuestionPopup : Popup
     /// <param name="onOpen">Akcje wywoływane po wyświetleniu InfoBox-u</param>
     /// <param name="onClick">Akcje wywoływane po naciśnięciu na InfoBox</param>
     /// <param name="onClose">Akcje wywoływane po zniszczeniu InfoBox-u</param>
-    public QuestionPopup(string message, float lifeSpan = Keys.Popups.MAX_EXISTING_TIME, PopupAction onOpen = null, PopupAction onClose = null, PopupAction onClick = null)
-        : base(lifeSpan, onOpen, onClose, onClick)
+    public QuestionPopup(string message, PopupAction onOpen = null, PopupAction onClose = null, PopupAction onClick = null)
+        : base(AutoCloseMode.NewAppears, onOpen, onClose, onClick)
     {
         this.message = message;
         buttons = new List<Tuple<string, PopupAction>>();
@@ -70,6 +70,11 @@ public class QuestionPopup : Popup
     public static QuestionPopup CreateOkDialog(string question, PopupAction okAction = null)
     {
         QuestionPopup popup = new QuestionPopup(question);
+        if (okAction == null)
+            okAction = Functionality.Destroy();
+        else
+            okAction += Functionality.Destroy();
+
         popup.AddButton("OK", okAction);
 
         return popup;

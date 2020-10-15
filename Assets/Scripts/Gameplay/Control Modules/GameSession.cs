@@ -247,7 +247,7 @@ public class GameSession : IEventSubscribable
             string message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("PLAYER_LEFT");
             if (FindPlayer(playerName).NetworkPlayer.IsInactive) message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("KICKED_FOR_INACTIVITY");
             RemovePlayer(playerName);
-            InfoPopup playerLeft = new InfoPopup(message, 2f);
+            IconPopup playerLeft = new IconPopup(IconPopupType.PlayerLeft, message);
             PopupSystem.instance.AddPopup(playerLeft);
         }
         else 

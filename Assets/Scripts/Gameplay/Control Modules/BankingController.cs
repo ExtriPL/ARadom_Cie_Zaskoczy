@@ -201,20 +201,21 @@ public class BankingController : IEventSubscribable
 
     public void OnAquiredBuilding(string playerName, int placeId) 
     {
+        string message;
+
         if (GameplayController.instance.session.FindPlayer(playerName).NetworkPlayer.IsLocal)
         {
             //popup kupującemu
-            string message = language.GetWord("YOU_AQUIRED_BUILDING") + GameplayController.instance.board.GetField(placeId).GetFieldName() + ".";
-            InfoPopup popup = new InfoPopup(message, 1.5f);
-            PopupSystem.instance.AddPopup(popup);
+            message = language.GetWord("YOU_AQUIRED_BUILDING") + GameplayController.instance.board.GetField(placeId).GetFieldName() + ".";
         }
         else 
         {
             //popup reszcie
-            string message = language.GetWord("PLAYER") + playerName + language.GetWord("AQUIRED_BUILDING") + GameplayController.instance.board.GetField(placeId).GetFieldName() + ".";
-            InfoPopup popup = new InfoPopup(message, 1.5f);
-            PopupSystem.instance.AddPopup(popup);
+            message = language.GetWord("PLAYER") + playerName + language.GetWord("AQUIRED_BUILDING") + GameplayController.instance.board.GetField(placeId).GetFieldName() + ".";
         }
+
+        IconPopup popup = new IconPopup(IconPopupType.Buy, message);
+        PopupSystem.instance.AddPopup(popup);
     }
 
     private void OnAuction(string playerName, int placeId, string bidder, float bid, string passPlayerName)
@@ -251,8 +252,7 @@ public class BankingController : IEventSubscribable
         {
             string message = language.GetWord("PLAYER") + payerName + language.GetWord("PAID") + amount + language.GetWord("FOR_STAND");
 
-            InfoPopup infoPopup = new InfoPopup(message, 1.5f);
-
+            IconPopup infoPopup = new IconPopup(IconPopupType.Money, message);
             PopupSystem.instance.AddPopup(infoPopup);
         }
     }
@@ -310,7 +310,8 @@ public class BankingController : IEventSubscribable
             }
             else
             {
-                InfoPopup auctionEnded = new InfoPopup(SettingsController.instance.languageController.GetWord("AUCTION_ENDED"), 2.5f);
+                string message = SettingsController.instance.languageController.GetWord("AUCTION_ENDED");
+                IconPopup auctionEnded = new IconPopup(IconPopupType.Auction, message);
                 PopupSystem.instance.AddPopup(auctionEnded);
             }
         }
@@ -361,7 +362,7 @@ public class BankingController : IEventSubscribable
         //4 linijka: Obecna stawka: <bid>
         auctionString += lang.GetWord("AUCTION_CURRENT_BID") + bid;
 
-        auctionPopup = new QuestionPopup(auctionString, 30f);
+        auctionPopup = new QuestionPopup(auctionString);
 
         if (!GameplayController.instance.session.FindPlayer(playerName).NetworkPlayer.IsLocal && bidders.Contains(GameplayController.instance.session.localPlayer.GetName()))
         {

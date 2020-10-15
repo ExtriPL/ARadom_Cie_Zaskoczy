@@ -14,7 +14,6 @@ public class PopupSystemCommand : GroupCommand
     public override void StartExecution(Action<Command> OnCommandFinished)
     {
         base.StartExecution(OnCommandFinished);
-        Debug.Log("Popup System init");
 
         invoker = new CommandInvoker(OnStageStarted, OnStageFinished, null);
 
