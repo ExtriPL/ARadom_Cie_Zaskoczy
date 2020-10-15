@@ -11,9 +11,10 @@ public class IconBox : PopupBox
     [SerializeField, Tooltip("Lista sprite-ów, któe mogą zostać wyświetlone jako ikona IconBox-a")]
     private List<Sprite> sprites = new List<Sprite>();
 
-    private Vector2 defaultPosition;
-    private Vector2 defaultAnchorMin;
-    private Vector2 defaultAnchorMax;
+    private readonly Vector2 defaultPosition = new Vector2(-60f, 60f);
+    private readonly Vector2 defaultAnchorMin = new Vector2(1f, 0f);
+    private readonly Vector2 defaultAnchorMax = new Vector2(1f, 0f);
+    private readonly Vector2 defaultSize = new Vector2(100f, 100f);
     private Button button;
 
     protected override Action CloseAnimationTrigger => delegate { button.interactable = false; animations.Play("IconBoxHide"); };
@@ -21,10 +22,6 @@ public class IconBox : PopupBox
     protected override void Start()
     {
         base.Start();
-        RectTransform rect = gameObject.transform as RectTransform;
-        defaultPosition = rect.anchoredPosition;
-        defaultAnchorMin = rect.anchorMin;
-        defaultAnchorMax = rect.anchorMax;
         button = GetComponent<Button>();
     }
 
@@ -38,8 +35,9 @@ public class IconBox : PopupBox
         int currentAmount = pSystem.CountShowedPopups(typeof(IconPopup)); //Ilość popupów tego typu przed wyświetleniem
         RectTransform rect = gameObject.transform as RectTransform;
         rect.anchoredPosition = defaultPosition;
-        rect.anchorMax = defaultAnchorMin;
+        rect.anchorMin = defaultAnchorMin;
         rect.anchorMax = defaultAnchorMax;
+        rect.sizeDelta = defaultSize;
 
         rect.anchoredPosition = GetPosition(currentAmount);
         rect.localScale = Vector3.zero;

@@ -67,4 +67,9 @@ public abstract class PopupBox : MonoBehaviour
     }
 
     public virtual void OnShowAnimationEnd() {}
+
+    /// <summary>
+    /// Zmienianie obecnej pozycji boxu na prawidłową, wynikającą z obecnej ilości boxów danego typu na ekranie
+    /// </summary>
+    public virtual void Reposition() { }
 }

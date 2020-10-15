@@ -187,9 +187,7 @@ public class FlowController : IEventSubscribable
     private void End()
     {
         ResetSettings();
-        /*
-         Zamykanie popupów z oznaczeniem do zamknięcia na koniec tury gracza
-         */
+        PopupSystem.instance.ClosePopups(AutoCloseMode.EndOfTurn);
         DefaultEnding();
         NextTurn();
     }
