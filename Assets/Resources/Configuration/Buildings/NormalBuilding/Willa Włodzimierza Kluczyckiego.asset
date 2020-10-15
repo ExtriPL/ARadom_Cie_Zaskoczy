@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Willa W\u0142odzimierza Kluczyckiego"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Willa W\u0142odzimierza Kulczyckiego w Radomiu zosta\u0142a wzniesiona
+    w 1892 roku dla rejenta Kulczyckiego,ale p\xF3\u017Aniej zosta\u0142a wykupiona
+    przez Bank Handlowy w \u0141odzi. Obecnie jest to miejska biblioteka publiczna
+    im J\xF3zefa i Andrzeja Za\u0142uskich"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +26,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 750
     enterCost: 200
-    model: {fileID: -927199367670048503, guid: 62a056617b663f943afd7b91b4b222d8, type: 3}
+    model: {fileID: -927199367670048503, guid: f857be91dc9f2aa41b9b177b8341042f, type: 3}
   - name: Tier 2
     buyPrice: 375
     enterCost: 350
-    model: {fileID: -927199367670048503, guid: 62a056617b663f943afd7b91b4b222d8, type: 3}
+    model: {fileID: -927199367670048503, guid: f857be91dc9f2aa41b9b177b8341042f, type: 3}
   - name: Tier 3
     buyPrice: 565
     enterCost: 650
-    model: {fileID: -927199367670048503, guid: cfc1154bc769b3f4287d0d3c6ad076bf, type: 3}
+    model: {fileID: -927199367670048503, guid: f857be91dc9f2aa41b9b177b8341042f, type: 3}

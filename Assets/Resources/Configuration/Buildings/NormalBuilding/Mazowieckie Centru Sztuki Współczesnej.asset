@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Mazowieckie Centru Sztuki Wsp\xF3\u0142czesnej"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Mazowieckie Centrum Sztuki Wsp\xF3\u0142czesnej \u201EElektrownia\u201D
+    - zosta\u0142o wybudowane na terenie przedwojennej neogotyckiej elektrowni miejskiej,kt\xF3ra
+    pracowa\u0142a do 1956 roku.\r\nOficjalnie za\u0142o\u017Cono je w czerwcu 2005
+    roku. Pomys\u0142odawc\u0105 by\u0142 Andrzej Wajda.\r"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +26,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 400
     enterCost: 50
-    model: {fileID: -927199367670048503, guid: bf1228ed4c12a4e4591b2f34cc7efca5, type: 3}
+    model: {fileID: -927199367670048503, guid: 2d4539b6099cda844b452b98f387c7e3, type: 3}
   - name: Tier 2
     buyPrice: 200
     enterCost: 150
-    model: {fileID: -927199367670048503, guid: 3c075514dd3816543bbe9a5fa2436c16, type: 3}
+    model: {fileID: -927199367670048503, guid: 2d4539b6099cda844b452b98f387c7e3, type: 3}
   - name: Tier 3
     buyPrice: 300
     enterCost: 500
-    model: {fileID: -927199367670048503, guid: 8269a6e8ed211cc44b2fc6093e9720bc, type: 3}
+    model: {fileID: -927199367670048503, guid: 2d4539b6099cda844b452b98f387c7e3, type: 3}

@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Parafia Wojskowa\_ \u015Bw. Stanis\u0142awa Biskupa"
   canBePlaced: 1
-  fieldHistory: 
-  model: {fileID: -927199367670048503, guid: 7fc9d17bc88ac6e42892b9bdc203abaa, type: 3}
+  fieldHistory: "Ko\u015Bci\xF3\u0142 garnizonowy \u015Bw. Stanis\u0142awa Biskupa
+    w Radomiu \u2013 rzymskokatolicki ko\u015Bci\xF3\u0142 garnizonowy w Radomiu.
+    Mie\u015Bci si\u0119 przy Placu Konstytucji 3 Maja, w dzielnicy \u015Ar\xF3dmie\u015Bcie.
+    Obiekt jest cz\u0119\u015Bci\u0105 szlaku turystycznego Zabytki Radomia.\nPierwotnie
+    by\u0142a to cerkiew pod wezwaniem \u015Bwi\u0119tego Miko\u0142aja wybudowana
+    w 1902 roku wed\u0142ug projektu Wiktora Syczugowa, zmodyfikowanego przez innego
+    rosyjskiego architekta \u2013 M. Prieobra\u017Ce\u0144skiego. \u015Awi\u0105tynia
+    zosta\u0142a po\u015Bwi\u0119cona 9 lutego 1902 roku przez lubelskiego biskupa
+    prawos\u0142awnego Germana."
+  model: {fileID: -927199367670048503, guid: 9e0b5dbfad4cb864fbf68b28fad6fb52, type: 3}
   stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

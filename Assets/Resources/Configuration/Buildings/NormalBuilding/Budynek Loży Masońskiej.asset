@@ -14,7 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Budynek Lo\u017Cy Maso\u0144skiej"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Pierwsz\u0105 znan\u0105 radomsk\u0105 lo\u017C\u0105 wolnomularsk\u0105
+    by\u0142a utworzona w 1812 roku Jutrzenka Wschodz\u0105ca na Wschodzie Radomia
+    (nazwa nawi\u0105zywa\u0142a do idei niepodleg\u0142o\u015Bciowej). Lo\u017Ca
+    zawiesi\u0142a dzia\u0142alno\u015B\u0107 ju\u017C rok p\xF3\u017Aniej. Po wkroczeniu
+    do Radomia wojsk rosyjskich w 1814 roku zosta\u0142a otwarta ponownie. W latach
+    1816\u20131818 wzniesiono wed\u0142ug projektu Jakuba Kubickiego budynek w\u0142asny
+    lo\u017Cy. Z konieczno\u015Bci zachowania konspiracji gmach figurowa\u0142 w
+    ksi\u0119gach wieczystych jako w\u0142asno\u015B\u0107 kupca Jana Pusztyniki.
+    Budynek nale\u017Ca\u0142 do radomskiej lo\u017Cy do 1821 roku, kiedy w\u0142adze
+    carskie nakaza\u0142y rozwi\u0105zanie wszystkich l\xF3\u017C w Kr\xF3lestwie
+    Polskim[1]. W latach 1822\u20131863 budynek zajmowa\u0142 lazaret wojskowy. Nast\u0119pnie
+    do 1918 roku by\u0142 siedzib\u0105 Powiatowego Zwi\u0105zku Samorz\u0105dowego,
+    dla kt\xF3rego w latach 1925\u20131927 wzniesiono modernistyczny gmach w po\u0142udniowej
+    cz\u0119\u015Bci \u015Ar\xF3dmie\u015Bcia. W okresie mi\u0119dzywojennym siedziba
+    s\u0105du pokoju. W latach 1939\u20131973 budynek ponownie zajmowany by\u0142
+    przez szpital. Od 1975 siedziba prokuratury okr\u0119gowej (do 1999 wojew\xF3dzkiej)."
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +38,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 700
     enterCost: 175
-    model: {fileID: -927199367670048503, guid: 0665f00b954dd7f40aa058472c95eff5, type: 3}
+    model: {fileID: -927199367670048503, guid: 4dff1de4ba2a83e4b9055b1d48cd031c, type: 3}
   - name: Tier 2
     buyPrice: 350
     enterCost: 300
-    model: {fileID: -927199367670048503, guid: 839860dcdeb05a64086a5ecaa0223fba, type: 3}
+    model: {fileID: -927199367670048503, guid: 4dff1de4ba2a83e4b9055b1d48cd031c, type: 3}
   - name: Tier 3
     buyPrice: 525
     enterCost: 600
-    model: {fileID: -927199367670048503, guid: 39ffdf7db2066244b9ea1a1c6dd505e6, type: 3}
+    model: {fileID: -927199367670048503, guid: 4dff1de4ba2a83e4b9055b1d48cd031c, type: 3}
