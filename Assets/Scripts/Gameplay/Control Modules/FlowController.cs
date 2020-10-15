@@ -184,6 +184,9 @@ public class FlowController : IEventSubscribable
 
     #region Sterowanie rozgrywką
 
+    /// <summary>
+    /// Końcowa faza zakończenia rundy
+    /// </summary>
     private void End()
     {
         ResetSettings();
@@ -212,7 +215,7 @@ public class FlowController : IEventSubscribable
     /// Próbuje zakończyć obecną turę. Jeżeli gracz zbankrutował, daje mu możliwość ocalenia się.
     /// Sprawdza, czy któryś z graczy nie wygrał.
     /// </summary>
-    private void EndTurn()
+    public void EndTurn()
     {
         if (CurrentPlayer.Money < 0f)
         {

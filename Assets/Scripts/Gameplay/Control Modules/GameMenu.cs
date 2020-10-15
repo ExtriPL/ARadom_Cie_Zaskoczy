@@ -232,5 +232,13 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
         NextTurnButtonTimer.text = time.ToString();
     }
 
+    /// <summary>
+    /// Funkcja używana do wywołania końca tury za pomocą przycisku
+    /// </summary>
+    public void EndTurn()
+    {
+        GameplayController.instance.flow.EndTurn();
+    }
+
     #endregion Obsłuiga przycisków menu
 }
