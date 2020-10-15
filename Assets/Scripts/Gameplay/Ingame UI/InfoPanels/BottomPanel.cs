@@ -23,6 +23,11 @@ public class BottomPanel : MonoBehaviour
         nickNameText.text = player.NickName;
         moneyText.text = gc.session.FindPlayer(player.NickName).Money.ToString();
         nickNameText.color = moneyText.color = gc.session.FindPlayer(player.NickName).MainColor;
+
+        //for () 
+        //{
+
+        //}
     }
 
     public void Deinit() 
