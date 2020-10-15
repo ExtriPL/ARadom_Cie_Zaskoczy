@@ -5,11 +5,13 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class AuthorsPanel : MonoBehaviour, IPanelInitable
+public class AuthorsPanel : MonoBehaviour, IInitiable<MainMenuController>
 {
     public Authors authors;
     public List<GameObject> professionContainers;
     private List<List<Authors.Author>> randomAuthors = new List<List<Authors.Author>>();
+
+    
 
     public void Init(MainMenuController mainMenuController)
     { 
@@ -27,10 +29,9 @@ public class AuthorsPanel : MonoBehaviour, IPanelInitable
         }
     }
 
-    public void PreInit()
-    {
-        
-    }
+    public void PreInit() {}
+
+    public void DeInit() { }
 
     private void RandomizeLists() 
     {

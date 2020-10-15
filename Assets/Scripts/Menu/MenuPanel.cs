@@ -4,18 +4,22 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MenuPanel : MonoBehaviourPunCallbacks, IPanelInitable
+public class MenuPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
     private MainMenuController mainMenuController;
     public TextMeshProUGUI welcomePlayer;
 
 
     #region Inicjalizacja
+    public void PreInit() {}
+
     public void Init(MainMenuController mainMenuController)
     {
         this.mainMenuController = mainMenuController;
         welcomePlayer.text = SettingsController.instance.languageController.GetWord("WELCOME") +" "+ PhotonNetwork.LocalPlayer.NickName + "!";
     }
+
+    public void DeInit() {}
     #endregion Inicjalizacja
 
     #region Przyciski
@@ -33,10 +37,6 @@ public class MenuPanel : MonoBehaviourPunCallbacks, IPanelInitable
     #else
           Application.Quit();
     #endif
-    }
-
-    public void PreInit()
-    {
     }
     #endregion Przyciski
 }

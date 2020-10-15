@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SettingsPanel : MonoBehaviourPunCallbacks, IPanelInitable
+public class SettingsPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
     //Zmienne pomocnicze
     private MainMenuController mainMenuController;
@@ -27,8 +27,6 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IPanelInitable
     #region Inicjalizacja
     public void Init(MainMenuController mainMenuController)
     {
-
-
         //Ustawianie zmiennych pomocniczych
         this.mainMenuController = mainMenuController;
         langController = SettingsController.instance.languageController;
@@ -69,9 +67,10 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IPanelInitable
         //Ustawianie początkowej etykiety dropdownu na nazwę ustawionego języka
         languageDropDown.captionText.text = SettingsController.instance.languageController.GetWord(SettingsController.instance.settings.language.ToString());
     }
-    public void PreInit()
-    {
-    }
+    public void PreInit() {}
+
+    public void DeInit() {}
+
     #endregion Inicjalizacja
 
     #region Przyciski

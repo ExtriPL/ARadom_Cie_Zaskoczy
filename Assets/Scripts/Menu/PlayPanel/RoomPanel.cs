@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class RoomPanel : MonoBehaviourPunCallbacks, IPanelInitable, IEventSubscribable
+public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>, IEventSubscribable
 {
     private BasePool basePool;
     public GameObject content;
@@ -35,6 +35,9 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IPanelInitable, IEventSubscr
             basePool.TakeObject().gameObject.GetComponent<PlayerListing>().Init(mainMenuController, player, basePool);
         }
     }
+
+    public void DeInit() {}
+
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         basePool.TakeObject().gameObject.GetComponent<PlayerListing>().Init(mainMenuController, newPlayer, basePool);

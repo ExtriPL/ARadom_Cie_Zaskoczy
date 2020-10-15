@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayPanel : MonoBehaviourPunCallbacks, IPanelInitable
+public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
     private BasePool basePool;
     public GameObject content;
@@ -28,6 +28,9 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IPanelInitable
         }
         PhotonNetwork.JoinLobby();
     }
+
+    public void DeInit() {}
+
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();

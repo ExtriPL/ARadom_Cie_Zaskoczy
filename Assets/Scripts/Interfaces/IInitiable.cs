@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPanelInitable
+public interface IInitiable<T>
 {
     void PreInit();
-    void Init(MainMenuController mainMenuController);
+    void Init(T controller);
+    void DeInit();
 }
