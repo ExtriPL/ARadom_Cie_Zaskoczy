@@ -14,7 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Ratusz
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Poniewa\u017C Stary Ratusz zosta\u0142 rozebrany w latach 1818\u20131819,
+    w\u0142adze miejskie zmuszone by\u0142y przez szereg nast\u0119pnych lat funkcjonowa\u0107
+    w wynajmowanych pomieszczeniach (najpierw w dawnym klasztorze benedyktynek, nast\u0119pnie
+    w szeregu kamienic w Rynku). W zwi\u0105zku z wynikaj\u0105cymi st\u0105d niewygodami
+    podj\u0119to w ko\u0144cu decyzj\u0119 o wzniesieniu nowej siedziby magistratu.
+    W latach 1845\u20131848, staraniem prezydenta Radomia Feliksa Lewkowicza, wzniesiono
+    wed\u0142ug projektu Henryka Marconiego nowy budynek ratusza. Stan\u0105\u0142
+    w p\xF3\u0142nocnej pierzei Rynku, na miejscu trzech rozebranych pod budow\u0119
+    ratusza drewnianych budynk\xF3w mieszkalnych. Do nowego ratusza przylega budynek
+    odwachu z 1819.\r\r\nObiekt pozostawa\u0142 siedzib\u0105 w\u0142adz miejskich
+    do 1958 roku, kiedy biura miejskiej Rady Narodowej przeniesiono do gmachu dawnej
+    komisji wojew\xF3dzkiej przy ulicy \u017Beromskiego. Od 1958 roku budynek by\u0142
+    central\u0105 Archiwum Pa\u0144stwowego, kt\xF3re w 2013 przenios\u0142o si\u0119
+    do nowej lokalizacji. Obecnie budynek jest w\u0142asno\u015Bci\u0105 gminy miasta
+    Radomia i planowane jest przeniesienie do niego niekt\xF3rych jednostek urz\u0119du
+    miejskiego oraz rady miejskiej, zajmuj\u0105cej obecnie budynek dawnego Sejmiku
+    Powiatowego przy ulicy Moniuszki."
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +39,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 2000
     enterCost: 650
-    model: {fileID: -927199367670048503, guid: 8f73a42150f44c2428cefc8454441599, type: 3}
+    model: {fileID: -927199367670048503, guid: 506bb1691f4fe4040b8e0c6fb6ab9674, type: 3}
   - name: Tier 2
     buyPrice: 1000
     enterCost: 1000
-    model: {fileID: -927199367670048503, guid: 40379c3bac82ebd4c955bdead2f80422, type: 3}
+    model: {fileID: -927199367670048503, guid: 506bb1691f4fe4040b8e0c6fb6ab9674, type: 3}
   - name: Tie 3
     buyPrice: 1500
     enterCost: 1400
-    model: {fileID: -927199367670048503, guid: 53e888251167e994ab8bb123efaba6e2, type: 3}
+    model: {fileID: -927199367670048503, guid: 506bb1691f4fe4040b8e0c6fb6ab9674, type: 3}

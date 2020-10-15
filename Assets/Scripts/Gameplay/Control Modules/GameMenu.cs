@@ -26,10 +26,6 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     /// Czy menu jest aktualnie otwarte.
     /// </summary>
     public bool menuPanelOpen { get; private set; }
-    /// <summary>
-    /// Popup przechowujący informację o wstrzymaniu rozgrywki
-    /// </summary>
-    private InfoPopup gamePaused = null;
 
     #region Inicjalizacja
 
@@ -67,16 +63,18 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
         if (newState == GameState.paused)
         {
             string gamePauesedMessage = SettingsController.instance.languageController.GetWord("GAME_PAUSED");
-            gamePaused = new InfoPopup(gamePauesedMessage, Mathf.Infinity);
-            PopupSystem.instance.AddPopup(gamePaused);
+            /*gamePaused = new InfoPopup(gamePauesedMessage, Mathf.Infinity);
+            PopupSystem.instance.AddPopup(gamePaused);*/
+            Debug.Log("Potrzebny komunikat");
 
             ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("UNPAUSE");
         }
         //Usuwanie komunikatu o wstrzymaniu rozgrywki po jej przywróceniu
         else if (previousState == GameState.paused && newState == GameState.running)
         {
-            PopupSystem.instance.ClosePopup(gamePaused);
-            gamePaused = null;
+            /*PopupSystem.instance.ClosePopup(gamePaused);
+            gamePaused = null;*/
+            Debug.Log("Potrzebny komunikat");
 
             ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("PAUSE");
         }

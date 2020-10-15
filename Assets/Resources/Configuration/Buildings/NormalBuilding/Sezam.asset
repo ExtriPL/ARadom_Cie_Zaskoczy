@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Sezam
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Sp\xF3\u0142dzielczy Dom Handlowy \u201CSEZAM\u201D - jest to dom
+    handlowy wybudowany w 1966 roku na polecenie PSS \u201ESpo\u0142em\u201D w Radomiu.
+    Projekt budynku zosta\u0142 zaprojektowany przez Grzegorza Bauera i Ma\u0107ka
+    Paterkowskiego. Na placu znajduje si\u0119 rze\u017Aba przedstawiaj\u0105ca pude\u0142ko
+    serka produkowanego przez \u201ERolmlecz\u201D"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +27,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 2500
     enterCost: 800
-    model: {fileID: -927199367670048503, guid: 91d8be39b8ced6b4fad961118f19c5f5, type: 3}
+    model: {fileID: -927199367670048503, guid: 418e43d8ff0e44841bd5f90f92a749cf, type: 3}
   - name: Tier 2
     buyPrice: 1250
     enterCost: 1350
-    model: {fileID: -927199367670048503, guid: b963ddc0d204057459035ba0da605928, type: 3}
+    model: {fileID: -927199367670048503, guid: 910d9876fff2bf54f939c9103f8b4571, type: 3}
   - name: Tier 3
     buyPrice: 1875
     enterCost: 1550
-    model: {fileID: -927199367670048503, guid: fa9dec4646067c24e8f8700bb3dc0645, type: 3}
+    model: {fileID: -927199367670048503, guid: ee9efd7569f541046ae7c423a41fe00c, type: 3}

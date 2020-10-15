@@ -8,12 +8,13 @@ using UnityEngine;
 public abstract class PopupBox : MonoBehaviour
 {
     public Popup source;
+    public Animation animations;
+    protected abstract Action CloseAnimationTrigger { get; }
     protected PopupSystem pSystem = PopupSystem.instance;
-    protected float lifeStartTime;
 
-    protected virtual void Update()
+    protected virtual void Start()
     {
-        if (source != null && GameplayController.instance.session.currentGameTime - lifeStartTime >= source.lifeSpan) Close();
+        animations = GetComponent<Animation>();
     }
 
     public virtual void InitBox() {}
@@ -26,7 +27,9 @@ public abstract class PopupBox : MonoBehaviour
     {
         this.source = source;
         source.onOpen?.Invoke(source);
-        lifeStartTime = GameplayController.instance.session.currentGameTime;
+
+        if (animations == null)
+            Start();
     }
 
     /// <summary>
@@ -51,7 +54,17 @@ public abstract class PopupBox : MonoBehaviour
     /// </summary>
     public virtual void Close()
     {
+        if (CloseAnimationTrigger != null)
+            CloseAnimationTrigger.Invoke();
+        else
+            OnCloseAnimationEnd();
+    }
+
+    public virtual void OnCloseAnimationEnd()
+    {
         source.onClose?.Invoke(source);
         pSystem.ClosePopup(this);
     }
+
+    public virtual void OnShowAnimationEnd() {}
 }

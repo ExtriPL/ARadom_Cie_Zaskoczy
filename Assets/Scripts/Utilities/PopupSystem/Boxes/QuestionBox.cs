@@ -16,6 +16,8 @@ public class QuestionBox : PopupBox
     private BasePool buttonPool;
     private List<GameObject> showedButtons = new List<GameObject>();
 
+    protected override Action CloseAnimationTrigger => delegate { SetButtonsInteractable(false); animations.Play("QuestionBoxHide"); };
+
     public override void InitBox()
     {
         buttonPool = new BasePool(buttons, null, Keys.Popups.QUESTIONBOX_BUTTONS_AMOUNT);
@@ -35,6 +37,15 @@ public class QuestionBox : PopupBox
         QuestionPopup popup = source as QuestionPopup;
         message.text = popup.message;
         InitButons();
+
+        SetButtonsInteractable(false);
+        animations.Play("QuestionBoxShow");
+    }
+
+    public override void OnShowAnimationEnd()
+    {
+        base.OnShowAnimationEnd();
+        SetButtonsInteractable(true);
     }
 
     public override void Deinit()
@@ -73,5 +84,11 @@ public class QuestionBox : PopupBox
 
             showedButtons.Add(gameObject);
         }
+    }
+
+    private void SetButtonsInteractable(bool interactable)
+    {
+        foreach(Button button in buttons.GetComponentsInChildren<Button>())
+            button.interactable = interactable;
     }
 }

@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Muzeum Wsi Radomskiej
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Muzuem Wsi Radomskiej \u2013 Skansen, powsta\u0142y na skutek problemu
+    ochrony zabytk\xF3w kultury ludowej w latach 60\u2019 . Oficjalne powstanie muzeum
+    datuje si\u0119 na 31 grudnia 1976 r."
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +25,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 4250
     enterCost: 1350
-    model: {fileID: -927199367670048503, guid: 2e3cc77df67eb2546bd147888f59902b, type: 3}
+    model: {fileID: -927199367670048503, guid: 6524bda123541eb48b2c14cdc7da1c0b, type: 3}
   - name: Tier 2
     buyPrice: 2125
     enterCost: 2300
-    model: {fileID: -927199367670048503, guid: eeb125abff49e8849b6b2a0fdb6c903e, type: 3}
+    model: {fileID: -927199367670048503, guid: 6524bda123541eb48b2c14cdc7da1c0b, type: 3}
   - name: Tier 3
     buyPrice: 3200
     enterCost: 2700
-    model: {fileID: -927199367670048503, guid: 02a5ef91d7fda9043a2449a1a0c018eb, type: 3}
+    model: {fileID: -927199367670048503, guid: 6524bda123541eb48b2c14cdc7da1c0b, type: 3}

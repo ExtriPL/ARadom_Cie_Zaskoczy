@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Muzeum Malczewskiego
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Muzeum im. Jacka Malczewskiego ma histori\u0119 si\u0119gaj\u0105c\u0105
+    1913 roku kiedy Polskie Towarzystwo Krajoznawcze chcia\u0142o utworzy\u0107 Muzeum
+    ale pierwsza wojna \u015Bwiatowa to zatrzyma\u0142a. Po wojnie polsko-bolszewickiej
+    Muzeum cz\u0119sto zmienia\u0142o siedzib\u0119 a\u017C do czas\xF3w wsp\xF3\u0142czesnych
+    gdzie obecnie znajduje si\u0119 w Domach G\u0105ski I Esterki. Kiedy\u015B by\u0142o
+    Muzeum Okr\u0119gowym ale straci\u0142o status i przyj\u0119\u0142o obecn\u0105
+    nazw\u0119."
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +29,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 2150
     enterCost: 700
-    model: {fileID: -927199367670048503, guid: 86724a0f45e4b5149bfe899be861ca3f, type: 3}
+    model: {fileID: -927199367670048503, guid: c98000a828c38cc4ab6717dc8e7300c9, type: 3}
   - name: Tier 2
     buyPrice: 1075
     enterCost: 1250
-    model: {fileID: -927199367670048503, guid: 9e31aa328b68d1c4191ee55871dc525a, type: 3}
+    model: {fileID: -927199367670048503, guid: de25b3b89bd7d69459655d821093e1f5, type: 3}
   - name: Tier 3
     buyPrice: 1600
     enterCost: 1500
-    model: {fileID: -927199367670048503, guid: 03345a43e90b706499fede2a58a7d069, type: 3}
+    model: {fileID: -927199367670048503, guid: 839ad8e2ae259f24588097df35263abf, type: 3}

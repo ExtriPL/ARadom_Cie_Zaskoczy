@@ -14,34 +14,25 @@ public class PrisonSpecial : SpecialField
             Board board = GameplayController.instance.board;
             LanguageController language = SettingsController.instance.languageController;
 
-            QuestionPopup startTurn = QuestionPopup.CreateOkDialog(language.GetWord("YOU_ARE_IN_PRISON"), Popup.Functionality.Destroy());
+            QuestionPopup startTurn = QuestionPopup.CreateOkDialog(language.GetWord("YOU_ARE_IN_PRISON"));
 
-            IconPopup dice = new IconPopup(IconPopupType.None);
-            startTurn.onClose += Popup.Functionality.Show(dice);
-            dice.onClick += Popup.Functionality.Destroy();
-            dice.onClose += delegate (Popup source)
+            Popup.PopupAction diceRoll = delegate (Popup source)
             {
                 if(freeingThrows.Contains(board.dice.rollResult))
                 {
-                    QuestionPopup free = QuestionPopup.CreateOkDialog(language.GetWord("YOU_ARE_FREE"), Popup.Functionality.Destroy());
-                    free.onClose += delegate (Popup source2)
-                    {
-                        int firstThrow = board.dice.last1;
-                        int secondThrow = board.dice.last2;
-                        InfoPopup rollResult = new InfoPopup(SettingsController.instance.languageController.GetWord("YOU_GOT") + firstThrow + SettingsController.instance.languageController.GetWord("AND") + secondThrow, 1.5f);
-                        PopupSystem.instance.AddPopup(rollResult);
-                        board.MovePlayer(player, firstThrow + secondThrow);
-                    };//Być może trzeba tego delegata uogólnić i wstawić w jedno miejsce zamiast pisać ten sam kod tu i w Field?
-
+                    QuestionPopup free = QuestionPopup.CreateOkDialog(language.GetWord("YOU_ARE_FREE"));
+                    free.onClose += GameplayController.instance.flow.RollResult();
                     PopupSystem.instance.AddPopup(free);
                 }
                 else
                 {
-                    QuestionPopup noFree = QuestionPopup.CreateOkDialog(language.GetWord("NOT_THIS_TIME"), Popup.Functionality.Destroy());
+                    QuestionPopup noFree = QuestionPopup.CreateOkDialog(language.GetWord("NOT_THIS_TIME"));
 
                     PopupSystem.instance.AddPopup(noFree);
                 }
             };
+
+            startTurn.onClose += delegate { PopupSystem.instance.ShowDice(diceRoll); };
 
             PopupSystem.instance.AddPopup(startTurn);
         }

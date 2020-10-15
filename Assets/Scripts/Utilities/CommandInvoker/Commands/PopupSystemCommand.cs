@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 public class PopupSystemCommand : GroupCommand
 {
@@ -38,11 +35,12 @@ public class PopupSystemCommand : GroupCommand
         invoker.AddCommand(initPools);
 
         invoker.Start();
+        invoker.onExecutionFinished += FinishExecution;
     }
 
     public override void UpdateExecution()
     {
         base.UpdateExecution();
-        if (PopupSystem.instance.boxPools.Count > 0) FinishExecution();
+        invoker.Update();
     }
 }

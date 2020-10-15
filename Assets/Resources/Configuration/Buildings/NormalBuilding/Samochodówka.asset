@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Samochod\xF3wka"
   canBePlaced: 0
-  fieldHistory: 
+  fieldHistory: "Zesp\xF3\u0142 Szk\xF3\u0142 Samochodowych im. rotmistrza Witolda
+    Pileckiego w Radomiu - zesp\xF3\u0142 szk\xF3\u0142 za\u0142o\u017Cony 14 pa\u017Adziernika
+    1904 roku. W jego sk\u0142ad wchodz\u0105: technikum na podbudowie gimnazjum
+    i zasadnicza szko\u0142a zawodowa na podbudowie gimnazjum. W dniu 13 maja 2013
+    roku nadano szkole imi\u0119 rotmistrza Witolda Pileckiego."
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +27,12 @@ MonoBehaviour:
   - name: jedna trzecia
     buyPrice: 1000
     enterCost: 380
-    model: {fileID: -927199367670048503, guid: b2fabf4fa5e99a648b3da12bde7a6a75, type: 3}
+    model: {fileID: -927199367670048503, guid: df7145152f45475448cc75baa4efab38, type: 3}
   - name: dwie trzecie
     buyPrice: 500
     enterCost: 600
-    model: {fileID: -927199367670048503, guid: b2fabf4fa5e99a648b3da12bde7a6a75, type: 3}
+    model: {fileID: -927199367670048503, guid: df7145152f45475448cc75baa4efab38, type: 3}
   - name: "Ca\u0142y"
     buyPrice: 750
     enterCost: 900
-    model: {fileID: -927199367670048503, guid: b2fabf4fa5e99a648b3da12bde7a6a75, type: 3}
+    model: {fileID: -927199367670048503, guid: df7145152f45475448cc75baa4efab38, type: 3}

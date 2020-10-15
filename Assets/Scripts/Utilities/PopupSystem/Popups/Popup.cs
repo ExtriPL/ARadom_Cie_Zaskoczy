@@ -21,17 +21,9 @@ public abstract class Popup
     public PopupAction onOpen;
 
     /// <summary>
-    /// Czas wyświetlania popup-u
+    /// Tryb automatycznego zamknięcia popupu
     /// </summary>
-    public float lifeSpan;
-    /// <summary>
-    /// Czas o jaki jest opóźnione wyświetlenie popup-u gdy ten już znajdzie się na pierwszym miejscu w kolejce
-    /// </summary>
-    public float showDelay;
-    /// <summary>
-    /// Priorytet wyświetlania Popup-u
-    /// </summary>
-    public PopupPriority priority = PopupPriority.Normal;
+    public AutoCloseMode CloseMode { get; private set; }
 
     /// <summary>
     /// Inicjowanie podstawowych właściwości Popup-u
@@ -40,9 +32,9 @@ public abstract class Popup
     /// <param name="onOpen">Akcje wywoływane po wyświetleniu popup-u</param>
     /// <param name="onClick">Akcje wywoływane po naciśnięciu na popup</param>
     /// <param name="onClose">Akcje wywoływane po zniszczeniu popup-u</param>
-    protected Popup(float lifeSpan = Keys.Popups.MAX_EXISTING_TIME, PopupAction onOpen = null, PopupAction onClose = null, PopupAction onClick = null)
+    protected Popup(AutoCloseMode closeMode = AutoCloseMode.NewAppears, PopupAction onOpen = null, PopupAction onClose = null, PopupAction onClick = null)
     {
-        this.lifeSpan = lifeSpan;
+        CloseMode = closeMode;
         this.onOpen = onOpen;
         this.onClose = onClose;
         this.onClick = onClick;
@@ -138,4 +130,24 @@ public abstract class Popup
             return debugMessage;
         }
     }
+}
+
+/// <summary>
+/// Tryb automatycznego zamykania popupów. 
+/// Jeżeli zostanie wydane polecenie zamknięcia popupów z wyższym trybem, te z niższym też się zamkną
+/// </summary>
+public enum AutoCloseMode
+{
+    /// <summary>
+    /// Zostaje zamknięty od razu, gdy pojawi się nowy do wyświetlenia, a nie ma już miejsca
+    /// </summary>
+    NewAppears,
+    /// <summary>
+    /// Zostaje zamknięty gdy kończy się tura danego gracza
+    /// </summary>
+    EndOfTurn,
+    /// <summary>
+    /// Nigdy nie zostaje zamknięty automatycznie
+    /// </summary>
+    Never
 }

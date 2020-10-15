@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Ko\u015Bci\xF3\u0142 Bernardyn\xF3w"
   canBePlaced: 1
-  fieldHistory: 
-  model: {fileID: -927199367670048503, guid: d7a325497b4c62444b88460eda9db441, type: 3}
+  fieldHistory: "Zesp\xF3\u0142 klasztorny bernardyn\xF3w w Radomiu \u2013 p\xF3\u017Anogotycki
+    zesp\xF3\u0142 sakralny zlokalizowany przy dawnym przedmie\u015Bciu lubelskim
+    (dzisiejsza ulica \u017Beromskiego) w bezpo\u015Brednim s\u0105siedztwie Miasta
+    Kazimierzowskiego. Fundowany w 1468 r. jest jednym z najlepiej zachowanych kompleks\xF3w
+    klasztornych w Polsce. Wznoszony etapami. Obiekt jest cz\u0119\u015Bci\u0105
+    szlaku turystycznego Zabytki Radomia."
+  model: {fileID: -927199367670048503, guid: b29662fadefd9e547a64dd7e722fe360, type: 3}
   stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

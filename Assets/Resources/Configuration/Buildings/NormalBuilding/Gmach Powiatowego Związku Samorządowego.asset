@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Gmach Powiatowego Zwi\u0105zku Samorz\u0105dowego"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Czteropi\u0119trowy modernistyczny Gmach Powiatowego Zwi\u0105zku
+    Samorz\u0105dowego w Radomiu powsta\u0142 w 1927 roku. Budynek mia\u0142 by\u0107
+    dla \xF3wczesnych w\u0142adz powiatu. Podczas II wojny zajmowa\u0142a go niemiecka
+    \u017Candarmeria ,a PRLu Urz\u0105d Bezpiecze\u0144stwa. Od 1989 jest to siedziba
+    Rady Miasta"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +27,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 800
     enterCost: 250
-    model: {fileID: -927199367670048503, guid: a28316ae03d9a8a43898cd3a2fe614e1, type: 3}
+    model: {fileID: -927199367670048503, guid: e49b4793210dd4349823537d80ef8ecb, type: 3}
   - name: Tier 2
     buyPrice: 400
     enterCost: 400
-    model: {fileID: -927199367670048503, guid: 447b63f52b725e54ca172e8fcf2d1b4c, type: 3}
+    model: {fileID: -927199367670048503, guid: e49b4793210dd4349823537d80ef8ecb, type: 3}
   - name: Tier 3
     buyPrice: 600
     enterCost: 700
-    model: {fileID: -927199367670048503, guid: 0ac2ab7f1d05aa449906b19590440050, type: 3}
+    model: {fileID: -927199367670048503, guid: e49b4793210dd4349823537d80ef8ecb, type: 3}

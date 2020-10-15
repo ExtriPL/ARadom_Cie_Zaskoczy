@@ -9,6 +9,8 @@ public class ChanceBox : PopupBox
 {
     public TextMeshProUGUI title, cardContent;
 
+    protected override Action CloseAnimationTrigger => null;
+
     public override void Init(Popup source)
     {
         base.Init(source);

@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Resursa
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Resursa Obywatelska w Radomiu powsta\u0142a w 1852. Pierwotnie mia\u0142
+    by\u0107 to neorenesansowy budynek,kt\xF3rego niestety oryginalny wystr\xF3j
+    nie przetrwa\u0142. P\xF3\u017Aniej wynaj\u0119\u0142a go Resursa Obywatelska.
+    Przez pierwsz\u0105 wojn\u0119 \u015Bwiatow\u0105 i wojn\u0119 polsko-bolszewick\u0105
+    znajdowa\u0142 si\u0119 tu szpital.\r\nW czasie drugiej wojny by\u0142 to niemiecki
+    dom kultury,a w po wojnie znajdowa\u0142a si\u0119 siedziba dom\xF3w kultury
+    zak\u0142ad\xF3w przemys\u0142owych. Obecnie jest to O\u015Brodek Kultury i Sztuki
+    \u201EResursa Obywatelska\u201D\r"
   tiers:
   - name: puste
     buyPrice: 0
@@ -23,12 +30,12 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 3500
     enterCost: 1000
-    model: {fileID: -927199367670048503, guid: 6fdc51f54b0915a4ab1221ed06aa079b, type: 3}
+    model: {fileID: -927199367670048503, guid: d9f000351c68d02449b4aeaebe5ae8b3, type: 3}
   - name: Tier 2
     buyPrice: 1750
     enterCost: 1800
-    model: {fileID: -927199367670048503, guid: 243db1ea957e23f489dcaf95a64283bb, type: 3}
+    model: {fileID: -927199367670048503, guid: d9f000351c68d02449b4aeaebe5ae8b3, type: 3}
   - name: Tier 3
     buyPrice: 2625
     enterCost: 1900
-    model: {fileID: -927199367670048503, guid: d011ce95b303e944e8b026ec34250592, type: 3}
+    model: {fileID: -927199367670048503, guid: d9f000351c68d02449b4aeaebe5ae8b3, type: 3}
