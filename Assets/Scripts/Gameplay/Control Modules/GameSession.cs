@@ -187,7 +187,7 @@ public class GameSession : IEventSubscribable
             Player player = FindPlayer(p);
             PlayerSettings ps = new PlayerSettings();
             ps.placedId = player.PlaceId;
-            ps.fieldList = player.GetOwnedFields();
+            ps.fieldList = player.GetOwnedPlaces();
             ps.money = player.Money;
             ps.nick = player.GetName();
             ps.turnsToSkip = player.TurnsToSkip;

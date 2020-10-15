@@ -7,14 +7,9 @@ public class BuildingInfoPanel : MonoBehaviour
 {
 
     public GameObject buildingName;
-    public GameObject buildingPicture;
     public GameObject buildingInfo;
     public GameObject buildingHistory;
     private LanguageController lC;
-    public void OnEnable()
-    {
-        
-    }
 
     private void Start()
     {

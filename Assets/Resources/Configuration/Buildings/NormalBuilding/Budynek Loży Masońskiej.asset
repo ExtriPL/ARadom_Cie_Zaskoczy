@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Budynek Lo\u017Cy Maso\u0144skiej"
   m_EditorClassIdentifier: 
   fieldName: "Budynek Lo\u017Cy Maso\u0144skiej"
-  canBePlaced: 1
+  canBePlaced: 0
   fieldHistory: "Pierwsz\u0105 znan\u0105 radomsk\u0105 lo\u017C\u0105 wolnomularsk\u0105
     by\u0142a utworzona w 1812 roku Jutrzenka Wschodz\u0105ca na Wschodzie Radomia
     (nazwa nawi\u0105zywa\u0142a do idei niepodleg\u0142o\u015Bciowej). Lo\u017Ca

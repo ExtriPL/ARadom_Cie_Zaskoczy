@@ -73,13 +73,13 @@ public class BankingController : IEventSubscribable
     /// Funkcja nadająca graczowi budynek
     /// </summary>
     /// <param name="player">Gracz, który dostaje pole</param>
-    public void AquireBuilding(Player player, int fieldId)
+    public void AquireBuilding(Player player, int placeId)
     {
-        if (GameplayController.instance.board.GetField(fieldId) is BuildingField)
+        if (GameplayController.instance.board.GetField(placeId) is BuildingField)
         {
-            player.AddOwnership(fieldId);
-            player.DecreaseMoney(((BuildingField)GameplayController.instance.board.GetField(fieldId)).GetInitialPrice());
-            EventManager.instance.SendOnPlayerAquiredBuiding(player.GetName(), fieldId);
+            player.AddOwnership(placeId);
+            player.DecreaseMoney(((BuildingField)GameplayController.instance.board.GetField(placeId)).GetInitialPrice());
+            EventManager.instance.SendOnPlayerAquiredBuiding(player.GetName(), placeId);
         }
         else 
         {
@@ -98,7 +98,7 @@ public class BankingController : IEventSubscribable
     {
         if (GameplayController.instance.board.GetField(placeId) is BuildingField)
         {
-            if (seller.HasField(placeId))
+            if (seller.HasPlace(placeId))
             {
                 if (buyer.Money >= price)
                 {

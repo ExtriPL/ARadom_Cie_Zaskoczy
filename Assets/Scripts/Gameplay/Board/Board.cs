@@ -280,7 +280,7 @@ public class Board : IEventSubscribable
         for (int i = 0; i < GameplayController.instance.session.playerCount; i++)
         {
             Player p = GameplayController.instance.session.FindPlayer(i);
-            if (p.HasField(placeId))
+            if (p.HasPlace(placeId))
             {
                 return p;
             }
@@ -353,7 +353,7 @@ public class Board : IEventSubscribable
     {
         int amount = 0;
 
-        foreach (int fieldId in owner.GetOwnedFields())
+        foreach (int fieldId in owner.GetOwnedPlaces())
             amount += GetField(fieldId).GetType().Equals(fieldType) ? 1 : 0;
 
         return amount;

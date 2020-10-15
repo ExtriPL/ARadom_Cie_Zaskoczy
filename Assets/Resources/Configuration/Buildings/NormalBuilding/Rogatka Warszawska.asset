@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rogatka Warszawska
   m_EditorClassIdentifier: 
   fieldName: Rogatka Warszawska
-  canBePlaced: 1
+  canBePlaced: 0
   fieldHistory: "Rogatka warszawska powsta\u0142a z za\u0142o\u017Ce\u0144 planu
     regulacyjnego z 1822 roku.\r\nTa kwadratowa,klasycystyczna budowla zacz\u0119\u0142a
     powstawa\u0107 w 1820 jako drewniana rogatka ale w 1834 zast\u0105piono j\u0105

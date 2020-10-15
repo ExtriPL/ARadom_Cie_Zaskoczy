@@ -292,7 +292,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         player.IsLoser = true;
 
         //Odbieranie pól graczowi
-        foreach (int placeId in player.GetOwnedFields())
+        foreach (int placeId in player.GetOwnedPlaces())
         {
             if (board.GetField(placeId) is NormalBuilding)
                 board.SetTier(placeId, 0);

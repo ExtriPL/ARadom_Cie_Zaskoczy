@@ -17,13 +17,9 @@ public class UIPanels : MonoBehaviour
     private void Start()
     {
         if (GameplayController.instance.gameInitialized)
-        {
-            ActivateButton();
-        }
+            StartPanels();
         else
-        {
-            GameplayController.instance.invoker.onExecutionFinished += ActivateButton;
-        }
+            GameplayController.instance.invoker.onExecutionFinished += StartPanels;
     }
 
     private void Update()
@@ -31,34 +27,35 @@ public class UIPanels : MonoBehaviour
         if (GameplayController.instance.gameInitialized) money.text = GameplayController.instance.session.FindPlayer(PhotonNetwork.LocalPlayer.NickName).Money.ToString() + " GR";
     }
 
-    private void ActivateButton()
+    private void StartPanels()
     {
         button.SetActive(true);
+        bottomPanel.PreInit();
     }
 
     public void OpenBottomPanel() 
     {
         bottomPanel.GetComponent<Animation>().Play("BottomToMiddle");
-        bottomPanel.Init(gameObject.GetComponent<UIPanels>(), PhotonNetwork.LocalPlayer);
+        bottomPanel.Init(this, GameplayController.instance.session.localPlayer);
     }
-    public void OpenBottomPanel(Photon.Realtime.Player player)
+    public void OpenBottomPanel(Player player)
     { 
-        bottomPanel.Init(gameObject.GetComponent<UIPanels>(), player);
+        bottomPanel.Init(this, player);
     }
     public void OpenLeftPanel()
     {
-        leftPanel.Init(gameObject.GetComponent<UIPanels>());
+        leftPanel.Init(this);
     }
 
     public void CloseBottomPanel() 
     {
-        bottomPanel.Deinit();
+        bottomPanel.DeInit();
         bottomPanel.GetComponent<Animation>().Play("MiddleToBottom");
     }
 
     public void OpenRightPanel() 
     {
-        rightPanel.Init(gameObject.GetComponent<UIPanels>());
+        rightPanel.Init(this);
     }
 
 }
