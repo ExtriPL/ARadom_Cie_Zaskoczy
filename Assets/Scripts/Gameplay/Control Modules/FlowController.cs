@@ -189,8 +189,6 @@ public class FlowController : IEventSubscribable
         ResetSettings();
         /*
          Zamykanie popupów z oznaczeniem do zamknięcia na koniec tury gracza
-         Zmienianie obecnie aktywnego gracza
-         Ukrycie przycisku zakończenia tury/Wyłączenie go
          */
         DefaultEnding();
         NextTurn();
