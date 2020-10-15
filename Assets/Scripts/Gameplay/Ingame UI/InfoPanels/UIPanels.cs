@@ -20,7 +20,7 @@ public class UIPanels : MonoBehaviour
         {
             ActivateButton();
         }
-        else 
+        else
         {
             GameplayController.instance.invoker.onExecutionFinished += ActivateButton;
         }
