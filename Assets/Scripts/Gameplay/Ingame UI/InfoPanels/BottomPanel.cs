@@ -4,33 +4,61 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BottomPanel : MonoBehaviour
+public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
 {
     private UIPanels UIPanels;
     public TextMeshProUGUI nickNameText;
     public TextMeshProUGUI moneyText;
-    private GameplayController gc;
+    public GameObject buildingListing;
+    [Tooltip("Element przechowujący wszystkie BuildingListingi")]
+    public GameObject buildingsInfoHolder;
 
-    public void Init(UIPanels UIPanels, Photon.Realtime.Player player)
+    private GameplayController gc;
+    private BasePool buildingsPool;
+    private List<BuildingListing> buildingListings;
+
+    public void PreInit()
+    {
+        buildingListings = new List<BuildingListing>();
+        buildingsPool = new BasePool(buildingsInfoHolder, buildingListing, Keys.Board.PLACE_COUNT / 2);
+        buildingsPool.Init();
+    }
+
+    public void Init(UIPanels UIPanels)
     {
         this.UIPanels = UIPanels;
         gc = GameplayController.instance;
+    }
+
+    public void Init(UIPanels UIPanels, Player player)
+    {
+        Init(UIPanels);
         FillContent(player);        
     }
 
-    private void FillContent(Photon.Realtime.Player player) 
+    private void FillContent(Player player) 
     {
-        nickNameText.text = player.NickName;
-        moneyText.text = gc.session.FindPlayer(player.NickName).Money.ToString();
-        nickNameText.color = moneyText.color = gc.session.FindPlayer(player.NickName).MainColor;
+        nickNameText.text = player.GetName();
+        moneyText.text = player.Money.ToString();
+        nickNameText.color = moneyText.color = player.MainColor;
 
-        //for () 
-        //{
-
-        //}
+        foreach(int placeId in player.GetOwnedPlaces())
+        {
+            Field field = gc.board.GetField(placeId);
+            BuildingListing listing = buildingsPool.TakeObject().GetComponent<BuildingListing>();
+            listing.Init(field);
+            buildingListings.Add(listing);
+        }
     }
 
-    public void Deinit() 
+    public void DeInit() 
     {
+        foreach(BuildingListing building in buildingListings)
+        {
+            building.DeInit();
+            buildingsPool.ReturnObject(building.gameObject);
+        }
+
+        buildingListings.Clear();
     }
 }

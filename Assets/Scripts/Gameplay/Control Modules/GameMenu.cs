@@ -12,11 +12,9 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     [SerializeField] public GameObject OpenMenuButton;
     [SerializeField] public GameObject MenuPanel;
     [SerializeField] private GameObject AdminPanel;
-    [SerializeField] private GameObject AccountPanel;
     [SerializeField] private GameObject SettingsPanel;
     [SerializeField] private Button ResumeButton;
     [SerializeField] private Button AdminPanelButton;
-    [SerializeField] private Button AccountPanelButton;
     [SerializeField] private Button SettingsPanelButton;
 
     [SerializeField] private Button NextTurnButton;
@@ -146,21 +144,6 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     }
 
     /// <summary>
-    /// Przełącza okna tak, by wyświetlić moduł bankowości
-    /// </summary>
-    public void OpenBankAccount()
-    {
-        MenuPanel.SetActive(false);
-        AccountPanel.SetActive(true);
-    }
-
-    public void CloseBankAccount()
-    {
-        MenuPanel.SetActive(true);
-        AccountPanel.SetActive(false);
-    }
-
-    /// <summary>
     /// Otwiera ustawienia aplikacji
     /// </summary>
     public void OpenSettings()
@@ -230,6 +213,14 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     public void SetNextTurnButtonTimer(int time)
     {
         NextTurnButtonTimer.text = time.ToString();
+    }
+
+    /// <summary>
+    /// Funkcja używana do wywołania końca tury za pomocą przycisku
+    /// </summary>
+    public void EndTurn()
+    {
+        GameplayController.instance.flow.EndTurn();
     }
 
     #endregion Obsłuiga przycisków menu

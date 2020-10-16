@@ -31,7 +31,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// <summary>
     /// Panel z informacjami o wybranym budynku
     /// </summary>
-    [SerializeField] private GameObject buildingInfoPanel;
+    public GameObject buildingInfoPanel;
 
     #region Inicjalizacja
 

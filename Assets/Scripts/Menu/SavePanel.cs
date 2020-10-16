@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
-public class SavePanel : MonoBehaviourPunCallbacks, IPanelInitable
+public class SavePanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
 
     private MainMenuController mainMenuController;
@@ -20,6 +20,9 @@ public class SavePanel : MonoBehaviourPunCallbacks, IPanelInitable
         this.mainMenuController = mainMenuController;
         ListItems();
     }
+
+    public void DeInit() {}
+
     public void ListItems()
     {
         for (int i = 0; i < FileManager.GetSavesName().Count; i++)
@@ -29,6 +32,4 @@ public class SavePanel : MonoBehaviourPunCallbacks, IPanelInitable
             //Debug.Log((FileManager.GetSavesName()[i] != null) + ";" + (basePool != null) + ";" + (mainMenuController != null));
         }
     }
-
-
 }

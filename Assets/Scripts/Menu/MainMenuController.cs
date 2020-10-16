@@ -26,7 +26,7 @@ public class MainMenuController : MonoBehaviour
     {
         foreach (GameObject panel in panels) 
         {
-            panel.GetComponent<IPanelInitable>().PreInit();
+            panel.GetComponent<IInitiable<MainMenuController>>().PreInit();
         }
     }
     private void Connect()
@@ -58,13 +58,13 @@ public class MainMenuController : MonoBehaviour
     {
         foreach (GameObject panel in panels) 
         {
-            if (panel.GetComponent<IPanelInitable>() is IEventSubscribable) panel.GetComponent<IEventSubscribable>().UnsubscribeEvents();
+            if (panel.GetComponent<IInitiable<MainMenuController>>() is IEventSubscribable) panel.GetComponent<IEventSubscribable>().UnsubscribeEvents();
             panel.SetActive(false);
         }
         //przejscie
         panels[panelId].SetActive(true);
-        if (panels[panelId].GetComponent<IPanelInitable>() is IEventSubscribable) panels[panelId].GetComponent<IEventSubscribable>().SubscribeEvents();
-        panels[panelId].GetComponent<IPanelInitable>().Init(this);
+        if (panels[panelId].GetComponent<IInitiable<MainMenuController>>() is IEventSubscribable) panels[panelId].GetComponent<IEventSubscribable>().SubscribeEvents();
+        panels[panelId].GetComponent<IInitiable<MainMenuController>>().Init(this);
         //Animacja
     }
     #endregion Kontrola Paneli

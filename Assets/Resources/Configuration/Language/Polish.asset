@@ -381,3 +381,7 @@ MonoBehaviour:
     value: "Z\u0142a taks\xF3wka"
   - key: CHANCE_CARD_BAD_TAXI_CONTENT
     value: "Tw\xF3j taks\xF3wkarz pomyli\u0142 drogi. Cofnij si\u0119 o 4 pola."
+  - key: SHOW_INFO
+    value: Informacje
+  - key: SHOW_ON_BOARD
+    value: "Poka\u017C"

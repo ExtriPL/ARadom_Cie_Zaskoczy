@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginPanel : MonoBehaviourPunCallbacks, IPanelInitable
+public class LoginPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
     public Toggle rememberMe;
     public TextMeshProUGUI nickInputText;
@@ -59,8 +59,8 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IPanelInitable
         if(!PhotonNetwork.IsConnectedAndReady)connectingText.SetActive(true);
     }
 
-    public void PreInit()
-    {
-    }
+    public void PreInit() {}
+
+    public void DeInit() {}
     #endregion Inicjalizacja
 }

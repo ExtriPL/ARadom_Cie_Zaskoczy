@@ -281,24 +281,24 @@ public class Player
     /// <summary>
     /// Dodaje graczowi pole o danym ID.
     /// </summary>
-    /// <param name="fieldId">ID pola</param>
-    public void AddOwnership(int fieldId)
+    /// <param name="placeId">ID pola</param>
+    public void AddOwnership(int placeId)
     {
-        if (!FieldList.Contains(fieldId))
+        if (!FieldList.Contains(placeId))
         {
-            AddToFieldList(fieldId);
+            AddToFieldList(placeId);
         }
     }
 
     /// <summary>
     /// Odbiera graczowi pole o danym ID.
     /// </summary>
-    /// <param name="fieldId">ID pola</param>
-    public void RemoveOwnership(int fieldId)
+    /// <param name="placeId">ID pola</param>
+    public void RemoveOwnership(int placeId)
     {
-        if (FieldList.Contains(fieldId))
+        if (FieldList.Contains(placeId))
         {
-            RemoveFromFieldList(fieldId);
+            RemoveFromFieldList(placeId);
         }
     }
 
@@ -310,41 +310,41 @@ public class Player
     /// <summary>
     /// Dodanie elementów na listę sieciową.
     /// </summary>
-    /// <param name="fieldId"></param>
-    private void AddToFieldList(int fieldId)
+    /// <param name="placeId"></param>
+    private void AddToFieldList(int placeId)
     {
         int[] array = FieldList.ToArray();
         List<int> list = new List<int>();
         list.AddRange(array);
-        list.Add(fieldId);
+        list.Add(placeId);
         FieldList = list;
     }
 
     /// <summary>
     /// Usuwanie elementów z listy sieciowej.
     /// </summary>
-    /// <param name="fieldId"></param>
-    private void RemoveFromFieldList(int fieldId)
+    /// <param name="placeId"></param>
+    private void RemoveFromFieldList(int placeId)
     {
         int[] array = FieldList.ToArray();
         List<int> list = new List<int>();
         list.AddRange(array);
-        list.Remove(fieldId);
+        list.Remove(placeId);
         FieldList = list;
     }
 
     /// <summary>
     /// Sprawdza czy gracz ma pole o danym id.
     /// </summary>
-    /// <param name="fieldId"></param>
+    /// <param name="placeId"></param>
     /// <returns></returns>
-    public bool HasField(int fieldId) => FieldList.Contains(fieldId);
+    public bool HasPlace(int placeId) => FieldList.Contains(placeId);
 
     /// <summary>
     /// Zwraca liste posiadanych przez gracza miejsc na planszy
     /// </summary>
     /// <returns>Lista miejsc na planszy, które posiada gracz</returns>
-    public List<int> GetOwnedFields() => FieldList;
+    public List<int> GetOwnedPlaces() => FieldList;
 
     #endregion Zarządzanie polami
 

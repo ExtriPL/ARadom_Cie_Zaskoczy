@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreateRoomPanel : MonoBehaviourPunCallbacks, IPanelInitable
+public class CreateRoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
     MainMenuController mainMenuController;
     public TMP_InputField nameInputField;
@@ -65,7 +65,7 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IPanelInitable
         PhotonNetwork.CreateRoom(nameInputField.text, roomOptions, null);
     }
 
-    public void PreInit()
-    {
-    }
+    public void PreInit() {}
+
+    public void DeInit() {}
 }

@@ -33,6 +33,10 @@ public class PopupSystem : MonoBehaviour
     public Dictionary<Type, BoxPool> boxPools = new Dictionary<Type, BoxPool>();
 
     private IconBox diceBox;
+    /// <summary>
+    /// Flaga określająca, czy po zrobieniu się miejsca na ekranie, bądź dodaniu popupu, gdy to miejsce jest, może pojawić się on na ekranie
+    /// </summary>
+    private bool canShowNewPopups = true;
 
     #region Inicjalizacja
 
@@ -184,6 +188,9 @@ public class PopupSystem : MonoBehaviour
     /// <param name="type"></param>
     private void ShowPopup(Type type)
     {
+        if (!canShowNewPopups)
+            return;
+
         for(int i = 0; i < popupQueue.Count; i++)
         {
             Type pt = popupQueue[i].GetType();
@@ -206,7 +213,7 @@ public class PopupSystem : MonoBehaviour
     {
         foreach(PopupBox box in showedPopups)
         {
-            if(box.source.GetType().Equals(type) && box.source.CloseMode == AutoCloseMode.NewAppears)
+            if(box.source.GetType().Equals(type) && box.source.CloseMode <= AutoCloseMode.NewAppears)
             {
                 ClosePopup(box);
                 break;
@@ -226,6 +233,49 @@ public class PopupSystem : MonoBehaviour
         rect.anchoredPosition = new Vector2(0, 270f);
         rect.anchorMin = new Vector2(0.5f, 0);
         rect.anchorMax = new Vector2(0.5f, 0);
+    }
+
+    /// <summary>
+    /// Zamyka wszystkie popupy o trybie zamknięcia równym, bądź niższym od podanego.
+    /// Na czas zamykania blokuje możliwość wyświetlenia nowych popupów
+    /// </summary>
+    /// <param name="closeMode">Tryb zamknięcia popupów</param>
+    public void ClosePopups(AutoCloseMode closeMode)
+    {
+        canShowNewPopups = false;
+
+        //Zamykanie obecnie wyświetlonych popupów
+        List<PopupBox> toClose = new List<PopupBox>();
+        foreach(PopupBox box in showedPopups)
+        {
+            if (box.source.CloseMode <= closeMode)
+                toClose.Add(box);
+        }
+        foreach (PopupBox box in toClose)
+            ClosePopup(box);
+
+        //Repozycjonowanie obecnie wyświetlonych popupów, by znalazły się na dobrych miejscach
+        foreach (PopupBox box in showedPopups)
+            box.Reposition();
+
+        List<Popup> toRemove = new List<Popup>();
+
+        //Usuwanie popupów jeszcze nie wyświetlonych
+        foreach(Popup popup in popupQueue)
+        {
+            if(popup.CloseMode <= closeMode)
+            {
+                toRemove.Add(popup);
+                popup.onClose?.Invoke(popup);
+            }
+        }
+
+        foreach (Popup popup in toRemove)
+            popupQueue.Remove(popup);
+
+        canShowNewPopups = true;
+
+        CheckScreenAccessibility();
     }
 
     #endregion Obsługa popup-ów
