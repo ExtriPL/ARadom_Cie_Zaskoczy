@@ -12,11 +12,9 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     [SerializeField] public GameObject OpenMenuButton;
     [SerializeField] public GameObject MenuPanel;
     [SerializeField] private GameObject AdminPanel;
-    [SerializeField] private GameObject AccountPanel;
     [SerializeField] private GameObject SettingsPanel;
     [SerializeField] private Button ResumeButton;
     [SerializeField] private Button AdminPanelButton;
-    [SerializeField] private Button AccountPanelButton;
     [SerializeField] private Button SettingsPanelButton;
 
     [SerializeField] private Button NextTurnButton;
@@ -143,21 +141,6 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     {
         MenuPanel.SetActive(true);
         AdminPanel.SetActive(false);
-    }
-
-    /// <summary>
-    /// Przełącza okna tak, by wyświetlić moduł bankowości
-    /// </summary>
-    public void OpenBankAccount()
-    {
-        MenuPanel.SetActive(false);
-        AccountPanel.SetActive(true);
-    }
-
-    public void CloseBankAccount()
-    {
-        MenuPanel.SetActive(true);
-        AccountPanel.SetActive(false);
     }
 
     /// <summary>

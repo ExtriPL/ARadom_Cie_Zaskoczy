@@ -55,8 +55,12 @@ public class IconBox : PopupBox
     {
         switch(iconType)
         {
+            case IconPopupType.Buy:
+                return sprites[1];
+            case IconPopupType.Auction:
+                return sprites[2]; 
             default: 
-                return null;
+                return sprites[0];
         }
     }
 

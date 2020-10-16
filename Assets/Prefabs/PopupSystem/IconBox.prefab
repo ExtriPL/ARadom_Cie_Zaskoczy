@@ -89,7 +89,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animations: {fileID: 0}
-  sprites: []
+  sprites:
+  - {fileID: 21300000, guid: 8d5d61e74f6ca564a8153fbfa50f4338, type: 3}
+  - {fileID: 21300000, guid: 1c3f4bdee40a90646bd850894ee5592f, type: 3}
+  - {fileID: 21300000, guid: 29352d50603888740837f97f4d142128, type: 3}
 --- !u!114 &352671817875312697
 MonoBehaviour:
   m_ObjectHideFlags: 0

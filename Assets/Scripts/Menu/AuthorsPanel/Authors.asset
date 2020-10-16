@@ -25,16 +25,12 @@ MonoBehaviour:
     surname: "Czapczy\u0144ski"
     proffesion: 0
     website: 
-  - name: Albert
-    surname: Gawin
-    proffesion: 0
+  - name: Mateusz
+    surname: "Wi\u015Bniewski"
+    proffesion: 1
     website: 
   - name: Wiktor
     surname: "Czerwi\u0144ski"
-    proffesion: 1
-    website: 
-  - name: Mateusz
-    surname: "Wi\u015Bniewski"
     proffesion: 1
     website: 
   - name: Konrad
@@ -45,10 +41,6 @@ MonoBehaviour:
     surname: Ciupa
     proffesion: 1
     website: 
-  - name: Kacper
-    surname: "O\u015Bko"
-    proffesion: 1
-    website: 
   - name: Martin
     surname: Gregorczyk
     proffesion: 1
@@ -57,27 +49,27 @@ MonoBehaviour:
     surname: "Stefa\u0144ski"
     proffesion: 1
     website: 
-  - name: Daniel
-    surname: Tomasik
-    proffesion: 2
-    website: 
   - name: Bartosz
     surname: Koniarczyk
     proffesion: 2
     website: 
-  - name: Dobry
-    surname: Flow
+  - name: Jakub
+    surname: "\u015Amigaszewski"
+    proffesion: 2
+    website: 
+  - name: Daniel
+    surname: Tomasik
     proffesion: 2
     website: 
   - name: "\u0141ukasz"
     surname: Gierek
     proffesion: 3
     website: 
-  - name: Katarzyna
-    surname: Grabowska
-    proffesion: 3
-    website: 
   - name: Barbara
     surname: "G\u0142uch"
+    proffesion: 3
+    website: 
+  - name: Katarzyna
+    surname: Grabowska
     proffesion: 3
     website: 
