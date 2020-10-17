@@ -242,7 +242,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
 
         if (field is NormalBuilding normalBuilding)
         {
-            if (GameplayController.instance.board.GetTier(placeIndex) > 0)
+            if (GameplayController.instance.board.GetTier(placeIndex) >= 0)
             {
                 centerModel = Instantiate(normalBuilding.GetTier(normalBuilding.tiersCount - 1).model, ARController.centerBuilding.GetComponent<Transform>());
                 centerModel.name = normalBuilding.GetFieldName();

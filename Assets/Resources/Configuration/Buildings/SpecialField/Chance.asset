@@ -15,6 +15,8 @@ MonoBehaviour:
   fieldName: Pole sztosu
   canBePlaced: 1
   model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
+  fieldHistory: "Pole sztosu! Czyli szansy lub losu! Mo\u017Ce Ci\u0119 tutaj spotka\u0107
+    co\u015B wspania\u0142ego...\nAlbo mo\u017Cesz zbankrutowa\u0107!"
   chanceCards:
   - {fileID: 11400000, guid: 349d45eaaf1550644ad058e98b5ff8e6, type: 2}
   - {fileID: 11400000, guid: 7a80252d745c70d4e9e0cf8ed0194494, type: 2}

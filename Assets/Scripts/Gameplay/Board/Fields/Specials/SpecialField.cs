@@ -10,6 +10,8 @@ public abstract class SpecialField : Field
     /// </summary>
     [SerializeField, Tooltip("Model budynku stojącego na polu")]
     private GameObject model;
+    [SerializeField, Tooltip("Opis pola"), TextArea]
+    protected string fieldHistory;
 
     public override GameObject GetStartModel() => model;
 }

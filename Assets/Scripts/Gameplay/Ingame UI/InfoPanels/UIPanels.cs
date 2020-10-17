@@ -31,26 +31,38 @@ public class UIPanels : MonoBehaviour
     {
         button.SetActive(true);
         bottomPanel.PreInit();
+        leftPanel.PreInit();
     }
 
     public void OpenBottomPanel() 
     {
+        bottomPanel.DeInit();
         bottomPanel.GetComponent<Animation>().Play("BottomToMiddle");
         bottomPanel.Init(this, GameplayController.instance.session.localPlayer);
     }
     public void OpenBottomPanel(Player player)
-    { 
+    {
+        bottomPanel.DeInit();
         bottomPanel.Init(this, player);
+        CloseLeftPanel();
     }
     public void OpenLeftPanel()
     {
+        leftPanel.DeInit();
         leftPanel.Init(this);
+        leftPanel.GetComponent<Animation>().Play("LeftToMiddle");
+        bottomPanel.GetComponent<Animation>().Play("MiddleToRight");
     }
 
     public void CloseBottomPanel() 
     {
-        bottomPanel.DeInit();
         bottomPanel.GetComponent<Animation>().Play("MiddleToBottom");
+    }
+
+    public void CloseLeftPanel()
+    {
+        leftPanel.GetComponent<Animation>().Play("MiddleToLeft");
+        bottomPanel.GetComponent<Animation>().Play("RightToMiddle");
     }
 
     public void OpenRightPanel() 

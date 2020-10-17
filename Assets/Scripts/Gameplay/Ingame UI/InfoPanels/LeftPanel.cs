@@ -1,26 +1,45 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class LeftPanel : MonoBehaviour
+public class LeftPanel : MonoBehaviour, IInitiable<UIPanels>
 {
-    private UIPanels uIPanels;
-    public GameObject closeButton;
-    public void Init(UIPanels uIPanels) 
+    private BasePool basePool;
+    public GameObject content;
+    public GameObject template;
+    private UIPanels UIPanels;
+    private List<IngamePlayerListing> playerListings;
+
+
+    public void PreInit()
     {
-        this.uIPanels = uIPanels;
-        gameObject.GetComponent<Animation>().Play("LeftToMiddle");
-        uIPanels.bottomPanel.GetComponent<Animation>().Play("MiddleToRight");
+        playerListings = new List<IngamePlayerListing>();
+        basePool = new BasePool(content, template, Keys.Menu.MAX_PLAYERS_COUNT);
+        basePool.Init();
     }
 
-    public void Deinit() 
+    public void Init(UIPanels UIPanels)
     {
-        gameObject.GetComponent<Animation>().Play("MiddleToLeft");
+        this.UIPanels = UIPanels;
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+        {
+            Player _player = GameplayController.instance.session.FindPlayer(player.NickName);
+            IngamePlayerListing listing = basePool.TakeObject().GetComponent<IngamePlayerListing>();
+            listing.Init(_player, UIPanels);
+            playerListings.Add(listing);
+        }
     }
 
-    public void Close()
+    public void DeInit()
     {
-        Deinit();
-        uIPanels.bottomPanel.GetComponent<Animation>().Play("RightToMiddle");
+        foreach (IngamePlayerListing player in playerListings)
+        {
+            player.DeInit();
+            basePool.ReturnObject(player.gameObject);
+        }
+
+        playerListings.Clear();
     }
 }

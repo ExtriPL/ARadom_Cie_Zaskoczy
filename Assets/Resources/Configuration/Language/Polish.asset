@@ -385,3 +385,9 @@ MonoBehaviour:
     value: Informacje
   - key: SHOW_ON_BOARD
     value: "Poka\u017C"
+  - key: OWNER
+    value: "W\u0142a\u015Bciciel"
+  - key: LEVEL
+    value: Poziom
+  - key: PLAYERS_
+    value: Gracze
