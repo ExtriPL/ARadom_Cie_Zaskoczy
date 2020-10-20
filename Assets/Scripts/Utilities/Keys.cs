@@ -152,7 +152,7 @@ public static class Keys
         /// <summary>
         /// Ilość pieniędzy, jaką dostają gracze na start.
         /// </summary>
-        public const float START_MONEY = 5000f;
+        public const float START_MONEY = 8000f;
         /// <summary>
         /// Minimalna ilość możliwa do wyrzucenia przez kostke.
         /// </summary>
