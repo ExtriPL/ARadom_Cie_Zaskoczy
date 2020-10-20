@@ -253,7 +253,7 @@ public class Player
     /// <param name="value">Wartość zmiany</param>
     public void IncreaseMoney(float value)
     {
-        Money += Mathf.Abs(value);
+        SetMoney(Money + Mathf.Abs(value));
     }
 
     /// <summary>
@@ -262,7 +262,7 @@ public class Player
     /// <param name="value">Wartość zmiany</param>
     public void DecreaseMoney(float value)
     {
-        Money -= Mathf.Abs(value);
+        SetMoney(Money - Mathf.Abs(value));
     }
 
     /// <summary>
@@ -272,6 +272,7 @@ public class Player
     public void SetMoney(float value)
     {
         Money = value;
+        EventManager.instance.InvokeOnPlayerMoneyChanged(GetName());
     }
 
     #endregion Zarządzanie pieniędzmi

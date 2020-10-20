@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UIPanels : MonoBehaviour
+public class UIPanels : MonoBehaviour, IEventSubscribable
 {
     private bool isOpen = false;
     public BottomPanel bottomPanel;
@@ -22,16 +22,29 @@ public class UIPanels : MonoBehaviour
             GameplayController.instance.invoker.onExecutionFinished += StartPanels;
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        if (GameplayController.instance.gameInitialized) money.text = GameplayController.instance.session.FindPlayer(PhotonNetwork.LocalPlayer.NickName).Money.ToString() + " GR";
+        UnsubscribeEvents();
+    }
+
+    public void SubscribeEvents()
+    {
+        EventManager.instance.onPlayerMoneyChanged += OnPlayerMoneyChanged;
+    }
+
+    public void UnsubscribeEvents()
+    {
+        EventManager.instance.onPlayerMoneyChanged -= OnPlayerMoneyChanged;
     }
 
     private void StartPanels()
     {
+        SubscribeEvents();
         button.SetActive(true);
         bottomPanel.PreInit();
         leftPanel.PreInit();
+
+        OnPlayerMoneyChanged(GameplayController.instance.session.localPlayer.GetName());
     }
 
     public void OpenBottomPanel() 
@@ -40,12 +53,14 @@ public class UIPanels : MonoBehaviour
         bottomPanel.GetComponent<Animation>().Play("BottomToMiddle");
         bottomPanel.Init(this, GameplayController.instance.session.localPlayer);
     }
+
     public void OpenBottomPanel(Player player)
     {
         bottomPanel.DeInit();
         bottomPanel.Init(this, player);
         CloseLeftPanel();
     }
+
     public void OpenLeftPanel()
     {
         leftPanel.DeInit();
@@ -70,4 +85,15 @@ public class UIPanels : MonoBehaviour
         rightPanel.Init(this);
     }
 
+    #region Eventy
+
+    private void OnPlayerMoneyChanged(string playerName)
+    {
+        GameSession session = GameplayController.instance.session;
+
+        if(session.localPlayer.GetName().Equals(playerName))
+            money.text = session.localPlayer.Money.ToString() + " GR";
+    }
+
+    #endregion Eventy
 }
