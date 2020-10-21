@@ -64,6 +64,12 @@ public abstract class Field : ScriptableObject
     public abstract GameObject GetStartModel();
 
     /// <summary>
+    /// Zwraca model budynku, który stoi na danym polu.
+    /// W przypadku gdy jest więcej niż 1 możliwy model, zwraca ostatni dostępny
+    /// </summary>
+    public abstract GameObject GetModel();
+
+    /// <summary>
     /// Określa, czy dany budynek może znaleźć się na mapie
     /// </summary>
     public bool CanBePlaced() => canBePlaced;

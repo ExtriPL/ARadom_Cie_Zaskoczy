@@ -89,10 +89,9 @@ public class NormalBuilding : BuildingField
         }
     }
 
-    public override GameObject GetStartModel()
-    {
-        return GetTier(0).model;
-    }
+    public override GameObject GetStartModel() => GetTier(0).model;
+
+    public override GameObject GetModel() => GetTier(tiersCount - 1).model;
 
     public override void OnBuy(Player player, PlaceVisualiser visualiser)
     {

@@ -16,6 +16,8 @@ public abstract class StackingBuilding : BuildingField
     protected StackingSettings stackingSettings;
     public override GameObject GetStartModel() => model;
 
+    public override GameObject GetModel() => model;
+
     /// <summary>
     /// Zwraca cenę zakupu pola
     /// </summary>

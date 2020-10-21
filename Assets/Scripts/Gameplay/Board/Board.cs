@@ -121,7 +121,7 @@ public class Board : IEventSubscribable
                 {
                     int rIndex = Random.Range(0, fields.Count);
 
-                    if (rIndex != startIndex && !fieldIndexes.Contains(rIndex))
+                    if (rIndex != startIndex && !fieldIndexes.Contains(rIndex) && fields[rIndex].CanBePlaced())
                         fieldIndexes.Add(rIndex);
                 }
 

@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
+[System.Serializable]
+public class PlaceVisualiser : Visualiser
 {
-    private ARController ARController;
-
     /// <summary>
     /// Ustawienia pola
     /// </summary>
@@ -16,21 +15,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// <summary>
     /// Numer pola na planszy
     /// </summary>
-    public int placeIndex { get; private set; }
-    /// <summary>
-    /// Flaga określająca, czy pole jest widoczne
-    /// </summary>
-    private bool visible;
-
-    [SerializeField]
-    /// <summary>
-    /// Model aktualnie wyświetlany na polu
-    /// </summary>
-    private List<GameObject> models = new List<GameObject>();
-    /// <summary>
-    /// Numer modelu aktualnie wyświetlanego przez PlaceVisualiser
-    /// </summary>
-    private int showedModel = 0;
+    public int placeIndex { get; private set; } 
 
     /// <summary>
     /// Lista graczy znajdujących się aktualnie na polu
@@ -49,15 +34,6 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// </summary>
     private float tParameter = 0f;
     private float startShiningTime;
-
-    /// <summary>
-    /// Akcje, które mają się wywołać gdy animacja się rozpocznie
-    /// </summary>
-    public Action onAnimationStart;
-    /// <summary>
-    /// Akcje, które mają się wywołać gdy animacja się skończy
-    /// </summary>
-    public Action onAnimationEnd;
 
     #region Inicjalizacja
 
@@ -99,7 +75,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// <summary>
     /// Inicjuje modele stojące na polu
     /// </summary>
-    private void InitModels()
+    protected override void InitModels()
     {
         GameObject startModel = Instantiate(field.GetStartModel(), gameObject.GetComponent<Transform>());
         models.Add(startModel);
@@ -120,7 +96,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
         ShowModel(GameplayController.instance.board.GetTier(placeIndex));
     }
 
-    public void SubscribeEvents()
+    public override void SubscribeEvents()
     {
         EventManager.instance.onPlayerMoved += OnPlayerMove;
         EventManager.instance.onTurnChanged += OnTurnChange;
@@ -134,7 +110,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// <summary>
     /// Odsubskrybowanie eventów
     /// </summary>
-    public void UnsubscribeEvents()
+    public override void UnsubscribeEvents()
     {
         EventManager.instance.onPlayerMoved -= OnPlayerMove;
         EventManager.instance.onTurnChanged -= OnTurnChange;
@@ -226,38 +202,11 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
     /// <summary>
     /// Zdarzenie wywoływane po wciśnięciu pola na ekranie
     /// </summary>
-    public void OnClick()
+    public override void OnClick()
     {
-        //Usuwanie poprzednich budynkow srodkowych
-        foreach (Transform transform in ARController.centerBuilding.GetComponentsInChildren<Transform>()) 
-        {
-            if (transform.gameObject != ARController.centerBuilding)
-            {
-                Destroy(transform.gameObject);
-            }   
-        }
-        GameObject centerModel;
+        base.OnClick();
 
-        ARController.centerBuilding.SetActive(true);
-
-        if (field is NormalBuilding normalBuilding)
-        {
-            if (GameplayController.instance.board.GetTier(placeIndex) >= 0)
-            {
-                centerModel = Instantiate(normalBuilding.GetTier(normalBuilding.tiersCount - 1).model, ARController.centerBuilding.GetComponent<Transform>());
-                centerModel.name = normalBuilding.GetFieldName();
-            }
-            else
-            {
-                ARController.centerBuilding.SetActive(false);
-            }
-        }
-        else
-        {
-            centerModel = Instantiate(field.GetStartModel(), ARController.centerBuilding.GetComponent<Transform>());
-            centerModel.name = field.GetFieldName();
-        }
-        
+        ARController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(field, placeIndex);
     }
 
     /// <summary>
@@ -287,8 +236,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
             {
                 BuildingField buildingField = field as BuildingField;
 
-                onAnimationEnd += delegate { buildingField.OnBuy(GameplayController.instance.session.FindPlayer(playerName), this); };
-                AnimateEntrance();
+                buildingField.OnBuy(GameplayController.instance.session.FindPlayer(playerName), this); 
             }
         }
     }
@@ -306,8 +254,7 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
             {
                 NormalBuilding upgradeBuilding = field as NormalBuilding;
 
-                onAnimationEnd += delegate { upgradeBuilding.OnUpgrade(GameplayController.instance.session.FindPlayer(playerName), this); };
-                AnimateEntrance();
+                upgradeBuilding.OnUpgrade(GameplayController.instance.session.FindPlayer(playerName), this);
             }
         } 
     }
@@ -509,107 +456,17 @@ public class PlaceVisualiser : MonoBehaviour, IAnimable, IEventSubscribable
 
     #endregion Podświetlenie pól
 
-    #region Zarządzanie wyświetlanym modelem
-
-    /// <summary>
-    /// Pokazuje następny model na liście
-    /// </summary>
-    public void ShowNextModel()
-    {
-        if (showedModel == models.Count - 1) ShowModel(0);
-        else ShowModel(showedModel + 1);
-    }
-
-    /// <summary>
-    /// Pokazuje wybrany model
-    /// </summary>
-    /// <param name="id">Numer modelu, który chcemy pokazać</param>
-    private void ShowModel(int id)
-    {  
-        if (id < models.Count) 
-        {
-            models[showedModel]?.SetActive(false);
-            showedModel = id;
-            if(visible) models[showedModel]?.SetActive(true);
-        }
-        else Debug.LogError("Podano nieprawidłowy numer modelu!");
-    }
-
-    /// <summary>
-    /// Ukrywa obecnie wyświetlony model budynku
-    /// </summary>
-    private void HideModel()
-    {
-        models[showedModel].SetActive(false);
-    }
-
-    #endregion Zarządzanie wyświetlanym modelem
-
-    #region Animacje
-
-    /// <summary>
-    /// Wywołuje animacje wejściową przekazując jej jako parametry akcje zapisane w PlaceVisualiserze.
-    /// Akcje te są czyszczone po przekazaniu
-    /// </summary>
-    private void AnimateEntrance()
-    {
-        if(gameObject.activeInHierarchy)
-            StartCoroutine(AnimateEntrance(onAnimationStart, onAnimationEnd));
-
-        onAnimationStart = null;
-        onAnimationEnd = null;
-    }
-
-    /// <summary>
-    /// Wywołuje animacje wyjściową przekazując jej jako parametry akcje zapisane w PlaceVisualiserze.
-    /// Akcje te są czyszczone po przekazaniu
-    /// </summary>
-    private void AnimateExit()
-    {
-        if(gameObject.activeInHierarchy)
-            StartCoroutine(AnimateExit(onAnimationStart, onAnimationEnd));
-
-        onAnimationStart = null;
-        onAnimationEnd = null;
-    }
-
-    public IEnumerator AnimateEntrance(Action onAnimationBegin = null, Action onAnimationEnd = null)
-    {
-        onAnimationBegin?.Invoke();
-
-        yield return null;
-
-        onAnimationEnd?.Invoke();
-    }
-
-    public IEnumerator AnimateExit(Action onAnimationBegin = null, Action onAnimationEnd = null)
-    {
-        onAnimationBegin?.Invoke();
-
-        yield return null;
-
-        onAnimationEnd?.Invoke();
-    }
-
-    #endregion Animacje
-
     /// <summary>
     /// Przełącza widoczność pola
     /// </summary>
     /// <param name="visible">Zmienna określająca, czy pole ma być widoczne</param>
-    public void ToggleVisibility(bool visible)
+    public override void ToggleVisibility(bool visible)
     {
-        if(visible)
-        {
-            ShowModel(showedModel);
-            ShowBacklights();
-        }
-        else
-        {
-            HideModel();
-            HideBacklights();
-        }
+        base.ToggleVisibility(visible);
 
-        this.visible = visible;
+        if(visible)
+            ShowBacklights();
+        else
+            HideBacklights();
     }
 }

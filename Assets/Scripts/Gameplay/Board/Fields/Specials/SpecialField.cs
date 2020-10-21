@@ -14,4 +14,6 @@ public abstract class SpecialField : Field
     protected string fieldHistory;
 
     public override GameObject GetStartModel() => model;
+
+    public override GameObject GetModel() => model;
 }
