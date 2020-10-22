@@ -27,11 +27,19 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// Lista wczytanych obrazów na scenie
     /// </summary>lse
     private List<AugmentedImage> tempPlaceImages = new List<AugmentedImage>();
+    /// <summary>
+    /// Efekt podświetlania budynku
+    /// </summary>
+    public GameObject highlightEffect;
 
     /// <summary>
     /// Panel z informacjami o wybranym budynku
     /// </summary>
     public GameObject buildingInfoPanel;
+
+    public RuntimeAnimatorController centerBuildingAnimator;
+
+    private bool boardVisible = false;
 
     #region Inicjalizacja
 
@@ -52,12 +60,14 @@ public class ARController : MonoBehaviour, IEventSubscribable
         //Tworzenie obiektu przechowującego środkowy budynek
         centerBuilding = new GameObject("centerBuilding");
         centerBuilding.GetComponent<Transform>().parent = board.GetComponent<Transform>();
-        float BuildingScaleFactor = Keys.Board.SCALLING_FACTOR * Keys.Board.CENTER_BUILDING_SCALE_MULTIPLIER;
-        centerBuilding.GetComponent<Transform>().localScale *= BuildingScaleFactor;
+        float buildingScaleFactor = Keys.Board.SCALLING_FACTOR * Keys.Board.CENTER_BUILDING_SCALE_MULTIPLIER;
+        centerBuilding.GetComponent<Transform>().localScale *= buildingScaleFactor;
         centerBuilding.AddComponent<BoxCollider>();
-        centerBuilding.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH * BuildingScaleFactor, Keys.Board.FIELD_WIDTH * BuildingScaleFactor, Keys.Board.FIELD_HEIGHT * BuildingScaleFactor)) / (Keys.Board.SCALLING_FACTOR * BuildingScaleFactor);
-        centerBuilding.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH * BuildingScaleFactor / (Keys.Board.SCALLING_FACTOR * BuildingScaleFactor) / 2f);
+        centerBuilding.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH, Keys.Board.FIELD_WIDTH, 0f /*Keys.Board.FIELD_HEIGHT*/)) / (1.8f * Keys.Board.SCALLING_FACTOR);
+        centerBuilding.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH / Keys.Board.SCALLING_FACTOR / 2f) / 1.8f;
         centerBuilding.GetComponent<BoxCollider>().isTrigger = true;
+        centerBuilding.AddComponent<Animator>();
+        centerBuilding.AddComponent<CenterVisualiser>().Init();
 
         //Uzupełnianie planszy budynkami
         for (int i = 0; i < Keys.Board.PLACE_COUNT; i++)
@@ -71,7 +81,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
 
             //Dodawanie collidera do wykrywania raycastów
             field.AddComponent<BoxCollider>();
-            field.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH, Keys.Board.FIELD_HEIGHT, Keys.Board.FIELD_WIDTH)) / Keys.Board.SCALLING_FACTOR;
+            field.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH, Keys.Board.FIELD_HEIGHT, 0f /*Keys.Board.FIELD_WIDTH*/)) / Keys.Board.SCALLING_FACTOR;
             field.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH / Keys.Board.SCALLING_FACTOR / 2f);
             field.GetComponent<BoxCollider>().isTrigger = true;
 
@@ -81,6 +91,17 @@ public class ARController : MonoBehaviour, IEventSubscribable
             field.GetComponent<Transform>().localScale *= Keys.Board.SCALLING_FACTOR;
 
             field.GetComponent<PlaceVisualiser>().Init(GameplayController.instance.board.GetField(i), i);
+
+            //if (i == 0) 
+            //{
+           
+            //field.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().renderMode = ParticleSystemRenderMode.Mesh;
+            //field.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().mesh = highlightMesh;
+            //field.GetComponent<ParticleSystem>().
+            //field.GetComponent<ParticleSystem>().
+            //field.GetComponentInChildren<ParticleSystem>().Play();
+            //field.GetComponent<ParticleSystem>().Stop();
+            //}
         }
 
 #if !UNITY_EDITOR
@@ -117,7 +138,14 @@ public class ARController : MonoBehaviour, IEventSubscribable
                 //Jeżeli obrazek zostanie wykryty plansza jest pokazywana
                 if (image.TrackingState == TrackingState.Tracking && image.Name.Equals(Keys.Board.AR_IMAGE_NAME))
                 {
-                    Anchor anchor = image.CreateAnchor(image.CenterPose); //Kotwica służąca do utrzymywania śledzenia przez ARCore, jest powiązana z obrazem w bazie danych
+                    List<Anchor> anchors = new List<Anchor>();
+                    image.GetAllAnchors(anchors);
+                    Anchor anchor;
+                    if (anchors.Count == 0) //Kotwica służąca do utrzymywania śledzenia przez ARCore, jest powiązana z obrazem w bazie danych
+                        anchor = image.CreateAnchor(image.CenterPose);
+                    else
+                        anchor = anchors[0];
+
                     ToggleBoardVisibility(true);
                     board.transform.SetParent(anchor.GetComponent<Transform>());
                     board.transform.localPosition = Vector3.zero;
@@ -184,8 +212,13 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// <param name="visible">Określa, czy plansza ma być widoczna</param>
     private void ToggleBoardVisibility(bool visible)
     {
-        foreach (PlaceVisualiser visualiser in places)
-            visualiser.ToggleVisibility(visible);
+        if (boardVisible != visible)
+        {
+            foreach (PlaceVisualiser visualiser in places)
+                visualiser.ToggleVisibility(visible);
+        }
+
+        boardVisible = visible;
     }
 
     #endregion Obsługa AR
@@ -197,7 +230,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// </summary>
     private void OnScreenClick()
     {
-        if (!GameplayController.instance.menu.menuPanelOpen)
+        if (GameplayController.instance.session.gameState == GameState.running)
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
@@ -207,41 +240,21 @@ public class ARController : MonoBehaviour, IEventSubscribable
                     Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
                     if (Physics.Raycast(ray, out RaycastHit hit))
                     {
-                        PlaceVisualiser visualiser = hit.collider.gameObject.GetComponent<PlaceVisualiser>();
-                        if (visualiser != null) visualiser.OnClick();
-
-                        //Jeśli trafimy w budynek centralny to wywołujemy funkcję
-                        else if(hit.collider.gameObject.name == "centerBuilding")
-                        {
-                            string name = "";
-                            foreach (Transform child in hit.collider.gameObject.GetComponentsInChildren<Transform>()) 
-                            {
-                                if (child.name != "centerBuilding") 
-                                {
-                                    name = child.name;
-                                    break;
-                                }
-                            }
-                            Field field = GameplayController.instance.board.GetField(name); //interesujące nas pole
-                            buildingInfoPanel.GetComponent<BuildingInfoPanel>().FillBuildingInfo(field);
-                            buildingInfoPanel.GetComponent<BuildingInfoPanel>().Open();
-                        }
+                        Visualiser visualiser = hit.collider.gameObject.GetComponent<Visualiser>();
+                        if (visualiser != null) 
+                            visualiser.OnClick();
                     }
-                    else
-                    {
-                        //Jeśli dotkniemy poza budynkami środkowy budynek jest usuwany
-                        foreach (Transform transform in centerBuilding.GetComponentsInChildren<Transform>())
-                        {
-                            if (transform.gameObject != centerBuilding)
-                            {
-                                Destroy(transform.gameObject);
-                            }
-                        }
-                    }
+                    else //Jeśli dotkniemy poza budynkami środkowy budynek jest usuwany
+                        centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
                 }
             }
         }
     }
 
     #endregion Obsługa eventów
+
+    public PlaceVisualiser GetPlaceVisualiser(Field field) 
+    {
+        return places.Find(place => place.field == field);
+    }
 }

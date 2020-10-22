@@ -15,6 +15,8 @@ MonoBehaviour:
   fieldName: "Wi\u0119zienie"
   canBePlaced: 1
   model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
+  fieldHistory: "Wi\u0119zienie! Gdy tu trafisz musisz odczeka\u0107 kilka kolejek...\nNo
+    chyba, \u017Ce wyrzucisz 1 i 6 lub 0 i 0."
   freeingThrows:
   - roll1: 1
     roll2: 6

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class PopupBox : MonoBehaviour
+public abstract class PopupBox : MonoBehaviour, IAnimable
 {
     public Popup source;
     public Animation animations;
@@ -72,4 +72,8 @@ public abstract class PopupBox : MonoBehaviour
     /// Zmienianie obecnej pozycji boxu na prawidłową, wynikającą z obecnej ilości boxów danego typu na ekranie
     /// </summary>
     public virtual void Reposition() { }
+
+    public virtual void OnCloseAnimationStart() {}
+
+    public virtual void OnShowAnimationStart() {}
 }

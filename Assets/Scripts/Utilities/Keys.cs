@@ -92,7 +92,7 @@ public static class Keys
         /// <summary>
         /// Mnożnik skali budynku wyświetlanego na środku planszy.
         /// </summary>
-        public const float CENTER_BUILDING_SCALE_MULTIPLIER = 2f;
+        public const float CENTER_BUILDING_SCALE_MULTIPLIER = 5f;
         /// <summary>
         /// Długość boku planszy
         /// </summary>
@@ -152,7 +152,7 @@ public static class Keys
         /// <summary>
         /// Ilość pieniędzy, jaką dostają gracze na start.
         /// </summary>
-        public const float START_MONEY = 5000f;
+        public const float START_MONEY = 8000f;
         /// <summary>
         /// Minimalna ilość możliwa do wyrzucenia przez kostke.
         /// </summary>

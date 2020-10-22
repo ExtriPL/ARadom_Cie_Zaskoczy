@@ -24,6 +24,8 @@ public abstract class Field : ScriptableObject
     {
         if (this is IFlowControlable)
             GameplayController.instance.flow.Enqueue(this as IFlowControlable, new object[] { player, visualiser });
+
+        GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(this, visualiser.placeIndex);
     }
 
     /// <summary>
@@ -62,6 +64,12 @@ public abstract class Field : ScriptableObject
     /// </summary>
     /// <returns>Model domyślny stojący na danym polu</returns>
     public abstract GameObject GetStartModel();
+
+    /// <summary>
+    /// Zwraca model budynku, który stoi na danym polu.
+    /// W przypadku gdy jest więcej niż 1 możliwy model, zwraca ostatni dostępny
+    /// </summary>
+    public abstract GameObject GetModel();
 
     /// <summary>
     /// Określa, czy dany budynek może znaleźć się na mapie

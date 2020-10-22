@@ -13,23 +13,21 @@ public class BuildingInfoPanel : MonoBehaviour
 
     private void Start()
     {
-        lC = SettingsController.instance.languageController;  
+        lC = SettingsController.instance.languageController;
     }
 
     private void Update()
     {
-        //if (Input.GetKeyDown("k")) Open();
-        //if (Input.GetKeyDown("j")) Close();
     }
     public void FillBuildingInfo(Field field) 
     {
+        ClearBuildingInfo();
         if (field is NormalBuilding normalbuilding)
         {
             int placeId = GameplayController.instance.board.GetPlaceIndex(normalbuilding);
-
             string type = "NormalBuilding";
             string tier = lC.GetWord("LEVEL") + ": " + GameplayController.instance.board.GetTier(placeId).ToString();
-            string price1 = GameplayController.instance.board.GetTier(placeId) == 0 ? lC.GetWord("BUY_PRICE") + ": " : lC.GetWord("UPGRADE_PRICE") + ": ";
+            string price1 = GameplayController.instance.board.GetTier(placeId) == 0 ? lC.GetWord("PRICE") + ": " : lC.GetWord("UPGRADE_COST") + ": ";
             string price2 = normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId) + 1].buyPrice.ToString();
             string owner1 = lC.GetWord("OWNER")+": ";
             string owner2 = GameplayController.instance.board.GetOwner(placeId) != null ? (GameplayController.instance.board.GetOwner(placeId)).GetName() : "--";
@@ -44,7 +42,7 @@ public class BuildingInfoPanel : MonoBehaviour
             int placeId = GameplayController.instance.board.GetPlaceIndex(churchStacking);
 
             string type = "ChurchStacking";
-            string price1 = lC.GetWord("BUY_PRICE") + ": ";
+            string price1 = lC.GetWord("PRICE") + ": ";
             string price2 = churchStacking.BuyPrice.ToString();
             string owner1 = lC.GetWord("OWNER") + ": ";
             string owner2 = GameplayController.instance.board.GetOwner(placeId) != null ? (GameplayController.instance.board.GetOwner(placeId)).GetName() : "--";
@@ -58,13 +56,17 @@ public class BuildingInfoPanel : MonoBehaviour
         {
             buildingName.GetComponent<TextMeshProUGUI>().text = startSpecial.name;
             buildingInfo.GetComponent<TextMeshProUGUI>().text = "Start";
+            buildingHistory.GetComponent<TextMeshProUGUI>().text = "";
         }
     }
 
     public void Open()
     {
         if (!gameObject.GetComponent<Animation>().isPlaying)
+        {
+
             gameObject.GetComponent<Animation>().Play("LeftToMiddle");
+        }
     }
 
     public void Close() 
@@ -72,7 +74,7 @@ public class BuildingInfoPanel : MonoBehaviour
         if (!gameObject.GetComponent<Animation>().isPlaying)
         {
             gameObject.GetComponent<Animation>().Play("MiddleToLeft");
-            ClearBuildingInfo();
+            
         }
     }
 

@@ -25,9 +25,9 @@ public class Board : IEventSubscribable
     /// <summary>
     /// Słownik przypisujący miejcu na planszy tier budynku , który na nim stoi
     /// </summary>
-    private Dictionary<int, int> tiers 
+    private Dictionary<int, int> tiers
     {
-        get 
+        get
         {
             return (Dictionary<int, int>)PhotonNetwork.CurrentRoom.CustomProperties["board_tiers"];
         }
@@ -47,7 +47,7 @@ public class Board : IEventSubscribable
     {
         get
         {
-            return (Dictionary<int, int>) PhotonNetwork.CurrentRoom.CustomProperties["board_places"];
+            return (Dictionary<int, int>)PhotonNetwork.CurrentRoom.CustomProperties["board_places"];
         }
         private set
         {
@@ -56,6 +56,16 @@ public class Board : IEventSubscribable
             PhotonNetwork.CurrentRoom.SetCustomProperties(table);
         }
     }
+
+    /// <summary>
+    /// Lista typów pól, które muszą być na planszy
+    /// (Pole start nie jest uwzględnione na liście)
+    /// </summary>
+    private List<Type> mandatoryFields = new List<Type>()
+    {
+        typeof(PrisonSpecial),
+        typeof(ChanceSpecial)
+    };
 
     #region Inicjalizacja
 
@@ -90,26 +100,36 @@ public class Board : IEventSubscribable
     {
         if (GameplayController.instance.session.roomOwner.IsLocal)
         {
-            List<int> used = new List<int>();
-            Dictionary<int, int> places = new Dictionary<int, int>();
-
-            //Start zawsze musi być polem o numerze 0
-            int startIndex = GetFieldIndex("Start");
-            places.Add(0, startIndex);
-            used.Add(startIndex);
-
-            //Sprawdzanie, czy istnieje wystarczająca liczba budynków do rozpoczęcia gry
+            ////Sprawdzanie, czy istnieje wystarczająca liczba budynków do rozpoczęcia gry
             if (fields.Count >= Keys.Board.PLACE_COUNT)
             {
-                for (int i = 1; i < Keys.Board.PLACE_COUNT; i++)
-                {
-                    int j;
-                    do j = Random.Range(0, fields.Count);
-                    while (used.Contains(j) || !fields[j].CanBePlaced());
+                List<int> fieldIndexes = new List<int>(); //Lista indeksów pól, które mają zostać przypisane miejscą na planszy
+                Dictionary<int, int> places = new Dictionary<int, int>(); //Słownik mapujący miejsca na planszy, na numery pól
+                
+                //Start zawsze musi być polem o numerze 0
+                int startIndex = GetFieldIndex("Start");
+                places.Add(0, startIndex);
 
-                    used.Add(j);
-                    places.Add(i, j);
+                foreach(Type type in mandatoryFields)
+                {
+                    int mandatoryIndex = GetFieldIndex(type);
+                    fieldIndexes.Add(mandatoryIndex);
                 }
+
+                //Losowanie indeksów pól, które mają pojawić się na planszy
+                while(fieldIndexes.Count + 1 < Keys.Board.PLACE_COUNT)
+                {
+                    int rIndex = Random.Range(0, fields.Count);
+
+                    if (rIndex != startIndex && !fieldIndexes.Contains(rIndex) && fields[rIndex].CanBePlaced())
+                        fieldIndexes.Add(rIndex);
+                }
+
+                fieldIndexes.Shuffle();
+
+                //Przypisywanie indexów polą na planszy
+                for (int i = 1; i < Keys.Board.PLACE_COUNT; i++)
+                    places.Add(i, fieldIndexes[i - 1]);
 
                 this.places = places;
             }
@@ -209,6 +229,23 @@ public class Board : IEventSubscribable
         for (int i = 0; i < fields.Count; i++)
         {
             if (fields[i].name.Equals(name)) return i;
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Zwraca indeks pola o podanym typie.
+    /// W przypadku wielu pól danego typu, zwraca indeks pierwszego wystąpienia
+    /// </summary>
+    /// <param name="type">Typ pola</param>
+    /// <returns>Indeks na liście fields, jeżeli nie ma takiego typu, zwraca -1</returns>
+    public int GetFieldIndex(Type type)
+    {
+        for(int i = 0; i < fields.Count; i++)
+        {
+            if (fields[i].GetType().Equals(type))
+                return i;
         }
 
         return -1;

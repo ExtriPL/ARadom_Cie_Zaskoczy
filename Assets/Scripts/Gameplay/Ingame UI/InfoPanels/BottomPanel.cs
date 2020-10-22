@@ -12,6 +12,8 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
     public GameObject buildingListing;
     [Tooltip("Element przechowujący wszystkie BuildingListingi")]
     public GameObject buildingsInfoHolder;
+    public GameObject tradingButton;
+    public TextMeshProUGUI title;
 
     private GameplayController gc;
     private BasePool buildingsPool;
@@ -46,8 +48,19 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
         {
             Field field = gc.board.GetField(placeId);
             BuildingListing listing = buildingsPool.TakeObject().GetComponent<BuildingListing>();
-            listing.Init(field);
+            listing.Init(field, UIPanels);
             buildingListings.Add(listing);
+        }
+
+        if (player.NetworkPlayer == PhotonNetwork.LocalPlayer)
+        {
+            title.text = "Twoje budynki"; // do przetlumacznia
+            tradingButton.SetActive(true);
+        }
+        else 
+        {
+            title.text = "Budynki gracza " + player.GetName(); // do przetlumacznia
+            tradingButton.SetActive(true);
         }
     }
 

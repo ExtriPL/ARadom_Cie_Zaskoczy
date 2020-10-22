@@ -27,6 +27,10 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// Event jest wywoływany, gdy jeden z graczy zostanie uwięziony w więzieniu
     /// </summary>
     public event PlayerEvent onPlayerImprisoned;
+    /// <summary>
+    /// Event lokalny wowoływany, gdy stan konta gracza zmieni się
+    /// </summary>
+    public event PlayerEvent onPlayerMoneyChanged;
 
     public delegate void PlayerReady(string playerName, bool ready);
     /// <summary>
@@ -269,6 +273,19 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     }
 
     #endregion Wysyłanie eventów sieciowych
+
+    #region Wysyłanie eventów lokalnych
+
+    /// <summary>
+    /// Wywołuje event lokalny, mówiący o zmianie ilości pieniędzy gracza
+    /// </summary>
+    /// <param name="playerName">Nazwa gracza, którego ilość pieniędzy się zmieniła</param>
+    public void InvokeOnPlayerMoneyChanged(string playerName)
+    {
+        onPlayerMoneyChanged?.Invoke(playerName);
+    }
+
+    #endregion Wysyłanie eventów lokalnych
 
     /// <summary>
     /// Zamiana event sieciowego na event lokalny
