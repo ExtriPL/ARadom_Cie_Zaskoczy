@@ -3785,7 +3785,7 @@ MonoBehaviour:
     spaceCount: 68
     wordCount: 69
     linkCount: 0
-    lineCount: 14
+    lineCount: 13
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -5904,6 +5904,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   centerBuilding: {fileID: 0}
+  highlightEffect: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00,
+    type: 3}
   buildingInfoPanel: {fileID: 1286430694}
 --- !u!81 &1110553159
 AudioListener:
@@ -9916,7 +9918,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 71.25
+  m_fontSize: 68.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

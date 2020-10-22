@@ -48,7 +48,7 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
         {
             Field field = gc.board.GetField(placeId);
             BuildingListing listing = buildingsPool.TakeObject().GetComponent<BuildingListing>();
-            listing.Init(field);
+            listing.Init(field, UIPanels);
             buildingListings.Add(listing);
         }
 

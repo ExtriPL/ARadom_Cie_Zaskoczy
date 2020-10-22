@@ -27,6 +27,10 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// Lista wczytanych obrazów na scenie
     /// </summary>lse
     private List<AugmentedImage> tempPlaceImages = new List<AugmentedImage>();
+    /// <summary>
+    /// Efekt podświetlania budynku
+    /// </summary>
+    public GameObject highlightEffect;
 
     /// <summary>
     /// Panel z informacjami o wybranym budynku
@@ -82,6 +86,17 @@ public class ARController : MonoBehaviour, IEventSubscribable
             field.GetComponent<Transform>().localScale *= Keys.Board.SCALLING_FACTOR;
 
             field.GetComponent<PlaceVisualiser>().Init(GameplayController.instance.board.GetField(i), i);
+
+            //if (i == 0) 
+            //{
+           
+            //field.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().renderMode = ParticleSystemRenderMode.Mesh;
+            //field.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().mesh = highlightMesh;
+            //field.GetComponent<ParticleSystem>().
+            //field.GetComponent<ParticleSystem>().
+            //field.GetComponentInChildren<ParticleSystem>().Play();
+            //field.GetComponent<ParticleSystem>().Stop();
+            //}
         }
 
 #if !UNITY_EDITOR
@@ -227,4 +242,9 @@ public class ARController : MonoBehaviour, IEventSubscribable
     }
 
     #endregion Obsługa eventów
+
+    public PlaceVisualiser GetPlaceVisualiser(Field field) 
+    {
+        return places.Find(place => place.field == field);
+    }
 }

@@ -33,6 +33,9 @@ public class PlaceVisualiser : Visualiser
     /// Współczynnik podświetlenia
     /// </summary>
     private float tParameter = 0f;
+
+    private GameObject particleEffect;
+
     private float startShiningTime;
 
     #region Inicjalizacja
@@ -64,6 +67,8 @@ public class PlaceVisualiser : Visualiser
         if (activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
         else DeactivateField();
 
+        particleEffect = Instantiate(ARController.highlightEffect, transform);
+        particleEffect.GetComponent<Transform>().localPosition = Vector3.zero;
         //if (placeIndex == 10) StartCoroutine(Shine(GameplayController.instance.session.localPlayer, true));
     }
 
@@ -236,7 +241,9 @@ public class PlaceVisualiser : Visualiser
             {
                 BuildingField buildingField = field as BuildingField;
 
-                buildingField.OnBuy(GameplayController.instance.session.FindPlayer(playerName), this); 
+                buildingField.OnBuy(GameplayController.instance.session.FindPlayer(playerName), this);
+
+                Explosion();
             }
         }
     }
@@ -255,6 +262,8 @@ public class PlaceVisualiser : Visualiser
                 NormalBuilding upgradeBuilding = field as NormalBuilding;
 
                 upgradeBuilding.OnUpgrade(GameplayController.instance.session.FindPlayer(playerName), this);
+
+                Explosion();
             }
         } 
     }
@@ -468,5 +477,41 @@ public class PlaceVisualiser : Visualiser
             ShowBacklights();
         else
             HideBacklights();
+    }
+
+    public IEnumerator Highlight()
+    {
+        Material material = models[showedModel].GetComponent<Renderer>().material;
+        Color c = material.color;
+
+        Debug.Log("KOLOR KURDE:: " + c.ToString());
+        for (int i = 0; i < 4; i++)
+        {
+            while (material.color.g > 0)
+            {
+                float r = material.color.r;
+                float g = material.color.g;
+                float b = material.color.b;
+
+                material.color = new Color(r, g - 0.01f, b - 0.01f);
+                yield return new WaitForSeconds(0.005f);
+            }
+
+            while (material.color.g < c.g)
+            {
+                float r = material.color.r;
+                float g = material.color.g;
+                float b = material.color.b;
+
+                material.color = new Color(r, g + 0.01f, b + 0.01f);
+                yield return new WaitForSeconds(0.005f);
+            }
+        }
+        material.color = c;
+    }
+
+    public void Explosion() 
+    {
+        particleEffect.GetComponent<ParticleSystem>().Play();
     }
 }
