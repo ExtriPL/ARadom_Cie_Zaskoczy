@@ -191,6 +191,7 @@ public class FlowController : IEventSubscribable
     {
         ResetSettings();
         PopupSystem.instance.ClosePopups(AutoCloseMode.EndOfTurn);
+        GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
         DefaultEnding();
         NextTurn();
     }

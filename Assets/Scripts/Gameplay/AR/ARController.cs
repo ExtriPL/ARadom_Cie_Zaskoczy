@@ -33,6 +33,10 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// </summary>
     public GameObject buildingInfoPanel;
 
+    public RuntimeAnimatorController centerBuildingAnimator;
+
+    private bool boardVisible = false;
+
     #region Inicjalizacja
 
     public void UpdateAR()
@@ -58,6 +62,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
         centerBuilding.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH, Keys.Board.FIELD_WIDTH, 0f /*Keys.Board.FIELD_HEIGHT*/)) / (1.8f * Keys.Board.SCALLING_FACTOR);
         centerBuilding.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH / Keys.Board.SCALLING_FACTOR / 2f) / 1.8f;
         centerBuilding.GetComponent<BoxCollider>().isTrigger = true;
+        centerBuilding.AddComponent<Animator>();
         centerBuilding.AddComponent<CenterVisualiser>().Init();
 
         //Uzupełnianie planszy budynkami
@@ -192,8 +197,13 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// <param name="visible">Określa, czy plansza ma być widoczna</param>
     private void ToggleBoardVisibility(bool visible)
     {
-        foreach (PlaceVisualiser visualiser in places)
-            visualiser.ToggleVisibility(visible);
+        if (boardVisible != visible)
+        {
+            foreach (PlaceVisualiser visualiser in places)
+                visualiser.ToggleVisibility(visible);
+        }
+
+        boardVisible = visible;
     }
 
     #endregion Obsługa AR
