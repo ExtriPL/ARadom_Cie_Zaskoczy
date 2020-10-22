@@ -23,11 +23,11 @@ MonoBehaviour:
   - name: Tier 1
     buyPrice: 1600
     enterCost: 500
-    model: {fileID: -927199367670048503, guid: dcf736bfba44bf2489949b771485165f, type: 3}
+    model: {fileID: -927199367670048503, guid: 20ea22df37a4e65449de2bbb450652ca, type: 3}
   - name: Tier 2
     buyPrice: 800
     enterCost: 800
-    model: {fileID: -927199367670048503, guid: dcf736bfba44bf2489949b771485165f, type: 3}
+    model: {fileID: -927199367670048503, guid: 63dd6b09c2a6e454280fa5b3c051cbe3, type: 3}
   - name: Tier 3
     buyPrice: 1200
     enterCost: 1200
