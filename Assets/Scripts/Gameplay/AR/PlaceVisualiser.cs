@@ -35,6 +35,8 @@ public class PlaceVisualiser : Visualiser
     private float tParameter = 0f;
 
     private GameObject particleEffect;
+    private GameObject pointingArrow;
+    private Animator arrowAnimator;
 
     private float startShiningTime;
 
@@ -69,6 +71,12 @@ public class PlaceVisualiser : Visualiser
 
         particleEffect = Instantiate(ARController.highlightEffect, transform);
         particleEffect.GetComponent<Transform>().localPosition = Vector3.zero;
+
+        pointingArrow = Instantiate(ARController.pointingArrow, transform);
+
+        arrowAnimator = pointingArrow.GetComponentInChildren<Animator>();
+
+        //pointingArrow.GetComponent<Transform>().localPosition = new Vector3(0, 0, -0.06f);
         //if (placeIndex == 10) StartCoroutine(Shine(GameplayController.instance.session.localPlayer, true));
     }
 
@@ -479,35 +487,9 @@ public class PlaceVisualiser : Visualiser
             HideBacklights();
     }
 
-    public IEnumerator Highlight()
+    public void Highlight()
     {
-        Material material = models[showedModel].GetComponent<Renderer>().material;
-        Color c = material.color;
-
-        Debug.Log("KOLOR KURDE:: " + c.ToString());
-        for (int i = 0; i < 4; i++)
-        {
-            while (material.color.g > 0)
-            {
-                float r = material.color.r;
-                float g = material.color.g;
-                float b = material.color.b;
-
-                material.color = new Color(r, g - 0.01f, b - 0.01f);
-                yield return new WaitForSeconds(0.005f);
-            }
-
-            while (material.color.g < c.g)
-            {
-                float r = material.color.r;
-                float g = material.color.g;
-                float b = material.color.b;
-
-                material.color = new Color(r, g + 0.01f, b + 0.01f);
-                yield return new WaitForSeconds(0.005f);
-            }
-        }
-        material.color = c;
+        if(!arrowAnimator.GetCurrentAnimatorStateInfo(0).IsName("PointingArrow")) arrowAnimator.SetTrigger("Start");
     }
 
     public void Explosion() 
