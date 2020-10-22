@@ -5907,6 +5907,8 @@ MonoBehaviour:
   highlightEffect: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00,
     type: 3}
   buildingInfoPanel: {fileID: 1286430694}
+  centerBuildingAnimator: {fileID: 9100000, guid: fd84e2680d872294f96b5d9d7905ba3c,
+    type: 2}
 --- !u!81 &1110553159
 AudioListener:
   m_ObjectHideFlags: 0

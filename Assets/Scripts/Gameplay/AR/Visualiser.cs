@@ -25,6 +25,11 @@ public abstract class Visualiser : MonoBehaviour, IEventSubscribable, IAnimable
     /// </summary>
     protected int showedModel = 0;
 
+    /// <summary>
+    /// Flaga określająca, czy animacja odbywa się w tej chwili
+    /// </summary>
+    protected bool animatingShow = false, animatingHide = false;
+
     public abstract void SubscribeEvents();
 
     public abstract void UnsubscribeEvents();
@@ -35,13 +40,25 @@ public abstract class Visualiser : MonoBehaviour, IEventSubscribable, IAnimable
 
     #region Animacje
 
-    public virtual void OnCloseAnimationEnd() {}
+    public virtual void OnCloseAnimationEnd() 
+    {
+        animatingHide = false;
+    }
 
-    public virtual void OnCloseAnimationStart() {}
+    public virtual void OnCloseAnimationStart() 
+    {
+        animatingHide = true;
+    }
 
-    public virtual void OnShowAnimationEnd() {}
+    public virtual void OnShowAnimationEnd() 
+    {
+        animatingShow = false;
+    }
 
-    public virtual void OnShowAnimationStart() {}
+    public virtual void OnShowAnimationStart() 
+    {
+        animatingShow = true;
+    }
 
     #endregion Animacje
 
@@ -83,11 +100,11 @@ public abstract class Visualiser : MonoBehaviour, IEventSubscribable, IAnimable
 
     public virtual void ToggleVisibility(bool visible)
     {
+        this.visible = visible;
+
         if (visible)
             ShowModel(showedModel);
         else
             HideModel();
-
-        this.visible = visible;
     }
 }

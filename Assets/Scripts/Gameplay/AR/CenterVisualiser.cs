@@ -1,18 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CenterVisualiser : Visualiser
 {
     private Field currentField;
+    private Animator animationControler;
 
     public override void SubscribeEvents() {}
 
     public override void UnsubscribeEvents() {}
 
+    /// <summary>
+    /// Akcja zmiany budynku, gdy animacja ukrywania poprzedniego zakończy się
+    /// </summary>
+    private Action changeBuildingOnAnimmationEnd;
+
     public void Init()
     {
         ARController = GameplayController.instance.arController;
         InitModels();
+        visible = false;
+
+        animationControler = GetComponent<Animator>();
+        animationControler.runtimeAnimatorController = ARController.centerBuildingAnimator;
     }
 
     protected override void InitModels()
@@ -33,9 +44,52 @@ public class CenterVisualiser : Visualiser
     /// <param name="placeId">Numer pola na planszy, które chcemy wyświetlić</param>
     public void ShowField(Field field, int placeId)
     {
-        currentField = field;
-        ShowModel(placeId);
-        ToggleVisibility(true);
+        if (animatingShow || animatingHide)
+            return;
+
+        if (!visible)
+        {
+            currentField = field;
+            showedModel = placeId;
+            ToggleVisibility(true);
+        }
+        else
+        {
+            changeBuildingOnAnimmationEnd += delegate { ShowField(field, placeId); };
+            ToggleVisibility(false);
+        }
+    }
+
+    public override void ToggleVisibility(bool visible)
+    {
+        if (!visible)
+            animationControler.SetTrigger("Hide");
+        else
+        {
+            transform.localScale = Vector3.zero;
+            base.ToggleVisibility(visible);
+            animationControler.SetTrigger("Show");
+        }
+    }
+
+    public override void OnCloseAnimationEnd()
+    {
+        base.OnCloseAnimationEnd();
+        base.ToggleVisibility(false);
+
+        if(changeBuildingOnAnimmationEnd != null)
+        {
+            changeBuildingOnAnimmationEnd.Invoke();
+            changeBuildingOnAnimmationEnd = null;
+        }
+
+        animationControler.SetTrigger("EndRegular");
+    }
+
+    public override void OnShowAnimationStart()
+    {
+        base.OnShowAnimationStart();
+        animationControler.SetTrigger("Regular");
     }
 
     public override void OnClick()
