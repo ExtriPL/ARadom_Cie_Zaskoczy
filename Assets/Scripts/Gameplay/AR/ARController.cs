@@ -33,6 +33,11 @@ public class ARController : MonoBehaviour, IEventSubscribable
     public GameObject highlightEffect;
 
     /// <summary>
+    /// Strzałka pokazująca na budynek
+    /// </summary>
+    public GameObject pointingArrow;
+
+    /// <summary>
     /// Panel z informacjami o wybranym budynku
     /// </summary>
     public GameObject buildingInfoPanel;

@@ -1227,7 +1227,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &312323024
 GameObject:
@@ -3785,7 +3785,7 @@ MonoBehaviour:
     spaceCount: 68
     wordCount: 69
     linkCount: 0
-    lineCount: 14
+    lineCount: 13
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -5906,6 +5906,8 @@ MonoBehaviour:
   centerBuilding: {fileID: 0}
   highlightEffect: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00,
     type: 3}
+  pointingArrow: {fileID: 1708087713306702646, guid: 0e4d7697d31dce24bb7506063d9aafb0,
+    type: 3}
   buildingInfoPanel: {fileID: 1286430694}
   centerBuildingAnimator: {fileID: 9100000, guid: fd84e2680d872294f96b5d9d7905ba3c,
     type: 2}
@@ -7941,7 +7943,7 @@ PrefabInstance:
     - target: {fileID: 4258102740588293416, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4258102740588293416, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d,
         type: 3}
@@ -9920,7 +9922,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 71.25
+  m_fontSize: 68.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
