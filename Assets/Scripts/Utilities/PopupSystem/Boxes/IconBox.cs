@@ -17,12 +17,15 @@ public class IconBox : PopupBox
     private readonly Vector2 defaultSize = new Vector2(100f, 100f);
     private Button button;
 
-    protected override Action CloseAnimationTrigger => delegate { button.interactable = false; animations.Play("IconBoxHide"); };
+    private Animator boxAnimator;
+
+    protected override Action CloseAnimationTrigger => delegate { button.interactable = false; boxAnimator.SetTrigger("Hide"); };
 
     protected override void Start()
     {
         base.Start();
         button = GetComponent<Button>();
+        boxAnimator = GetComponent<Animator>();
     }
 
     public override void Init(Popup pattern)
@@ -39,11 +42,13 @@ public class IconBox : PopupBox
         rect.anchorMax = defaultAnchorMax;
         rect.sizeDelta = defaultSize;
 
-        rect.anchoredPosition = GetPosition(currentAmount);
         rect.localScale = Vector3.zero;
 
         button.interactable = false;
-        animations.Play("IconBoxShow");
+        CurrentPosition = currentAmount;
+        boxAnimator.SetInteger("currentPosition", currentAmount);
+        boxAnimator.SetInteger("targetPosition", currentAmount);
+        boxAnimator.SetTrigger("Show");
     }
 
     /// <summary>
@@ -64,18 +69,26 @@ public class IconBox : PopupBox
         }
     }
 
-    private Vector2 GetPosition(int currentAmount)
-    {
-        RectTransform rect = gameObject.transform as RectTransform;
-        Vector2 currentPosition = rect.anchoredPosition;
-        Vector2 size = rect.sizeDelta;
-
-        return currentPosition + new Vector2(0f, (currentPosition.y + size.y / 2.0f) * currentAmount);
-    }
-
     public override void OnShowAnimationEnd()
     {
         base.OnShowAnimationEnd();
         button.interactable = true;
+    }
+
+    public override void Reposition()
+    {
+        base.Reposition();
+        List<int> positions = pSystem.GetShowedPositions(GetType());
+        int smaller = 0;
+
+        foreach(int position in positions)
+        {
+            if (position < CurrentPosition)
+                smaller++;
+        }
+
+        //Jeżeli liczba mniejszych indeksów jest mniejsza, od obecnego indeksu oznacza to, że niżej zrobiło sie miejsce
+        int target = smaller < CurrentPosition ? CurrentPosition - 1 : CurrentPosition;
+        boxAnimator.SetInteger("targetPosition", target);
     }
 }

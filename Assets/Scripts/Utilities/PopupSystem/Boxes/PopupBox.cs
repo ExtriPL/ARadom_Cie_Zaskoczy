@@ -11,6 +11,7 @@ public abstract class PopupBox : MonoBehaviour, IAnimable
     public Animation animations;
     protected abstract Action CloseAnimationTrigger { get; }
     protected PopupSystem pSystem = PopupSystem.instance;
+    public int CurrentPosition { get; protected set; }
 
     protected virtual void Start()
     {

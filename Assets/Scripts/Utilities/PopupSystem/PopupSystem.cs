@@ -113,6 +113,7 @@ public class PopupSystem : MonoBehaviour
            showedPopups.Remove(box);
         boxPools[box.GetType()].ReturnObject(box.gameObject);
         CheckScreenAccessibility();
+        RepositionPopups();
     }
 
     /// <summary>
@@ -228,11 +229,7 @@ public class PopupSystem : MonoBehaviour
         GameObject dice = boxPools[typeof(IconBox)].TakeObject();
         diceBox = dice.GetComponent<IconBox>();
         diceBox.Init(dicePopup);
-        RectTransform rect = dice.GetComponent<RectTransform>();
-
-        rect.anchoredPosition = new Vector2(0, 270f);
-        rect.anchorMin = new Vector2(0.5f, 0);
-        rect.anchorMax = new Vector2(0.5f, 0);
+        dice.GetComponent<Animator>().SetBool("Dice", true);
     }
 
     /// <summary>
@@ -254,10 +251,6 @@ public class PopupSystem : MonoBehaviour
         foreach (PopupBox box in toClose)
             ClosePopup(box);
 
-        //Repozycjonowanie obecnie wyświetlonych popupów, by znalazły się na dobrych miejscach
-        foreach (PopupBox box in showedPopups)
-            box.Reposition();
-
         List<Popup> toRemove = new List<Popup>();
 
         //Usuwanie popupów jeszcze nie wyświetlonych
@@ -270,6 +263,7 @@ public class PopupSystem : MonoBehaviour
             }
         }
 
+        
         foreach (Popup popup in toRemove)
             popupQueue.Remove(popup);
 
@@ -312,5 +306,34 @@ public class PopupSystem : MonoBehaviour
         }
 
         return count;
+    }
+
+    /// <summary>
+    /// Zwraca posortowaną listę pozycję wszystkich obecnie wyświetlonych popupboxów o danym typie
+    /// </summary>
+    /// <param name="type">Typ popupboxów</param>
+    /// <returns>Posortowana lista pozycji popupboxów</returns>
+    public List<int> GetShowedPositions(Type type)
+    {
+        List<int> positions = new List<int>();
+
+        foreach(PopupBox box in showedPopups)
+        {
+            if (box.GetType().Equals(type))
+                positions.Add(box.CurrentPosition);
+        }
+
+        positions.OrderBy(i => i);
+
+        return positions;
+    }
+
+    /// <summary>
+    /// Repozycjonowanie obecnie wyświetlonych popupów, by znalazły się na dobrych miejscach
+    /// </summary>
+    public void RepositionPopups()
+    {
+        foreach (PopupBox box in showedPopups)
+            box.Reposition();
     }
 }
