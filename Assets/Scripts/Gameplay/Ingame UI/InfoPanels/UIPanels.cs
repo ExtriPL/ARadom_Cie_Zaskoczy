@@ -16,7 +16,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     private void Start()
     {
-        if (GameplayController.instance.gameInitialized)
+        if (GameplayController.instance.GameInitialized)
             StartPanels();
         else
             GameplayController.instance.invoker.onExecutionFinished += StartPanels;

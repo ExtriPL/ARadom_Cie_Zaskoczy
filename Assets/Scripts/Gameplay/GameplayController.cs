@@ -25,7 +25,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     /// <summary>
     /// Flaga określająca czy gra przeszła przez komand invoker
     /// </summary>
-    public bool gameInitialized { get; private set; }
+    public bool GameInitialized { get; private set; }
 
     #region Inicjalizacja
 
@@ -33,7 +33,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     {
         masterInactiveCheck = MasterInactiveCheck();
         StartCoroutine(masterInactiveCheck);
-        gameInitialized = false;
+        GameInitialized = false;
         instance = this;
 
         AddCommands();
@@ -55,7 +55,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     {
         invoker.Update();
 
-        if (gameInitialized)
+        if (GameInitialized)
         {
             flow.Update();
             session.Update();
@@ -229,7 +229,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     {
         Debug.Log("Koniec egzekucji");
 
-        gameInitialized = true;
+        GameInitialized = true;
         StopCoroutine(masterInactiveCheck);
         StartGame();
     }
