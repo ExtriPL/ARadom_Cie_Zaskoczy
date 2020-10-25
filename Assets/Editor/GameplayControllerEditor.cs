@@ -23,6 +23,9 @@ public class GameplayControllerEditor : Editor
     int ChangeDiceRoll1 = 1;
     int ChangeDiceRoll2 = 1;
 
+    string TeleportPlayerName = "";
+    int TeleportPlaceId = 0;
+
     bool playersOpen = false;
     bool placesOpen = false;
     bool diceOpen = false;
@@ -290,6 +293,28 @@ public class GameplayControllerEditor : Editor
             if (GUILayout.Button("GO"))
             {
                 GameplayController.instance.board.dice.SetLast(ChangeDiceRoll1, ChangeDiceRoll2);
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.LabelField("Teleport Player");
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Player name");
+            EditorGUILayout.LabelField("Place Id");
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+
+            TeleportPlayerName = EditorGUILayout.TextField(TeleportPlayerName);
+            TeleportPlaceId = EditorGUILayout.IntField(TeleportPlaceId);
+
+            if(GUILayout.Button("GO"))
+            {
+                GameSession session = GameplayController.instance.session;
+                Player player = session.FindPlayer(TeleportPlayerName);
+                if (player != null)
+                    GameplayController.instance.board.TeleportPlayer(player, TeleportPlaceId);
             }
 
             EditorGUILayout.EndHorizontal();

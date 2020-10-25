@@ -391,3 +391,10 @@ MonoBehaviour:
     value: Poziom
   - key: PLAYERS_
     value: Gracze
+  - key: CHANCE_CARD_PRISON_TITLE
+    value: "Wi\u0119zienie"
+  - key: CHANCE_CARD_PRISON_CONTENT
+    value: "Idziesz do wi\u0119zienia. Przechodz\u0105c przez start nie otrzymujesz
+      pieni\u0119dzy. Aby si\u0119 wydosta\u0107 musisz wyrzuci\u0107 tyle samo oczek
+      na obu kostkach, jedno i sze\u015B\u0107 oczek lub mie\u0107 kart\u0119 wychodzisz
+      z wi\u0119zienia."
