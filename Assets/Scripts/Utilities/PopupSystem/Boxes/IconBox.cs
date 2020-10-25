@@ -10,16 +10,7 @@ public class IconBox : PopupBox
 {
     [SerializeField, Tooltip("Lista sprite-ów, któe mogą zostać wyświetlone jako ikona IconBox-a")]
     private List<Sprite> sprites = new List<Sprite>();
-
-    private readonly Vector2 defaultPosition = new Vector2(-60f, 60f);
-    private readonly Vector2 defaultAnchorMin = new Vector2(1f, 0f);
-    private readonly Vector2 defaultAnchorMax = new Vector2(1f, 0f);
-    private readonly Vector2 defaultSize = new Vector2(100f, 100f);
     private Button button;
-
-    private Animator boxAnimator;
-
-    protected override Action CloseAnimationTrigger => delegate { button.interactable = false; boxAnimator.SetTrigger("Hide"); };
 
     protected override void Start()
     {
@@ -37,10 +28,6 @@ public class IconBox : PopupBox
 
         int currentAmount = pSystem.CountShowedPopups(typeof(IconPopup)); //Ilość popupów tego typu przed wyświetleniem
         RectTransform rect = gameObject.transform as RectTransform;
-        rect.anchoredPosition = defaultPosition;
-        rect.anchorMin = defaultAnchorMin;
-        rect.anchorMax = defaultAnchorMax;
-        rect.sizeDelta = defaultSize;
 
         rect.localScale = Vector3.zero;
 
@@ -92,5 +79,11 @@ public class IconBox : PopupBox
         //Jeżeli liczba mniejszych indeksów jest mniejsza, od obecnego indeksu oznacza to, że niżej zrobiło sie miejsce
         int target = smaller < CurrentPosition ? CurrentPosition - 1 : CurrentPosition;
         boxAnimator.SetInteger("targetPosition", target);
+    }
+
+    public override void Close()
+    {
+        button.interactable = false;
+        base.Close();
     }
 }
