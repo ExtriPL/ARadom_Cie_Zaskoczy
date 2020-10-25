@@ -1103,7 +1103,7 @@ GameObject:
   - component: {fileID: 8668617577274463090}
   - component: {fileID: 9161897069776563882}
   - component: {fileID: 2258332251963897873}
-  - component: {fileID: 613718622}
+  - component: {fileID: 293050271584575327}
   m_Layer: 5
   m_Name: QuestionBox
   m_TagString: Untagged
@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2403e80d5751443b1b5f2e2a1b88ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animations: {fileID: 0}
+  boxAnimator: {fileID: 0}
   message: {fileID: 8668617578786937027}
   buttons: {fileID: 3858068670204076809}
 --- !u!114 &2258332251963897873
@@ -1237,23 +1237,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!111 &613718622
-Animation:
+--- !u!95 &293050271584575327
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8668617577274463088}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: c7b508e76cd50234098eb1fb204843d1, type: 2}
-  - {fileID: 7400000, guid: 797d9b4c727352f44a1271b9a937bd80, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 299f488906bd5b74c9dcc8cd6b6be287, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8668617578786937025
 GameObject:
   m_ObjectHideFlags: 0
