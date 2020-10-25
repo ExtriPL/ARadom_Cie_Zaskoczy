@@ -186,6 +186,7 @@ public class PlaceVisualiser : Visualiser
         else if (toPlaceIndex == placeIndex)
         {
             playersOnField.Add(playerName);
+            ActivateField(GameplayController.instance.session.FindPlayer(playerName));
         }
     }
 

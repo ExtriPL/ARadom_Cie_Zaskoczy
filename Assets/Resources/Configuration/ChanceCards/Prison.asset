@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53cd4136789a3684988defedd21ef988, type: 3}
-  m_Name: Road
+  m_Name: Prison
   m_EditorClassIdentifier: 
-  cardNameKey: CHANCE_CARD_ROAD_TITLE
-  contentKey: CHANCE_CARD_ROAD_CONTENT
+  cardNameKey: CHANCE_CARD_PRISON_TITLE
+  contentKey: CHANCE_CARD_PRISON_CONTENT
   active: 1
   actionStrings:
   - actionType: 2
     variables:
-    - By
-    - -3
-    - PlaceId
+    - To
+    - 0
+    - PlaceType
     - 0
     - Prison
-    - Regular
+    - Teleport

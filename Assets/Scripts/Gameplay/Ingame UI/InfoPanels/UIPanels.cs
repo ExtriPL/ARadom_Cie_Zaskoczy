@@ -17,8 +17,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     private void Start()
     {
-        //Włącz panele jeśli gra jest zinicjalizowana, jeżeli nie, to włącz je za pomocą eventu końcenia inicjalizacji gry
-        if (GameplayController.instance.gameInitialized)
+        if (GameplayController.instance.GameInitialized)
             StartPanels();
         else
             GameplayController.instance.invoker.onExecutionFinished += StartPanels;

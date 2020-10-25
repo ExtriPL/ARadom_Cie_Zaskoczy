@@ -63,7 +63,9 @@ public class IconBox : PopupBox
             case IconPopupType.Buy:
                 return sprites[1];
             case IconPopupType.Auction:
-                return sprites[2]; 
+                return sprites[2];
+            case IconPopupType.Trade:
+                return sprites[3];
             default: 
                 return sprites[0];
         }

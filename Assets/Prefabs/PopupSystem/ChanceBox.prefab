@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 6923631590141775105}
   - component: {fileID: 6923631590141775118}
   - component: {fileID: 6923631590141775117}
-  - component: {fileID: 6923631590141775119}
+  - component: {fileID: 46874930429909238}
   m_Layer: 5
   m_Name: ChanceBox
   m_TagString: Untagged
@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5ccd461a4c94a47a1c28cb36df928d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animations: {fileID: 0}
+  boxAnimator: {fileID: 0}
   title: {fileID: 6923631590600063403}
   cardContent: {fileID: 6923631591760127428}
 --- !u!114 &6923631590141775117
@@ -255,23 +255,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!111 &6923631590141775119
-Animation:
+--- !u!95 &46874930429909238
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6923631590141775104}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: 0427e2ba1b2278647ab5949b14e055ae, type: 2}
-  - {fileID: 7400000, guid: 67deb38bee6ff06458c46d680ed35ccb, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2b6e02186052af849a530b400249e79f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6923631590254141995
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +537,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36.8
+  m_fontSize: 50
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -774,7 +776,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 15.45
+  m_fontSize: 29.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -820,7 +822,7 @@ MonoBehaviour:
     spaceCount: 112
     wordCount: 113
     linkCount: 0
-    lineCount: 19
+    lineCount: 20
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
