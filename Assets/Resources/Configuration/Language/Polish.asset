@@ -391,3 +391,13 @@ MonoBehaviour:
     value: Poziom
   - key: PLAYERS_
     value: Gracze
+  - key: NORMAL_BUILDING
+    value: "Zwyk\u0142y budynek"
+  - key: CHURCH_STACKING
+    value: "Ko\u015Bci\xF3\u0142"
+  - key: START_SPECIAL
+    value: Pole startowe
+  - key: PRISON_SPECIAL
+    value: "Pole wi\u0119zienia"
+  - key: CHANCE_SPECIAL
+    value: Pole sztosu

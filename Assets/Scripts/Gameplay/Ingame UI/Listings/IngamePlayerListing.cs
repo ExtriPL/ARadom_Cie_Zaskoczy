@@ -40,6 +40,6 @@ public class IngamePlayerListing : MonoBehaviour
 
     public void OpenPlayerInfo() 
     {
-        UIPanels.OpenBottomPanel(player);
+        UIPanels.CloseLeftPanel(player);
     }
 }

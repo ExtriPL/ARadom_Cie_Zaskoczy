@@ -15,6 +15,9 @@ public abstract class Field : ScriptableObject
     [SerializeField, Tooltip("Czy dany budynek może zostać umieszczony na mapie")]
     protected bool canBePlaced = true;
 
+    [SerializeField, Tooltip("Opis pola"), TextArea]
+    protected string fieldHistory;
+
     /// <summary>
     /// Zdarzenia wywoływane, gdy gracz wejdzie na pole
     /// </summary>
@@ -81,4 +84,11 @@ public abstract class Field : ScriptableObject
     /// </summary>
     /// <returns>Nazwa pola</returns>
     public string GetFieldName() => fieldName;
+
+
+    /// <summary>
+    /// Historia budynku, który stoi na danym polu
+    /// </summary>
+    /// <returns>Historia budynku</returns>
+    public string FieldHistory { get => fieldHistory; }
 }

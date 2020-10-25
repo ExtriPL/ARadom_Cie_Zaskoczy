@@ -6,9 +6,6 @@ using UnityEngine.Events;
 
 public abstract class BuildingField : Field
 {
-    [SerializeField, Tooltip("Historia budynku"), TextArea]
-    protected string fieldHistory;
-
     /// <summary>
     /// Zdarzenie wywoływane przy zakupie pola
     /// </summary>
@@ -107,10 +104,4 @@ public abstract class BuildingField : Field
 
         PopupSystem.instance.AddPopup(payPopup);
     }
-
-    /// <summary>
-    /// Historia budynku, który stoi na danym polu
-    /// </summary>
-    /// <returns>Historia budynku</returns>
-    public string FieldHistory { get => fieldHistory; }
 }

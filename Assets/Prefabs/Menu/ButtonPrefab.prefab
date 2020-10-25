@@ -195,7 +195,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Prefab
+  m_text: PREFAB
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8b2340ebdcc6aa847923e5d1369f02f2, type: 2}
   m_sharedMaterial: {fileID: 1083552824309404555, guid: 8b2340ebdcc6aa847923e5d1369f02f2,
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 20, y: 0, z: 10, w: 0}
   m_textInfo:
     textComponent: {fileID: 3616638544140490828}
     characterCount: 6
