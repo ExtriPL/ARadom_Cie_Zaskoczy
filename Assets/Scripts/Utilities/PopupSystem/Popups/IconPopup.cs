@@ -73,5 +73,6 @@ public enum IconPopupType
     PlayerLeft,
     PlayerLost,
     Dice,
-    RollResult
+    RollResult,
+    Trade
 }
