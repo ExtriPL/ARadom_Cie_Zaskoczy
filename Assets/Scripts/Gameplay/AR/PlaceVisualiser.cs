@@ -146,10 +146,19 @@ public class PlaceVisualiser : Visualiser
     /// <param name="toPlaceIndex">Numer pola, na które przeszedł gracz</param>
     private void OnPlayerMove(string playerName, int fromPlaceIndex, int toPlaceIndex)
     {
-        if (GameplayController.instance.board.dice.amountOfRolls == 0) return;
-        OnPlayerTeleported(playerName, fromPlaceIndex, toPlaceIndex);
+        if (GameplayController.instance.board.dice.amountOfRolls == 0) 
+            return;
 
-        if(GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
+        if (fromPlaceIndex == placeIndex)
+        {
+            field.OnLeave(GameplayController.instance.session.FindPlayer(playerName), this);
+            playersOnField.Remove(playerName);
+            DeactivateField();
+        }
+        else if (toPlaceIndex == placeIndex)
+            playersOnField.Add(playerName);
+
+        if (GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
         {
             Player player = GameplayController.instance.session.FindPlayer(playerName);
 

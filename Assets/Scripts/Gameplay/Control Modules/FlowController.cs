@@ -40,9 +40,15 @@ public class FlowController : IEventSubscribable
 
     #region Inicjalizacja
 
-    public void SubscribeEvents() {}
+    public void SubscribeEvents() 
+    {
+        EventManager.instance.onTurnChanged += OnTurnChanged;
+    }
 
-    public void UnsubscribeEvents() {}
+    public void UnsubscribeEvents() 
+    {
+        EventManager.instance.onTurnChanged -= OnTurnChanged;
+    }
 
     public void StartGame()
     {
@@ -189,7 +195,6 @@ public class FlowController : IEventSubscribable
     /// </summary>
     private void End()
     {
-        ResetSettings();
         PopupSystem.instance.ClosePopups(AutoCloseMode.EndOfTurn);
         GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
         DefaultEnding();
@@ -338,4 +343,11 @@ public class FlowController : IEventSubscribable
     }
 
     #endregion Sterowanie rozgrywką
+
+    private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
+    {
+        //Gracz, który rozpoczął teraz turę, ma resetowane ustawienia FlowControllera
+        if (currentPlayerName.Equals(CurrentPlayer.GetName()))
+            ResetSettings();
+    }
 }

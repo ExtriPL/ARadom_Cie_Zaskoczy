@@ -37,7 +37,7 @@ public abstract class PopupBox : MonoBehaviour, IAnimable
     /// </summary>
     public virtual void Deinit()
     {
-        source.ClearDelegates();
+        source?.ClearDelegates();
         source = null;
     }
 
