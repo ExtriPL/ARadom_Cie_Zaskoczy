@@ -285,10 +285,6 @@ public class FlowController : IEventSubscribable
     {
         if (gameplayController.WinnerExists())
         {
-            //Jeżeli obecny gracz nie istnieje, zmienia na następnego by nie było błędów
-            if (CurrentPlayer == null)
-                gameplayController.board.dice.NextTurn();
-
             //Informacja o wygranej jakiegoś gracza
             //Zakończenie rozgrywki
             gameplayController.session.gameState = GameState.ended;

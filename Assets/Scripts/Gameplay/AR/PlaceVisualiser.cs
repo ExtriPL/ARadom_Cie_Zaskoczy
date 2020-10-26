@@ -468,7 +468,7 @@ public class PlaceVisualiser : Visualiser
     {
         playersOnField.Remove(playerName);
         Player activePlayer = GameplayController.instance.session.FindPlayer(GameplayController.instance.board.dice.currentPlayer);
-        if (activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
+        if (activePlayer != null && activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
         else DeactivateField();
     }
 
