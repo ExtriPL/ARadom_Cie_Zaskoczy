@@ -276,6 +276,16 @@ public class Board : IEventSubscribable
     }
 
     /// <summary>
+    /// Zwraca numer pierwszego wystąpienia pola na planszy o podanym typie
+    /// </summary>
+    /// <param name="type">Typ pola</param>
+    /// <returns>Numer pola na planszy o podanym typie</returns>
+    public int GetPlaceIndex(Type type)
+    {
+        return places.FirstOrDefault(x => fields[x.Value].GetType().Equals(type)).Key;
+    }
+
+    /// <summary>
     /// Sprawdza, czy na planszy znajduje się pole o podanym typie
     /// </summary>
     /// <param name="type">Typ pola</param>

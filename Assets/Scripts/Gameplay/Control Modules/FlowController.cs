@@ -55,7 +55,7 @@ public class FlowController : IEventSubscribable
     public void Update()
     {
         //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-        if (CurrentPlayer.NetworkPlayer.IsLocal)
+        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
         {
             float time = Time.time - beginTime;
             
@@ -285,6 +285,10 @@ public class FlowController : IEventSubscribable
     {
         if (gameplayController.WinnerExists())
         {
+            //Jeżeli obecny gracz nie istnieje, zmienia na następnego by nie było błędów
+            if (CurrentPlayer == null)
+                gameplayController.board.dice.NextTurn();
+
             //Informacja o wygranej jakiegoś gracza
             //Zakończenie rozgrywki
             gameplayController.session.gameState = GameState.ended;

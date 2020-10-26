@@ -15,14 +15,16 @@ public class MoveAction : ActionCard
     public ToTarget toTarget;
     public int targetId;
     public PlaceTypeTarget targetType;
+    public MovementType movementType;
 
-    public MoveAction(Mode mode, int byAmount, ToTarget toTarget, int targetId, PlaceTypeTarget targetType)
+    public MoveAction(Mode mode, int byAmount, ToTarget toTarget, int targetId, PlaceTypeTarget targetType, MovementType movementType)
     {
         this.mode = mode;
         this.byAmount = byAmount;
         this.toTarget = toTarget;
         this.targetId = targetId;
         this.targetType = targetType;
+        this.movementType = movementType;
     }
 
     public override void Call(Player caller)
@@ -71,7 +73,32 @@ public class MoveAction : ActionCard
 
     private void TargetPlaceType(Player caller)
     {
-        Debug.LogError("Brak obsługi przesówania do pola o podanym typie");
+        targetId = GetPlaceId(targetType);
+
+        if (movementType == MovementType.Regular)
+            TargetPlaceId(caller);
+        else if(movementType == MovementType.Teleport)
+        {
+            Board board = GameplayController.instance.board;
+            board.TeleportPlayer(caller, targetId);
+        }
+    }
+
+    private static int GetPlaceId(PlaceTypeTarget targetType)
+    {
+        Board board = GameplayController.instance.board;
+
+        switch(targetType)
+        {
+            case PlaceTypeTarget.Prison:
+                return board.GetPlaceIndex(typeof(PrisonSpecial));
+            case PlaceTypeTarget.Start:
+                return board.GetPlaceIndex(typeof(StartSpecial));
+            case PlaceTypeTarget.Chance:
+                return board.GetPlaceIndex(typeof(ChanceSpecial));
+            default:
+                return 0;
+        }
     }
 
     public enum Mode
@@ -95,6 +122,19 @@ public class MoveAction : ActionCard
     public enum PlaceTypeTarget
     {
         Prison,
-        Start
+        Start,
+        Chance
+    }
+
+    public enum MovementType
+    {
+        /// <summary>
+        /// Normalne poruszenie graczem. Gracz przechodzi nad wszystkimi polami pomiędzy swoim położeniem i docelowym położeniem
+        /// </summary>
+        Regular,
+        /// <summary>
+        /// Bezpośrednie przeniesienie gracza na lokalizację docelową
+        /// </summary>
+        Teleport
     }
 }
