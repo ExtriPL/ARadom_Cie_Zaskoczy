@@ -67,12 +67,24 @@ public enum IconPopupType
     /// Brak jakiejkolwiek ikony
     /// </summary>
     None,
+    Prison,
+    NewPlace,
     Money,
-    Buy,
+    Trade,
+    Key1,
+    Key2,
     Auction,
-    PlayerLeft,
+    Mail,
+    Medal,
     PlayerLost,
+    ChestBrown,
+    ChestGold,
+    Message,
+    Win,
+    CastleSilver,
+    CastleGolden,
+    QuestionMarkGold,
+    QuestionMark,
     Dice,
-    RollResult,
-    Trade
+    PlayerLeft
 }
