@@ -77,7 +77,7 @@ public abstract class Visualiser : MonoBehaviour, IEventSubscribable, IAnimable
     /// Pokazuje wybrany model
     /// </summary>
     /// <param name="id">Numer modelu, który chcemy pokazać</param>
-    protected void ShowModel(int id)
+    protected virtual void ShowModel(int id)
     {
         if (id < models.Count)
         {

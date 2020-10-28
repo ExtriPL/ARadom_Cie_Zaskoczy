@@ -86,4 +86,10 @@ public class IconBox : PopupBox
         button.interactable = false;
         base.Close();
     }
+
+    public override void OnShowAnimationStart()
+    {
+        base.OnShowAnimationStart();
+        SettingsController.instance.soundController.PlayEffect(SoundEffectType.PopupSound1);
+    }
 }

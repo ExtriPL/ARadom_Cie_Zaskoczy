@@ -118,7 +118,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4650680646996220800}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5829236244856030277}
+        m_MethodName: PlayEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5829236244856030277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,9 +139,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2779371658932680229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91f915da9bd32e841a2193166fbfc0ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d2f550e2629c9d4f8e254139e1bc7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectType: 0
 --- !u!1 &5882544642037488832
 GameObject:
   m_ObjectHideFlags: 0

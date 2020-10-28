@@ -133,14 +133,14 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuContr
     public void OnMusicVolumeChanged(float value) 
     {
         musicVolumeSlider.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("MUSIC") +" : " + value.ToString();
-        SettingsController.instance.SetMusicVolume(value);
+        SettingsController.instance.soundController.SetMusicVolume(value);
         CheckIfSettingsChanged();
     }
     
     public void OnSoundEffectsVolumeChanged(float value)
     {
         soundEffectsVolumeSlider.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("SOUND_EFFECTS") + " : " + value.ToString();
-        SettingsController.instance.SetSoundEffectsVolume(value);
+        SettingsController.instance.soundController.SetSoundEffectsVolume(value);
         CheckIfSettingsChanged();
     }
     
