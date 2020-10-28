@@ -76,8 +76,19 @@ public class PlaceVisualiser : Visualiser
 
         arrowAnimator = pointingArrow.GetComponentInChildren<Animator>();
 
-        //pointingArrow.GetComponent<Transform>().localPosition = new Vector3(0, 0, -0.06f);
-        //if (placeIndex == 10) StartCoroutine(Shine(GameplayController.instance.session.localPlayer, true));
+        //Jeżeli jest to pole specjalne, chemy usunąć jego obrót, ponieważ jest to tylko płytka, która dobrze jest obrócona na starcie
+        if (field is SpecialField)
+            ZeroModelsRotation();
+    }
+
+    private void ZeroModelsRotation()
+    {
+        Vector3 placeRotation = transform.localRotation.eulerAngles;
+        foreach (GameObject model in models)
+        {
+            Vector3 localRotation = model.transform.localRotation.eulerAngles;
+            model.transform.localRotation = Quaternion.Euler(localRotation - placeRotation);
+        }
     }
 
     private void Update()

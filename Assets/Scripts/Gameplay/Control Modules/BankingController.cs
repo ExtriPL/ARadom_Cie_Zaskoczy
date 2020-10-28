@@ -214,7 +214,7 @@ public class BankingController : IEventSubscribable
             message = language.GetWord("PLAYER") + playerName + language.GetWord("AQUIRED_BUILDING") + GameplayController.instance.board.GetField(placeId).GetFieldName() + ".";
         }
 
-        IconPopup popup = new IconPopup(IconPopupType.Buy, message);
+        IconPopup popup = new IconPopup(IconPopupType.NewPlace, message);
         PopupSystem.instance.AddPopup(popup);
     }
 
