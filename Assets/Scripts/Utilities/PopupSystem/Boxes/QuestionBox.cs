@@ -18,11 +18,13 @@ public class QuestionBox : PopupBox
 
     public override void InitBox()
     {
+        base.InitBox();
         buttonPool = new BasePool(buttons, null, Keys.Popups.QUESTIONBOX_BUTTONS_AMOUNT);
         List<GameObject> poolObjects = new List<GameObject>(); //Lista obiektów podpiętych na starcie do obiektu buttons
         foreach (Button b in buttons.GetComponentsInChildren<Button>())
         {
-            if (b.gameObject != buttons) poolObjects.Add(b.gameObject);
+            if (b.gameObject != buttons) 
+                poolObjects.Add(b.gameObject);
         }
 
         buttonPool.Init(poolObjects);
