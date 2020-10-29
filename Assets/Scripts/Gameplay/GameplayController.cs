@@ -35,7 +35,11 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         StartCoroutine(masterInactiveCheck);
         GameInitialized = false;
         instance = this;
-
+        if(!SettingsController.instance.Loaded)
+        {
+            SettingsController.instance.Init();
+        }
+    
         AddCommands();
         invoker.Start();
     }

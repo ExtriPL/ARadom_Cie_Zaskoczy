@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -34,6 +35,9 @@ public class PlaceVisualiser : Visualiser
     /// </summary>
     private float tParameter = 0f;
 
+    private AudioSource effectSource;
+    private AmbientSoundPlayer ambientPlayer;
+
     private GameObject particleEffect;
     private GameObject pointingArrow;
     private Animator arrowAnimator;
@@ -49,6 +53,12 @@ public class PlaceVisualiser : Visualiser
     /// <param name="placeIndex">Numer pola, które reprezentuje visualiser w przestrzeni AR</param>
     public void Init(Field field, int placeIndex)
     {
+        effectSource = gameObject.AddComponent<AudioSource>();
+        effectSource.playOnAwake = false;
+        ambientPlayer = gameObject.AddComponent<AmbientSoundPlayer>();
+        ambientPlayer.effectType = SoundEffectType.BuildingSound;
+        ambientPlayer.source = effectSource;
+
         this.field = field;
         this.placeIndex = placeIndex;
         visible = true;
@@ -76,8 +86,19 @@ public class PlaceVisualiser : Visualiser
 
         arrowAnimator = pointingArrow.GetComponentInChildren<Animator>();
 
-        //pointingArrow.GetComponent<Transform>().localPosition = new Vector3(0, 0, -0.06f);
-        //if (placeIndex == 10) StartCoroutine(Shine(GameplayController.instance.session.localPlayer, true));
+        //Jeżeli jest to pole specjalne, chemy usunąć jego obrót, ponieważ jest to tylko płytka, która dobrze jest obrócona na starcie
+        if (field is SpecialField)
+            ZeroModelsRotation();
+    }
+
+    private void ZeroModelsRotation()
+    {
+        Vector3 placeRotation = transform.localRotation.eulerAngles;
+        foreach (GameObject model in models)
+        {
+            Vector3 localRotation = model.transform.localRotation.eulerAngles;
+            model.transform.localRotation = Quaternion.Euler(localRotation - placeRotation);
+        }
     }
 
     private void Update()
@@ -505,5 +526,14 @@ public class PlaceVisualiser : Visualiser
     public void Explosion() 
     {
         particleEffect.GetComponent<ParticleSystem>().Play();
+    }
+
+    protected override void ShowModel(int id)
+    {
+        base.ShowModel(id);
+        if (id > 0)
+        {
+            ambientPlayer.PlayEffect();
+        }
     }
 }

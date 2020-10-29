@@ -322,7 +322,7 @@ public class FlowController : IEventSubscribable
             int secondThrow = board.dice.last2;
             string message = SettingsController.instance.languageController.GetWord("YOU_GOT") + firstThrow + SettingsController.instance.languageController.GetWord("AND") + secondThrow;
             QuestionPopup showRoll = QuestionPopup.CreateOkDialog(message, delegate { board.MovePlayer(CurrentPlayer, firstThrow + secondThrow); });
-            IconPopup rollResult = new IconPopup(IconPopupType.RollResult, showRoll);
+            IconPopup rollResult = new IconPopup(IconPopupType.None, showRoll);
             PopupSystem.instance.AddPopup(rollResult);
         };
 

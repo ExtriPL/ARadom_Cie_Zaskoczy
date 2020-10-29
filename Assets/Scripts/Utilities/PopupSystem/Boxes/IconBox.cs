@@ -32,7 +32,6 @@ public class IconBox : PopupBox
         rect.localScale = Vector3.zero;
 
         button.interactable = false;
-        CurrentPosition = currentAmount;
         boxAnimator.SetInteger("currentPosition", currentAmount);
         boxAnimator.SetInteger("targetPosition", currentAmount);
         boxAnimator.SetTrigger("Show");
@@ -45,17 +44,10 @@ public class IconBox : PopupBox
     /// <returns>Sprite odpowiadający podanemu typowi</returns>
     private Sprite MatchSprite(IconPopupType iconType)
     {
-        switch(iconType)
-        {
-            case IconPopupType.Buy:
-                return sprites[1];
-            case IconPopupType.Auction:
-                return sprites[2];
-            case IconPopupType.Trade:
-                return sprites[3];
-            default: 
-                return sprites[0];
-        }
+        if ((int)iconType < sprites.Count)
+            return sprites[(int)iconType];
+        else
+            return sprites[0];
     }
 
     public override void OnShowAnimationEnd()
@@ -85,5 +77,11 @@ public class IconBox : PopupBox
     {
         button.interactable = false;
         base.Close();
+    }
+
+    public override void OnShowAnimationStart()
+    {
+        base.OnShowAnimationStart();
+        SettingsController.instance.soundController.PlayEffect(SoundEffectType.PopupSound1);
     }
 }

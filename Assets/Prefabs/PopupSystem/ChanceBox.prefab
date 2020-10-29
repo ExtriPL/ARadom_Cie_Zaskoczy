@@ -776,7 +776,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 29.5
+  m_fontSize: 27.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -822,7 +822,7 @@ MonoBehaviour:
     spaceCount: 112
     wordCount: 113
     linkCount: 0
-    lineCount: 20
+    lineCount: 18
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -852,6 +852,7 @@ GameObject:
   - component: {fileID: 6923631591833673812}
   - component: {fileID: 6923631591833673813}
   - component: {fileID: 6923631591833673814}
+  - component: {fileID: 3584105928391423946}
   m_Layer: 5
   m_Name: Close
   m_TagString: Untagged
@@ -969,3 +970,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3584105928391423946}
+        m_MethodName: PlayEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3584105928391423946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6923631591833673800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d2f550e2629c9d4f8e254139e1bc7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 0

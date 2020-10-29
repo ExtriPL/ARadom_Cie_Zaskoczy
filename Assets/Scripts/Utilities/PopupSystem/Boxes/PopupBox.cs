@@ -10,7 +10,7 @@ public abstract class PopupBox : MonoBehaviour, IAnimable
     public Popup source;
     public Animator boxAnimator;
     protected PopupSystem pSystem = PopupSystem.instance;
-    public int CurrentPosition { get; protected set; }
+    public int CurrentPosition { get => boxAnimator.GetInteger("currentPosition"); }
 
     protected virtual void Start()
     {

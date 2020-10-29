@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2561916729171450922}
   - component: {fileID: 864118444378614642}
   - component: {fileID: 5363263536774157469}
-  - component: {fileID: 2320785711209269298}
   - component: {fileID: 5299114019513737660}
+  - component: {fileID: 7228232456014813456}
   m_Layer: 5
   m_Name: ButtonPrefab
   m_TagString: Untagged
@@ -131,18 +131,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2320785711209269298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2033202310396515895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91f915da9bd32e841a2193166fbfc0ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+      - m_Target: {fileID: 7228232456014813456}
+        m_MethodName: PlayEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5299114019513737660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +162,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &7228232456014813456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033202310396515895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d2f550e2629c9d4f8e254139e1bc7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 0
 --- !u!1 &3282293945554761977
 GameObject:
   m_ObjectHideFlags: 0

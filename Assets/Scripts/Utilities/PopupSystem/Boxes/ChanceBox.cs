@@ -20,4 +20,10 @@ public class ChanceBox : PopupBox
 
         boxAnimator.SetTrigger("Show");
     }
+
+    public override void OnShowAnimationStart()
+    {
+        base.OnShowAnimationStart();
+        SettingsController.instance.soundController.PlayEffect(SoundEffectType.PopupSound3);
+    }
 }
