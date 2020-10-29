@@ -1,27 +1,31 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class RightPanel : MonoBehaviour
 {
-    private UIPanels uIPanels;
-
-    public void Init(UIPanels UIPanels)
+    private BasePool basePool;
+    public GameObject content;
+    public GameObject template;
+    private UIPanels UIPanels;
+    private List<TradeListing> tradeListings;
+    public void PreInit()
     {
-        uIPanels = UIPanels;
-        gameObject.GetComponent<Animation>().Play("RightToMiddle");
-        uIPanels.bottomPanel.GetComponent<Animation>().Play("MiddleToLeft");
+        tradeListings = new List<TradeListing>();
+        basePool = new BasePool(content, template, Keys.Menu.MAX_PLAYERS_COUNT);
+        basePool.Init();
     }
 
-    public void Deinit()
+
+    public void Init(UIPanels controller, Player player)
     {
-        gameObject.GetComponent<Animation>().Play("MiddleToRight");
+        Debug.Log(player.GetName());
     }
 
-    public void Close()
+    public void DeInit()
     {
-        Deinit();
-        uIPanels.bottomPanel.GetComponent<Animation>().Play("LeftToMiddle");
+        
     }
-
 }

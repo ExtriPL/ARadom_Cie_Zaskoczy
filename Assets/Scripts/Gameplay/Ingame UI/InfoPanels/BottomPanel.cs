@@ -12,7 +12,6 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
     public GameObject buildingListing;
     [Tooltip("Element przechowujący wszystkie BuildingListingi")]
     public GameObject buildingsInfoHolder;
-    public GameObject tradingButton;
     public TextMeshProUGUI title;
 
     private GameplayController gc;
@@ -55,12 +54,10 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
         if (player.NetworkPlayer == PhotonNetwork.LocalPlayer)
         {
             title.text = "Twoje budynki"; // do przetlumacznia
-            tradingButton.SetActive(true);
         }
         else 
         {
             title.text = "Budynki gracza " + player.GetName(); // do przetlumacznia
-            tradingButton.SetActive(true);
         }
     }
 

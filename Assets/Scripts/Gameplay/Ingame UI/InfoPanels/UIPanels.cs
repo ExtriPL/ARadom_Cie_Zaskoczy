@@ -123,10 +123,21 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     #region Prawy panel
 
-    public void OpenRightPanel() 
+    public void OpenRightPanel(Player player) 
     {
-        rightPanel.Init(this);
+        rightPanel.DeInit();
+        rightPanel.Init(this, player); //Inicjalizacja panelu prawego z danymi przekazanego gracza
+        leftPanel.GetComponent<Animation>().Play("MiddleToLeft"); //Animacja zamknięcia lewego panelu
+        rightPanel.GetComponent<Animation>().Play("RightToMiddle"); //Animacja otwarcia prawego panelu
     }
+
+
+    public void CloseRightPanel() 
+    {
+        rightPanel.GetComponent<Animation>().Play("MiddleToRight");
+        leftPanel.GetComponent<Animation>().Play("LeftToMiddle");
+    }
+
 
     #endregion
 
