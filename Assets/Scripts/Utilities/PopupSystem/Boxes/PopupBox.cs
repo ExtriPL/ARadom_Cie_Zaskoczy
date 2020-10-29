@@ -8,13 +8,13 @@ using UnityEngine;
 public abstract class PopupBox : MonoBehaviour, IAnimable
 {
     public Popup source;
-    public Animation animations;
-    protected abstract Action CloseAnimationTrigger { get; }
+    public Animator boxAnimator;
     protected PopupSystem pSystem = PopupSystem.instance;
+    public int CurrentPosition { get => boxAnimator.GetInteger("currentPosition"); }
 
     protected virtual void Start()
     {
-        animations = GetComponent<Animation>();
+        boxAnimator = GetComponent<Animator>();
     }
 
     public virtual void InitBox() {}
@@ -28,7 +28,7 @@ public abstract class PopupBox : MonoBehaviour, IAnimable
         this.source = source;
         source.onOpen?.Invoke(source);
 
-        if (animations == null)
+        if (boxAnimator == null)
             Start();
     }
 
@@ -37,7 +37,7 @@ public abstract class PopupBox : MonoBehaviour, IAnimable
     /// </summary>
     public virtual void Deinit()
     {
-        source.ClearDelegates();
+        source?.ClearDelegates();
         source = null;
     }
 
@@ -54,10 +54,7 @@ public abstract class PopupBox : MonoBehaviour, IAnimable
     /// </summary>
     public virtual void Close()
     {
-        if (CloseAnimationTrigger != null)
-            CloseAnimationTrigger.Invoke();
-        else
-            OnCloseAnimationEnd();
+        boxAnimator.SetTrigger("Hide");
     }
 
     public virtual void OnCloseAnimationEnd()

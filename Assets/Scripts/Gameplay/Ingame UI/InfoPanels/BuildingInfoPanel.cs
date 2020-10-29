@@ -19,17 +19,17 @@ public class BuildingInfoPanel : MonoBehaviour
     private void Update()
     {
     }
-    public void FillBuildingInfo(Field field) 
+    public void FillBuildingInfo(Field field)
     {
         ClearBuildingInfo();
         if (field is NormalBuilding normalbuilding)
         {
             int placeId = GameplayController.instance.board.GetPlaceIndex(normalbuilding);
-            string type = "NormalBuilding";
+            string type = lC.GetWord("NORMAL_BUILDING");
             string tier = lC.GetWord("LEVEL") + ": " + GameplayController.instance.board.GetTier(placeId).ToString();
             string price1 = GameplayController.instance.board.GetTier(placeId) == 0 ? lC.GetWord("PRICE") + ": " : lC.GetWord("UPGRADE_COST") + ": ";
             string price2 = normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId) + 1].buyPrice.ToString();
-            string owner1 = lC.GetWord("OWNER")+": ";
+            string owner1 = lC.GetWord("OWNER") + ": ";
             string owner2 = GameplayController.instance.board.GetOwner(placeId) != null ? (GameplayController.instance.board.GetOwner(placeId)).GetName() : "--";
             string buildingInfoText = type + "<br>" + tier + "<br>" + price1 + price2 + "<br>" + owner1 + owner2;
             buildingName.GetComponent<TextMeshProUGUI>().text = normalbuilding.name;
@@ -41,7 +41,7 @@ public class BuildingInfoPanel : MonoBehaviour
         {
             int placeId = GameplayController.instance.board.GetPlaceIndex(churchStacking);
 
-            string type = "ChurchStacking";
+            string type = lC.GetWord("CHURCH_STACKING");
             string price1 = lC.GetWord("PRICE") + ": ";
             string price2 = churchStacking.BuyPrice.ToString();
             string owner1 = lC.GetWord("OWNER") + ": ";
@@ -52,11 +52,23 @@ public class BuildingInfoPanel : MonoBehaviour
             buildingInfo.GetComponent<TextMeshProUGUI>().text = buildingInfoText;
             buildingHistory.GetComponent<TextMeshProUGUI>().text = churchStacking.FieldHistory;
         }
-        else if (field is StartSpecial startSpecial) 
+        else if (field is StartSpecial startSpecial)
         {
             buildingName.GetComponent<TextMeshProUGUI>().text = startSpecial.name;
-            buildingInfo.GetComponent<TextMeshProUGUI>().text = "Start";
-            buildingHistory.GetComponent<TextMeshProUGUI>().text = "";
+            buildingInfo.GetComponent<TextMeshProUGUI>().text = lC.GetWord("START_SPECIAL");
+            buildingHistory.GetComponent<TextMeshProUGUI>().text = startSpecial.FieldHistory;
+        }
+        else if (field is PrisonSpecial prisonSpecial)
+        {
+            buildingName.GetComponent<TextMeshProUGUI>().text = prisonSpecial.name;
+            buildingInfo.GetComponent<TextMeshProUGUI>().text = lC.GetWord("PRISON_SPECIAL");
+            buildingHistory.GetComponent<TextMeshProUGUI>().text = prisonSpecial.FieldHistory;
+        }
+        else if (field is ChanceSpecial chanceSpecial) 
+        {
+            buildingName.GetComponent<TextMeshProUGUI>().text = chanceSpecial.name;
+            buildingInfo.GetComponent<TextMeshProUGUI>().text = lC.GetWord("CHANCE_SPECIAL");
+            buildingHistory.GetComponent<TextMeshProUGUI>().text = chanceSpecial.FieldHistory;
         }
     }
 

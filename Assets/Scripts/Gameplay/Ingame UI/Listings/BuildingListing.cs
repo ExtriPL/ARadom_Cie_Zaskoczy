@@ -8,6 +8,7 @@ public class BuildingListing : MonoBehaviour
     public TextMeshProUGUI fieldName;
     UIPanels UIPanels;
     GameplayController gc;
+    private Coroutine highlight;
 
     private Field field;
 
@@ -33,6 +34,6 @@ public class BuildingListing : MonoBehaviour
     public void ShowOnBoard()
     {
         UIPanels.CloseBottomPanel();
-        gc.arController.GetPlaceVisualiser(field).Explosion();
+        gc.arController.GetPlaceVisualiser(field).Highlight();
     }
 }

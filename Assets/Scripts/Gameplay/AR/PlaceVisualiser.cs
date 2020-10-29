@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -34,7 +35,12 @@ public class PlaceVisualiser : Visualiser
     /// </summary>
     private float tParameter = 0f;
 
+    private AudioSource effectSource;
+    private AmbientSoundPlayer ambientPlayer;
+
     private GameObject particleEffect;
+    private GameObject pointingArrow;
+    private Animator arrowAnimator;
 
     private float startShiningTime;
 
@@ -47,6 +53,12 @@ public class PlaceVisualiser : Visualiser
     /// <param name="placeIndex">Numer pola, które reprezentuje visualiser w przestrzeni AR</param>
     public void Init(Field field, int placeIndex)
     {
+        effectSource = gameObject.AddComponent<AudioSource>();
+        effectSource.playOnAwake = false;
+        ambientPlayer = gameObject.AddComponent<AmbientSoundPlayer>();
+        ambientPlayer.effectType = SoundEffectType.BuildingSound;
+        ambientPlayer.source = effectSource;
+
         this.field = field;
         this.placeIndex = placeIndex;
         visible = true;
@@ -69,7 +81,24 @@ public class PlaceVisualiser : Visualiser
 
         particleEffect = Instantiate(ARController.highlightEffect, transform);
         particleEffect.GetComponent<Transform>().localPosition = Vector3.zero;
-        //if (placeIndex == 10) StartCoroutine(Shine(GameplayController.instance.session.localPlayer, true));
+
+        pointingArrow = Instantiate(ARController.pointingArrow, transform);
+
+        arrowAnimator = pointingArrow.GetComponentInChildren<Animator>();
+
+        //Jeżeli jest to pole specjalne, chemy usunąć jego obrót, ponieważ jest to tylko płytka, która dobrze jest obrócona na starcie
+        if (field is SpecialField)
+            ZeroModelsRotation();
+    }
+
+    private void ZeroModelsRotation()
+    {
+        Vector3 placeRotation = transform.localRotation.eulerAngles;
+        foreach (GameObject model in models)
+        {
+            Vector3 localRotation = model.transform.localRotation.eulerAngles;
+            model.transform.localRotation = Quaternion.Euler(localRotation - placeRotation);
+        }
     }
 
     private void Update()
@@ -138,10 +167,19 @@ public class PlaceVisualiser : Visualiser
     /// <param name="toPlaceIndex">Numer pola, na które przeszedł gracz</param>
     private void OnPlayerMove(string playerName, int fromPlaceIndex, int toPlaceIndex)
     {
-        if (GameplayController.instance.board.dice.amountOfRolls == 0) return;
-        OnPlayerTeleported(playerName, fromPlaceIndex, toPlaceIndex);
+        if (GameplayController.instance.board.dice.amountOfRolls == 0) 
+            return;
 
-        if(GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
+        if (fromPlaceIndex == placeIndex)
+        {
+            field.OnLeave(GameplayController.instance.session.FindPlayer(playerName), this);
+            playersOnField.Remove(playerName);
+            DeactivateField();
+        }
+        else if (toPlaceIndex == placeIndex)
+            playersOnField.Add(playerName);
+
+        if (GameplayController.instance.board.GetBetweenPlaces(fromPlaceIndex, toPlaceIndex).Contains(placeIndex))
         {
             Player player = GameplayController.instance.session.FindPlayer(playerName);
 
@@ -178,6 +216,7 @@ public class PlaceVisualiser : Visualiser
         else if (toPlaceIndex == placeIndex)
         {
             playersOnField.Add(playerName);
+            ActivateField(GameplayController.instance.session.FindPlayer(playerName));
         }
     }
 
@@ -459,7 +498,7 @@ public class PlaceVisualiser : Visualiser
     {
         playersOnField.Remove(playerName);
         Player activePlayer = GameplayController.instance.session.FindPlayer(GameplayController.instance.board.dice.currentPlayer);
-        if (activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
+        if (activePlayer != null && activePlayer.PlaceId == placeIndex) ActivateField(activePlayer);
         else DeactivateField();
     }
 
@@ -479,39 +518,22 @@ public class PlaceVisualiser : Visualiser
             HideBacklights();
     }
 
-    public IEnumerator Highlight()
+    public void Highlight()
     {
-        Material material = models[showedModel].GetComponent<Renderer>().material;
-        Color c = material.color;
-
-        Debug.Log("KOLOR KURDE:: " + c.ToString());
-        for (int i = 0; i < 4; i++)
-        {
-            while (material.color.g > 0)
-            {
-                float r = material.color.r;
-                float g = material.color.g;
-                float b = material.color.b;
-
-                material.color = new Color(r, g - 0.01f, b - 0.01f);
-                yield return new WaitForSeconds(0.005f);
-            }
-
-            while (material.color.g < c.g)
-            {
-                float r = material.color.r;
-                float g = material.color.g;
-                float b = material.color.b;
-
-                material.color = new Color(r, g + 0.01f, b + 0.01f);
-                yield return new WaitForSeconds(0.005f);
-            }
-        }
-        material.color = c;
+        if(!arrowAnimator.GetCurrentAnimatorStateInfo(0).IsName("PointingArrow")) arrowAnimator.SetTrigger("Start");
     }
 
     public void Explosion() 
     {
         particleEffect.GetComponent<ParticleSystem>().Play();
+    }
+
+    protected override void ShowModel(int id)
+    {
+        base.ShowModel(id);
+        if (id > 0)
+        {
+            ambientPlayer.PlayEffect();
+        }
     }
 }

@@ -40,9 +40,15 @@ public class FlowController : IEventSubscribable
 
     #region Inicjalizacja
 
-    public void SubscribeEvents() {}
+    public void SubscribeEvents() 
+    {
+        EventManager.instance.onTurnChanged += OnTurnChanged;
+    }
 
-    public void UnsubscribeEvents() {}
+    public void UnsubscribeEvents() 
+    {
+        EventManager.instance.onTurnChanged -= OnTurnChanged;
+    }
 
     public void StartGame()
     {
@@ -55,7 +61,7 @@ public class FlowController : IEventSubscribable
     public void Update()
     {
         //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-        if (CurrentPlayer.NetworkPlayer.IsLocal)
+        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
         {
             float time = Time.time - beginTime;
             
@@ -189,7 +195,6 @@ public class FlowController : IEventSubscribable
     /// </summary>
     private void End()
     {
-        ResetSettings();
         PopupSystem.instance.ClosePopups(AutoCloseMode.EndOfTurn);
         GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
         DefaultEnding();
@@ -317,7 +322,7 @@ public class FlowController : IEventSubscribable
             int secondThrow = board.dice.last2;
             string message = SettingsController.instance.languageController.GetWord("YOU_GOT") + firstThrow + SettingsController.instance.languageController.GetWord("AND") + secondThrow;
             QuestionPopup showRoll = QuestionPopup.CreateOkDialog(message, delegate { board.MovePlayer(CurrentPlayer, firstThrow + secondThrow); });
-            IconPopup rollResult = new IconPopup(IconPopupType.RollResult, showRoll);
+            IconPopup rollResult = new IconPopup(IconPopupType.None, showRoll);
             PopupSystem.instance.AddPopup(rollResult);
         };
 
@@ -338,4 +343,11 @@ public class FlowController : IEventSubscribable
     }
 
     #endregion Sterowanie rozgrywką
+
+    private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
+    {
+        //Gracz, który rozpoczął teraz turę, ma resetowane ustawienia FlowControllera
+        if (currentPlayerName.Equals(CurrentPlayer.GetName()))
+            ResetSettings();
+    }
 }

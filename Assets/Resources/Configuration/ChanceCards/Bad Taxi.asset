@@ -22,4 +22,5 @@ MonoBehaviour:
     - -4
     - PlaceType
     - 0
-    - Start
+    - Prison
+    - Regular

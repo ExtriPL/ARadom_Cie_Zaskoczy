@@ -48,8 +48,9 @@ public abstract class ActionCard
                     MoveAction.ToTarget toTarget = (MoveAction.ToTarget)Enum.Parse(typeof(MoveAction.ToTarget), form.variables[2]);
                     int targetId = int.Parse(form.variables[3]);
                     MoveAction.PlaceTypeTarget targetType = (MoveAction.PlaceTypeTarget)Enum.Parse(typeof(MoveAction.PlaceTypeTarget), form.variables[4]);
+                    MoveAction.MovementType movementType = (MoveAction.MovementType)Enum.Parse(typeof(MoveAction.MovementType), form.variables[5]);
 
-                    card = new MoveAction(mode, byAmount, toTarget, targetId, targetType);
+                    card = new MoveAction(mode, byAmount, toTarget, targetId, targetType, movementType);
                 }
                 break;
         }
@@ -90,5 +91,20 @@ public class ActionString
     {
         this.actionType = actionType;
         this.variables = variables;
+    }
+
+    public static ActionString GenerateDefault(ActionCard.ActionType actionType)
+    {
+        switch(actionType)
+        {
+            case ActionCard.ActionType.Money:
+                return new ActionString(ActionCard.ActionType.Money, new List<string>() { "Bank", "Player", "0" });
+            case ActionCard.ActionType.Wait:
+                return new ActionString(ActionCard.ActionType.Wait, new List<string>() { "Player", "0" });
+            case ActionCard.ActionType.Move:
+                return new ActionString(ActionCard.ActionType.Move, new List<string>() { "By", "0", "PlaceId", "0", "Prison", "Regular" });
+        }
+
+        return null;
     }
 }

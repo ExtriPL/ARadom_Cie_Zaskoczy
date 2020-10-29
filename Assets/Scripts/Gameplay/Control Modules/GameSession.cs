@@ -364,6 +364,11 @@ public class GameSession : IEventSubscribable
         if (GameplayController.instance.board.dice.currentPlayer == player.GetName())
         {
             GameplayController.instance.LosePlayer(player);
+
+            //Jeżeli obecny gracz nie istnieje, zmienia na następnego by nie było błędów
+            if (GameplayController.instance.flow.CurrentPlayer == null)
+                GameplayController.instance.board.dice.NextTurn();
+
             GameplayController.instance.flow.CheckWin();
         }
         EventManager.instance.SendOnPlayerQuited(player.GetName());

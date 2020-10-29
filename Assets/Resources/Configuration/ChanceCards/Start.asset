@@ -19,7 +19,8 @@ MonoBehaviour:
   - actionType: 2
     variables:
     - To
-    - -3
+    - 0
     - PlaceType
     - 0
     - Start
+    - Regular

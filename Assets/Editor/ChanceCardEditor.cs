@@ -43,26 +43,7 @@ public class ChanceCardEditor : Editor
         currentType = (ActionCard.ActionType)EditorGUILayout.EnumPopup("New Action Card", currentType);
         if (GUILayout.Button("Add"))
         {
-            ActionString actionString = new ActionString();
-
-            switch (currentType)
-            {
-                case ActionCard.ActionType.Money:
-                    {
-                        actionString = new ActionString(ActionCard.ActionType.Money, new List<string>() { "Bank", "Player", "0" });
-                    }
-                    break;
-                case ActionCard.ActionType.Wait:
-                    {
-                        actionString = new ActionString(ActionCard.ActionType.Wait, new List<string>() { "Player", "0" });
-                    }
-                    break;
-                case ActionCard.ActionType.Move:
-                    {
-                        actionString = new ActionString(ActionCard.ActionType.Move, new List<string>() { "By", "0", "PlaceId", "0", "Prison"});
-                    }
-                    break;
-            }
+            ActionString actionString = ActionString.GenerateDefault(currentType);
 
             actionIsOpen.Add(true);
             card.actionStrings.Add(actionString);
@@ -173,6 +154,9 @@ public class ChanceCardEditor : Editor
             {
                 MoveAction.PlaceTypeTarget targetType = (MoveAction.PlaceTypeTarget)Enum.Parse(typeof(MoveAction.PlaceTypeTarget), moveString.variables[4]);
                 moveString.variables[4] = EditorGUILayout.EnumPopup("Place Type", targetType).ToString();
+
+                MoveAction.MovementType movementType = (MoveAction.MovementType)Enum.Parse(typeof(MoveAction.MovementType), moveString.variables[5]);
+                moveString.variables[5] = EditorGUILayout.EnumPopup("Movement Type", movementType).ToString();
             }
         }
     }

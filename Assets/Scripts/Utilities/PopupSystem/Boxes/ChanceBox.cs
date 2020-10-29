@@ -9,8 +9,6 @@ public class ChanceBox : PopupBox
 {
     public TextMeshProUGUI title, cardContent;
 
-    protected override Action CloseAnimationTrigger => null;
-
     public override void Init(Popup source)
     {
         base.Init(source);
@@ -19,5 +17,13 @@ public class ChanceBox : PopupBox
         ChancePopup popup = source as ChancePopup;
         title.text = lang.GetWord(popup.card.GetCardNameKey());
         cardContent.text = lang.GetWord(popup.card.GetCardContentKey());
+
+        boxAnimator.SetTrigger("Show");
+    }
+
+    public override void OnShowAnimationStart()
+    {
+        base.OnShowAnimationStart();
+        SettingsController.instance.soundController.PlayEffect(SoundEffectType.PopupSound3);
     }
 }

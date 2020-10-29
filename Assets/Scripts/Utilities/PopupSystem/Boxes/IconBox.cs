@@ -10,19 +10,13 @@ public class IconBox : PopupBox
 {
     [SerializeField, Tooltip("Lista sprite-ów, któe mogą zostać wyświetlone jako ikona IconBox-a")]
     private List<Sprite> sprites = new List<Sprite>();
-
-    private readonly Vector2 defaultPosition = new Vector2(-60f, 60f);
-    private readonly Vector2 defaultAnchorMin = new Vector2(1f, 0f);
-    private readonly Vector2 defaultAnchorMax = new Vector2(1f, 0f);
-    private readonly Vector2 defaultSize = new Vector2(100f, 100f);
     private Button button;
-
-    protected override Action CloseAnimationTrigger => delegate { button.interactable = false; animations.Play("IconBoxHide"); };
 
     protected override void Start()
     {
         base.Start();
         button = GetComponent<Button>();
+        boxAnimator = GetComponent<Animator>();
     }
 
     public override void Init(Popup pattern)
@@ -34,16 +28,13 @@ public class IconBox : PopupBox
 
         int currentAmount = pSystem.CountShowedPopups(typeof(IconPopup)); //Ilość popupów tego typu przed wyświetleniem
         RectTransform rect = gameObject.transform as RectTransform;
-        rect.anchoredPosition = defaultPosition;
-        rect.anchorMin = defaultAnchorMin;
-        rect.anchorMax = defaultAnchorMax;
-        rect.sizeDelta = defaultSize;
 
-        rect.anchoredPosition = GetPosition(currentAmount);
         rect.localScale = Vector3.zero;
 
         button.interactable = false;
-        animations.Play("IconBoxShow");
+        boxAnimator.SetInteger("currentPosition", currentAmount);
+        boxAnimator.SetInteger("targetPosition", currentAmount);
+        boxAnimator.SetTrigger("Show");
     }
 
     /// <summary>
@@ -53,29 +44,44 @@ public class IconBox : PopupBox
     /// <returns>Sprite odpowiadający podanemu typowi</returns>
     private Sprite MatchSprite(IconPopupType iconType)
     {
-        switch(iconType)
-        {
-            case IconPopupType.Buy:
-                return sprites[1];
-            case IconPopupType.Auction:
-                return sprites[2]; 
-            default: 
-                return sprites[0];
-        }
-    }
-
-    private Vector2 GetPosition(int currentAmount)
-    {
-        RectTransform rect = gameObject.transform as RectTransform;
-        Vector2 currentPosition = rect.anchoredPosition;
-        Vector2 size = rect.sizeDelta;
-
-        return currentPosition + new Vector2(0f, (currentPosition.y + size.y / 2.0f) * currentAmount);
+        if ((int)iconType < sprites.Count)
+            return sprites[(int)iconType];
+        else
+            return sprites[0];
     }
 
     public override void OnShowAnimationEnd()
     {
         base.OnShowAnimationEnd();
         button.interactable = true;
+    }
+
+    public override void Reposition()
+    {
+        base.Reposition();
+        List<int> positions = pSystem.GetShowedPositions(GetType());
+        int smaller = 0;
+
+        foreach(int position in positions)
+        {
+            if (position < CurrentPosition)
+                smaller++;
+        }
+
+        //Jeżeli liczba mniejszych indeksów jest mniejsza, od obecnego indeksu oznacza to, że niżej zrobiło sie miejsce
+        int target = smaller < CurrentPosition ? CurrentPosition - 1 : CurrentPosition;
+        boxAnimator.SetInteger("targetPosition", target);
+    }
+
+    public override void Close()
+    {
+        button.interactable = false;
+        base.Close();
+    }
+
+    public override void OnShowAnimationStart()
+    {
+        base.OnShowAnimationStart();
+        SettingsController.instance.soundController.PlayEffect(SoundEffectType.PopupSound1);
     }
 }
