@@ -19,6 +19,7 @@ MonoBehaviour:
     dla \xF3wczesnych w\u0142adz powiatu. Podczas II wojny zajmowa\u0142a go niemiecka
     \u017Candarmeria ,a PRLu Urz\u0105d Bezpiecze\u0144stwa. Od 1989 jest to siedziba
     Rady Miasta"
+  fieldImage: {fileID: 21300000, guid: 23c5dd09a30ae50428565c0e54e165e9, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

@@ -38,7 +38,6 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("OnRoomListUpdate");
         foreach (RoomInfo roomInfo in roomList.ToArray())
         {
             if (!this.roomList.Contains(roomInfo))

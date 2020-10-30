@@ -15,6 +15,7 @@ MonoBehaviour:
   fieldName: "Stowarzyszenie Kupc\xF3w Polskich"
   canBePlaced: 1
   fieldHistory: 
+  fieldImage: {fileID: 21300000, guid: 7f5d9886d6df1bf46a98235701c4218c, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

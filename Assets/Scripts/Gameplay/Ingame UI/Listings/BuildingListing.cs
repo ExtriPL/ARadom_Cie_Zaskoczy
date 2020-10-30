@@ -8,7 +8,6 @@ public class BuildingListing : MonoBehaviour
     public TextMeshProUGUI fieldName;
     UIPanels UIPanels;
     GameplayController gc;
-    private Coroutine highlight;
 
     private Field field;
 
@@ -19,6 +18,7 @@ public class BuildingListing : MonoBehaviour
         this.UIPanels = UIPanels;
         this.field = field;
         fieldName.text = field.GetFieldName();
+        icon.sprite = field.FieldImage;
         gc = GameplayController.instance;
     }
 

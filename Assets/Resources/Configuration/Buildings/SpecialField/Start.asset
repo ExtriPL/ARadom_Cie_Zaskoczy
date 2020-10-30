@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Start
   canBePlaced: 1
-  model: {fileID: 3150644550420067016, guid: 346c41e4688772a4795be000d42a2c0a, type: 3}
   fieldHistory: "Na tym polu gracze rozpoczynaj\u0105 gr\u0119. Za przej\u015Bcie
     przez nie gracze dostaj\u0105 500 GR."
+  fieldImage: {fileID: 21300000, guid: ff28343625b1acf4fb6756dabe3e315c, type: 3}
+  model: {fileID: 3150644550420067016, guid: 346c41e4688772a4795be000d42a2c0a, type: 3}

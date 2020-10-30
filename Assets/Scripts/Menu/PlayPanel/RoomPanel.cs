@@ -34,6 +34,9 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
         {
             basePool.TakeObject().gameObject.GetComponent<PlayerListing>().Init(mainMenuController, player, basePool);
         }
+
+        //animacja konca ladowania
+        mainMenuController.EndLoadingScreen();
     }
 
     public void DeInit() {}
@@ -53,6 +56,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
     public void StartGame()
     {
+        startGameButton.GetComponent<Button>().interactable = false;
+        mainMenuController.StartLoadingScreen();
         Hashtable table = new Hashtable();
         table.Add("LevelLoader_startMasterName", PhotonNetwork.MasterClient.NickName);
         PhotonNetwork.CurrentRoom.SetCustomProperties(table);
@@ -89,12 +94,10 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     {
         EventManager.instance.onPlayerReady += null;
         EventManager.instance.onPlayerReady += OnPlayerReady;
-        Debug.Log("RoomPanel:SubscribeEvents");
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onPlayerReady -= OnPlayerReady;
-        Debug.Log("RoomPanel:UnsubcribeEvents");
     }
 }

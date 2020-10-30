@@ -19,6 +19,7 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuCon
         this.mainMenuController = mainMenuController;
         nameInputField.text = PhotonNetwork.NickName + "'s Room";
         playerCountInputField.text = Keys.Menu.MIN_PLAYERS_COUNT.ToString();
+        createButton.GetComponent<Button>().interactable = true;
     }
 
     public void OnPlayersCountChanged(string playerCountText)
@@ -53,6 +54,9 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuCon
 
     public void Create()
     {
+        mainMenuController.StartLoadingScreen();
+        createButton.GetComponent<Button>().interactable = false;
+
         StartCoroutine(WaitForLobby());
     }
 
