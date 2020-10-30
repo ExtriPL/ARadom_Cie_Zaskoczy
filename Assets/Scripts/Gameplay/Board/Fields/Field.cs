@@ -18,6 +18,9 @@ public abstract class Field : ScriptableObject
     [SerializeField, Tooltip("Opis pola"), TextArea]
     protected string fieldHistory;
 
+    [SerializeField, Tooltip("Zdjęcie budynku")]
+    protected Sprite fieldImage;
+
     /// <summary>
     /// Zdarzenia wywoływane, gdy gracz wejdzie na pole
     /// </summary>
@@ -92,4 +95,10 @@ public abstract class Field : ScriptableObject
     /// </summary>
     /// <returns>Historia budynku</returns>
     public string FieldHistory { get => fieldHistory; }
+
+    /// <summary>
+    /// Ikona pola
+    /// </summary>
+    /// <returns>Ikona pola</returns>
+    public Sprite FieldImage { get => fieldImage; }
 }

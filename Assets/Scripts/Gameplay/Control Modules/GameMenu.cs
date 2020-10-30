@@ -12,10 +12,10 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     [SerializeField] public GameObject OpenMenuButton;
     [SerializeField] public GameObject MenuPanel;
     [SerializeField] private GameObject AdminPanel;
-    [SerializeField] private GameObject SettingsPanel;
     [SerializeField] private Button ResumeButton;
     [SerializeField] private Button AdminPanelButton;
-    [SerializeField] private Button SettingsPanelButton;
+    [SerializeField] private GameObject ReturnBackground;
+
 
     [SerializeField] private Button NextTurnButton;
     [SerializeField] private TextMeshProUGUI NextTurnButtonTimer;
@@ -32,6 +32,7 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
         MenuPanel.SetActive(false);
         OpenMenuButton.SetActive(true);
         menuPanelOpen = false;
+        AdminPanelButton.gameObject.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep; //Gdy menu jest wyłączone, ekran nigdy się nie wygasza 
     }
@@ -114,8 +115,16 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
         //Przełączanie stanu gry przez właściciela pokoju
         if (GameplayController.instance.session.roomOwner.IsLocal)
         {
-            if (GameplayController.instance.session.gameState == GameState.running) GameplayController.instance.session.gameState = GameState.paused;
-            else if (GameplayController.instance.session.gameState == GameState.paused) GameplayController.instance.session.gameState = GameState.running;
+            if (GameplayController.instance.session.gameState == GameState.running)
+            {
+                GameplayController.instance.session.gameState = GameState.paused;
+                ReturnBackground.GetComponent<EventTrigger>().enabled = false;
+            }
+            else if (GameplayController.instance.session.gameState == GameState.paused)
+            {
+                GameplayController.instance.session.gameState = GameState.running;
+                ReturnBackground.GetComponent<EventTrigger>().enabled = true;
+            }
         }
         else
         {
@@ -141,21 +150,6 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     {
         MenuPanel.SetActive(true);
         AdminPanel.SetActive(false);
-    }
-
-    /// <summary>
-    /// Otwiera ustawienia aplikacji
-    /// </summary>
-    public void OpenSettings()
-    {
-        SettingsPanel.SetActive(true);
-        MenuPanel.SetActive(false);
-    }
-
-    public void CloseSettings()
-    {
-        SettingsPanel.SetActive(false);
-        MenuPanel.SetActive(true);
     }
 
     /// <summary>

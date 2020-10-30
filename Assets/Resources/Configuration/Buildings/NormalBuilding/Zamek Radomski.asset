@@ -19,6 +19,7 @@ MonoBehaviour:
     szlaku turystycznego Zabytki Radomia.\r\nZamek kr\xF3lewski po\u0142o\u017Cony
     by\u0142 w drugiej po\u0142owie XVI wieku w powiecie radomskim wojew\xF3dztwa
     sandomierskiego."
+  fieldImage: {fileID: 21300000, guid: 805a85106657ef444be5515f4e51956b, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

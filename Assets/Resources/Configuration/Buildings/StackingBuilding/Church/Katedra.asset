@@ -19,5 +19,6 @@ MonoBehaviour:
     w latach 1894-1911. W 1911 by\u0142a oddana w stanie surowym,a na pe\u0142ne
     uko\u0144czenie trzeba by\u0142o czeka\u0107 do  1989 roku. 4 czerwca 1991 roku
     katedr\u0119 odwiedzi\u0142 papie\u017C Jan Pawe\u0142 II."
+  fieldImage: {fileID: 21300000, guid: 35a3733a90bfa6e4cb3e8dbe5d17b571, type: 3}
   model: {fileID: -927199367670048503, guid: 37bbb31f594eef94caa0aa8cad156241, type: 3}
   stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

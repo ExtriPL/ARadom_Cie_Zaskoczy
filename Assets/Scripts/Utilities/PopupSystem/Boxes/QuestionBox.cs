@@ -97,4 +97,10 @@ public class QuestionBox : PopupBox
         SetButtonsInteractable(false);
         base.Close();
     }
+
+    public override void OnShowAnimationStart()
+    {
+        base.OnShowAnimationStart();
+        SettingsController.instance.soundController.PlayEffect(SoundEffectType.PopupSound2);
+    }
 }

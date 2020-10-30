@@ -16,6 +16,7 @@ MonoBehaviour:
   canBePlaced: 1
   fieldHistory: "Wi\u0119zienie! Gdy tu trafisz musisz odczeka\u0107 kilka kolejek...\nNo
     chyba, \u017Ce wyrzucisz 1 i 6 lub 0 i 0."
+  fieldImage: {fileID: 21300000, guid: 8448637a27ee94f48b5d3204d1d231d4, type: 3}
   model: {fileID: 5238772299236998045, guid: 524480e9f87aca746b73917f16d893fd, type: 3}
   freeingThrows:
   - roll1: 1

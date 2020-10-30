@@ -12,11 +12,14 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     public RightPanel rightPanel;
     public GameObject button;
     public TextMeshProUGUI money;
+    public GameObject openMenuButton;
+    public GameObject loadingScreen;
 
     #region Inicjalizacja
 
     private void Start()
     {
+        StartLoadingScreen();
         if (GameplayController.instance.GameInitialized)
             StartPanels();
         else
@@ -48,6 +51,9 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
         //Włączanie przycisku otwierania panelu dolnego
         button.SetActive(true);
+        openMenuButton.SetActive(true);
+
+        EndLoadingScreen();
 
         //Ustawienie wyświetlanej ilości pieniędzy na wartość początkową
         OnPlayerMoneyChanged(GameplayController.instance.session.localPlayer.GetName());
@@ -123,10 +129,41 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     #region Prawy panel
 
-    public void OpenRightPanel() 
+    public void OpenRightPanel(Player player) 
     {
-        rightPanel.Init(this);
+        rightPanel.DeInit();
+        rightPanel.Init(this, player); //Inicjalizacja panelu prawego z danymi przekazanego gracza
+        leftPanel.GetComponent<Animation>().Play("MiddleToLeft"); //Animacja zamknięcia lewego panelu
+        rightPanel.GetComponent<Animation>().Play("RightToMiddle"); //Animacja otwarcia prawego panelu
     }
+
+
+    public void CloseRightPanel() 
+    {
+        rightPanel.GetComponent<Animation>().Play("MiddleToRight");
+        leftPanel.GetComponent<Animation>().Play("LeftToMiddle");
+    }
+
+    public void StartLoadingScreen()
+    {
+        if (!loadingScreen.activeInHierarchy)
+        {
+            loadingScreen.SetActive(true);
+            RectTransform rt = loadingScreen.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0, rt.anchorMin.y);
+            rt.anchorMax = new Vector2(1, rt.anchorMax.y);
+        }
+    }
+
+    public void EndLoadingScreen()
+    {
+        if (loadingScreen.activeInHierarchy)
+        {
+            loadingScreen.GetComponent<Animation>().Play("MiddleToRight");
+            loadingScreen.SetActive(false);
+        }
+    }
+
 
     #endregion
 

@@ -408,6 +408,8 @@ MonoBehaviour:
     value: "Pole wi\u0119zienia"
   - key: CHANCE_SPECIAL
     value: Pole sztosu
+  - key: TRADING
+    value: Handel
   - key: SELECT_PLAYER
     value: Wybierz gracza
   - key: SUBMIT

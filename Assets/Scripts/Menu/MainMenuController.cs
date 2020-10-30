@@ -8,6 +8,9 @@ public class MainMenuController : MonoBehaviour
 {
 
     public List<GameObject> panels = new List<GameObject>();
+
+    [SerializeField] public GameObject loadingScreen;
+
     public void Start()
     {
         Connect();
@@ -65,8 +68,21 @@ public class MainMenuController : MonoBehaviour
         panels[panelId].SetActive(true);
         if (panels[panelId].GetComponent<IInitiable<MainMenuController>>() is IEventSubscribable) panels[panelId].GetComponent<IEventSubscribable>().SubscribeEvents();
         panels[panelId].GetComponent<IInitiable<MainMenuController>>().Init(this);
+        //EndLoadingScreen();
         //Animacja
     }
+
+    public void StartLoadingScreen()
+    {
+        loadingScreen.SetActive(true);
+        loadingScreen.GetComponent<Animation>().Play("LeftToMiddle");
+    }
+
+    public void EndLoadingScreen() 
+    {
+        loadingScreen.GetComponent<Animation>().Play("MiddleToRight");
+    }
+
     #endregion Kontrola Paneli
 
 }

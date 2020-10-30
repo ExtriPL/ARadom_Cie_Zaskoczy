@@ -23,6 +23,7 @@ MonoBehaviour:
     w Radomiu by\u0142 zaadaptowany na ten cel w 1809 roku pobenedykty\u0144ski ko\u015Bci\xF3\u0142
     pw. Wniebowzi\u0119cia Naj\u015Bwi\u0119tszej Marii Panny (obecnie ko\u015Bci\xF3\u0142
     ewangelicko-augusburski)."
+  fieldImage: {fileID: 21300000, guid: 2a9f494ac6afa7245b416dae7a613908, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

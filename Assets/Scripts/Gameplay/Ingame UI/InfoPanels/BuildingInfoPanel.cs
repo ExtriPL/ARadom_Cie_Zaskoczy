@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class BuildingInfoPanel : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class BuildingInfoPanel : MonoBehaviour
     public GameObject buildingName;
     public GameObject buildingInfo;
     public GameObject buildingHistory;
+    public Image icon;
     private LanguageController lC;
 
     private void Start()
@@ -22,6 +24,7 @@ public class BuildingInfoPanel : MonoBehaviour
     public void FillBuildingInfo(Field field)
     {
         ClearBuildingInfo();
+        icon.sprite = field.FieldImage;
         if (field is NormalBuilding normalbuilding)
         {
             int placeId = GameplayController.instance.board.GetPlaceIndex(normalbuilding);

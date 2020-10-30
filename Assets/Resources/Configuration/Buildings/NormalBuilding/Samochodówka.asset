@@ -19,6 +19,7 @@ MonoBehaviour:
     1904 roku. W jego sk\u0142ad wchodz\u0105: technikum na podbudowie gimnazjum
     i zasadnicza szko\u0142a zawodowa na podbudowie gimnazjum. W dniu 13 maja 2013
     roku nadano szkole imi\u0119 rotmistrza Witolda Pileckiego."
+  fieldImage: {fileID: 21300000, guid: a17bd92da4cbd634590cacc340820a57, type: 3}
   tiers:
   - name: puste
     buyPrice: 0
@@ -27,12 +28,12 @@ MonoBehaviour:
   - name: jedna trzecia
     buyPrice: 1000
     enterCost: 380
-    model: {fileID: -927199367670048503, guid: df7145152f45475448cc75baa4efab38, type: 3}
+    model: {fileID: -927199367670048503, guid: 504e7c11615d8964e890e7ef12921f6a, type: 3}
   - name: dwie trzecie
     buyPrice: 500
     enterCost: 600
-    model: {fileID: -927199367670048503, guid: df7145152f45475448cc75baa4efab38, type: 3}
+    model: {fileID: -927199367670048503, guid: 76d8f95d3918dde46831a24d1f751212, type: 3}
   - name: "Ca\u0142y"
     buyPrice: 750
     enterCost: 900
-    model: {fileID: -927199367670048503, guid: df7145152f45475448cc75baa4efab38, type: 3}
+    model: {fileID: -927199367670048503, guid: 5463da686ed583649a229d4c216cee3f, type: 3}

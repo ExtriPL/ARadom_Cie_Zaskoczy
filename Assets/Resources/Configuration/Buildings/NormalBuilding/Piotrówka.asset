@@ -21,6 +21,7 @@ MonoBehaviour:
     mo\u017Cnow\u0142adczego w\u0142adyki, a potem siedzib\u0105 kasztelanii, kt\xF3ra
     strzeg\u0142a pa\u0144stwa przed naje\u017Ad\u017Acami ze wschodu i p\xF3\u0142nocnego
     wschodu (Ja\u0107wingowie, Litwini, Tatarzy)."
+  fieldImage: {fileID: 21300000, guid: 98e136a1f4574414dbe3b6bc6199fe00, type: 3}
   tiers:
   - name: puste
     buyPrice: 0
