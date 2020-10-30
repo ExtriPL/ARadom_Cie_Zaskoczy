@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 public class PlayerSelectorPopup : Popup
 {
-    public Action<Player> onSelectionEnded;
+    public delegate void SelectionEnded(Player caller, Player selected);
+    public SelectionEnded onSelectionEnded;
+    public Player caller;
 
-    public PlayerSelectorPopup(Action<Player> onSelectionEnded)
+    public PlayerSelectorPopup(Player caller, SelectionEnded onSelectionEnded)
         : base(AutoCloseMode.EndOfTurn)
     {
+        this.caller = caller;
         this.onSelectionEnded = onSelectionEnded;
     }
 }

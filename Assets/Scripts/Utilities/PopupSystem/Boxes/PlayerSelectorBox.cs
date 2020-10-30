@@ -75,7 +75,7 @@ public class PlayerSelectorBox : PopupBox
     public override void OnCloseAnimationEnd()
     {
         PlayerSelectorPopup selector = source as PlayerSelectorPopup;
-        selector.onSelectionEnded?.Invoke(GetSelectedPlayer());
+        selector.onSelectionEnded?.Invoke(selector.caller, GetSelectedPlayer());
 
         base.OnCloseAnimationEnd();
     }

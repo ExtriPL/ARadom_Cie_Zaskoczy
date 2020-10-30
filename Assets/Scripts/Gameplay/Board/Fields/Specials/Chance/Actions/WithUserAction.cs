@@ -15,6 +15,13 @@ public class WithUserAction : ActionCard
 
     public override void Call(Player caller)
     {
-        throw new NotImplementedException();
+        PlayerSelectorPopup selector = new PlayerSelectorPopup(caller, OnSelectionEnded);
+        PopupSystem.instance.AddPopup(selector);
+    }
+
+    private void OnSelectionEnded(Player caller, Player selected)
+    {
+        insideAction.Call(caller);
+        insideAction.Call(selected);
     }
 }
