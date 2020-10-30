@@ -3229,7 +3229,8 @@ MonoBehaviour:
     type: 3}
   ChanceBoxPrefab: {fileID: 6923631590141775104, guid: f08385d30f763e243bddf345a86c9bc6,
     type: 3}
-  PlayerSelectorPrefab: {fileID: 0}
+  PlayerSelectorPrefab: {fileID: 4012842804501500987, guid: 32d673e8d77008049a8f4c5c221f9273,
+    type: 3}
 --- !u!1 &640160174
 GameObject:
   m_ObjectHideFlags: 0

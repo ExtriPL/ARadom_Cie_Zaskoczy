@@ -17,7 +17,7 @@ MonoBehaviour:
   fieldHistory: "Pole sztosu! Czyli szansy lub losu! Mo\u017Ce Ci\u0119 tutaj spotka\u0107
     co\u015B wspania\u0142ego...\nAlbo mo\u017Cesz zbankrutowa\u0107!"
   fieldImage: {fileID: 21300000, guid: 07fc2fe43bfe54f4b8f83d04c24bd314, type: 3}
-  model: {fileID: 5238772299236998045, guid: b93803fadf1bdf340a8ab6bc09c1b125, type: 3}
+  model: {fileID: 5238772299236998045, guid: 1c259eb098c7e294bb0d7f1a192d14ac, type: 3}
   chanceCards:
   - {fileID: 11400000, guid: 349d45eaaf1550644ad058e98b5ff8e6, type: 2}
   - {fileID: 11400000, guid: 7a80252d745c70d4e9e0cf8ed0194494, type: 2}
