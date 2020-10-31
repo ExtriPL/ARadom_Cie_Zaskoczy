@@ -436,3 +436,7 @@ MonoBehaviour:
     value: "odrzuci\u0142 ofert\u0119."
   - key: DECLINE_OFFER
     value: "Odrzu\u0107"
+  - key: SELECT_PLAYER
+    value: Wybierz gracza
+  - key: SUBMIT
+    value: "Zatwierd\u017A"

@@ -21,13 +21,13 @@ public class PrisonSpecial : SpecialField
                 if(freeingThrows.Contains(board.dice.rollResult))
                 {
                     QuestionPopup free = QuestionPopup.CreateOkDialog(language.GetWord("YOU_ARE_FREE"));
-                    free.onClose += GameplayController.instance.flow.RollResult();
+                    GameplayController.instance.flow.RollResult().Invoke(source);
                     PopupSystem.instance.AddPopup(free);
                 }
                 else
                 {
                     QuestionPopup noFree = QuestionPopup.CreateOkDialog(language.GetWord("NOT_THIS_TIME"));
-
+                    GameplayController.instance.diceController.Roll(board.dice.rollResult.Roll1, board.dice.rollResult.Roll2);
                     PopupSystem.instance.AddPopup(noFree);
                 }
             };

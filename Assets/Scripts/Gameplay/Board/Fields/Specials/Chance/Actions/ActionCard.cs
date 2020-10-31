@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 [Serializable]
 public abstract class ActionCard
@@ -53,6 +54,20 @@ public abstract class ActionCard
                     card = new MoveAction(mode, byAmount, toTarget, targetId, targetType, movementType);
                 }
                 break;
+            case ActionType.WithUser:
+                {
+                    ActionType insideType = (ActionType)Enum.Parse(typeof(ActionType), form.variables[0]);
+                    if (insideType != ActionType.WithUser)
+                    {
+                        ActionString insideActionString = ActionString.FromString(form.variables[(int)insideType + 1]);
+                        ActionCard insideAction = Create(insideActionString);
+
+                        card = new WithUserAction(insideAction);
+                    }
+                    else
+                        Debug.LogError("Nie można zagnieżdzać typu WithUser w akcji typu WithUser");
+                }
+                break;
         }
 
         return card;
@@ -65,7 +80,8 @@ public abstract class ActionCard
     {
         Money,
         Wait,
-        Move
+        Move,
+        WithUser
     }
 }
 
@@ -103,8 +119,93 @@ public class ActionString
                 return new ActionString(ActionCard.ActionType.Wait, new List<string>() { "Player", "0" });
             case ActionCard.ActionType.Move:
                 return new ActionString(ActionCard.ActionType.Move, new List<string>() { "By", "0", "PlaceId", "0", "Prison", "Regular" });
+            case ActionCard.ActionType.WithUser:
+                {
+                    List<string> variables = new List<string>();
+                    variables.Add(ActionCard.ActionType.Money.ToString());
+
+                    //Ustawianie domyślnych wartości dla wszystkich możliwych ActionType
+                    foreach(ActionCard.ActionType type in Enum.GetValues(typeof(ActionCard.ActionType)))
+                    {
+                        if (type == ActionCard.ActionType.WithUser)
+                            variables.Add(new ActionString(ActionCard.ActionType.WithUser, new List<string>()).ToString());
+                        else
+                            variables.Add(GenerateDefault(type).ToString());
+                    }
+
+                    return new ActionString(ActionCard.ActionType.WithUser, variables);
+                }
         }
 
         return null;
+    }
+
+    public static ActionString FromString(string values)
+    {
+        ActionCard.ActionType actionType = ActionCard.ActionType.Money;
+        List<string> unpackedValues = new List<string>();
+        List<string> list = SplitString(values, '{', '}');
+
+        for(int i = 0; i < list.Count; i++)
+        {
+            string unpacked = list[i].Substring(1, list[i].Length - 2);
+
+            if (i == 0)
+                actionType = (ActionCard.ActionType)Enum.Parse(typeof(ActionCard.ActionType), unpacked);
+            else
+                unpackedValues.Add(unpacked);
+        }
+
+        return new ActionString(actionType, unpackedValues);
+    }
+
+    private static  List<string> SplitString(string values, char beginSign, char endSign)
+    {
+        List<string> list = new List<string>();
+
+        int start = 0;
+        int end = 0;
+        int beginSigns = 0;
+        int endSigns = 0;
+
+        for(int i = 1; i < values.Length - 1; i++)
+        {
+            char current = values[i];
+            if (current == beginSign)
+            {
+                if(beginSigns == 0)
+                    start = i;
+                beginSigns++;
+            }
+            else if (current == endSign)
+            {
+                end = i;
+                endSigns++;
+            }
+
+            if(beginSigns == endSigns)
+            {
+                beginSigns = 0;
+                endSigns = 0;
+
+                list.Add(values.Substring(start, end - start + 1));
+            }
+        }
+
+        return list;
+    }
+
+    public override string ToString()
+    {
+        string values = "{{" +  actionType.ToString() + "}";
+        
+        for(int i = 0; i < variables.Count; i++)
+        {
+            values += "{" + variables[i] + "}";
+        }
+
+        values += "}";
+
+        return values;
     }
 }
