@@ -253,6 +253,12 @@ public class DiceController : MonoBehaviour
         }
     }
 
+    public void SetVisibility(bool visible)
+    {
+        dice1Holder.gameObject.SetActive(visible);
+        dice2Holder.gameObject.SetActive(visible);
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
