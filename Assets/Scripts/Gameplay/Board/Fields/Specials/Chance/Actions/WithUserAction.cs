@@ -22,6 +22,7 @@ public class WithUserAction : ActionCard
     private void OnSelectionEnded(Player caller, Player selected)
     {
         insideAction.Call(caller);
-        insideAction.Call(selected);
+        if(selected != null)
+            insideAction.Call(selected);
     }
 }

@@ -1,10 +1,6 @@
-﻿using GoogleARCore;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [System.Serializable]
 public class PlaceVisualiser : Visualiser

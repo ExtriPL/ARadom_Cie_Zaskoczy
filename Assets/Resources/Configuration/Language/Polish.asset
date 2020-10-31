@@ -414,3 +414,13 @@ MonoBehaviour:
     value: Wybierz gracza
   - key: SUBMIT
     value: "Zatwierd\u017A"
+  - key: CHANCE_CARD_AIRSHOW_TITLE
+    value: Air Show
+  - key: CHANCE_CARD_AIRSHOW_CONTENT
+    value: "Idziesz na Air Show i mo\u017Cesz zabra\u0107 swojego koleg\u0119. Inne
+      osoby p\u0142ac\u0105 wam po 100 groszy radomskich."
+  - key: CHANCE_CARD_ALCOHOL_PUMP_ROOM_TITLE
+    value: Pijalnia alkoholi
+  - key: CHANCE_CARD_ALCOHOL_PUMP_ROOM_CONTENT
+    value: "Wpad\u0142e\u015B z kolegami do pijalni alkoholi. Wybierz gracza, aby
+      odczeka\u0107 z nim 2 kolejki."

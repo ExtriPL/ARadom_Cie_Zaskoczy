@@ -38,6 +38,8 @@ public class FlowController : IEventSubscribable
         get => gameplayController.session.FindPlayer(gameplayController.board.dice.currentPlayer);
     }
 
+    private bool gameStarted;
+
     #region Inicjalizacja
 
     public void SubscribeEvents() 
@@ -54,6 +56,7 @@ public class FlowController : IEventSubscribable
     {
         gameplayController = GameplayController.instance;
         ResetSettings();
+        gameStarted = true;
         if (gameplayController.session.roomOwner.IsLocal)
             EventManager.instance.SendOnTurnChanged("", gameplayController.board.dice.currentPlayer);
     }
@@ -61,7 +64,7 @@ public class FlowController : IEventSubscribable
     public void Update()
     {
         //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
+        if (gameStarted && gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
         {
             float time = Time.time - beginTime;
             

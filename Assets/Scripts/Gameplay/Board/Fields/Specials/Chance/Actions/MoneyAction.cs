@@ -82,7 +82,7 @@ public class MoneyAction : ActionCard
         for (int i = 0; i < session.playerCount; i++)
         {
             Player p = session.FindPlayer(i);
-            if (!p.NetworkPlayer.IsLocal)
+            if (!p.GetName().Equals(caller.GetName()))
             {
                 /*
                  Jedynie takie płatności mają sens:
@@ -92,7 +92,7 @@ public class MoneyAction : ActionCard
                  */
 
                 if (payer == MoneyActor.Player)
-                    banking.Pay(session.localPlayer, p, amount);
+                    banking.Pay(caller, p, amount);
                 else if (payer == MoneyActor.Bank)
                 {
                     p.IncreaseMoney(amount);
@@ -114,15 +114,15 @@ public class MoneyAction : ActionCard
         */
 
         if (payer == MoneyActor.Bank)
-            session.localPlayer.IncreaseMoney(amount);
+            caller.IncreaseMoney(amount);
         else if (payer == MoneyActor.Others)
         {
             for (int i = 0; i < session.playerCount; i++)
             {
                 Player p = session.FindPlayer(i);
-                if (!p.NetworkPlayer.IsLocal)
+                if (!p.GetName().Equals(caller.GetName()))
                 {
-                    banking.Pay(p, session.localPlayer, amount);
+                    banking.Pay(p, caller, amount);
                     //Odpowiedni komunikat
                 }
             }
