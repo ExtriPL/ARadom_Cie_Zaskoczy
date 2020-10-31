@@ -74,6 +74,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         EventManager.instance.onTurnChanged += OnTurnChanged;
         EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
         EventManager.instance.onGameStateChanged += OnGameStateChanged;
+        EventManager.instance.onMessageArrival += OnMessageArrival;
     }
 
     public void UnsubscribeEvents()
@@ -81,6 +82,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         EventManager.instance.onTurnChanged -= OnTurnChanged;
         EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
         EventManager.instance.onGameStateChanged -= OnGameStateChanged;
+        EventManager.instance.onMessageArrival -= OnMessageArrival;
     }
 
     /// <summary>
@@ -283,6 +285,13 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
             QuestionPopup endGame = QuestionPopup.CreateOkDialog(message, delegate { menu.QuitGame(); } );
             PopupSystem.instance.AddPopup(endGame);
         }
+    }
+
+    private void OnMessageArrival(string message, IconPopupType iconType)
+    {
+        IconPopup messagePopup = new IconPopup(iconType, message);
+
+        PopupSystem.instance.AddPopup(messagePopup);
     }
 
     #endregion Obsługa eventów

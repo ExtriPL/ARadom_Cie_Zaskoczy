@@ -12,7 +12,8 @@ public abstract class ActionCard
     /// Wywołanie akcji
     /// </summary>
     /// <param name="caller">Gracz, dla którego zostanie wywołana akcja</param>
-    public abstract void Call(Player caller);
+    /// <param name="showMessage">Czy osoba, któa jest callerem, ma zobaczyć wiadomość</param>
+    public abstract void Call(Player caller, bool showMessage = false);
 
     /// <summary>
     /// Tworzy obiekt Akcji na podstawie informacji zawartych w ActionStringu(Nazwa klasy + lista zmiennych)

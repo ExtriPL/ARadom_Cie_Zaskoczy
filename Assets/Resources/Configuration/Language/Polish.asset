@@ -424,3 +424,13 @@ MonoBehaviour:
   - key: CHANCE_CARD_ALCOHOL_PUMP_ROOM_CONTENT
     value: "Wpad\u0142e\u015B z kolegami do pijalni alkoholi. Wybierz gracza, aby
       odczeka\u0107 z nim 2 kolejki."
+  - key: TURNS_LOST
+    value: "Tracisz kolejk\u0119 x"
+  - key: RADOM_PENNIES
+    value: ' groszy radomskich'
+  - key: YOU_PAY
+    value: "Wp\u0142acasz "
+  - key: FOR_BANK
+    value: ' do banku'
+  - key: YOU_ARE_MOVING_TO_PLACE
+    value: "Przesuwasz si\u0119 na pole o numerze "

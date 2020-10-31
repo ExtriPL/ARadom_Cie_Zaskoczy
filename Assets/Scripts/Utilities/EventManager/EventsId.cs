@@ -23,5 +23,6 @@ public enum EventsId
     PlayerLostGame,
     PlayerReady,
     PlayerTeleport,
-    PlayerImprison
+    PlayerImprison,
+    Message
 }

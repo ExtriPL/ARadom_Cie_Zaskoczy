@@ -28,19 +28,19 @@ public class MoneyAction : ActionCard
         this.amount = amount;
     }
 
-    public override void Call(Player caller)
+    public override void Call(Player caller, bool showMessage = false)
     {
         //Obsługa przypadku dla banku nie jest konieczna, ponieważ bank nie ma konta
         switch(receiver)
         {
             case MoneyActor.All:
-                ReceiverAll(caller);
+                ReceiverAll(caller, showMessage);
                 break;
             case MoneyActor.Others:
-                ReceiverOthers(caller);
+                ReceiverOthers(caller, showMessage);
                 break;
             case MoneyActor.Player:
-                ReceiverPlayer(caller);
+                ReceiverPlayer(caller, showMessage);
                 break;
         }
 
@@ -48,17 +48,17 @@ public class MoneyAction : ActionCard
         switch(payer)
         {
             case MoneyActor.All:
-                PayerAll(caller);
+                PayerAll(caller, showMessage);
                 break;
             case MoneyActor.Player:
-                PayerPlayer(caller);
+                PayerPlayer(caller, showMessage);
                 break;
         }
 
         Debug.LogError("Brak komunikatów");
     }
 
-    private void ReceiverAll(Player caller)
+    private void ReceiverAll(Player caller, bool showMessage)
     {
         GameSession session = GameplayController.instance.session;
 
@@ -69,12 +69,16 @@ public class MoneyAction : ActionCard
             {
                 Player p = session.FindPlayer(i);
                 p.IncreaseMoney(amount);
-                //Komunikat dla wszystkich graczy o otrzymaniu pieniędzy
+
+                if (!p.GetName().Equals(caller.GetName()))
+                    ShowReceiveMessage(p);
+                else if (showMessage)
+                    ShowReceiveMessage(p);
             }
         }
     }
 
-    private void ReceiverOthers(Player caller)
+    private void ReceiverOthers(Player caller, bool showMessage)
     {
         GameSession session = GameplayController.instance.session;
         BankingController banking = GameplayController.instance.banking;
@@ -96,13 +100,13 @@ public class MoneyAction : ActionCard
                 else if (payer == MoneyActor.Bank)
                 {
                     p.IncreaseMoney(amount);
-                    //Dodać komunikat
+                    ShowReceiveMessage(p);
                 }
             }
         }
     }
 
-    private void ReceiverPlayer(Player caller)
+    private void ReceiverPlayer(Player caller, bool showMessage)
     {
         GameSession session = GameplayController.instance.session;
         BankingController banking = GameplayController.instance.banking;
@@ -114,22 +118,23 @@ public class MoneyAction : ActionCard
         */
 
         if (payer == MoneyActor.Bank)
+        {
             caller.IncreaseMoney(amount);
+            if (showMessage)
+                ShowReceiveMessage(caller);
+        }
         else if (payer == MoneyActor.Others)
         {
             for (int i = 0; i < session.playerCount; i++)
             {
                 Player p = session.FindPlayer(i);
                 if (!p.GetName().Equals(caller.GetName()))
-                {
                     banking.Pay(p, caller, amount);
-                    //Odpowiedni komunikat
-                }
             }
         }
     }
 
-    private void PayerAll(Player caller)
+    private void PayerAll(Player caller, bool showMessage)
     {
         GameSession session = GameplayController.instance.session;
 
@@ -141,14 +146,36 @@ public class MoneyAction : ActionCard
                 Player p = session.FindPlayer(i);
 
                 p.DecreaseMoney(amount);
+
+                if (!p.GetName().Equals(caller.GetName()) || showMessage)
+                    ShowPayMessage(p);
             }
         }
     }
 
-    private void PayerPlayer(Player caller)
+    private void PayerPlayer(Player caller, bool showMessage)
     {
-        if(receiver == MoneyActor.Bank)
+        if (receiver == MoneyActor.Bank)
+        {
             caller.DecreaseMoney(amount);
+
+            if (showMessage)
+                ShowPayMessage(caller);
+        }
+    }
+
+    private void ShowReceiveMessage(Player target)
+    {
+        LanguageController lang = SettingsController.instance.languageController;
+        string message = lang.GetWord("YOU_RECEIVED") + amount + lang.GetWord("RADOM_PENNIES");
+        EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
+    }
+
+    private void ShowPayMessage(Player target)
+    {
+        LanguageController lang = SettingsController.instance.languageController;
+        string message = lang.GetWord("YOU_PAY") + amount + lang.GetWord("RADOM_PENNIES") + lang.GetWord("FOR_BANK");
+        EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 
     public enum MoneyActor

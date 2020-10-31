@@ -27,20 +27,20 @@ public class MoveAction : ActionCard
         this.movementType = movementType;
     }
 
-    public override void Call(Player caller)
+    public override void Call(Player caller, bool showMessage = false)
     {
         switch (mode)
         {
             case Mode.By:
-                MoveBy(caller);
+                MoveBy(caller, showMessage);
                 break;
             case Mode.To:
-                MoveTo(caller);
+                MoveTo(caller, showMessage);
                 break;
         }
     }
 
-    private void MoveBy(Player caller)
+    private void MoveBy(Player caller, bool showMessage)
     {
         Board board = GameplayController.instance.board;
 
@@ -50,38 +50,52 @@ public class MoveAction : ActionCard
             board.TeleportPlayer(caller, caller.PlaceId + byAmount);
     }
 
-    private void MoveTo(Player caller)
+    private void MoveTo(Player caller, bool showMessage)
     {
         switch (toTarget)
         {
             case ToTarget.PlaceId:
-                TargetPlaceId(caller);
+                TargetPlaceId(caller, showMessage);
                 break;
             case ToTarget.PlaceType:
-                TargetPlaceType(caller);
+                TargetPlaceType(caller, showMessage);
                 break;
         }
     }
 
-    private void TargetPlaceId(Player caller)
+    private void TargetPlaceId(Player caller, bool showMessage)
     {
         Board board = GameplayController.instance.board;
 
         int moveAmount = board.GetPlacesDistance(caller.PlaceId, targetId);
         board.MovePlayer(caller, moveAmount);
+
+        if (showMessage)
+            ShowMessage(caller);
     }
 
-    private void TargetPlaceType(Player caller)
+    private void TargetPlaceType(Player caller, bool showMessage)
     {
         targetId = GetPlaceId(targetType);
 
         if (movementType == MovementType.Regular)
-            TargetPlaceId(caller);
+            TargetPlaceId(caller, showMessage);
         else if(movementType == MovementType.Teleport)
         {
             Board board = GameplayController.instance.board;
             board.TeleportPlayer(caller, targetId);
+
+            if (showMessage)
+                ShowMessage(caller);
         }
+    }
+
+    private void ShowMessage(Player target)
+    {
+        LanguageController lang = SettingsController.instance.languageController;
+        string message = lang.GetWord("YOU_ARE_MOVING_TO_PLACE") + targetId;
+
+        EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 
     private static int GetPlaceId(PlaceTypeTarget targetType)

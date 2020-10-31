@@ -80,8 +80,11 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// </summary>
     public event Sync onSync;
 
-    public delegate void Pay(string payerName, string receiverName, float amount);
+    public delegate void Pay(string payerName, string receiverName, float amount, string message = "");
     public event Pay onPay;
+
+    public delegate void MessageEvent(string message, IconPopupType iconType);
+    public event MessageEvent onMessageArrival;
 
     #endregion Eventy
 
@@ -241,9 +244,9 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// <param name="payerName">Gracz, który przekazywał pieniądze</param>
     /// <param name="receiverName">Gracz, który otrzymał pieniądze</param>
     /// <param name="amount">Ilość wymienianych pieniędzy</param>
-    public void SendPayEvent(string payerName, string receiverName, float amount)
+    public void SendPayEvent(string payerName, string receiverName, float amount, string message = "")
     {
-        object[] data = { payerName, receiverName, amount };
+        object[] data = { payerName, receiverName, amount, message };
         RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent((byte)EventsId.Pay, data, raiseOptions, sendOptions);
@@ -269,6 +272,15 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         SendOptions sendOptions = new SendOptions { Reliability = true };
 
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerImprison, data, raiseOptions, sendOptions);
+    }
+
+    public void SendPopupMessage(string message, IconPopupType iconType, Player target)
+    {
+        object[] data = { message, (int)iconType };
+        int targetActor = target.NetworkPlayer.ActorNumber;
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { TargetActors = new int[] { targetActor } };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent((byte)EventsId.Message, data, raiseOptions, sendOptions);
     }
 
     #endregion Wysyłanie eventów sieciowych
@@ -371,7 +383,8 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     string payerName = (string)data[0];
                     string receiverName = (string)data[1];
                     float amount = (float)data[2];
-                    onPay?.Invoke(payerName, receiverName, amount);
+                    string message = (string)data[3];
+                    onPay?.Invoke(payerName, receiverName, amount, message);
                 }
                 break;
             case (byte)EventsId.PlayerLostGame:
@@ -404,6 +417,15 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     string playerName = (string)data[0];
 
                     onPlayerImprisoned?.Invoke(playerName);
+                }
+                break;
+            case (byte)EventsId.Message:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    string message = (string)data[0];
+                    IconPopupType iconType = (IconPopupType)data[1];
+
+                    onMessageArrival?.Invoke(message, iconType);
                 }
                 break;
         }
