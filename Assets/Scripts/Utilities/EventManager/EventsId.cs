@@ -24,7 +24,7 @@ public enum EventsId
     PlayerReady,
     PlayerTeleport,
     PlayerImprison,
-    Message
+    Message,
     TradeOffer,
     TradeResponse
 }
