@@ -410,6 +410,32 @@ MonoBehaviour:
     value: Pole sztosu
   - key: TRADING
     value: Handel
+  - key: MAKE_AN_OFFER_TO
+    value: "Z\u0142\xF3\u017C ofert\u0119 graczowi "
+  - key: CONFIRM_OFFER
+    value: "Z\u0142\xF3\u017C"
+  - key: MY_BUILDINGS
+    value: Moje budynki
+  - key: MONEY
+    value: "Pieni\u0105dze"
+  - key: PLAYERS_BUILDINGS
+    value: Budynki gracza
+  - key: OFFER_FROM
+    value: Oferta od gracza
+  - key: AMOUNT
+    value: Kwota
+  - key: ACCEPT_OFFER
+    value: Zaakceptuj
+  - key: DO_YOU_WANT_TO_SEE
+    value: "Czy chcesz j\u0105 zobaczy\u0107?"
+  - key: YOU_GOT_AN_OFFER_FROM
+    value: " Dosta\u0142e\u015B ofert\u0119 od"
+  - key: ACCEPTED_THE_OFFER
+    value: "zaakceptowa\u0142 ofert\u0119."
+  - key: REJECTED_THE_OFFER
+    value: "odrzuci\u0142 ofert\u0119."
+  - key: DECLINE_OFFER
+    value: "Odrzu\u0107"
   - key: SELECT_PLAYER
     value: Wybierz gracza
   - key: SUBMIT

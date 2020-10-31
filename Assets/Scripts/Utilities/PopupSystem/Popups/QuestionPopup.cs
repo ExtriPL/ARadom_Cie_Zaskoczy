@@ -55,6 +55,8 @@ public class QuestionPopup : Popup
     public static QuestionPopup CreateYesNoDialog(string question, PopupAction yesAction = null, PopupAction noAction = null)
     {
         QuestionPopup popup = new QuestionPopup(question);
+        yesAction += Functionality.Destroy();
+        noAction += Functionality.Destroy();
         popup.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
         popup.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
 
