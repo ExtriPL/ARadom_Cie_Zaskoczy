@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Muzeum Wsi Radomskiej
   m_EditorClassIdentifier: 
   fieldName: Muzeum Wsi Radomskiej
-  canBePlaced: 1
+  canBePlaced: 0
   fieldHistory: "Muzuem Wsi Radomskiej \u2013 Skansen, powsta\u0142y na skutek problemu
     ochrony zabytk\xF3w kultury ludowej w latach 60\u2019 . Oficjalne powstanie muzeum
     datuje si\u0119 na 31 grudnia 1976 r."
