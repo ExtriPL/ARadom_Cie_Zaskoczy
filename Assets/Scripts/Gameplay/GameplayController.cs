@@ -197,7 +197,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
     public void Impison(Player player)
     {
-        if (board.PlaceExists("Prison"))
+        if (board.PlaceExists(typeof(PrisonSpecial)))
         {
             int placeIndex = board.GetPlaceIndex("Prison");
             board.TeleportPlayer(player, placeIndex);

@@ -166,14 +166,12 @@ public class MoneyAction : ActionCard
 
     private void ShowReceiveMessage(Player target)
     {
-        LanguageController lang = SettingsController.instance.languageController;
         string message = lang.GetWord("YOU_RECEIVED") + amount + lang.GetWord("RADOM_PENNIES");
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 
     private void ShowPayMessage(Player target)
     {
-        LanguageController lang = SettingsController.instance.languageController;
         string message = lang.GetWord("YOU_PAY") + amount + lang.GetWord("RADOM_PENNIES") + lang.GetWord("FOR_BANK");
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }

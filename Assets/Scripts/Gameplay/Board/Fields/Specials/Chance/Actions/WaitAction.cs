@@ -56,7 +56,6 @@ public class WaitAction : ActionCard
 
     private void ShowMessage(Player calller)
     {
-        LanguageController lang = SettingsController.instance.languageController;
         string message = lang.GetWord("TURNS_LOST") + rounds;
 
         if (calller.NetworkPlayer.IsLocal)

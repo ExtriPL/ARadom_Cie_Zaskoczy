@@ -460,3 +460,5 @@ MonoBehaviour:
     value: ' do banku'
   - key: YOU_ARE_MOVING_TO_PLACE
     value: "Przesuwasz si\u0119 na pole o numerze "
+  - key: YOU_HAVE_BEEN_IMPRISONED
+    value: "Zosta\u0142e\u015B uwi\u0119ziony"

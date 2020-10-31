@@ -92,9 +92,7 @@ public class MoveAction : ActionCard
 
     private void ShowMessage(Player target)
     {
-        LanguageController lang = SettingsController.instance.languageController;
         string message = lang.GetWord("YOU_ARE_MOVING_TO_PLACE") + targetId;
-
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 

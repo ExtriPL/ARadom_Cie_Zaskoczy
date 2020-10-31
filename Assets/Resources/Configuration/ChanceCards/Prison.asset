@@ -16,11 +16,5 @@ MonoBehaviour:
   contentKey: CHANCE_CARD_PRISON_CONTENT
   active: 1
   actionStrings:
-  - actionType: 2
-    variables:
-    - To
-    - 0
-    - PlaceType
-    - 0
-    - Prison
-    - Teleport
+  - actionType: 4
+    variables: []
