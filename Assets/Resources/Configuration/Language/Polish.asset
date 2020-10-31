@@ -398,7 +398,7 @@ MonoBehaviour:
       pieni\u0119dzy. Aby si\u0119 wydosta\u0107 musisz wyrzuci\u0107 tyle samo oczek
       na obu kostkach, jedno i sze\u015B\u0107 oczek lub mie\u0107 kart\u0119 wychodzisz
       z wi\u0119zienia."
-      - key: NORMAL_BUILDING
+  - key: NORMAL_BUILDING
     value: "Zwyk\u0142y budynek"
   - key: CHURCH_STACKING
     value: "Ko\u015Bci\xF3\u0142"
@@ -408,3 +408,9 @@ MonoBehaviour:
     value: "Pole wi\u0119zienia"
   - key: CHANCE_SPECIAL
     value: Pole sztosu
+  - key: TRADING
+    value: Handel
+  - key: SELECT_PLAYER
+    value: Wybierz gracza
+  - key: SUBMIT
+    value: "Zatwierd\u017A"

@@ -17,6 +17,7 @@ MonoBehaviour:
   fieldHistory: "Muzuem Wsi Radomskiej \u2013 Skansen, powsta\u0142y na skutek problemu
     ochrony zabytk\xF3w kultury ludowej w latach 60\u2019 . Oficjalne powstanie muzeum
     datuje si\u0119 na 31 grudnia 1976 r."
+  fieldImage: {fileID: 21300000, guid: 9658fd66612d2404088cb3cfffd6a800, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

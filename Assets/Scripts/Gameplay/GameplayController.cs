@@ -13,6 +13,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     public Board board = new Board();
     public ARController arController;
     public FlowController flow = new FlowController();
+    public DiceController diceController;
 
     /// <summary>
     /// Plik zapisu gry wczytany z pliku

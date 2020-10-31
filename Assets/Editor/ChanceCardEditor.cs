@@ -101,6 +101,9 @@ public class ChanceCardEditor : Editor
                 case ActionCard.ActionType.Move:
                     ShowMoveAction(actionString);
                     break;
+                case ActionCard.ActionType.WithUser:
+                    ShowWithUserAction(actionString);
+                    break;
             }
         }
 
@@ -159,6 +162,34 @@ public class ChanceCardEditor : Editor
                 moveString.variables[5] = EditorGUILayout.EnumPopup("Movement Type", movementType).ToString();
             }
         }
+    }
+
+    private void ShowWithUserAction(ActionString withUserString)
+    {
+        ActionCard.ActionType insideType = (ActionCard.ActionType)Enum.Parse(typeof(ActionCard.ActionType), withUserString.variables[0]);
+        withUserString.variables[0] = EditorGUILayout.EnumPopup("InsideType", insideType).ToString();
+
+        ActionString moneyString = ActionString.FromString(withUserString.variables[1]);
+        ActionString waitString = ActionString.FromString(withUserString.variables[2]);
+        ActionString moveString = ActionString.FromString(withUserString.variables[3]);
+        //Pomijamy indeks 4, bo jest to ActionType.WithUser
+
+        switch(insideType)
+        {
+            case ActionCard.ActionType.Money:
+                ShowMoneyAction(moneyString);
+                break;
+            case ActionCard.ActionType.Wait:
+                ShowWaitAction(waitString);
+                break;
+            case ActionCard.ActionType.Move:
+                ShowMoveAction(moveString);
+                break;
+        }
+
+        withUserString.variables[1] = moneyString.ToString();
+        withUserString.variables[2] = waitString.ToString();
+        withUserString.variables[3] = moveString.ToString();
     }
 
     #endregion Pokazywanie akcji 

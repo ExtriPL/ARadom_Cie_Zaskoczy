@@ -12,6 +12,8 @@ public class IngamePlayerListing : MonoBehaviour
     public GameObject button;
     private UIPanels UIPanels;
     private Player player;
+    public GameObject tradeButton;
+
     public void DeInit()
     {
         player = null;
@@ -27,19 +29,20 @@ public class IngamePlayerListing : MonoBehaviour
         nickName.text = player.GetName();
         money.text = player.Money.ToString();
         nickName.color = money.color = player.MainColor;
-        //if (player.NetworkPlayer == PhotonNetwork.LocalPlayer) 
-        //{
-        //    button.SetActive(false);
-        //}
+        //if (player.NetworkPlayer == PhotonNetwork.LocalPlayer)tradeButton.SetActive(false);
     }
 
     public void PreInit()
     {
-        //throw new System.NotImplementedException();
     }
 
     public void OpenPlayerInfo() 
     {
         UIPanels.CloseLeftPanel(player);
+    }
+
+    public void OpenTrading() 
+    {
+        UIPanels.OpenRightPanel(player);
     }
 }

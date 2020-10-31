@@ -31,6 +31,7 @@ MonoBehaviour:
     Radomia i planowane jest przeniesienie do niego niekt\xF3rych jednostek urz\u0119du
     miejskiego oraz rady miejskiej, zajmuj\u0105cej obecnie budynek dawnego Sejmiku
     Powiatowego przy ulicy Moniuszki."
+  fieldImage: {fileID: 21300000, guid: bbb41980ae3a72c49a24c285e78002c2, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

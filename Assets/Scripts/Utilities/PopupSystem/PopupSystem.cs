@@ -12,6 +12,7 @@ public class PopupSystem : MonoBehaviour
     [SerializeField, Tooltip("Obiekt przechowujący wzór IconBox-u")] private GameObject IconBoxPrefab;
     [SerializeField, Tooltip("Obiekt przechowujący wzór QuestionBox-u")] private GameObject QuestionBoxPrefab;
     [SerializeField, Tooltip("Obiekt przechowujący wzór ChanceBox-u")] private GameObject ChanceBoxPrefab;
+    [SerializeField, Tooltip("Obiekt przechowujący wzór PlayerSelectorBox-u")] private GameObject PlayerSelectorPrefab;
 
     /// <summary>
     /// Lista przechowująca wszystkie popup-y w kolejce w celu wyświetlenia ich, gdy na ekranie zrobi się miejsce
@@ -28,7 +29,8 @@ public class PopupSystem : MonoBehaviour
     {
         { typeof(IconBox), typeof(IconPopup) },
         { typeof(QuestionBox), typeof(QuestionPopup) },
-        { typeof(ChanceBox), typeof(ChancePopup) }
+        { typeof(ChanceBox), typeof(ChancePopup) },
+        { typeof(PlayerSelectorBox), typeof(PlayerSelectorPopup) }
     };
     public Dictionary<Type, BoxPool> boxPools = new Dictionary<Type, BoxPool>();
 
@@ -63,6 +65,7 @@ public class PopupSystem : MonoBehaviour
         boxPools.Add(typeof(IconBox), new BoxPool(gameObject, IconBoxPrefab, Keys.Popups.ICON_SHOWED_AMOUNT));
         boxPools.Add(typeof(QuestionBox), new BoxPool(gameObject, QuestionBoxPrefab, 1));
         boxPools.Add(typeof(ChanceBox), new BoxPool(gameObject, ChanceBoxPrefab, 1));
+        boxPools.Add(typeof(PlayerSelectorBox), new BoxPool(gameObject, PlayerSelectorPrefab, 1));
     }
 
     /// <summary>

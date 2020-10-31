@@ -23,5 +23,6 @@ MonoBehaviour:
     rosyjskiego architekta \u2013 M. Prieobra\u017Ce\u0144skiego. \u015Awi\u0105tynia
     zosta\u0142a po\u015Bwi\u0119cona 9 lutego 1902 roku przez lubelskiego biskupa
     prawos\u0142awnego Germana."
+  fieldImage: {fileID: 21300000, guid: 150ff0082d49d8a4a9f30e2ae05ff0aa, type: 3}
   model: {fileID: -927199367670048503, guid: 9e0b5dbfad4cb864fbf68b28fad6fb52, type: 3}
   stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

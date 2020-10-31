@@ -133,7 +133,6 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// <param name="playerName">Nazwa gracza</param>
     public void SendOnPlayerReady(string playerName, bool ready)
     {
-        Debug.Log(playerName + ":" + ready);
         object[] data = { playerName, ready };
         RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         SendOptions sendOptions = new SendOptions { Reliability = true };

@@ -20,6 +20,7 @@ MonoBehaviour:
     dzisiaj znanym stylem. Od okresu mi\u0119dzywojennego do dzi\u015B pe\u0142ni\u0142
     r\xF3\u017Cne funkcj\u0119 m.in. kostnic\u0119 . Obecnie to jest Galeria Rogatka
     Wydzia\u0142u Sztuki UTH.\r"
+  fieldImage: {fileID: 21300000, guid: e70163a4337b65040869a67afaa149de, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

@@ -14,7 +14,9 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// <summary>
     /// Obiekt przechowujący odwołanie do planszy wyświetlanej przez AR
     /// </summary>
+    [SerializeField]
     private GameObject board;
+    [HideInInspector]
     /// <summary>
     /// Obiekt przechowujący model budynku wyświetlanego na środku planszy
     /// </summary>
@@ -31,6 +33,8 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// Efekt podświetlania budynku
     /// </summary>
     public GameObject highlightEffect;
+    [SerializeField, Tooltip("Obiekt przechowujący instancję kostki")]
+    private GameObject dice;
 
     /// <summary>
     /// Strzałka pokazująca na budynek
@@ -59,8 +63,8 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// </summary>
     public void InitBoard()
     {
-        board = new GameObject("Board"); //Tworzenie instancji planszy
-        board.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
+        //board = new GameObject("Board"); //Tworzenie instancji planszy
+        //board.GetComponent<Transform>().parent = gameObject.GetComponent<Transform>();
 
         //Tworzenie obiektu przechowującego środkowy budynek
         centerBuilding = new GameObject("centerBuilding");
@@ -96,6 +100,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
             field.GetComponent<Transform>().localScale *= Keys.Board.SCALLING_FACTOR;
 
             field.GetComponent<PlaceVisualiser>().Init(GameplayController.instance.board.GetField(i), i);
+            dice.SetActive(true);
 
             //if (i == 0) 
             //{
@@ -224,6 +229,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
         }
 
         boardVisible = visible;
+        dice.SetActive(visible);
     }
 
     #endregion Obsługa AR
