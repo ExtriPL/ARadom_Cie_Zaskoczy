@@ -128,11 +128,11 @@ public class DiceController : MonoBehaviour
         startPosition1 = dice1Holder.localPosition;
         startPosition2 = dice2Holder.localPosition;
 
-        Vector3 displacement = startDice1Position - startDice2Position;
+        Vector3 displacement = startDice2Position - startDice1Position;
         targetPosition1 = new Vector3(Random.Range(-throwRadius, throwRadius), 0f, Random.Range(-throwRadius, throwRadius));
         targetPosition2 = targetPosition1 + displacement;
 
-        float placeDisplacement = (startDice1Position - startDice2Position).magnitude * positionVariation;
+        float placeDisplacement = displacement.magnitude * positionVariation;
         targetPosition1 += new Vector3(Random.Range(-placeDisplacement, placeDisplacement), 0f, Random.Range(-placeDisplacement, placeDisplacement));
         targetPosition2 += new Vector3(Random.Range(-placeDisplacement, placeDisplacement), 0f, Random.Range(-placeDisplacement, placeDisplacement));
 

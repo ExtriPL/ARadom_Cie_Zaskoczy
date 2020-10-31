@@ -31,7 +31,7 @@ public abstract class Field : ScriptableObject
         if (this is IFlowControlable)
             GameplayController.instance.flow.Enqueue(this as IFlowControlable, new object[] { player, visualiser });
 
-        if(player.NetworkPlayer.IsLocal)
+        if(player.NetworkPlayer.IsLocal && this is BuildingField)
             GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(this, visualiser.placeIndex);
     }
 
