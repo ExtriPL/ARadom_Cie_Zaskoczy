@@ -246,7 +246,8 @@ public class PlaceVisualiser : Visualiser
     {
         base.OnClick();
 
-        ARController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(field, placeIndex);
+        if(field is BuildingField)
+            ARController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(field, placeIndex);
     }
 
     /// <summary>
