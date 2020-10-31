@@ -299,7 +299,7 @@ public class BankingController : IEventSubscribable
                     }
                 }
             }
-            else
+            else if(GameplayController.instance.session.playerCount > 2)
             {
                 string message = SettingsController.instance.languageController.GetWord("AUCTION_ENDED");
                 IconPopup auctionEnded = new IconPopup(IconPopupType.Auction, message);
