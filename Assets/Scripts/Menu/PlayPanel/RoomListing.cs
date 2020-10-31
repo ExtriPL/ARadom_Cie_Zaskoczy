@@ -65,4 +65,9 @@ public class RoomListing: MonoBehaviourPunCallbacks
     {
         mainMenuController.OpenPanel(8);
     }
+
+    public void StartLoadingScreen() 
+    {
+        mainMenuController.StartLoadingScreen();
+    }
 }

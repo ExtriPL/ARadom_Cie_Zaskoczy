@@ -83,6 +83,18 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     public delegate void Pay(string payerName, string receiverName, float amount);
     public event Pay onPay;
 
+    public delegate void TradeOffer(string senderNickName, string[] senderBuildingNames, float senderMoney, string receiverNickName, string[] receiverBuildingNames, float receiverMoney);
+    /// <summary>
+    /// Event wysłania oferty handlu
+    /// </summary>
+    public event TradeOffer onTradeOffer;
+
+    public delegate void TradeOfferResponse(bool accepted, string senderNickName, string receiverNickName);
+    /// <summary>
+    /// Event odpowiedzi na ofertę handlu
+    /// </summary>
+    public event TradeOfferResponse onTradeOfferResponse;
+
     #endregion Eventy
 
     #region Inicjalizacja
@@ -271,6 +283,24 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerImprison, data, raiseOptions, sendOptions);
     }
 
+    public void SendOnTradeOffer(string senderNickName, string[] senderBuildingNames, float senderMoney, string receiverNickName, string[] receiverBuildingNames, float receiverMoney)
+    {
+        object[] data = { senderNickName, senderBuildingNames, senderMoney, receiverNickName, receiverBuildingNames, receiverMoney };
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+
+        PhotonNetwork.RaiseEvent((byte)EventsId.TradeOffer, data, raiseOptions, sendOptions);
+    }
+
+    public void SendOnTradeOfferResponse(bool accepted, string senderNickName, string receiverNickName)
+    {
+        object[] data = { accepted, senderNickName, receiverNickName };
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+
+        PhotonNetwork.RaiseEvent((byte)EventsId.TradeResponse, data, raiseOptions, sendOptions);
+    }
+
     #endregion Wysyłanie eventów sieciowych
 
     #region Wysyłanie eventów lokalnych
@@ -404,6 +434,29 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     string playerName = (string)data[0];
 
                     onPlayerImprisoned?.Invoke(playerName);
+                }
+                break;
+            case (byte)EventsId.TradeOffer:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    string senderNickName = (string)data[0];
+                    string[] senderBuildingNames = (string[])data[1];
+                    float senderMoney = (float)data[2];
+                    string receiverNickName = (string)data[3];
+                    string[] receiverBuildingNames = (string[])data[4];
+                    float receiverMoney = (float)data[5];
+
+                    onTradeOffer?.Invoke(senderNickName, senderBuildingNames, senderMoney, receiverNickName, receiverBuildingNames, receiverMoney);
+                }
+                break;
+            case (byte)EventsId.TradeResponse:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    bool accepted = (bool)data[0];
+                    string senderNickName = (string)data[1];
+                    string receiverNickName = (string)data[2];
+
+                    onTradeOfferResponse?.Invoke(accepted, senderNickName, receiverNickName);
                 }
                 break;
         }

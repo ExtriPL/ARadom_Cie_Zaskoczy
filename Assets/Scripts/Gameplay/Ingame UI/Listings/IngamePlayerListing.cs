@@ -9,7 +9,7 @@ public class IngamePlayerListing : MonoBehaviour
 
     public TextMeshProUGUI nickName;
     public TextMeshProUGUI money;
-    public GameObject button;
+    public GameObject showBuildingsButton;
     private UIPanels UIPanels;
     private Player player;
     public GameObject tradeButton;
@@ -29,7 +29,10 @@ public class IngamePlayerListing : MonoBehaviour
         nickName.text = player.GetName();
         money.text = player.Money.ToString();
         nickName.color = money.color = player.MainColor;
-        //if (player.NetworkPlayer == PhotonNetwork.LocalPlayer)tradeButton.SetActive(false);
+        GameplayController gC = GameplayController.instance;
+        showBuildingsButton.SetActive(!player.NetworkPlayer.IsLocal);
+        tradeButton.SetActive(!player.NetworkPlayer.IsLocal && gC.session.FindPlayer(gC.board.dice.currentPlayer).NetworkPlayer.IsLocal);
+
     }
 
     public void PreInit()

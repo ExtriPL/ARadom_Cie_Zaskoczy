@@ -13,6 +13,9 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
     [Tooltip("Element przechowujący wszystkie BuildingListingi")]
     public GameObject buildingsInfoHolder;
     public TextMeshProUGUI title;
+    public Player player;
+    public GameObject closeButton;
+    public GameObject confirmSeletionButton;
 
     private GameplayController gc;
     private BasePool buildingsPool;
@@ -29,15 +32,20 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
     {
         this.UIPanels = UIPanels;
         gc = GameplayController.instance;
+        closeButton.SetActive(true);
+        confirmSeletionButton.SetActive(false);
     }
 
-    public void Init(UIPanels UIPanels, Player player)
+    public void Init(UIPanels UIPanels, Player player, bool trading = false)
     {
+        this.player = player;
         Init(UIPanels);
-        FillContent(player);        
+        FillContent(player, trading);
+        closeButton.SetActive(!trading);
+        confirmSeletionButton.SetActive(trading);
     }
 
-    private void FillContent(Player player) 
+    private void FillContent(Player player, bool trading) 
     {
         nickNameText.text = player.GetName();
         moneyText.text = player.Money.ToString();
@@ -47,7 +55,7 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
         {
             Field field = gc.board.GetField(placeId);
             BuildingListing listing = buildingsPool.TakeObject().GetComponent<BuildingListing>();
-            listing.Init(field, UIPanels);
+            listing.Init(field, UIPanels, trading);
             buildingListings.Add(listing);
         }
 
@@ -70,5 +78,11 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
         }
 
         buildingListings.Clear();
+    }
+
+    public void ConfirmBuildingSelection() 
+    {
+        gameObject.GetComponent<Animation>().Play("MiddleToLeft");
+        UIPanels.rightPanel.GetComponent<Animation>().Play("RightToMiddle");
     }
 }

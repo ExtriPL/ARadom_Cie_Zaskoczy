@@ -93,7 +93,7 @@ public class BankingController : IEventSubscribable
     /// <param name="seller">Osoba, która sprzedaje pole</param>
     /// <param name="buyer">Osoba kupująca pole</param>
     /// <param name="placeId">Pole, które jest sprzedawane</param>
-    /// <param name="price">Kwota sprzedarzy pola</param>
+    /// <param name="price">Kwota sprzedazy pola</param>
     public void TradeBuilding(Player seller, Player buyer, int placeId, float price)  
     {
         if (GameplayController.instance.board.GetField(placeId) is BuildingField)
