@@ -50,6 +50,7 @@ public class FlowController : IEventSubscribable
 
     private List<Popup> closeOnDiceCloseList = new List<Popup>();
     private bool diceClosed;
+    public bool gameStarted;
 
     #region Inicjalizacja
 
@@ -73,37 +74,40 @@ public class FlowController : IEventSubscribable
 
     public void Update()
     {
-        //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
+        if (gameStarted)
         {
-            if (!FlowPaused)
+            //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
+            if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
             {
-                timePassed += Time.deltaTime;
-
-                //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
-                if (timePassed >= showTime)
-                    GameplayController.instance.menu.SetActiveNextTurnButton(true);
-
-                //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
-                if (timePassed >= endTime - countingTime)
+                if (!FlowPaused)
                 {
-                    GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - timePassed));
-                    GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
+                    timePassed += Time.deltaTime;
+
+                    //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
+                    if (timePassed >= showTime)
+                        GameplayController.instance.menu.SetActiveNextTurnButton(true);
+
+                    //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
+                    if (timePassed >= endTime - countingTime)
+                    {
+                        GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - timePassed));
+                        GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
+                    }
+
+                    //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
+                    if (timePassed >= endTime)
+                        EndTurn();
                 }
 
-                //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
-                if (timePassed >= endTime)
-                    EndTurn();
-            }
-
-            if (TurnTime > autoDiceRollTime && !diceClosed)
-            {
-                foreach (Popup popup in closeOnDiceCloseList)
-                    PopupSystem.instance.ClosePopup(popup);
-                if(PopupSystem.instance.DiceBox != null)
+                if (TurnTime > autoDiceRollTime && !diceClosed)
                 {
-                    diceClosed = true;
-                    PopupSystem.instance.DiceBox.Close();
+                    foreach (Popup popup in closeOnDiceCloseList)
+                        PopupSystem.instance.ClosePopup(popup);
+                    if (PopupSystem.instance.DiceBox != null)
+                    {
+                        diceClosed = true;
+                        PopupSystem.instance.DiceBox.Close();
+                    }
                 }
             }
         }

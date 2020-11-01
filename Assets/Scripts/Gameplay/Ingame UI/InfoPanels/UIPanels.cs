@@ -13,6 +13,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     public RightPanel rightPanel;
     public BuildingInfoPanel buildingInfo;
 
+    public GameObject yourTurnNotification;
     public GameObject button;
     public TextMeshProUGUI money;
     public GameObject openMenuButton;
@@ -53,6 +54,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
         EventManager.instance.onPlayerMoneyChanged += OnPlayerMoneyChanged;
         EventManager.instance.onTradeOffer += OnTradeOfferReceived;
         EventManager.instance.onTradeOfferResponse += OnTradeResponseReceived;
+        EventManager.instance.onTurnChanged += OnTurnChanged;
     }
 
     public void UnsubscribeEvents()
@@ -60,6 +62,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
         EventManager.instance.onPlayerMoneyChanged -= OnPlayerMoneyChanged;
         EventManager.instance.onTradeOffer -= OnTradeOfferReceived;
         EventManager.instance.onTradeOfferResponse -= OnTradeResponseReceived;
+        EventManager.instance.onTurnChanged -= OnTurnChanged;
     }
 
     private void StartPanels()
@@ -115,6 +118,37 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
                     break;
             }
         }
+    }
+
+    public void CloseAll() 
+    {
+        yourTurnNotification.GetComponent<Animation>().Play("NotificationHide");
+        while (currentOpenPanel != InGameUIPanels.None) 
+        {
+            switch (currentOpenPanel)
+            {
+                case InGameUIPanels.BottomPanel:
+                    CloseBottomPanel();
+                    break;
+                case InGameUIPanels.BottomPanelBuildingChoice:
+                    bottomPanel.ConfirmBuildingSelection();
+                    break;
+                case InGameUIPanels.LeftPanel:
+                    CloseLeftPanel();
+                    break;
+                case InGameUIPanels.RightPanel:
+                    CloseRightPanel();
+                    break;
+                case InGameUIPanels.BuildingInfoPanel:
+                    buildingInfo.Close();
+                    break;
+                case InGameUIPanels.None:
+                    break;
+                default:
+                    break;
+            }
+        }
+        yourTurnNotification.SetActive(false);
     }
 
     #region Panel dolny
@@ -296,6 +330,15 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
         IconPopup tradeOfferResponseReceivedPopup = new IconPopup(IconPopupType.Trade, response);
 
         PopupSystem.instance.AddPopup(tradeOfferResponseReceivedPopup);
+    }
+
+    private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
+    {
+        if (currentPlayerName == GameplayController.instance.session.localPlayer.GetName() && currentOpenPanel != InGameUIPanels.None) 
+        {
+            yourTurnNotification.SetActive(true);
+            yourTurnNotification.GetComponent<Animation>().Play("NotificationShow");
+        }
     }
 
     #endregion Eventy

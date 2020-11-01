@@ -26,5 +26,7 @@ public enum EventsId
     PlayerImprison,
     Message,
     TradeOffer,
-    TradeResponse
+    TradeResponse,
+    MasterStartedGame,
+    PlayerMoneyChanged
 }

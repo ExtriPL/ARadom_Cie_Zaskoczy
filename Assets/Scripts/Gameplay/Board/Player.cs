@@ -272,7 +272,7 @@ public class Player
     public void SetMoney(float value)
     {
         Money = value;
-        EventManager.instance.InvokeOnPlayerMoneyChanged(GetName());
+        EventManager.instance.SendOnPlayerMoneyChanged(GetName());
     }
 
     #endregion Zarządzanie pieniędzmi

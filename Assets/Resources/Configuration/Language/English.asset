@@ -18,3 +18,8 @@ MonoBehaviour:
     value: English
   - key: POLISH
     value: Polish
+  - key: TUTORIAL_TEXT
+    value: "This is ARadom Ci\u0119 Zaskoczy! <br>Your objective is to make other
+      players go bankrupt. To achieve this invest in buildings on the game board.
+      Last person standing wins. To start point your device's camera at the game
+      board. Good luck!"

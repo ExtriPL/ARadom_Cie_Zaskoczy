@@ -19,6 +19,7 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
 
     [SerializeField] private Button NextTurnButton;
     [SerializeField] private TextMeshProUGUI NextTurnButtonTimer;
+    [SerializeField] private GameObject NextTurnBackground;
 
     /// <summary>
     /// Czy menu jest aktualnie otwarte.
@@ -196,6 +197,7 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     /// <param name="time">Czas, który został do automatycznego skończenia tury</param>
     public void SetActiveNextTurnButtonTimer(bool active)
     {
+        NextTurnBackground.SetActive(active);
         NextTurnButtonTimer.gameObject.SetActive(active);
     }
 

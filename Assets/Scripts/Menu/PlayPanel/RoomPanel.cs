@@ -61,6 +61,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
     public void StartGame()
     {
+        EventManager.instance.SendOnMasterStartedGame();
         startGameButton.GetComponent<Button>().interactable = false;
         mainMenuController.StartLoadingScreen();
         Hashtable table = new Hashtable();
@@ -99,10 +100,17 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     {
         EventManager.instance.onPlayerReady += null;
         EventManager.instance.onPlayerReady += OnPlayerReady;
+        EventManager.instance.onMasterStartedGame += OnMasterStartedGame;
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onPlayerReady -= OnPlayerReady;
+        EventManager.instance.onMasterStartedGame -= OnMasterStartedGame;
+    }
+
+    private void OnMasterStartedGame() 
+    {
+        mainMenuController.StartLoadingScreen();
     }
 }

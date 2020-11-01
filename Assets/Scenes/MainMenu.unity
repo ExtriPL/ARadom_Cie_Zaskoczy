@@ -1872,6 +1872,7 @@ GameObject:
   - component: {fileID: 166576553}
   - component: {fileID: 166576555}
   - component: {fileID: 166576554}
+  - component: {fileID: 166576556}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
@@ -2018,6 +2019,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 166576552}
   m_CullTransparentMesh: 0
+--- !u!114 &166576556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166576552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddacbf9c7a51ad499c27ce380dc95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: LOADING_GAME
 --- !u!1 &171152713
 GameObject:
   m_ObjectHideFlags: 0
@@ -2814,7 +2828,7 @@ PrefabInstance:
     - target: {fileID: 8281978317759355232, guid: 2f0bdaf5fc52a854aa416c6fe064fa2f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 753.1169
+      value: 753.1168
       objectReference: {fileID: 0}
     - target: {fileID: 8281978317759355232, guid: 2f0bdaf5fc52a854aa416c6fe064fa2f,
         type: 3}
@@ -4291,7 +4305,7 @@ PrefabInstance:
     - target: {fileID: 8281978317759355232, guid: 2f0bdaf5fc52a854aa416c6fe064fa2f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 265.11688
+      value: 265.11685
       objectReference: {fileID: 0}
     - target: {fileID: 8281978317759355232, guid: 2f0bdaf5fc52a854aa416c6fe064fa2f,
         type: 3}
@@ -11393,7 +11407,6 @@ GameObject:
   - component: {fileID: 1511209183}
   - component: {fileID: 1511209188}
   - component: {fileID: 1511209187}
-  - component: {fileID: 1511209186}
   - component: {fileID: 1511209185}
   - component: {fileID: 1511209184}
   m_Layer: 5
@@ -11449,24 +11462,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511209182}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ddacbf9c7a51ad499c27ce380dc95ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   key: PLAY
---- !u!114 &1511209186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1511209182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85916c7965b84b044ba745d578af8413, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1511209187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12589,6 +12590,7 @@ GameObject:
   - component: {fileID: 1567397884}
   - component: {fileID: 1567397883}
   - component: {fileID: 1567397882}
+  - component: {fileID: 1567397887}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -12612,7 +12614,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 510.0492, y: -100}
+  m_AnchoredPosition: {x: 510.04916, y: -100}
   m_SizeDelta: {x: 696.36914, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567397882
@@ -12779,6 +12781,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567397880}
   m_CullTransparentMesh: 0
+--- !u!114 &1567397887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567397880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddacbf9c7a51ad499c27ce380dc95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: PLAY
 --- !u!1 &1628224578
 GameObject:
   m_ObjectHideFlags: 0
@@ -15890,8 +15905,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80.932304, y: -100}
-  m_SizeDelta: {x: 121.86461, y: 140}
+  m_AnchoredPosition: {x: 80.93231, y: -100}
+  m_SizeDelta: {x: 121.86459, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2087644952
 MonoBehaviour:

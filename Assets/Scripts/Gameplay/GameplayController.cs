@@ -15,6 +15,11 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     public FlowController flow = new FlowController();
     public DiceController diceController;
 
+    [SerializeField]
+    private TutorialScreen tutorialScreen;
+    [SerializeField]
+    private GameObject mainScreenUI;
+
     /// <summary>
     /// Plik zapisu gry wczytany z pliku
     /// </summary>
@@ -192,10 +197,24 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     private void StartGame()
     {
         StartCoroutine(InactiveCheck());
+        StartCoroutine(TutorialTime());
+    }
+
+    private IEnumerator TutorialTime() 
+    {
+        int timer = 10;
+        while (timer > 0)
+        {
+            yield return new WaitForSeconds(1);
+            tutorialScreen.timer = --timer;
+        }
+        tutorialScreen.gameObject.SetActive(false);
+        mainScreenUI.SetActive(true);
+        flow.gameStarted = true;
         flow.StartGame();
     }
 
-    public void Impison(Player player)
+    public void Imprison(Player player)
     {
         if (board.PlaceExists(typeof(PrisonSpecial)))
         {
@@ -211,7 +230,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     public void Imprison(string playerName)
     {
         Player player = session.FindPlayer(playerName);
-        Impison(player);
+        Imprison(player);
     }
 
     #endregion Sterowanie rozgrywką

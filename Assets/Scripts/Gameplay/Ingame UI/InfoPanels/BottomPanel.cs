@@ -22,12 +22,14 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
     private GameplayController gc;
     private BasePool buildingsPool;
     private List<BuildingListing> buildingListings;
+    private LanguageController lC;
 
     public void PreInit()
     {
         buildingListings = new List<BuildingListing>();
         buildingsPool = new BasePool(buildingsInfoHolder, buildingListing, Keys.Board.PLACE_COUNT / 2);
         buildingsPool.Init();
+        lC = SettingsController.instance.languageController;
     }
 
     public void Init(UIPanels UIPanels)
@@ -64,11 +66,11 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
 
         if (player.NetworkPlayer == PhotonNetwork.LocalPlayer)
         {
-            title.text = "Twoje budynki"; // do przetlumacznia
+            title.text = lC.GetWord("YOUR_BUILDINGS");
         }
         else 
         {
-            title.text = "Budynki gracza " + player.GetName(); // do przetlumacznia
+            title.text = lC.GetWord("PLAYERS_BUILDINGS") == "Budynki gracza" ? lC.GetWord("PLAYERS_BUILDINGS") + " " + player.GetName() : player.GetName() + lC.GetWord("PLAYERS_BUILDINGS");
         }
     }
 

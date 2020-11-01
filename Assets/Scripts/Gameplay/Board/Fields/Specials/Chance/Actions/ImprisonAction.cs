@@ -8,7 +8,7 @@ public class ImprisonAction : ActionCard
 {
     public override void Call(Player caller, bool showMessage = false)
     {
-        GameplayController.instance.Impison(caller);
+        GameplayController.instance.Imprison(caller);
 
         if(showMessage)
         {

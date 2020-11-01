@@ -105,8 +105,8 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
     {
         myMoney.text = "0";
         theirMoney.text = "0";
-        mainTitle.text = lC.GetWord("MAKE_AN_OFFER_TO") + player.GetName();
-        theirTitle.text = lC.GetWord("PLAYERS_BUILDINGS") + player.GetName();
+        mainTitle.text = lC.GetWord("MAKE_AN_OFFER_TO") + " " + player.GetName();
+        theirTitle.text = lC.GetWord("PLAYERS_BUILDINGS") == "Budynki gracza" ? lC.GetWord("PLAYERS_BUILDINGS") + " " + player.GetName() : player.GetName() + lC.GetWord("PLAYERS_BUILDINGS");
         myTitle.text = lC.GetWord("MY_BUILDINGS");
         closeButton.SetActive(true);
         sendButton.SetActive(true);

@@ -28,7 +28,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// </summary>
     public event PlayerEvent onPlayerImprisoned;
     /// <summary>
-    /// Event lokalny wowoływany, gdy stan konta gracza zmieni się
+    /// Event lokalny wywoływany, gdy stan konta gracza zmieni się
     /// </summary>
     public event PlayerEvent onPlayerMoneyChanged;
 
@@ -97,6 +97,13 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// Event odpowiedzi na ofertę handlu
     /// </summary>
     public event TradeOfferResponse onTradeOfferResponse;
+
+    public delegate void MasterStartedGame();
+    /// <summary>
+    /// Event rozpoczęcia gry z pokoju przez mastera
+    /// </summary>
+    public event MasterStartedGame onMasterStartedGame;
+
 
     #endregion Eventy
 
@@ -313,18 +320,30 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         PhotonNetwork.RaiseEvent((byte)EventsId.TradeResponse, data, raiseOptions, sendOptions);
     }
 
+    public void SendOnMasterStartedGame()
+    {
+        object[] data = {};
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+
+        PhotonNetwork.RaiseEvent((byte)EventsId.MasterStartedGame, data, raiseOptions, sendOptions);
+    }
+
+    public void SendOnPlayerMoneyChanged(string playerName)
+    {
+        object[] data = { playerName };
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+
+        PhotonNetwork.RaiseEvent((byte)EventsId.PlayerMoneyChanged, data, raiseOptions, sendOptions);
+
+    }
+
     #endregion Wysyłanie eventów sieciowych
 
     #region Wysyłanie eventów lokalnych
 
-    /// <summary>
-    /// Wywołuje event lokalny, mówiący o zmianie ilości pieniędzy gracza
-    /// </summary>
-    /// <param name="playerName">Nazwa gracza, którego ilość pieniędzy się zmieniła</param>
-    public void InvokeOnPlayerMoneyChanged(string playerName)
-    {
-        onPlayerMoneyChanged?.Invoke(playerName);
-    }
+
 
     #endregion Wysyłanie eventów lokalnych
 
@@ -478,6 +497,21 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     IconPopupType iconType = (IconPopupType)data[1];
 
                     onMessageArrival?.Invoke(message, iconType);
+                }
+                break;
+            case (byte)EventsId.MasterStartedGame:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+
+                    onMasterStartedGame?.Invoke(); 
+                }
+                break;
+            case (byte)EventsId.PlayerMoneyChanged:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    string playerName = (string)data[0];
+
+                    onPlayerMoneyChanged?.Invoke(playerName);
                 }
                 break;
         }

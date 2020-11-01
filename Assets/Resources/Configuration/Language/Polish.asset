@@ -84,10 +84,6 @@ MonoBehaviour:
     value: "Kupi\u0142e\u015B budynek "
   - key: PLAYER
     value: 'Gracz '
-  - key: AQUIRED_BUILDING
-    value: " kupi\u0142 budynek"
-  - key: DO_YOU_WANT_TO_BUY
-    value: "Czy chcesz kupi\u0107 "
   - key: PRICE
     value: Cena
   - key: YES
@@ -418,8 +414,6 @@ MonoBehaviour:
     value: Moje budynki
   - key: MONEY
     value: "Pieni\u0105dze"
-  - key: PLAYERS_BUILDINGS
-    value: Budynki gracza
   - key: OFFER_FROM
     value: Oferta od gracza
   - key: AMOUNT
@@ -462,3 +456,21 @@ MonoBehaviour:
     value: "Przesuwasz si\u0119 na pole o numerze "
   - key: YOU_HAVE_BEEN_IMPRISONED
     value: "Zosta\u0142e\u015B uwi\u0119ziony"
+  - key: YOUR_BUILDINGS
+    value: Twoje budynki
+  - key: PLAYERS_BUILDINGS
+    value: Budynki gracza
+  - key: SHOW_PLAYERS_BUILDINGS
+    value: "Poka\u017C budynki gracza"
+  - key: LOADING_GAME
+    value: "\u0141adowanie gry..."
+  - key: DO_YOU_WANT_TO_BUY
+    value: "Czy chcesz kupi\u0107 "
+  - key: AQUIRED_BUILDING
+    value: " kupi\u0142 budynek "
+  - key: TUTORIAL_TEXT
+    value: "To jest ARadom Ci\u0119 Zaskoczy! <br> Twoim celem jest doprowadzenie
+      innych graczy do bankructwa. Mo\u017Cesz tego dokona\u0107 inwestuj\u0105c
+      w budynki znajduj\u0105ce si\u0119 na planszy. Ostatnia osoba, kt\xF3rej zosta\u0142y
+      pieni\u0105dze wygrywa. Aby rozpocz\u0105\u0107 skieruj aparat swojego urz\u0105dzenia
+      na plansz\u0119. Powodzenia!"
