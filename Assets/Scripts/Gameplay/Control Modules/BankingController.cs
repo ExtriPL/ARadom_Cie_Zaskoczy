@@ -53,6 +53,7 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAuction += OnAuction;
         EventManager.instance.onPlayerQuited += OnPlayerQuit;
         EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
+        EventManager.instance.onTurnChanged += OnTurnChanged;
     }
 
     public void UnsubscribeEvents()
@@ -61,6 +62,7 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAuction -= OnAuction;
         EventManager.instance.onPlayerQuited -= OnPlayerQuit;
         EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
+        EventManager.instance.onTurnChanged -= OnTurnChanged;
     }
 
     #endregion Inicjalizacja
@@ -225,17 +227,13 @@ public class BankingController : IEventSubscribable
         auctionData = Tuple.Create(playerName, placeId, bidder, bid, passPlayerName);
         CloseEarlierAuction();
 
-        if (bidders.Contains(passPlayerName)) bidders.Remove(passPlayerName); //Usuwanie gracza, który pasuje
+        if (bidders.Contains(passPlayerName)) 
+            bidders.Remove(passPlayerName); //Usuwanie gracza, który pasuje
 
         if (bidders.Count > 1)
-        {
             AuctionFlow(playerName, placeId, bidder, bid, passPlayerName);
-        }
         else
-        {
-            //Po licytacji
             EndAuction(placeId, bid);
-        }
     }
 
     private void OnPlayerQuit(string playerName) 
@@ -246,6 +244,12 @@ public class BankingController : IEventSubscribable
     private void OnPlayerLostGame(string playerName)
     {
         RemoveFromAuction(playerName);
+    }
+
+    private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
+    {
+        if (auctionPopup != null)
+            EndAuction(auctionData.Item2, auctionData.Item4, false);
     }
 
     #endregion Obsługa eventów
@@ -267,8 +271,9 @@ public class BankingController : IEventSubscribable
 
     /// <summary>
     /// Funckja wywoływana, gdy aukcja dobiegnie końca
+    /// <param name="offerForLastBidder">Czy zaoferować kuono budynku ostatniemu graczowi, który został w licytacji, a nigdy nie podbijał</param>
     /// </summary>
-    private void EndAuction(int placeId, float bid)
+    private void EndAuction(int placeId, float bid, bool offerForLastBidder = true)
     {
         if (auctionPopup != null) auctionPopup.onClose = null;
         if (bidders.Count > 0)
@@ -277,26 +282,23 @@ public class BankingController : IEventSubscribable
             {
                 if (raisers.Contains(bidders[0]))
                     AquireBuilding(GameplayController.instance.session.FindPlayer(bidders[0]), placeId);
-                else
+                else if (offerForLastBidder && GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
                 {
-                    if (GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
+                    string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
+                    QuestionPopup buyQuestion = new QuestionPopup(message);
+                    Popup.PopupAction noAction = delegate (Popup source)
                     {
-                        string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
-                        QuestionPopup buyQuestion = new QuestionPopup(message);
-                        Popup.PopupAction noAction = delegate (Popup source)
-                        {
-                            Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
-                        };
-                        Popup.PopupAction yesAction = delegate (Popup source)
-                        {
-                            AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
-                            Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
-                        };
-                        buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
-                        buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
+                        Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
+                    };
+                    Popup.PopupAction yesAction = delegate (Popup source)
+                    {
+                        AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
+                        Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
+                    };
+                    buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
+                    buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
 
-                        PopupSystem.instance.AddPopup(buyQuestion);
-                    }
+                    PopupSystem.instance.AddPopup(buyQuestion);
                 }
             }
             else if(GameplayController.instance.session.playerCount > 2)
