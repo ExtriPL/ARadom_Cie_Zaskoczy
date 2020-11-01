@@ -51,6 +51,8 @@ public class FlowController : IEventSubscribable
     private List<Popup> closeOnDiceCloseList = new List<Popup>();
     private bool diceClosed;
 
+    public bool FlowStarted { get; private set; }
+
     #region Inicjalizacja
 
     public void SubscribeEvents() 
@@ -67,6 +69,7 @@ public class FlowController : IEventSubscribable
     {
         gameplayController = GameplayController.instance;
         ResetSettings();
+        FlowStarted = true;
         if (gameplayController.session.roomOwner.IsLocal)
             EventManager.instance.SendOnTurnChanged("", gameplayController.board.dice.currentPlayer);
     }
@@ -74,7 +77,7 @@ public class FlowController : IEventSubscribable
     public void Update()
     {
         //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
+        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal && FlowStarted)
         {
             if (!FlowPaused)
             {
