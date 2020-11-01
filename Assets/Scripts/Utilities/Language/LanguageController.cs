@@ -39,4 +39,19 @@ public class LanguageController
         //dodac lambda expression do szukania
         return "Wartość: " + value +" nie istnieje!";
     }
+
+    public string PackKey(string value)
+    {
+        return "{t}" + value;
+    }
+
+    public bool IsPacked(string value)
+    {
+        return value.Substring(0, 3).Equals("{t}");
+    }
+
+    public string UnpackKey(string value)
+    {
+        return value.Replace("{t}", "");
+    }
 }

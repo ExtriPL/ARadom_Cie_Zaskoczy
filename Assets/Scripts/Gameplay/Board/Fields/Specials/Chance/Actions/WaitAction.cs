@@ -56,15 +56,17 @@ public class WaitAction : ActionCard
 
     private void ShowMessage(Player calller)
     {
-        string message = lang.GetWord("TURNS_LOST") + rounds;
-
         if (calller.NetworkPlayer.IsLocal)
         {
+            string message = lang.GetWord("TURNS_LOST") + rounds;
             IconPopup popup = new IconPopup(IconPopupType.Message, message);
             PopupSystem.instance.AddPopup(popup);
         }
         else
+        {
+            string[] message = new string[] { lang.PackKey("TURNS_LOST"), rounds.ToString() };
             EventManager.instance.SendPopupMessage(message, IconPopupType.Message, calller);
+        }
     }
 
     public enum WaitActor

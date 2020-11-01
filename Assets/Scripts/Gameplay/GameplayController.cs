@@ -324,9 +324,20 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         }
     }
 
-    private void OnMessageArrival(string message, IconPopupType iconType)
+    private void OnMessageArrival(string[] message, IconPopupType iconType)
     {
-        IconPopup messagePopup = new IconPopup(iconType, message);
+        string unpackedMessage = "";
+        LanguageController lang = SettingsController.instance.languageController;
+
+        foreach (string word in message)
+        {
+            if (lang.IsPacked(word))
+                unpackedMessage += lang.GetWord(lang.UnpackKey(word));
+            else
+                unpackedMessage += word;
+        }
+
+        IconPopup messagePopup = new IconPopup(iconType, unpackedMessage);
 
         PopupSystem.instance.AddPopup(messagePopup);
     }

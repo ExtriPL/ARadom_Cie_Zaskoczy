@@ -83,7 +83,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     public delegate void Pay(string payerName, string receiverName, float amount);
     public event Pay onPay;
 
-    public delegate void MessageEvent(string message, IconPopupType iconType);
+    public delegate void MessageEvent(string[] message, IconPopupType iconType);
     public event MessageEvent onMessageArrival;
 
     public delegate void TradeOffer(string senderNickName, string[] senderBuildingNames, float senderMoney, string receiverNickName, string[] receiverBuildingNames, float receiverMoney);
@@ -293,7 +293,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerImprison, data, raiseOptions, sendOptions);
     }
 
-    public void SendPopupMessage(string message, IconPopupType iconType, Player target)
+    public void SendPopupMessage(string[] message, IconPopupType iconType, Player target)
     {
         object[] data = { message, (int)iconType };
         int targetActor = target.NetworkPlayer.ActorNumber;
@@ -493,7 +493,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
             case (byte)EventsId.Message:
                 {
                     object[] data = (object[])photonEvent.CustomData;
-                    string message = (string)data[0];
+                    string[] message = (string[])data[0];
                     IconPopupType iconType = (IconPopupType)data[1];
 
                     onMessageArrival?.Invoke(message, iconType);

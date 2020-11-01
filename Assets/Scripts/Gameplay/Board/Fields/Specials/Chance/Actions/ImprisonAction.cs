@@ -12,7 +12,7 @@ public class ImprisonAction : ActionCard
 
         if(showMessage)
         {
-            string message = lang.GetWord("YOU_HAVE_BEEN_IMPRISONED");// "Zostałeś uwięziony";
+            string[] message = new string[] { lang.PackKey("YOU_HAVE_BEEN_IMPRISONED") };// "Zostałeś uwięziony";
             EventManager.instance.SendPopupMessage(message, IconPopupType.Prison, caller);
         }
     }

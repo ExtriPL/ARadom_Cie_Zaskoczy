@@ -92,7 +92,7 @@ public class MoveAction : ActionCard
 
     private void ShowMessage(Player target)
     {
-        string message = lang.GetWord("YOU_ARE_MOVING_TO_PLACE") + targetId;
+        string[] message = new string[] { lang.PackKey("YOU_ARE_MOVING_TO_PLACE"), targetId.ToString() };
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 

@@ -164,13 +164,13 @@ public class MoneyAction : ActionCard
 
     private void ShowReceiveMessage(Player target)
     {
-        string message = lang.GetWord("YOU_RECEIVED") + amount + lang.GetWord("RADOM_PENNIES");
+        string[] message = new string[] { lang.PackKey("YOU_RECEIVED"), amount.ToString(), lang.PackKey("RADOM_PENNIES") };
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 
     private void ShowPayMessage(Player target)
     {
-        string message = lang.GetWord("YOU_PAY") + amount + lang.GetWord("RADOM_PENNIES") + lang.GetWord("FOR_BANK");
+        string[] message = new string[] { lang.PackKey("YOU_PAY"), amount.ToString(), lang.PackKey("RADOM_PENNIES"), lang.PackKey("FOR_BANK") };
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 
