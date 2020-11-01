@@ -8937,10 +8937,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c9bbdd5cb8e617f4da0a85139e7142a1, type: 2}
   arController: {fileID: 1110553158}
   flow:
-    showTime: 30
-    endTime: 60
+    showTime: 45
+    endTime: 90
     countingTime: 10
-    autoDiceRollTime: 15
+    autoDiceRollTime: 30
   diceController: {fileID: 269302995}
 --- !u!1 &1111876108
 GameObject:
