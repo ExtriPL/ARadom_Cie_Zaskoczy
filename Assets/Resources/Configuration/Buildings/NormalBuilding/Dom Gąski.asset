@@ -18,11 +18,12 @@ MonoBehaviour:
     Jest to jeden z najstarszych dom\xF3w mieszcza\u0144skich w Radomiu. Znajdowa\u0142a
     si\u0119 tam w XVIII apteka W\u0142ocha Christiana Valentino. Obecnie znajduje
     si\u0119 tam Muzeum Im. Jacka Malczewskiego"
+  fieldImage: {fileID: 0}
   tiers:
   - name: puste
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
+    model: {fileID: 7831196510923314575, guid: 9fac21d343ac3994584150bf7a22dd08, type: 3}
   - name: Tier 1
     buyPrice: 1400
     enterCost: 400
