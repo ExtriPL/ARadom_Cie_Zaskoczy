@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class GameplayController : MonoBehaviour, IEventSubscribable
 {
@@ -27,6 +28,8 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     /// Flaga określająca czy gra przeszła przez komand invoker
     /// </summary>
     public bool GameInitialized { get; private set; }
+
+    private int currentAutosave = 0;
 
     #region Inicjalizacja
 
@@ -173,8 +176,23 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     public void SaveToInstance()
     {
         save.applicationVersion = Application.version;
+        save.date = DateTime.Now;
+        save.roomName = PhotonNetwork.CurrentRoom.Name;
 
         FileManager.SaveGame(save, PhotonNetwork.CurrentRoom.Name);
+    }
+
+    private void MakeAutosave()
+    {
+        save.applicationVersion = Application.version;
+        save.date = DateTime.Now;
+        save.roomName = PhotonNetwork.CurrentRoom.Name;
+
+        FileManager.SaveGame(save, Keys.Gameplay.AUTOSAVE_NAME + " " + (currentAutosave + 1));
+
+        currentAutosave++;
+        if (currentAutosave == Keys.Gameplay.AUTOSAVE_COUNT)
+            currentAutosave = 0;
     }
 
     /// <summary>
@@ -227,6 +245,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     private void OnTurnChanged(string previousPlayerName, string nextPlayerName)
     {
         SaveProgress(); //Na samym początku tury zapisujemy postęp rozgrywki
+        MakeAutosave();
     }
 
     /// <summary>

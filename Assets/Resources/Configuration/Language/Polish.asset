@@ -170,8 +170,6 @@ MonoBehaviour:
     value: "Has\u0142o"
   - key: CREATE
     value: "Utw\xF3rz"
-  - key: LOAD_FROM_SAVE
-    value: "Wczytaj gr\u0119"
   - key: PLAYERS
     value: 'Gracze:'
   - key: START_GAME
@@ -462,3 +460,7 @@ MonoBehaviour:
     value: "Przesuwasz si\u0119 na pole o numerze "
   - key: YOU_HAVE_BEEN_IMPRISONED
     value: "Zosta\u0142e\u015B uwi\u0119ziony"
+  - key: SAVE_LISTING_ROUND
+    value: 'Runda: '
+  - key: LOAD_FROM_SAVE
+    value: Wczytaj

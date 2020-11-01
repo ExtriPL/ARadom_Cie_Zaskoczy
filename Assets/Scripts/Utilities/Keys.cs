@@ -173,6 +173,9 @@ public static class Keys
         /// Bufer pieniędzy, który przyznawany jest po wzięciu pożyczki. Ma umożliwić dalszą grę
         /// </summary>
         public const float LOAN_BUFFER = 400;
+
+        public const int AUTOSAVE_COUNT = 3;
+        public const string AUTOSAVE_NAME = "AutoSave";
     }
 
     public static class Files

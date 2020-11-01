@@ -31,10 +31,6 @@ public class SavePanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     public void ListItems()
     {
         for (int i = 0; i < FileManager.GetSavesName().Count; i++)
-        {
-
             basePool.TakeObject().GetComponent<SaveListing>().Init(FileManager.GetSavesName()[i], basePool, mainMenuController);
-            //Debug.Log((FileManager.GetSavesName()[i] != null) + ";" + (basePool != null) + ";" + (mainMenuController != null));
-        }
     }
 }
