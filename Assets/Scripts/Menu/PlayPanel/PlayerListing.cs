@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,10 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
         SubscribeEvents();
         kickButton.SetActive(!player.IsLocal && PhotonNetwork.LocalPlayer.IsMasterClient);
         readyButton.GetComponent<Toggle>().interactable = player.IsLocal;
-        playerNickname.text = player.NickName;
+
+        int sameNamePlayers = PhotonNetwork.CurrentRoom.Players.Where(p => p.Value.NickName.Equals(PhotonNetwork.LocalPlayer.NickName)).Count();
+        playerNickname.text = sameNamePlayers > 1 ? player.NickName + (sameNamePlayers - 1) : player.NickName;
+
         if (player.CustomProperties.ContainsKey("Room_PlayerReady")) readyButton.GetComponent<Toggle>().isOn = (bool)player.CustomProperties["Room_PlayerReady"];
         else readyButton.GetComponent<Toggle>().isOn = false;
 

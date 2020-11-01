@@ -95,8 +95,10 @@ public class CenterVisualiser : Visualiser
     public override void OnClick()
     {
         base.OnClick();
-
-        ARController.buildingInfoPanel.GetComponent<BuildingInfoPanel>().FillBuildingInfo(currentField);
-        ARController.buildingInfoPanel.GetComponent<BuildingInfoPanel>().Open();
+        if (visible)
+        {
+            ARController.buildingInfoPanel.GetComponent<BuildingInfoPanel>().FillBuildingInfo(currentField);
+            ARController.buildingInfoPanel.GetComponent<BuildingInfoPanel>().Open();
+        }
     }
 }

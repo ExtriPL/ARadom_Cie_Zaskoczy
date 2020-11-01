@@ -6,6 +6,7 @@ using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class RoomListing: MonoBehaviourPunCallbacks
 {
@@ -63,7 +64,11 @@ public class RoomListing: MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        mainMenuController.OpenPanel(8);
+        int sameNamePlayers = PhotonNetwork.CurrentRoom.Players.Where(player => player.Value.NickName.Equals(PhotonNetwork.LocalPlayer.NickName)).Count();
+        if (sameNamePlayers > 1)
+            PhotonNetwork.LocalPlayer.NickName += (sameNamePlayers - 1).ToString();
+
+        mainMenuController.OpenPanel(8);  
     }
 
     public void StartLoadingScreen() 
