@@ -28,9 +28,6 @@ public abstract class Field : ScriptableObject
     /// <param name="visualiser">Pole, na którym zostało wywołane zdarzenie</param>
     public virtual void OnEnter(Player player, PlaceVisualiser visualiser)
     {
-        if (this is IFlowControlable)
-            GameplayController.instance.flow.Enqueue(this as IFlowControlable, new object[] { player, visualiser });
-
         if(player.NetworkPlayer.IsLocal && this is BuildingField)
             GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(this, visualiser.placeIndex);
     }

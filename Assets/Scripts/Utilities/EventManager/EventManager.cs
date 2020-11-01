@@ -80,7 +80,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// </summary>
     public event Sync onSync;
 
-    public delegate void Pay(string payerName, string receiverName, float amount, string message = "");
+    public delegate void Pay(string payerName, string receiverName, float amount);
     public event Pay onPay;
 
     public delegate void MessageEvent(string message, IconPopupType iconType);
@@ -256,9 +256,9 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     /// <param name="payerName">Gracz, który przekazywał pieniądze</param>
     /// <param name="receiverName">Gracz, który otrzymał pieniądze</param>
     /// <param name="amount">Ilość wymienianych pieniędzy</param>
-    public void SendPayEvent(string payerName, string receiverName, float amount, string message = "")
+    public void SendPayEvent(string payerName, string receiverName, float amount)
     {
-        object[] data = { payerName, receiverName, amount, message };
+        object[] data = { payerName, receiverName, amount };
         RaiseEventOptions raiseOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         SendOptions sendOptions = new SendOptions { Reliability = true };
         PhotonNetwork.RaiseEvent((byte)EventsId.Pay, data, raiseOptions, sendOptions);
@@ -413,8 +413,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     string payerName = (string)data[0];
                     string receiverName = (string)data[1];
                     float amount = (float)data[2];
-                    string message = (string)data[3];
-                    onPay?.Invoke(payerName, receiverName, amount, message);
+                    onPay?.Invoke(payerName, receiverName, amount);
                 }
                 break;
             case (byte)EventsId.PlayerLostGame:

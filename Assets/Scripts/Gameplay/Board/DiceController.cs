@@ -89,6 +89,7 @@ public class DiceController : MonoBehaviour
 
             if (timeProgress >= 1f)
             {
+                GameplayController.instance.flow.Resume();
                 onRollEnd?.Invoke();
                 onRollEnd = null;
                 isRolling = false;
