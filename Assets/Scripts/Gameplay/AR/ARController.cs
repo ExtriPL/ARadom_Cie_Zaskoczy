@@ -229,7 +229,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
         }
 
         boardVisible = visible;
-        GameplayController.instance.diceController.SetVisibility(visible);
+        GameplayController.instance.diceController.ToggleVisibility(visible);
     }
 
     #endregion Obsługa AR
@@ -241,7 +241,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
     /// </summary>
     private void OnScreenClick()
     {
-        if (GameplayController.instance.session.gameState == GameState.running)
+        if (GameplayController.instance.session.gameState == GameState.running && boardVisible)
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
