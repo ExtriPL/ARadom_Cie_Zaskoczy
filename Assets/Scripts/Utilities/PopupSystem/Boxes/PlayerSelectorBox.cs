@@ -49,7 +49,7 @@ public class PlayerSelectorBox : PopupBox
             if (i < session.playerCount)
             {
                 Player player = session.FindPlayer(i);
-                if(!player.IsLoser)
+                if(!player.IsLoser && !player.NetworkPlayer.IsLocal)
                 {
                     buttonList[i].GetComponentInChildren<TextMeshProUGUI>().text = player.GetName();
                     buttonList[i].SetActive(true);

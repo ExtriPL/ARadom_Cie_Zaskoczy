@@ -20,6 +20,8 @@ MonoBehaviour:
   model: {fileID: 5238772299236998045, guid: 1c259eb098c7e294bb0d7f1a192d14ac, type: 3}
   chanceCards:
   - {fileID: 11400000, guid: 349d45eaaf1550644ad058e98b5ff8e6, type: 2}
+  - {fileID: 11400000, guid: 4b9e1ab279a0d314e951db99c17c9342, type: 2}
+  - {fileID: 11400000, guid: 80e5bf527c261574398a62632269185d, type: 2}
   - {fileID: 11400000, guid: 7a80252d745c70d4e9e0cf8ed0194494, type: 2}
   - {fileID: 11400000, guid: 7034ab1f4ab6798479c7386423c23937, type: 2}
   - {fileID: 11400000, guid: e0b88494871f0c548930b2b27664177d, type: 2}
@@ -43,6 +45,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 75d1c9e37bbe2064d93802d107dd2a93, type: 2}
   - {fileID: 11400000, guid: 832b86627e7bc464ea045ce103d12ea0, type: 2}
   - {fileID: 11400000, guid: 77d05083a0c507a40b59e29886ac9604, type: 2}
+  - {fileID: 11400000, guid: 887a5d17720106c47b29804a1e589060, type: 2}
   - {fileID: 11400000, guid: ac6162c8b1126e04a896ff56b64bfeab, type: 2}
   - {fileID: 11400000, guid: 797c506230585f44faf42d2b45894a23, type: 2}
   - {fileID: 11400000, guid: ab5bddcadf2894e45be4edb58bbabe9f, type: 2}

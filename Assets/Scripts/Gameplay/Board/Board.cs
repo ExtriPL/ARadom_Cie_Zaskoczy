@@ -432,7 +432,7 @@ public class Board : IEventSubscribable
     {
         //Jeżeli numer pola po wykonaniu ruchu przekroczy ilość pól na planszy - 1 (indeks ostatniego pola), gracz zostanie przeniesiony na odpowiedznie pole na początku planszy.
         //Np: gracz stoi na polu 10, przesuwamy go o 5 pól, skończy na polu 3.
-        int toFieldIndex = (player.PlaceId + amount > Keys.Board.PLACE_COUNT - 1) ? (player.PlaceId + amount) - (Keys.Board.PLACE_COUNT - 1) : player.PlaceId + amount;   
+        int toFieldIndex = (player.PlaceId + amount > Keys.Board.PLACE_COUNT - 1) ? (player.PlaceId + amount) - Keys.Board.PLACE_COUNT : player.PlaceId + amount;   
 
         MovePlayerTo(player, toFieldIndex);
     }

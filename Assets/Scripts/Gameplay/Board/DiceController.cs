@@ -89,6 +89,7 @@ public class DiceController : MonoBehaviour
 
             if (timeProgress >= 1f)
             {
+                GameplayController.instance.flow.Resume();
                 onRollEnd?.Invoke();
                 onRollEnd = null;
                 isRolling = false;
@@ -128,11 +129,11 @@ public class DiceController : MonoBehaviour
         startPosition1 = dice1Holder.localPosition;
         startPosition2 = dice2Holder.localPosition;
 
-        Vector3 displacement = startDice1Position - startDice2Position;
+        Vector3 displacement = startDice2Position - startDice1Position;
         targetPosition1 = new Vector3(Random.Range(-throwRadius, throwRadius), 0f, Random.Range(-throwRadius, throwRadius));
         targetPosition2 = targetPosition1 + displacement;
 
-        float placeDisplacement = (startDice1Position - startDice2Position).magnitude * positionVariation;
+        float placeDisplacement = displacement.magnitude * positionVariation;
         targetPosition1 += new Vector3(Random.Range(-placeDisplacement, placeDisplacement), 0f, Random.Range(-placeDisplacement, placeDisplacement));
         targetPosition2 += new Vector3(Random.Range(-placeDisplacement, placeDisplacement), 0f, Random.Range(-placeDisplacement, placeDisplacement));
 
@@ -251,6 +252,12 @@ public class DiceController : MonoBehaviour
             float currentProgress = MathExtension.Map(0f, 0.5f, 0f, 1f, progress - 0.5f);
             return Mathfx.Coserp(height, 0f, currentProgress);
         }
+    }
+
+    public void SetVisibility(bool visible)
+    {
+        dice1Holder.gameObject.SetActive(visible);
+        dice2Holder.gameObject.SetActive(visible);
     }
 
     private void OnDrawGizmosSelected()

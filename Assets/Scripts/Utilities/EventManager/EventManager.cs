@@ -83,6 +83,9 @@ public class EventManager : MonoBehaviour, IOnEventCallback
     public delegate void Pay(string payerName, string receiverName, float amount);
     public event Pay onPay;
 
+    public delegate void MessageEvent(string message, IconPopupType iconType);
+    public event MessageEvent onMessageArrival;
+
     public delegate void TradeOffer(string senderNickName, string[] senderBuildingNames, float senderMoney, string receiverNickName, string[] receiverBuildingNames, float receiverMoney);
     /// <summary>
     /// Event wysłania oferty handlu
@@ -283,6 +286,15 @@ public class EventManager : MonoBehaviour, IOnEventCallback
         PhotonNetwork.RaiseEvent((byte)EventsId.PlayerImprison, data, raiseOptions, sendOptions);
     }
 
+    public void SendPopupMessage(string message, IconPopupType iconType, Player target)
+    {
+        object[] data = { message, (int)iconType };
+        int targetActor = target.NetworkPlayer.ActorNumber;
+        RaiseEventOptions raiseOptions = new RaiseEventOptions { TargetActors = new int[] { targetActor } };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent((byte)EventsId.Message, data, raiseOptions, sendOptions);
+    }
+
     public void SendOnTradeOffer(string senderNickName, string[] senderBuildingNames, float senderMoney, string receiverNickName, string[] receiverBuildingNames, float receiverMoney)
     {
         object[] data = { senderNickName, senderBuildingNames, senderMoney, receiverNickName, receiverBuildingNames, receiverMoney };
@@ -457,6 +469,15 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                     string receiverNickName = (string)data[2];
 
                     onTradeOfferResponse?.Invoke(accepted, senderNickName, receiverNickName);
+                }
+                break;
+            case (byte)EventsId.Message:
+                {
+                    object[] data = (object[])photonEvent.CustomData;
+                    string message = (string)data[0];
+                    IconPopupType iconType = (IconPopupType)data[1];
+
+                    onMessageArrival?.Invoke(message, iconType);
                 }
                 break;
         }

@@ -52,7 +52,6 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAquiredBuilding += OnAquiredBuilding;
         EventManager.instance.onAuction += OnAuction;
         EventManager.instance.onPlayerQuited += OnPlayerQuit;
-        EventManager.instance.onPay += OnPay;
         EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
     }
 
@@ -61,7 +60,6 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAquiredBuilding -= OnAquiredBuilding;
         EventManager.instance.onAuction -= OnAuction;
         EventManager.instance.onPlayerQuited -= OnPlayerQuit;
-        EventManager.instance.onPay -= OnPay;
         EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
     }
 
@@ -148,6 +146,10 @@ public class BankingController : IEventSubscribable
             receiver.IncreaseMoney(amount);
 
             EventManager.instance.SendPayEvent(payer.GetName(), receiver.GetName(), amount);
+
+            LanguageController language = SettingsController.instance.languageController;
+            string message = language.GetWord("PLAYER") + payer.GetName() + language.GetWord("PAID") + amount;
+            EventManager.instance.SendPopupMessage(message, IconPopupType.Money, receiver);
         }
         else Debug.Log("Płatnik ani płątobiorca nie mogą być nullem");
     }
@@ -246,17 +248,6 @@ public class BankingController : IEventSubscribable
         RemoveFromAuction(playerName);
     }
 
-    private void OnPay(string payerName, string receiverName, float amount)
-    {
-        if(GameplayController.instance.session.FindPlayer(receiverName).NetworkPlayer.IsLocal)
-        {
-            string message = language.GetWord("PLAYER") + payerName + language.GetWord("PAID") + amount + language.GetWord("FOR_STAND");
-
-            IconPopup infoPopup = new IconPopup(IconPopupType.Money, message);
-            PopupSystem.instance.AddPopup(infoPopup);
-        }
-    }
-
     #endregion Obsługa eventów
 
     #region Aukcja
@@ -308,7 +299,7 @@ public class BankingController : IEventSubscribable
                     }
                 }
             }
-            else
+            else if(GameplayController.instance.session.playerCount > 2)
             {
                 string message = SettingsController.instance.languageController.GetWord("AUCTION_ENDED");
                 IconPopup auctionEnded = new IconPopup(IconPopupType.Auction, message);

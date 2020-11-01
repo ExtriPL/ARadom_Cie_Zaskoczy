@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
 public abstract class ActionCard
 {
     /// <summary>
+    /// Obiekt przechowujący tłumaczenia
+    /// </summary>
+    protected LanguageController lang;
+
+    protected ActionCard()
+    {
+        lang = SettingsController.instance.languageController;
+    }
+
+    /// <summary>
     /// Wywołanie akcji
     /// </summary>
     /// <param name="caller">Gracz, dla którego zostanie wywołana akcja</param>
-    public abstract void Call(Player caller);
+    /// <param name="showMessage">Czy osoba, któa jest callerem, ma zobaczyć wiadomość</param>
+    public abstract void Call(Player caller, bool showMessage = false);
 
     /// <summary>
     /// Tworzy obiekt Akcji na podstawie informacji zawartych w ActionStringu(Nazwa klasy + lista zmiennych)
@@ -68,6 +76,11 @@ public abstract class ActionCard
                         Debug.LogError("Nie można zagnieżdzać typu WithUser w akcji typu WithUser");
                 }
                 break;
+            case ActionType.Imprison:
+                {
+                    card = new ImprisonAction();
+                }
+                break;
         }
 
         return card;
@@ -81,7 +94,8 @@ public abstract class ActionCard
         Money,
         Wait,
         Move,
-        WithUser
+        WithUser,
+        Imprison
     }
 }
 
@@ -135,6 +149,8 @@ public class ActionString
 
                     return new ActionString(ActionCard.ActionType.WithUser, variables);
                 }
+            case ActionCard.ActionType.Imprison:
+                return new ActionString(ActionCard.ActionType.Imprison, new List<string>() { });
         }
 
         return null;

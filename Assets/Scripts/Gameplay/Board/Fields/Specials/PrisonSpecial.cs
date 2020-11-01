@@ -13,8 +13,11 @@ public class PrisonSpecial : SpecialField
         {
             Board board = GameplayController.instance.board;
             LanguageController language = SettingsController.instance.languageController;
+            FlowController flow = GameplayController.instance.flow;
+            flow.Pause();
 
             QuestionPopup startTurn = QuestionPopup.CreateOkDialog(language.GetWord("YOU_ARE_IN_PRISON"));
+            flow.CloseOnDiceClose(startTurn);
 
             Popup.PopupAction diceRoll = delegate (Popup source)
             {
@@ -29,6 +32,7 @@ public class PrisonSpecial : SpecialField
                     QuestionPopup noFree = QuestionPopup.CreateOkDialog(language.GetWord("NOT_THIS_TIME"));
                     GameplayController.instance.diceController.Roll(board.dice.rollResult.Roll1, board.dice.rollResult.Roll2);
                     PopupSystem.instance.AddPopup(noFree);
+                    flow.RewindToSkiping();
                 }
             };
 

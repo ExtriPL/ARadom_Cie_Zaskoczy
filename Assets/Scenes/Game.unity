@@ -8527,9 +8527,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c9bbdd5cb8e617f4da0a85139e7142a1, type: 2}
   arController: {fileID: 1110553158}
   flow:
-    showTime: 0
-    endTime: 0
-    countingTime: 0
+    showTime: 30
+    endTime: 60
+    countingTime: 10
+    autoDiceRollTime: 15
   diceController: {fileID: 269302995}
 --- !u!1 &1111876108
 GameObject:
@@ -13212,7 +13213,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 68.25
+  m_fontSize: 71.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

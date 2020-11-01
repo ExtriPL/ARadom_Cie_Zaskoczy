@@ -237,23 +237,4 @@ public static class Keys
     {
         public const int PLAYER_TTL = 5;
     }
-
-    /// <summary>
-    /// Domyślne ustawienia przepływu gry
-    /// </summary>
-    public static class Flow
-    {
-        /// <summary>
-        /// Czas, po jakim pokaże się przycisk zakończenia tury
-        /// </summary>
-        public const float SHOW_TIME = 30f;
-        /// <summary>
-        /// Czas, po którym tura zakończy się automatycznie
-        /// </summary>
-        public const float END_TIME = 120f;
-        /// <summary>
-        /// Czas przed zakończeniem tury, po którego osiągnięciu włącza się licznik pokazujący, ile jeszcze zostało tury
-        /// </summary>
-        public const float COUNTING_TIME = 15f;
-    }
 }
