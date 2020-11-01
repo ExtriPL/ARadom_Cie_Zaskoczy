@@ -31,6 +31,11 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
     public void DeInit() {}
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(1);
+    }
+
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();

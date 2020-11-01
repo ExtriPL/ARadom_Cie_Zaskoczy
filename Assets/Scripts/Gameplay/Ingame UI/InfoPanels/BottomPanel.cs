@@ -14,6 +14,8 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
     public GameObject buildingsInfoHolder;
     public TextMeshProUGUI title;
     public Player player;
+
+    public GameObject playersButton;
     public GameObject closeButton;
     public GameObject confirmSeletionButton;
 
@@ -43,6 +45,7 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
         FillContent(player, trading);
         closeButton.SetActive(!trading);
         confirmSeletionButton.SetActive(trading);
+        playersButton.SetActive(!trading);
     }
 
     private void FillContent(Player player, bool trading) 
@@ -82,6 +85,7 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
 
     public void ConfirmBuildingSelection() 
     {
+        UIPanels.currentOpenPanel = UIPanels.InGameUIPanels.RightPanel;
         gameObject.GetComponent<Animation>().Play("MiddleToLeft");
         UIPanels.rightPanel.GetComponent<Animation>().Play("RightToMiddle");
     }

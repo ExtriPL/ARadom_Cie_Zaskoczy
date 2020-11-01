@@ -7,15 +7,30 @@ using UnityEngine;
 
 public class UIPanels : MonoBehaviour, IEventSubscribable
 {
+    ///Panele
     public BottomPanel bottomPanel;
     public LeftPanel leftPanel;
     public RightPanel rightPanel;
+    public BuildingInfoPanel buildingInfo;
+
     public GameObject button;
     public TextMeshProUGUI money;
     public GameObject openMenuButton;
     public GameObject loadingScreen;
     private GameplayController gC;
     private LanguageController lC;
+
+    public InGameUIPanels currentOpenPanel;
+
+    public enum InGameUIPanels
+    {
+        BottomPanel,
+        BottomPanelBuildingChoice,
+        LeftPanel,
+        RightPanel,
+        BuildingInfoPanel,
+        None
+    }
 
     #region Inicjalizacja
 
@@ -51,12 +66,14 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     {
         gC = GameplayController.instance;
         lC = SettingsController.instance.languageController;
+        currentOpenPanel = InGameUIPanels.None;
         SubscribeEvents();
 
         //Przygotowywanie paneli
         bottomPanel.PreInit();
         leftPanel.PreInit();
         rightPanel.PreInit(this);
+        buildingInfo.PreInit(this);
 
         //Włączanie przycisku otwierania panelu dolnego
         openMenuButton.SetActive(true);
@@ -71,12 +88,42 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     #endregion
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            switch (currentOpenPanel)
+            {
+                case InGameUIPanels.BottomPanel:
+                    CloseBottomPanel();
+                    break;
+                case InGameUIPanels.BottomPanelBuildingChoice:
+                    bottomPanel.ConfirmBuildingSelection();
+                    break;
+                case InGameUIPanels.LeftPanel:
+                    CloseLeftPanel();
+                    break;
+                case InGameUIPanels.RightPanel:
+                    CloseRightPanel();
+                    break;
+                case InGameUIPanels.BuildingInfoPanel:
+                    buildingInfo.Close();
+                    break;
+                case InGameUIPanels.None:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     #region Panel dolny
     /// <summary>
     /// Otwarcie dolnego panelu za pomocą przycisku na dole ekranu
     /// </summary>
     public void OpenBottomPanel()
     {
+        currentOpenPanel = InGameUIPanels.BottomPanel;
         bottomPanel.DeInit(); // Czyszczenie panelu
         bottomPanel.Init(this, GameplayController.instance.session.localPlayer); //Inicjalizacja panelu z danymi lokalnego gracza
         bottomPanel.GetComponent<Animation>().Play("BottomToMiddle"); //animacja
@@ -88,6 +135,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     /// <param name="player">Gracz, którego informacje chcemy wyświetlić</param>
     public void OpenBottomPanel(Player player)
     {
+        currentOpenPanel = InGameUIPanels.BottomPanel;
         bottomPanel.DeInit(); //Czyszczenie
         bottomPanel.Init(this, player); //Inicjalizacja panelu z podanym graczem
     }
@@ -97,6 +145,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     /// </summary>
     public void OpenBottomPanel(Player player, bool trading)
     {
+        currentOpenPanel = InGameUIPanels.BottomPanelBuildingChoice;
         bottomPanel.DeInit(); //Czyszczenie
         bottomPanel.Init(this, player, trading); //Inicjalizacja panelu z podanym graczem
         rightPanel.GetComponent<Animation>().Play("MiddleToRight");
@@ -110,6 +159,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     public void CloseBottomPanel()
     {
         bottomPanel.GetComponent<Animation>().Play("MiddleToBottom");
+        currentOpenPanel = InGameUIPanels.None;
     }
 
     #endregion
@@ -120,6 +170,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     /// </summary>
     public void OpenLeftPanel()
     {
+        currentOpenPanel = InGameUIPanels.LeftPanel;
         leftPanel.DeInit(); //Czyszczenie
         leftPanel.Init(this); //Inicjalizacja
         leftPanel.GetComponent<Animation>().Play("LeftToMiddle"); //Animacja otwierania lewego panelu
@@ -153,6 +204,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     public void OpenRightPanel(Player player)
     {
+        currentOpenPanel = InGameUIPanels.RightPanel;
         rightPanel.DeInit();
         rightPanel.Init(this, player); //Inicjalizacja panelu prawego z danymi przekazanego gracza
         leftPanel.GetComponent<Animation>().Play("MiddleToLeft"); //Animacja zamknięcia lewego panelu
@@ -161,6 +213,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     public void OpenRightPanel(Player sender, List<Field> myBuildings, float myMoney, List<Field> theirBuildings, float theirMoney) 
     {
+        currentOpenPanel = InGameUIPanels.None;
         rightPanel.DeInit();
         rightPanel.Init(sender, myBuildings, myMoney, theirBuildings, theirMoney); //Inicjalizacja panelu prawego z danymi przekazanego gracza
         rightPanel.GetComponent<Animation>().Play("BottomToMiddle");
@@ -169,6 +222,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     public void CloseRightPanel()
     {
+        currentOpenPanel = InGameUIPanels.LeftPanel;
         rightPanel.GetComponent<Animation>().Play("MiddleToRight");
         leftPanel.GetComponent<Animation>().Play("LeftToMiddle");
     }

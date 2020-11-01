@@ -22,6 +22,11 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuCon
         createButton.GetComponent<Button>().interactable = true;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(4);
+    }
+
     public void OnPlayersCountChanged(string playerCountText)
     {
         int.TryParse(playerCountText.Replace("\u200B", ""), out int playerCount);

@@ -689,6 +689,7 @@ MonoBehaviour:
   theirMoney: {fileID: 931679201}
   acceptDeclineGroup: {fileID: 274732823}
   sendButton: {fileID: 572625880}
+  closeButton: {fileID: 698605737}
   addMyBuildingsButton: {fileID: 576523960}
   addTheirBuildingsButton: {fileID: 283247473}
 --- !u!111 &162853939
@@ -4896,7 +4897,8 @@ MonoBehaviour:
     type: 3}
   ChanceBoxPrefab: {fileID: 6923631590141775104, guid: f08385d30f763e243bddf345a86c9bc6,
     type: 3}
-  PlayerSelectorPrefab: {fileID: 0}
+  PlayerSelectorPrefab: {fileID: 4012842804501500987, guid: 32d673e8d77008049a8f4c5c221f9273,
+    type: 3}
 --- !u!1 &640160174
 GameObject:
   m_ObjectHideFlags: 0
@@ -5198,10 +5200,12 @@ MonoBehaviour:
   bottomPanel: {fileID: 2126368440}
   leftPanel: {fileID: 1964408898}
   rightPanel: {fileID: 162853938}
+  buildingInfo: {fileID: 1286430697}
   button: {fileID: 1158347633}
   money: {fileID: 1720486932}
   openMenuButton: {fileID: 2044445972}
   loadingScreen: {fileID: 1976776430}
+  currentOpenPanel: 7
 --- !u!1 &698605737
 GameObject:
   m_ObjectHideFlags: 0
@@ -5785,10 +5789,10 @@ RectTransform:
   m_Father: {fileID: 1144346335}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 347, y: 0}
-  m_SizeDelta: {x: 694, y: 671.38}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &767609805
 MonoBehaviour:
@@ -15071,6 +15075,7 @@ MonoBehaviour:
     type: 3}
   buildingsInfoHolder: {fileID: 1901990004}
   title: {fileID: 1827364160}
+  playersButton: {fileID: 1944462732}
   closeButton: {fileID: 1424213909}
   confirmSeletionButton: {fileID: 1532186786}
 --- !u!1 &2141632560

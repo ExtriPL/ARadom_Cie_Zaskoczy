@@ -23,6 +23,11 @@ public class SavePanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
     public void DeInit() {}
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(4);
+    }
+
     public void ListItems()
     {
         for (int i = 0; i < FileManager.GetSavesName().Count; i++)

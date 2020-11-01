@@ -36,6 +36,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
 
     public GameObject acceptDeclineGroup;
     public GameObject sendButton;
+    public GameObject closeButton;
 
     public GameObject addMyBuildingsButton;
     public GameObject addTheirBuildingsButton;
@@ -107,6 +108,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         mainTitle.text = lC.GetWord("MAKE_AN_OFFER_TO") + player.GetName();
         theirTitle.text = lC.GetWord("PLAYERS_BUILDINGS") + player.GetName();
         myTitle.text = lC.GetWord("MY_BUILDINGS");
+        closeButton.SetActive(true);
         sendButton.SetActive(true);
         acceptDeclineGroup.SetActive(false);
         this.myMoney.interactable = true;
@@ -138,6 +140,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
 
         this.myMoney.interactable = false;
         this.theirMoney.interactable = false;
+        closeButton.SetActive(false);
         addMyBuildingsButton.SetActive(false);
         addTheirBuildingsButton.SetActive(false);
         sendButton.SetActive(false);
@@ -152,11 +155,13 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
 
     public void OpenMyBuildings()
     {
+        uIPanels.currentOpenPanel = UIPanels.InGameUIPanels.None;
         uIPanels.OpenBottomPanel(GameplayController.instance.session.localPlayer, true);
     }
 
     public void OpenTheirBuildings()
     {
+        uIPanels.currentOpenPanel = UIPanels.InGameUIPanels.None;
         uIPanels.OpenBottomPanel(tradingPlayer, true);
     }
 
