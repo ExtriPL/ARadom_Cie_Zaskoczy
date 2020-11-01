@@ -254,7 +254,7 @@ public class DiceController : MonoBehaviour
         }
     }
 
-    public void SetVisibility(bool visible)
+    public void ToggleVisibility(bool visible)
     {
         dice1Holder.gameObject.SetActive(visible);
         dice2Holder.gameObject.SetActive(visible);
