@@ -152,24 +152,12 @@ public class NormalBuilding : BuildingField
             if (player.Money >= upgradePrice)
             {
                 string message = language.GetWord("DO_YOU_WANT_TO_UPGRADE") + GetFieldName() + "? \n" + language.GetWord("UPGRADE_COST") + upgradePrice;
-                QuestionPopup upgrade = new QuestionPopup(message);
-
                 Popup.PopupAction yesAction = delegate (Popup source)
                 {
                     GameplayController.instance.banking.UpgradeBuilding(player, visualiser.placeIndex);
-                    Popup.Functionality.Destroy(source).Invoke(source);
                 };
 
-                Popup.PopupAction noAction = delegate (Popup source)
-                {
-                    Popup.Functionality.Destroy(source).Invoke(source);
-                };
-
-                string yes = language.GetWord("YES");
-                string no = language.GetWord("NO");
-
-                upgrade.AddButton(no, noAction);
-                upgrade.AddButton(yes, yesAction);
+                QuestionPopup upgrade = QuestionPopup.CreateYesNoDialog(message, yesAction);
 
                 PopupSystem.instance.AddPopup(upgrade);
             }

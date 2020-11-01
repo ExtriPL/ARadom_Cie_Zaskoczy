@@ -274,9 +274,9 @@ public class FlowController : IEventSubscribable
     {
         if(CurrentPlayer.NetworkPlayer.IsLocal)
         {
-            GameplayController.instance.flow.Pause();
-            QuestionPopup startTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_STARTED"));
-            startTurn.AddButton("Ok", Popup.Functionality.Destroy(startTurn));
+            GameplayController.instance.flow.Pause();;
+            string message = SettingsController.instance.languageController.GetWord("TURN_STARTED");
+            QuestionPopup startTurn = QuestionPopup.CreateOkDialog(message);
             startTurn.onClose += delegate { PopupSystem.instance.ShowDice(RollResult()); };
             CloseOnDiceClose(startTurn);
 
@@ -309,8 +309,8 @@ public class FlowController : IEventSubscribable
     {
         if(CurrentPlayer.NetworkPlayer.IsLocal)
         {
-            QuestionPopup endTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_ENDED"));
-            endTurn.AddButton("Ok", Popup.Functionality.Destroy(endTurn));
+            string message = SettingsController.instance.languageController.GetWord("TURN_ENDED");
+            QuestionPopup endTurn = QuestionPopup.CreateOkDialog(message);
             PopupSystem.instance.AddPopup(endTurn);
         }
     }

@@ -57,8 +57,8 @@ public class QuestionPopup : Popup
         QuestionPopup popup = new QuestionPopup(question);
         yesAction += Functionality.Destroy();
         noAction += Functionality.Destroy();
-        popup.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
         popup.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
+        popup.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
 
         return popup;
     }

@@ -285,19 +285,12 @@ public class BankingController : IEventSubscribable
                 else if (offerForLastBidder && GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
                 {
                     string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
-                    QuestionPopup buyQuestion = new QuestionPopup(message);
-                    Popup.PopupAction noAction = delegate (Popup source)
-                    {
-                        Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
-                    };
                     Popup.PopupAction yesAction = delegate (Popup source)
                     {
                         AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
-                        Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
                     };
-                    buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
-                    buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
 
+                    QuestionPopup buyQuestion = QuestionPopup.CreateYesNoDialog(message, yesAction);
                     PopupSystem.instance.AddPopup(buyQuestion);
                 }
             }
