@@ -77,7 +77,7 @@ public class FlowController : IEventSubscribable
     public void Update()
     {
         //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal && FlowStarted)
+        if (FlowStarted && gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
         {
             if (!FlowPaused)
             {

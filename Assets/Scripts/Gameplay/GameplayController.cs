@@ -228,7 +228,6 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         }
         tutorialScreen.gameObject.SetActive(false);
         mainScreenUI.SetActive(true);
-        flow.gameStarted = true;
         flow.StartGame();
     }
 

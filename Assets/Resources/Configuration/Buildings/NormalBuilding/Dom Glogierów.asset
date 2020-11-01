@@ -22,7 +22,7 @@ MonoBehaviour:
   - name: puste
     buyPrice: 0
     enterCost: 0
-    model: {fileID: 7831196510923314575, guid: 9fac21d343ac3994584150bf7a22dd08, type: 3}
+    model: {fileID: 7831196510923314575, guid: e7fc081019eaec9449ec01cff2ba3f8e, type: 3}
   - name: jedna trzecia
     buyPrice: 600
     enterCost: 150
