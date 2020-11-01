@@ -21,7 +21,7 @@ MonoBehaviour:
     gdzie obecnie znajduje si\u0119 w Domach G\u0105ski I Esterki. Kiedy\u015B by\u0142o
     Muzeum Okr\u0119gowym ale straci\u0142o status i przyj\u0119\u0142o obecn\u0105
     nazw\u0119."
-  fieldImage: {fileID: 21300000, guid: 32a41a85b512e534890772cc65f91c4a, type: 3}
+  fieldImage: {fileID: 21300000, guid: aa615263e86a5234f8ccfab9816ff34a, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

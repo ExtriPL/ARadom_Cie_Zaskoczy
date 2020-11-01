@@ -18,6 +18,7 @@ MonoBehaviour:
     - zosta\u0142o wybudowane na terenie przedwojennej neogotyckiej elektrowni miejskiej,kt\xF3ra
     pracowa\u0142a do 1956 roku.\r\nOficjalnie za\u0142o\u017Cono je w czerwcu 2005
     roku. Pomys\u0142odawc\u0105 by\u0142 Andrzej Wajda.\r"
+  fieldImage: {fileID: 21300000, guid: 516e04b6b215c994b91e75b108ebfb78, type: 3}
   tiers:
   - name: puste
     buyPrice: 0
