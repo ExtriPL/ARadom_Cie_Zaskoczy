@@ -30,7 +30,6 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     public void InitMenu()
     {
         MenuPanel.SetActive(false);
-        OpenMenuButton.SetActive(true);
         menuPanelOpen = false;
         AdminPanelButton.gameObject.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
 

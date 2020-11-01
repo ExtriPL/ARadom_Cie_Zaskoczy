@@ -13,7 +13,7 @@ public class WithUserAction : ActionCard
         this.insideAction = insideAction;
     }
 
-    public override void Call(Player caller)
+    public override void Call(Player caller, bool showMessage = false)
     {
         PlayerSelectorPopup selector = new PlayerSelectorPopup(caller, OnSelectionEnded);
         PopupSystem.instance.AddPopup(selector);
@@ -22,6 +22,7 @@ public class WithUserAction : ActionCard
     private void OnSelectionEnded(Player caller, Player selected)
     {
         insideAction.Call(caller);
-        insideAction.Call(selected);
+        if(selected != null)
+            insideAction.Call(selected, true);
     }
 }

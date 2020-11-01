@@ -10,11 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53cd4136789a3684988defedd21ef988, type: 3}
-  m_Name: Prison
+  m_Name: AirShow
   m_EditorClassIdentifier: 
-  cardNameKey: CHANCE_CARD_PRISON_TITLE
-  contentKey: CHANCE_CARD_PRISON_CONTENT
+  cardNameKey: CHANCE_CARD_AIRSHOW_TITLE
+  contentKey: CHANCE_CARD_AIRSHOW_CONTENT
   active: 1
   actionStrings:
-  - actionType: 4
-    variables: []
+  - actionType: 3
+    variables:
+    - Money
+    - '{{Money}{Others}{Player}{100}}'
+    - '{{Wait}{Player}{0}}'
+    - '{{Move}{By}{0}{PlaceId}{0}{Prison}{Regular}}'
+    - '{{WithUser}}'

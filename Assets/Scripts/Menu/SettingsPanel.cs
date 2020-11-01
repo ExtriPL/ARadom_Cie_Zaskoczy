@@ -73,6 +73,11 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuContr
 
     #endregion Inicjalizacja
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) Exit();
+    }
+
     #region Przyciski
     public void Save()
     {

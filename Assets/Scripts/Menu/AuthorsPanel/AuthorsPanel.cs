@@ -10,11 +10,13 @@ public class AuthorsPanel : MonoBehaviour, IInitiable<MainMenuController>
     public Authors authors;
     public List<GameObject> professionContainers;
     private List<List<Authors.Author>> randomAuthors = new List<List<Authors.Author>>();
+    private MainMenuController mainMenuController;
 
     
 
     public void Init(MainMenuController mainMenuController)
-    { 
+    {
+        this.mainMenuController = mainMenuController;
         RandomizeLists();
 
         for (int i = 0; i< randomAuthors.Count; i++) 
@@ -32,6 +34,11 @@ public class AuthorsPanel : MonoBehaviour, IInitiable<MainMenuController>
     public void PreInit() {}
 
     public void DeInit() { }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(1);
+    }
 
     private void RandomizeLists() 
     {

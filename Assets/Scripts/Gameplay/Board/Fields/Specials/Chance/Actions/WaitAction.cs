@@ -17,27 +17,28 @@ public class WaitAction : ActionCard
         this.rounds = rounds;
     }
 
-    public override void Call(Player caller)
+    public override void Call(Player caller, bool showMessage = false)
     {
         switch(target)
         {
             case WaitActor.Player:
-                TargetPlayer(caller);
+                TargetPlayer(caller, showMessage);
                 break;
             case WaitActor.Others:
-                TargetOthers(caller);
+                TargetOthers(caller, showMessage);
                 break;
         }
-
-        Debug.LogError("Brak komunikatów");
     }
 
-    private void TargetPlayer(Player caller)
+    private void TargetPlayer(Player caller, bool showMessage)
     {
         caller.AddTurnsToSkip(rounds);
+
+        if (showMessage)
+            ShowMessage(caller);
     }
 
-    private void TargetOthers(Player caller)
+    private void TargetOthers(Player caller, bool showMessage)
     {
         GameSession session = GameplayController.instance.session;
 
@@ -45,9 +46,25 @@ public class WaitAction : ActionCard
         {
             Player p = session.FindPlayer(i);
 
-            if (!p.NetworkPlayer.IsLocal)
+            if (!p.GetName().Equals(caller.GetName()))
+            {
+                ShowMessage(p);
                 p.AddTurnsToSkip(rounds);
+            }
         }
+    }
+
+    private void ShowMessage(Player calller)
+    {
+        string message = lang.GetWord("TURNS_LOST") + rounds;
+
+        if (calller.NetworkPlayer.IsLocal)
+        {
+            IconPopup popup = new IconPopup(IconPopupType.Message, message);
+            PopupSystem.instance.AddPopup(popup);
+        }
+        else
+            EventManager.instance.SendPopupMessage(message, IconPopupType.Message, calller);
     }
 
     public enum WaitActor

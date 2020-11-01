@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class BuildingInfoPanel : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class BuildingInfoPanel : MonoBehaviour
     public GameObject buildingHistory;
     public Image icon;
     private LanguageController lC;
+    private UIPanels uIPanels;
+    private UIPanels.InGameUIPanels tempPanelEnum;
+
+    public void PreInit(UIPanels controller) 
+    {
+        uIPanels = controller;
+    }
+
 
     private void Start()
     {
@@ -77,6 +86,8 @@ public class BuildingInfoPanel : MonoBehaviour
 
     public void Open()
     {
+        tempPanelEnum = uIPanels.currentOpenPanel;
+        uIPanels.currentOpenPanel = UIPanels.InGameUIPanels.BuildingInfoPanel;
         if (!gameObject.GetComponent<Animation>().isPlaying)
         {
 
@@ -86,6 +97,7 @@ public class BuildingInfoPanel : MonoBehaviour
 
     public void Close() 
     {
+        uIPanels.currentOpenPanel = tempPanelEnum;
         if (!gameObject.GetComponent<Animation>().isPlaying)
         {
             gameObject.GetComponent<Animation>().Play("MiddleToLeft");

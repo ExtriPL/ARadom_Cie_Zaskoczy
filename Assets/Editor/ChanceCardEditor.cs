@@ -104,6 +104,9 @@ public class ChanceCardEditor : Editor
                 case ActionCard.ActionType.WithUser:
                     ShowWithUserAction(actionString);
                     break;
+                case ActionCard.ActionType.Imprison:
+                    //Wiezienie nie ma żadnych parametrów
+                    break;
             }
         }
 

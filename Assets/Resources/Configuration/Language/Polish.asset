@@ -410,7 +410,55 @@ MonoBehaviour:
     value: Pole sztosu
   - key: TRADING
     value: Handel
+  - key: MAKE_AN_OFFER_TO
+    value: "Z\u0142\xF3\u017C ofert\u0119 graczowi "
+  - key: CONFIRM_OFFER
+    value: "Z\u0142\xF3\u017C"
+  - key: MY_BUILDINGS
+    value: Moje budynki
+  - key: MONEY
+    value: "Pieni\u0105dze"
+  - key: PLAYERS_BUILDINGS
+    value: Budynki gracza
+  - key: OFFER_FROM
+    value: Oferta od gracza
+  - key: AMOUNT
+    value: Kwota
+  - key: ACCEPT_OFFER
+    value: Zaakceptuj
+  - key: DO_YOU_WANT_TO_SEE
+    value: "Czy chcesz j\u0105 zobaczy\u0107?"
+  - key: YOU_GOT_AN_OFFER_FROM
+    value: " Dosta\u0142e\u015B ofert\u0119 od"
+  - key: ACCEPTED_THE_OFFER
+    value: "zaakceptowa\u0142 ofert\u0119."
+  - key: REJECTED_THE_OFFER
+    value: "odrzuci\u0142 ofert\u0119."
+  - key: DECLINE_OFFER
+    value: "Odrzu\u0107"
   - key: SELECT_PLAYER
     value: Wybierz gracza
   - key: SUBMIT
     value: "Zatwierd\u017A"
+  - key: CHANCE_CARD_AIRSHOW_TITLE
+    value: Air Show
+  - key: CHANCE_CARD_AIRSHOW_CONTENT
+    value: "Idziesz na Air Show i mo\u017Cesz zabra\u0107 swojego koleg\u0119. Inne
+      osoby p\u0142ac\u0105 wam po 100 groszy radomskich."
+  - key: CHANCE_CARD_ALCOHOL_PUMP_ROOM_TITLE
+    value: Pijalnia alkoholi
+  - key: CHANCE_CARD_ALCOHOL_PUMP_ROOM_CONTENT
+    value: "Wpad\u0142e\u015B z kolegami do pijalni alkoholi. Wybierz gracza, aby
+      odczeka\u0107 z nim 2 kolejki."
+  - key: TURNS_LOST
+    value: "Tracisz kolejk\u0119 x"
+  - key: RADOM_PENNIES
+    value: ' groszy radomskich'
+  - key: YOU_PAY
+    value: "Wp\u0142acasz "
+  - key: FOR_BANK
+    value: ' do banku'
+  - key: YOU_ARE_MOVING_TO_PLACE
+    value: "Przesuwasz si\u0119 na pole o numerze "
+  - key: YOU_HAVE_BEEN_IMPRISONED
+    value: "Zosta\u0142e\u015B uwi\u0119ziony"

@@ -229,7 +229,7 @@ public class ARController : MonoBehaviour, IEventSubscribable
         }
 
         boardVisible = visible;
-        dice.SetActive(visible);
+        GameplayController.instance.diceController.SetVisibility(visible);
     }
 
     #endregion Obsługa AR

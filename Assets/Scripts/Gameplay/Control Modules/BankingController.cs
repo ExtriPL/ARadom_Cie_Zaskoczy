@@ -52,8 +52,8 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAquiredBuilding += OnAquiredBuilding;
         EventManager.instance.onAuction += OnAuction;
         EventManager.instance.onPlayerQuited += OnPlayerQuit;
-        EventManager.instance.onPay += OnPay;
         EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
+        EventManager.instance.onTurnChanged += OnTurnChanged;
     }
 
     public void UnsubscribeEvents()
@@ -61,8 +61,8 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAquiredBuilding -= OnAquiredBuilding;
         EventManager.instance.onAuction -= OnAuction;
         EventManager.instance.onPlayerQuited -= OnPlayerQuit;
-        EventManager.instance.onPay -= OnPay;
         EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
+        EventManager.instance.onTurnChanged -= OnTurnChanged;
     }
 
     #endregion Inicjalizacja
@@ -93,7 +93,7 @@ public class BankingController : IEventSubscribable
     /// <param name="seller">Osoba, która sprzedaje pole</param>
     /// <param name="buyer">Osoba kupująca pole</param>
     /// <param name="placeId">Pole, które jest sprzedawane</param>
-    /// <param name="price">Kwota sprzedarzy pola</param>
+    /// <param name="price">Kwota sprzedazy pola</param>
     public void TradeBuilding(Player seller, Player buyer, int placeId, float price)  
     {
         if (GameplayController.instance.board.GetField(placeId) is BuildingField)
@@ -148,6 +148,10 @@ public class BankingController : IEventSubscribable
             receiver.IncreaseMoney(amount);
 
             EventManager.instance.SendPayEvent(payer.GetName(), receiver.GetName(), amount);
+
+            LanguageController language = SettingsController.instance.languageController;
+            string message = language.GetWord("PLAYER") + payer.GetName() + language.GetWord("PAID") + amount;
+            EventManager.instance.SendPopupMessage(message, IconPopupType.Money, receiver);
         }
         else Debug.Log("Płatnik ani płątobiorca nie mogą być nullem");
     }
@@ -223,17 +227,13 @@ public class BankingController : IEventSubscribable
         auctionData = Tuple.Create(playerName, placeId, bidder, bid, passPlayerName);
         CloseEarlierAuction();
 
-        if (bidders.Contains(passPlayerName)) bidders.Remove(passPlayerName); //Usuwanie gracza, który pasuje
+        if (bidders.Contains(passPlayerName)) 
+            bidders.Remove(passPlayerName); //Usuwanie gracza, który pasuje
 
         if (bidders.Count > 1)
-        {
             AuctionFlow(playerName, placeId, bidder, bid, passPlayerName);
-        }
         else
-        {
-            //Po licytacji
             EndAuction(placeId, bid);
-        }
     }
 
     private void OnPlayerQuit(string playerName) 
@@ -246,15 +246,10 @@ public class BankingController : IEventSubscribable
         RemoveFromAuction(playerName);
     }
 
-    private void OnPay(string payerName, string receiverName, float amount)
+    private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
     {
-        if(GameplayController.instance.session.FindPlayer(receiverName).NetworkPlayer.IsLocal)
-        {
-            string message = language.GetWord("PLAYER") + payerName + language.GetWord("PAID") + amount + language.GetWord("FOR_STAND");
-
-            IconPopup infoPopup = new IconPopup(IconPopupType.Money, message);
-            PopupSystem.instance.AddPopup(infoPopup);
-        }
+        if (auctionPopup != null)
+            EndAuction(auctionData.Item2, auctionData.Item4, false);
     }
 
     #endregion Obsługa eventów
@@ -276,8 +271,9 @@ public class BankingController : IEventSubscribable
 
     /// <summary>
     /// Funckja wywoływana, gdy aukcja dobiegnie końca
+    /// <param name="offerForLastBidder">Czy zaoferować kuono budynku ostatniemu graczowi, który został w licytacji, a nigdy nie podbijał</param>
     /// </summary>
-    private void EndAuction(int placeId, float bid)
+    private void EndAuction(int placeId, float bid, bool offerForLastBidder = true)
     {
         if (auctionPopup != null) auctionPopup.onClose = null;
         if (bidders.Count > 0)
@@ -286,29 +282,26 @@ public class BankingController : IEventSubscribable
             {
                 if (raisers.Contains(bidders[0]))
                     AquireBuilding(GameplayController.instance.session.FindPlayer(bidders[0]), placeId);
-                else
+                else if (offerForLastBidder && GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
                 {
-                    if (GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
+                    string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
+                    QuestionPopup buyQuestion = new QuestionPopup(message);
+                    Popup.PopupAction noAction = delegate (Popup source)
                     {
-                        string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
-                        QuestionPopup buyQuestion = new QuestionPopup(message);
-                        Popup.PopupAction noAction = delegate (Popup source)
-                        {
-                            Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
-                        };
-                        Popup.PopupAction yesAction = delegate (Popup source)
-                        {
-                            AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
-                            Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
-                        };
-                        buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
-                        buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
+                        Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
+                    };
+                    Popup.PopupAction yesAction = delegate (Popup source)
+                    {
+                        AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
+                        Popup.Functionality.Destroy(buyQuestion).Invoke(buyQuestion);
+                    };
+                    buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
+                    buyQuestion.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
 
-                        PopupSystem.instance.AddPopup(buyQuestion);
-                    }
+                    PopupSystem.instance.AddPopup(buyQuestion);
                 }
             }
-            else
+            else if(GameplayController.instance.session.playerCount > 2)
             {
                 string message = SettingsController.instance.languageController.GetWord("AUCTION_ENDED");
                 IconPopup auctionEnded = new IconPopup(IconPopupType.Auction, message);

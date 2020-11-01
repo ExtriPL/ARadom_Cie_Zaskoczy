@@ -83,7 +83,8 @@ public abstract class Visualiser : MonoBehaviour, IEventSubscribable, IAnimable
         {
             models[showedModel]?.SetActive(false);
             showedModel = id;
-            if (visible) models[showedModel]?.SetActive(true);
+            if (visible && (id > 0 || Application.isEditor || models.Count == 1))
+                models[showedModel]?.SetActive(true);
         }
         else Debug.LogError("Podano nieprawidłowy numer modelu!");
     }

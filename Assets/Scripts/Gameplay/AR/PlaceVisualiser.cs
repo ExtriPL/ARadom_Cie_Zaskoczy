@@ -1,10 +1,6 @@
-﻿using GoogleARCore;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [System.Serializable]
 public class PlaceVisualiser : Visualiser
@@ -250,7 +246,8 @@ public class PlaceVisualiser : Visualiser
     {
         base.OnClick();
 
-        ARController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(field, placeIndex);
+        if(field is BuildingField)
+            ARController.centerBuilding.GetComponent<CenterVisualiser>().ShowField(field, placeIndex);
     }
 
     /// <summary>

@@ -8,16 +8,14 @@ public class FlowController : IEventSubscribable
 {
     private GameplayController gameplayController;
 
-    private List<Tuple<IFlowControlable, object[]>> controllerQueue = new List<Tuple<IFlowControlable, object[]>>();
     /// <summary>
-    /// Obeikt obecnie sprawujący kontrole nad przepływem gry
-    /// </summary>
-    private IFlowControlable flowMaster;
-
-    /// <summary>
-    /// Czas rozpoczęcia etapu lub przyznania kontroli nowemu obiektowi
+    /// Czas rozpoczęcia tury obecnego gracza
     /// </summary>
     private float beginTime;
+    /// <summary>
+    /// Obecny czas, przez jaki działa przepływ
+    /// </summary>
+    private float timePassed;
     /// <summary>
     /// Czas, po jakim pokaże się przycizk zakończenia tury
     /// </summary>
@@ -31,12 +29,27 @@ public class FlowController : IEventSubscribable
     /// </summary>
     public float countingTime;
     /// <summary>
+    /// Czas po rozpoczęciu tury, po którym kostka rzuci się automatycznie
+    /// </summary>
+    public float autoDiceRollTime;
+    /// <summary>
     /// Gracz, którego obecnie jest tura
     /// </summary>
     public Player CurrentPlayer
     {
         get => gameplayController.session.FindPlayer(gameplayController.board.dice.currentPlayer);
     }
+    /// <summary>
+    /// Flaga określająca, czy przepływ jest w tej chwili zastopowany
+    /// </summary>
+    public bool FlowPaused { get; private set; }
+    /// <summary>
+    /// Czas, który minął od rozpoczęcia tury obenego gracza
+    /// </summary>
+    private float TurnTime { get => Time.time - beginTime; }
+
+    private List<Popup> closeOnDiceCloseList = new List<Popup>();
+    private bool diceClosed;
 
     #region Inicjalizacja
 
@@ -63,22 +76,36 @@ public class FlowController : IEventSubscribable
         //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
         if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
         {
-            float time = Time.time - beginTime;
-            
-            //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
-            if (time >= showTime)
-                GameplayController.instance.menu.SetActiveNextTurnButton(true);
-
-            //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
-            if(time >= endTime - countingTime)
+            if (!FlowPaused)
             {
-                GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - time));
-                GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
+                timePassed += Time.deltaTime;
+
+                //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
+                if (timePassed >= showTime)
+                    GameplayController.instance.menu.SetActiveNextTurnButton(true);
+
+                //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
+                if (timePassed >= endTime - countingTime)
+                {
+                    GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - timePassed));
+                    GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
+                }
+
+                //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
+                if (timePassed >= endTime)
+                    EndTurn();
             }
 
-            //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
-            if (time >= endTime)
-                EndTurn();
+            if (TurnTime > autoDiceRollTime && !diceClosed)
+            {
+                foreach (Popup popup in closeOnDiceCloseList)
+                    PopupSystem.instance.ClosePopup(popup);
+                if(PopupSystem.instance.DiceBox != null)
+                {
+                    diceClosed = true;
+                    PopupSystem.instance.DiceBox.Close();
+                }
+            }
         }
     }
 
@@ -87,103 +114,59 @@ public class FlowController : IEventSubscribable
     #region Sterowanie przepływem
 
     /// <summary>
-    /// Umieszcza obiekt w kolejce do kontroli przepływu
+    /// Wstrzymuje przepływ
     /// </summary>
-    /// <param name="controlable">Obiekt, który chce przejąć kontrole nad przepływem</param>
-    /// <param name="args">Argumenty potrzebne do rozpoczęcia kontroli przepływu przez obiekt</param>
-    public void Enqueue(IFlowControlable controlable, object[] args = null)
+    public void Pause()
     {
-        if (flowMaster == null)
-        {
-            flowMaster = controlable;
-            beginTime = Time.deltaTime;
-        }
-        else if(!InQueue(controlable))
-        {
-            int putIndex = 0;
-
-            for (int i = 0; i < controllerQueue.Count; i++)
-            {
-                if (controllerQueue[i].Item1.FlowPriority < controlable.FlowPriority)
-                {
-                    putIndex = i;
-                    break;
-                }
-            }
-
-            controllerQueue.Insert(putIndex, Tuple.Create(controlable, args));
-        }
+        FlowPaused = true;
     }
 
     /// <summary>
-    /// Kończy kontrole obecnego obiektu i przekazuje ją kolejnemu, jeżeli taki istnieje
+    /// Przywraca działanie przepływu
     /// </summary>
-    /// <param name="controlable">Obiekt, który kończy swoją kontrole</param>
-    public void ReturnControl(IFlowControlable controlable)
+    public void Resume()
     {
-        //Zakończyć etap może tylko obecnie sprawujący kontrolę obiekt
-        if (IsFlowMaster(controlable))
-        {
-            if (controllerQueue.Count > 0)
-            {
-                GiveControl(controllerQueue[0]);
-                controllerQueue.RemoveAt(0);
-            }
-        }
-        else
-            Debug.LogError("Podany obiekt nie ma kontroli nad przepływem, a próbuje ją zwrócić");
+        FlowPaused = false;
     }
 
     /// <summary>
-    /// Daje natychmiastowo kontrolę nad przepływem rozgrywki
+    /// Przewija przepływ do momentu pokazania przycisku zakończenia tury z czasem
     /// </summary>
-    /// <param name="newMaster">Nowy kontroler przepływu</param>
-    private void GiveControl(Tuple<IFlowControlable, object[]> newMaster)
+    public void RewindToCounting()
     {
-        flowMaster = newMaster.Item1;
-        beginTime = Time.deltaTime;
-        flowMaster.TransmitFlow(newMaster.Item2);
+        timePassed = showTime;
+        if (TurnTime < showTime)
+            beginTime -= (showTime - TurnTime);
     }
 
     /// <summary>
-    /// Sprawdza, czy podany obiekt jest obecnym kontrolerem przepływu
+    /// Przwija przepływ do momentu pokazania przycisku zakończenia tury
     /// </summary>
-    /// <param name="controlable">Kontroler przepływu</param>
-    /// <returns></returns>
-    public bool IsFlowMaster(IFlowControlable controlable)
+    public void RewindToSkiping()
     {
-        return flowMaster == controlable;
+        timePassed = endTime - countingTime;
+        if (TurnTime < (endTime - countingTime))
+            beginTime -= (TurnTime - endTime + countingTime);
     }
 
     /// <summary>
-    /// Sprawdza, czy podany obiekt znajduje już się na liście do uzyskania kontroli nad przepływem
+    /// Przywraca domyślne ustawienia przepływu
     /// </summary>
-    public bool InQueue(IFlowControlable controlable)
+    private void ResetSettings()
     {
-        foreach(Tuple<IFlowControlable, object[]> controller in controllerQueue)
-        {
-            if (controller == controlable)
-                return true;
-        }
+        timePassed = 0;
+        beginTime = Time.time;
+        FlowPaused = false;
+        closeOnDiceCloseList.Clear();
+        diceClosed = false;
 
-        return false;
+        GameplayController.instance.menu.SetActiveNextTurnButton(false);
+        GameplayController.instance.menu.SetActiveNextTurnButtonTimer(false);
     }
 
-    /// <summary>
-    /// Sprawdza, czy podany obiekt jest obecnym kontrolerem. Jeżeli tak nie jest, dodaje go do kolejki
-    /// </summary>
-    /// <param name="controlable">Kontroler przepływu</param>
-    /// <param name="args">Argumenty, które służą do inicjalizacji kontrolera</param>
-    /// <returns>True - jeżeli obiekt jest obecnym kontrolerem, False - jeżeli nie jest</returns>
-    public bool CheckAndEnqueue(IFlowControlable controlable, object[] args = null)
+    public void CloseOnDiceClose(Popup popup)
     {
-        if (!IsFlowMaster(controlable))
-        {
-            Enqueue(controlable, args);
-            return false;
-        }
-
-        return true;
+        closeOnDiceCloseList.Add(popup);
     }
 
     #endregion Sterowanie przepływem
@@ -199,22 +182,6 @@ public class FlowController : IEventSubscribable
         GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
         DefaultEnding();
         NextTurn();
-    }
-
-    /// <summary>
-    /// Przywraca domyślne ustawienia przepływu
-    /// </summary>
-    private void ResetSettings()
-    {
-        flowMaster = null;
-        controllerQueue.Clear();
-        showTime = Keys.Flow.SHOW_TIME;
-        endTime = Keys.Flow.END_TIME;
-        countingTime = Keys.Flow.COUNTING_TIME;
-        beginTime = Time.time;
-
-        GameplayController.instance.menu.SetActiveNextTurnButton(false);
-        GameplayController.instance.menu.SetActiveNextTurnButtonTimer(false);
     }
 
     /// <summary>
@@ -304,9 +271,11 @@ public class FlowController : IEventSubscribable
     {
         if(CurrentPlayer.NetworkPlayer.IsLocal)
         {
+            GameplayController.instance.flow.Pause();
             QuestionPopup startTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_STARTED"));
             startTurn.AddButton("Ok", Popup.Functionality.Destroy(startTurn));
             startTurn.onClose += delegate { PopupSystem.instance.ShowDice(RollResult()); };
+            CloseOnDiceClose(startTurn);
 
             PopupSystem.instance.AddPopup(startTurn);
         }
@@ -324,10 +293,6 @@ public class FlowController : IEventSubscribable
                 delegate 
                 {
                     board.MovePlayer(CurrentPlayer, firstThrow + secondThrow);
-                    //string message = SettingsController.instance.languageController.GetWord("YOU_GOT") + firstThrow + SettingsController.instance.languageController.GetWord("AND") + secondThrow;
-                    //QuestionPopup showRoll = QuestionPopup.CreateOkDialog(message);
-                    //IconPopup rollResult = new IconPopup(IconPopupType.None, showRoll);
-                    //PopupSystem.instance.AddPopup(rollResult);
                 });
         };
 

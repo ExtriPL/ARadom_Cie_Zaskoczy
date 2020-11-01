@@ -34,7 +34,7 @@ public class PopupSystem : MonoBehaviour
     };
     public Dictionary<Type, BoxPool> boxPools = new Dictionary<Type, BoxPool>();
 
-    private IconBox diceBox;
+    public IconBox DiceBox { get; private set; }
     /// <summary>
     /// Flaga określająca, czy po zrobieniu się miejsca na ekranie, bądź dodaniu popupu, gdy to miejsce jest, może pojawić się on na ekranie
     /// </summary>
@@ -125,10 +125,10 @@ public class PopupSystem : MonoBehaviour
     /// <param name="source">Popup, który jest zawarty w popupbox-ie</param>
     public void ClosePopup(Popup source)
     {
-        if(diceBox != null && diceBox.source == source)
+        if(DiceBox != null && DiceBox.source == source)
         {
-            diceBox.Close();
-            diceBox = null;
+            DiceBox.Close();
+            DiceBox = null;
         }
         else
             showedPopups.FirstOrDefault(box => box.source == source)?.Close();
@@ -230,8 +230,8 @@ public class PopupSystem : MonoBehaviour
         IconPopup dicePopup = new IconPopup(IconPopupType.Dice, diceAction);
 
         GameObject dice = boxPools[typeof(IconBox)].TakeObject();
-        diceBox = dice.GetComponent<IconBox>();
-        diceBox.Init(dicePopup);
+        DiceBox = dice.GetComponent<IconBox>();
+        DiceBox.Init(dicePopup);
         dice.GetComponent<Animator>().SetBool("Dice", true);
     }
 

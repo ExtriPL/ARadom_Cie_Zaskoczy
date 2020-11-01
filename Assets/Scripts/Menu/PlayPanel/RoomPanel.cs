@@ -41,6 +41,11 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
     public void DeInit() {}
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) LeaveRoom();
+    }
+
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         basePool.TakeObject().gameObject.GetComponent<PlayerListing>().Init(mainMenuController, newPlayer, basePool);
