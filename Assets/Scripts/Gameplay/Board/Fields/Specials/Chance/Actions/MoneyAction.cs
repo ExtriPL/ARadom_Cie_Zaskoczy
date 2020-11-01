@@ -54,8 +54,6 @@ public class MoneyAction : ActionCard
                 PayerPlayer(caller, showMessage);
                 break;
         }
-
-        Debug.LogError("Brak komunikatów");
     }
 
     private void ReceiverAll(Player caller, bool showMessage)

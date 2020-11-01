@@ -20,6 +20,6 @@ MonoBehaviour:
     ufundowany przez Kazimierza Wielkiego. W wiekach XV i XVI dobudowano kaplice
     boczne. W pobli\u017Cu ko\u015Bcio\u0142a znajduje si\u0119 par\u0119 religijnych
     figur i rze\u017Ab"
-  fieldImage: {fileID: 21300000, guid: 5f571eab3b982564c85babea40776d52, type: 3}
+  fieldImage: {fileID: 21300000, guid: 55cea1d969dd1ca4d9628d8501e2b3f8, type: 3}
   model: {fileID: -927199367670048503, guid: d5d3d7031fc80c54797540175c51a23d, type: 3}
   stackingSettings: {fileID: 11400000, guid: 486ca93dbba00a64c84ff1f49d2dba99, type: 2}

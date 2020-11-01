@@ -102,6 +102,14 @@ public static class FileManager
         else Debug.LogError("Zapis gry o nazwie " + fileName + " nie istnieje, a nastąpiła próba jego wczytania");
     }
 
+    public static void RemoveGame(string fileName)
+    {
+        string filePath = Keys.Files.SAVES_DIRECTORY + fileName + Keys.Files.GAME_SAVE_EXTENSION;
+
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+    }
+
     /// <summary>
     /// Funkcja sprawdzająca, czy plik zapisu gry istnieje
     /// </summary>

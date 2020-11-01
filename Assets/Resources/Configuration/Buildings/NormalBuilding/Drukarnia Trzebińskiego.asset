@@ -28,12 +28,12 @@ MonoBehaviour:
     umieszczone kiedy\u015B po obu stronach wej\u015Bcia, s\u0105 podobno schowane
     w \u015Brodku. W 1966 r. budynek wyst\u0105pi\u0142 jako kawiarnia w filmie Jana
     \u0141omnickiego \"Kontrybucja\"."
-  fieldImage: {fileID: 21300000, guid: c77b2570a99caba468094953e695c0ca, type: 3}
+  fieldImage: {fileID: 21300000, guid: 87905c23697042c46a2b6339888d5955, type: 3}
   tiers:
   - name: puste
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
+    model: {fileID: 7831196510923314575, guid: 9fac21d343ac3994584150bf7a22dd08, type: 3}
   - name: Tier 1
     buyPrice: 2900
     enterCost: 550

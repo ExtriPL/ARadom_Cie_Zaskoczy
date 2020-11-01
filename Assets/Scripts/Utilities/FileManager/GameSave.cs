@@ -39,6 +39,8 @@ public struct GameSave
     /// Przypisanie pól na planszy do tierów ich budynków
     /// </summary>
     public Dictionary<int, int> tiers;
+    public DateTime date;
+    public string roomName;
 
     public bool IsCompatible()
     {

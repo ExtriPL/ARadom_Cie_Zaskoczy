@@ -15,12 +15,12 @@ MonoBehaviour:
   fieldName: "Urz\u0105d Miejski Kili\u0144skiego"
   canBePlaced: 1
   fieldHistory: 
-  fieldImage: {fileID: 21300000, guid: 3c616bb8354c6034e84f4c660e8ee438, type: 3}
+  fieldImage: {fileID: 21300000, guid: d861147e3c9fbf24096526c9103026f6, type: 3}
   tiers:
   - name: puste
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
+    model: {fileID: 7831196510923314575, guid: 9fac21d343ac3994584150bf7a22dd08, type: 3}
   - name: Tier 1
     buyPrice: 1700
     enterCost: 550

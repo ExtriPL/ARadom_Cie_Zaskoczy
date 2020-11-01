@@ -22,12 +22,12 @@ MonoBehaviour:
     dom kultury,a w po wojnie znajdowa\u0142a si\u0119 siedziba dom\xF3w kultury
     zak\u0142ad\xF3w przemys\u0142owych. Obecnie jest to O\u015Brodek Kultury i Sztuki
     \u201EResursa Obywatelska\u201D\r"
-  fieldImage: {fileID: 21300000, guid: 9b00963ef264455449d765ddfcb9608b, type: 3}
+  fieldImage: {fileID: 21300000, guid: 9c579518230004a4c8758c9a0a1d691d, type: 3}
   tiers:
   - name: puste
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
+    model: {fileID: 7831196510923314575, guid: 9fac21d343ac3994584150bf7a22dd08, type: 3}
   - name: Tier 1
     buyPrice: 3500
     enterCost: 1000

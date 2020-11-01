@@ -20,12 +20,12 @@ MonoBehaviour:
     po\u0142owy XX i pocz\u0105tku XXI w., powi\u0119kszaj\u0105c\u0105 si\u0119
     niemal wy\u0142\u0105cznie dzi\u0119ki znanym darczy\u0144com np. Andrzejowi
     Wajdzie. Siedzib\u0105 jest Dom G\u0105ski i Esterki"
-  fieldImage: {fileID: 21300000, guid: 71629c611dc8ed14e89ef072a90c1d74, type: 3}
+  fieldImage: {fileID: 21300000, guid: 1c6df853c914fb447b884e13b1d9c368, type: 3}
   tiers:
   - name: puste
     buyPrice: 0
     enterCost: 0
-    model: {fileID: -927199367670048503, guid: 20f2b69c4c00bc347a09f5eb83e50318, type: 3}
+    model: {fileID: 7831196510923314575, guid: 9fac21d343ac3994584150bf7a22dd08, type: 3}
   - name: Tier 1
     buyPrice: 1400
     enterCost: 400

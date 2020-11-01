@@ -50,7 +50,8 @@ public class FlowController : IEventSubscribable
 
     private List<Popup> closeOnDiceCloseList = new List<Popup>();
     private bool diceClosed;
-    public bool gameStarted;
+
+    public bool FlowStarted { get; private set; }
 
     #region Inicjalizacja
 
@@ -68,46 +69,44 @@ public class FlowController : IEventSubscribable
     {
         gameplayController = GameplayController.instance;
         ResetSettings();
+        FlowStarted = true;
         if (gameplayController.session.roomOwner.IsLocal)
             EventManager.instance.SendOnTurnChanged("", gameplayController.board.dice.currentPlayer);
     }
 
     public void Update()
     {
-        if (gameStarted)
+        //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
+        if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal && FlowStarted)
         {
-            //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-            if (gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
+            if (!FlowPaused)
             {
-                if (!FlowPaused)
+                timePassed += Time.deltaTime;
+
+                //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
+                if (timePassed >= showTime)
+                    GameplayController.instance.menu.SetActiveNextTurnButton(true);
+
+                //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
+                if (timePassed >= endTime - countingTime)
                 {
-                    timePassed += Time.deltaTime;
-
-                    //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
-                    if (timePassed >= showTime)
-                        GameplayController.instance.menu.SetActiveNextTurnButton(true);
-
-                    //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
-                    if (timePassed >= endTime - countingTime)
-                    {
-                        GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - timePassed));
-                        GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
-                    }
-
-                    //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
-                    if (timePassed >= endTime)
-                        EndTurn();
+                    GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - timePassed));
+                    GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
                 }
 
-                if (TurnTime > autoDiceRollTime && !diceClosed)
+                //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
+                if (timePassed >= endTime)
+                    EndTurn();
+            }
+
+            if (TurnTime > autoDiceRollTime && !diceClosed)
+            {
+                foreach (Popup popup in closeOnDiceCloseList)
+                    PopupSystem.instance.ClosePopup(popup);
+                if(PopupSystem.instance.DiceBox != null)
                 {
-                    foreach (Popup popup in closeOnDiceCloseList)
-                        PopupSystem.instance.ClosePopup(popup);
-                    if (PopupSystem.instance.DiceBox != null)
-                    {
-                        diceClosed = true;
-                        PopupSystem.instance.DiceBox.Close();
-                    }
+                    diceClosed = true;
+                    PopupSystem.instance.DiceBox.Close();
                 }
             }
         }
@@ -275,9 +274,9 @@ public class FlowController : IEventSubscribable
     {
         if(CurrentPlayer.NetworkPlayer.IsLocal)
         {
-            GameplayController.instance.flow.Pause();
-            QuestionPopup startTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_STARTED"));
-            startTurn.AddButton("Ok", Popup.Functionality.Destroy(startTurn));
+            GameplayController.instance.flow.Pause();;
+            string message = SettingsController.instance.languageController.GetWord("TURN_STARTED");
+            QuestionPopup startTurn = QuestionPopup.CreateOkDialog(message);
             startTurn.onClose += delegate { PopupSystem.instance.ShowDice(RollResult()); };
             CloseOnDiceClose(startTurn);
 
@@ -310,8 +309,8 @@ public class FlowController : IEventSubscribable
     {
         if(CurrentPlayer.NetworkPlayer.IsLocal)
         {
-            QuestionPopup endTurn = new QuestionPopup(SettingsController.instance.languageController.GetWord("TURN_ENDED"));
-            endTurn.AddButton("Ok", Popup.Functionality.Destroy(endTurn));
+            string message = SettingsController.instance.languageController.GetWord("TURN_ENDED");
+            QuestionPopup endTurn = QuestionPopup.CreateOkDialog(message);
             PopupSystem.instance.AddPopup(endTurn);
         }
     }

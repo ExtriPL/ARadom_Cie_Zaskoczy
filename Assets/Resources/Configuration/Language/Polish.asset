@@ -166,8 +166,6 @@ MonoBehaviour:
     value: "Has\u0142o"
   - key: CREATE
     value: "Utw\xF3rz"
-  - key: LOAD_FROM_SAVE
-    value: "Wczytaj gr\u0119"
   - key: PLAYERS
     value: 'Gracze:'
   - key: START_GAME
@@ -474,3 +472,7 @@ MonoBehaviour:
       w budynki znajduj\u0105ce si\u0119 na planszy. Ostatnia osoba, kt\xF3rej zosta\u0142y
       pieni\u0105dze wygrywa. Aby rozpocz\u0105\u0107 skieruj aparat swojego urz\u0105dzenia
       na plansz\u0119. Powodzenia!"
+  - key: SAVE_LISTING_ROUND
+    value: 'Runda: '
+  - key: LOAD_FROM_SAVE
+    value: Wczytaj
