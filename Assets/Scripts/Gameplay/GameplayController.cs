@@ -334,7 +334,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
             if (lang.IsPacked(word))
                 unpackedMessage += lang.GetWord(lang.UnpackKey(word));
             else
-                unpackedMessage += word;td
+                unpackedMessage += word;
         }
 
         IconPopup messagePopup = new IconPopup(iconType, unpackedMessage);
