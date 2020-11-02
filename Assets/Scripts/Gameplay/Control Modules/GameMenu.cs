@@ -179,7 +179,21 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     /// <param name="active">Stan włączenia przycisku</param>
     public void SetActiveNextTurnButton(bool active)
     {
-        NextTurnButton.gameObject.SetActive(active);
+        Animator animator = NextTurnButton.GetComponent<Animator>();
+
+        if (active && !animator.GetBool("Visible"))
+        {
+            animator.SetTrigger("Show");
+            animator.SetBool("Visible", true);
+            NextTurnButton.interactable = true;
+        }
+        else if (!active && animator.GetBool("Visible"))
+        {
+            animator.SetTrigger("Hide");
+            animator.SetBool("Visible", false);
+            NextTurnButton.interactable = false;
+        }
+        
     }
 
     /// <summary>
