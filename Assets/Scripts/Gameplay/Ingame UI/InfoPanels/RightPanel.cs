@@ -117,8 +117,8 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
 
     private void FillReceiver(Player sender, List<Field> myBuildings, float myMoney, List<Field> theirBuildings, float theirMoney)
     {
-        mainTitle.text = lC.GetWord("OFFER_FROM") + sender.GetName(); 
-        theirTitle.text = lC.GetWord("PLAYERS_BUILDINGS") + sender.GetName();
+        mainTitle.text = lC.GetWord("OFFER_FROM") + " " + sender.GetName();
+        theirTitle.text = lC.GetWord("PLAYERS_BUILDINGS") == "Budynki gracza" ? lC.GetWord("PLAYERS_BUILDINGS") + " " + sender.GetName() : sender.GetName() + lC.GetWord("PLAYERS_BUILDINGS");
         myTitle.text = lC.GetWord("MY_BUILDINGS");
         this.myMoney.text = myMoney.ToString();
         this.theirMoney.text = theirMoney.ToString();
