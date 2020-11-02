@@ -69,8 +69,8 @@ public class ARController : MonoBehaviour, IEventSubscribable
         //Tworzenie obiektu przechowującego środkowy budynek
         centerBuilding = new GameObject("centerBuilding");
         centerBuilding.GetComponent<Transform>().parent = board.GetComponent<Transform>();
-        float buildingScaleFactor = Keys.Board.SCALLING_FACTOR * Keys.Board.CENTER_BUILDING_SCALE_MULTIPLIER;
-        centerBuilding.GetComponent<Transform>().localScale *= buildingScaleFactor;
+        //float buildingScaleFactor = Keys.Board.SCALLING_FACTOR * Keys.Board.CENTER_BUILDING_SCALE_MULTIPLIER;
+        centerBuilding.GetComponent<Transform>().localScale *= 0;//buildingScaleFactor;
         centerBuilding.AddComponent<BoxCollider>();
         centerBuilding.GetComponent<BoxCollider>().size = (new Vector3(Keys.Board.FIELD_WIDTH, Keys.Board.FIELD_WIDTH, 0f /*Keys.Board.FIELD_HEIGHT*/)) / (1.8f * Keys.Board.SCALLING_FACTOR);
         centerBuilding.GetComponent<BoxCollider>().center = new Vector3(0f, 0f, -Keys.Board.FIELD_WIDTH / Keys.Board.SCALLING_FACTOR / 2f) / 1.8f;
