@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameKey: CHANCE_CARD_INAPPROPRIATE_BEHAVIOUR_TITLE
   contentKey: CHANCE_CARD_INAPPROPRIATE_BEHAVIOUR_CONTENT
-  active: 0
+  active: 1
   actionStrings:
   - actionType: 1
     variables:

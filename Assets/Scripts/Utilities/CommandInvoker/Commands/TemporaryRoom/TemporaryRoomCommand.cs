@@ -1,10 +1,7 @@
 ﻿using Photon.Pun;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Random = UnityEngine.Random;
 
 public class TemporaryRoomCommand : GroupCommand
 {
@@ -23,7 +20,7 @@ public class TemporaryRoomCommand : GroupCommand
         {
             Command connectToMaster = new ConnectToMasterCommand();
             Command connectToLobby = new ConnectToLobbyCommand(Keys.DefaultRoom.NICKNAME);
-            Command connectToRoom = new ConnectToRoomCommand(Keys.DefaultRoom.ROOM_NAME);
+            Command connectToRoom = new ConnectToRoomCommand(Keys.DefaultRoom.ROOM_NAME + Random.Range(0f, 100f));
 
             invoker.AddCommand(connectToMaster);
             invoker.AddCommand(connectToLobby);

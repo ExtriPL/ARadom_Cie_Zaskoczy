@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameKey: CHANCE_CARD_BAD_TAXI_TITLE
   contentKey: CHANCE_CARD_BAD_TAXI_CONTENT
-  active: 0
+  active: 1
   actionStrings:
   - actionType: 2
     variables:
