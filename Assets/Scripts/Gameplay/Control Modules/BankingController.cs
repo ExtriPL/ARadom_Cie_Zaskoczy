@@ -150,7 +150,7 @@ public class BankingController : IEventSubscribable
             EventManager.instance.SendPayEvent(payer.GetName(), receiver.GetName(), amount);
 
             LanguageController language = SettingsController.instance.languageController;
-            string[] message = new string[] { language.PackKey("PLAYER"), payer.GetName(), language.PackKey("PAID"), amount.ToString() };
+            string[] message = new string[] { language.PackKey("PLAYER"), payer.GetName(), language.PackKey("PAID"), amount.ToString(), language.PackKey("RADOM_PENNIES") };
             EventManager.instance.SendPopupMessage(message, IconPopupType.Money, receiver);
         }
         else Debug.Log("Płatnik ani płątobiorca nie mogą być nullem");

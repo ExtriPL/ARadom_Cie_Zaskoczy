@@ -172,7 +172,6 @@ public class PopupSystem : MonoBehaviour
                     ShowPopup(type);
                 else if(inQueue > 0)
                 {
-                    Debug.Log("Close");
                     CloseWhatNeeded(type);
                     if (amount < Keys.Popups.ICON_SHOWED_AMOUNT)
                         ShowPopup(type);

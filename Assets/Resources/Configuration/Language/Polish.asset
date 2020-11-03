@@ -478,3 +478,7 @@ MonoBehaviour:
     value: " Dosta\u0142e\u015B ofert\u0119 od "
   - key: KICKED_FOR_INACTIVITY
     value: " zosta\u0142 wyrzucony za nieaktywno\u015B\u0107."
+  - key: FROM_BANK
+    value: ' od banku'
+  - key: YOU_PAID_FOR_PLAYER
+    value: "Zap\u0142aci\u0142e\u015B graczowi "

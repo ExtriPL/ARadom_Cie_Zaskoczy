@@ -69,9 +69,9 @@ public class MoneyAction : ActionCard
                 p.IncreaseMoney(amount);
 
                 if (!p.GetName().Equals(caller.GetName()))
-                    ShowReceiveMessage(p);
+                    ShowReceiveFromBankMessage(p);
                 else if (showMessage)
-                    ShowReceiveMessage(p);
+                    ShowReceiveFromBankMessage(p);
             }
         }
     }
@@ -98,7 +98,7 @@ public class MoneyAction : ActionCard
                 else if (payer == MoneyActor.Bank)
                 {
                     p.IncreaseMoney(amount);
-                    ShowReceiveMessage(p);
+                    ShowReceiveFromBankMessage(p);
                 }
             }
         }
@@ -119,7 +119,7 @@ public class MoneyAction : ActionCard
         {
             caller.IncreaseMoney(amount);
             if (showMessage)
-                ShowReceiveMessage(caller);
+                ShowReceiveFromBankMessage(caller);
         }
         else if (payer == MoneyActor.Others)
         {
@@ -127,7 +127,10 @@ public class MoneyAction : ActionCard
             {
                 Player p = session.FindPlayer(i);
                 if (!p.GetName().Equals(caller.GetName()))
+                {
                     banking.Pay(p, caller, amount);
+                    ShowPayToPlayerMessage(p, caller);
+                }
             }
         }
     }
@@ -146,7 +149,7 @@ public class MoneyAction : ActionCard
                 p.DecreaseMoney(amount);
 
                 if (!p.GetName().Equals(caller.GetName()) || showMessage)
-                    ShowPayMessage(p);
+                    ShowPayToBankMessage(p);
             }
         }
     }
@@ -158,19 +161,26 @@ public class MoneyAction : ActionCard
             caller.DecreaseMoney(amount);
 
             if (showMessage)
-                ShowPayMessage(caller);
+                ShowPayToBankMessage(caller);
         }
     }
 
-    private void ShowReceiveMessage(Player target)
+    private void ShowReceiveFromBankMessage(Player target)
     {
-        string[] message = new string[] { lang.PackKey("YOU_RECEIVED"), amount.ToString(), lang.PackKey("RADOM_PENNIES") };
+        string[] message = new string[] { lang.PackKey("YOU_RECEIVED"), amount.ToString(), lang.PackKey("RADOM_PENNIES"), lang.PackKey("FROM_BANK") };
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 
-    private void ShowPayMessage(Player target)
+    private void ShowPayToBankMessage(Player target)
     {
         string[] message = new string[] { lang.PackKey("YOU_PAY"), amount.ToString(), lang.PackKey("RADOM_PENNIES"), lang.PackKey("FOR_BANK") };
+        EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
+    }
+
+    private void ShowPayToPlayerMessage(Player target, Player moneyReceiver)
+    {
+        //Zapłaciłęś graczowi moneyReceiver x groszy radomskich
+        string[] message = new string[] { lang.PackKey("YOU_PAID_FOR_PLAYER"), moneyReceiver.GetName(),  " " + amount.ToString(), lang.PackKey("RADOM_PENNIES") };
         EventManager.instance.SendPopupMessage(message, IconPopupType.Message, target);
     }
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameKey: CHANCE_CARD_DUMP_ON_TITLE
   contentKey: CHANCE_CARD_DUMP_ON_CONTENT
-  active: 0
+  active: 1
   actionStrings:
   - actionType: 0
     variables:
