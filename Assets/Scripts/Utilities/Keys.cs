@@ -146,6 +146,10 @@ public static class Keys
     public static class Gameplay
     {
         /// <summary>
+        /// Array kolorów graczy
+        /// </summary>
+        public static readonly Color[] PLAYER_COLORS = {new Color(1f, 0, 0), new Color(0, 1f, 0), new Color(0, 0, 1f), new Color(1f, 1f, 0), new Color(1f, 0, 1f), new Color(0, 1f, 1f)};
+        /// <summary>
         /// Docelowy framerate aplikacji
         /// </summary>
         public const int TARGET_FRAMERATE = 60;

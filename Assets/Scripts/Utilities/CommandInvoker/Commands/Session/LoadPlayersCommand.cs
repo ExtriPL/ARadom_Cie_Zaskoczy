@@ -26,10 +26,19 @@ public class LoadPlayersCommand : Command
         base.StartExecution(OnCommandFinished);
 
         List<string> playerOrder = new List<string>();
+        List<Color> usedColors = new List<Color>();
 
         foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
         {
-            Color mainColor = new Color(Random.Range(0.5f, 1f), Random.Range(0.5f, 1f), Random.Range(0.5f, 1f));
+            Color mainColor;
+
+            do
+            {
+                mainColor = Keys.Gameplay.PLAYER_COLORS[Random.Range(0, 6)];
+            }
+            while (usedColors.Contains(mainColor));
+            usedColors.Add(mainColor);
+
             Player player;
             if (session.roomOwner.IsLocal) player = new Player(p, mainColor, Keys.Board.Backlight.SECONDARY_COLOR);
             else player = new Player(p);

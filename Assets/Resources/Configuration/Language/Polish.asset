@@ -478,3 +478,11 @@ MonoBehaviour:
     value: " Dosta\u0142e\u015B ofert\u0119 od "
   - key: KICKED_FOR_INACTIVITY
     value: " zosta\u0142 wyrzucony za nieaktywno\u015B\u0107."
+  - key: MY_ITEMS
+    value: Moje przedmioty
+  - key: IN_EXCHANGE_FOR_BUILDINGS_OF
+    value: W zamian za przedmioty gracza
+  - key: MONEY_IN_AMOUNT
+    value: "Pieni\u0105dze w kwocie"
+  - key: END_TURN
+    value: "Zako\u0144cz tur\u0119"
