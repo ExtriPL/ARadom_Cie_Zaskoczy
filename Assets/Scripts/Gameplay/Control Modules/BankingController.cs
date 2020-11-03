@@ -284,7 +284,7 @@ public class BankingController : IEventSubscribable
                     AquireBuilding(GameplayController.instance.session.FindPlayer(bidders[0]), placeId);
                 else if (offerForLastBidder && GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
                 {
-                    string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
+                    string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + " " + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
                     Popup.PopupAction yesAction = delegate (Popup source)
                     {
                         AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
@@ -323,31 +323,31 @@ public class BankingController : IEventSubscribable
 
         //1 linijka:  Licytacja
         //2 linijka: nazwa budynku
-        string auctionString = lang.GetWord("AUCTION") + "\n" + GameplayController.instance.board.GetField(placeId).GetFieldName();
+        string auctionString = lang.GetWord("AUCTION") + "\n" + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n";
 
         if (bidders.Contains(bidder)) //Jeżeli bidders posiada biddera aka czy ktoś pobił
         {
             // Ostatni gracz jest lokalny: 3 linijka: Ty podbiłeś
             if (GameplayController.instance.session.FindPlayer(bidder).NetworkPlayer.IsLocal) auctionString += lang.GetWord("YOU_RAISED");
             // Ostatni gracz nie jest lokalny 3 linijka: Gracz <nick> podbił
-            else auctionString += lang.GetWord("PLAYER") + bidder + lang.GetWord("RAISED");
+            else auctionString += lang.GetWord("PLAYER") + " " + bidder + " "+ lang.GetWord("RAISED");
         }
         else if (playerName != passPlayerName && passPlayerName != "") //Jeżeli ktoś spasował, ponieważ sprawdza czy osoba pasująca nie jest startującym aukcji
         {
             //Jeżeli pasujący gracz jest lokalny 3 linijka: Ty spasowałeś
             if (GameplayController.instance.session.FindPlayer(passPlayerName).NetworkPlayer.IsLocal) auctionString += lang.GetWord("YOU_PASSED");
             //Jeżeli pasujący gracz nie jest lokalny 3 linijka: Gracz <nick> spasował
-            else auctionString += lang.GetWord("PLAYER") + passPlayerName + lang.GetWord("PASSED");
+            else auctionString += lang.GetWord("PLAYER") + " " + passPlayerName + " " + lang.GetWord("PASSED");
         }
         else if (playerName == passPlayerName) //Jeżeli gracz który spasował, jest graczem który zaczął akcję, aka pierwsze wywołanie eventu licytacji
         {
             //Jeżeli gracz jest lokalny 3 linijka : Zacząłeś aukcję
             if (GameplayController.instance.session.FindPlayer(playerName).NetworkPlayer.IsLocal) auctionString += lang.GetWord("YOU_STARTED_AUCTION");
             //Jeżeli gracz nie jest lokalny 3 linijka: gracz <nick> rozpoczął aukcję
-            else auctionString += lang.GetWord("PLAYER") + playerName + lang.GetWord("STARTED_AUCTION");
+            else auctionString += lang.GetWord("PLAYER") + " " + playerName + " " + lang.GetWord("STARTED_AUCTION");
         }
         //4 linijka: Obecna stawka: <bid>
-        auctionString += lang.GetWord("AUCTION_CURRENT_BID") + bid;
+        auctionString += "\n" + lang.GetWord("AUCTION_CURRENT_BID") + bid;
 
         auctionPopup = new QuestionPopup(auctionString);
 

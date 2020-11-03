@@ -14317,8 +14317,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Budynek las\xF3w pa\u0144stwowych"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8408023b787bb854ab7e2d0755273f65, type: 2}
-  m_sharedMaterial: {fileID: -3984240550367233849, guid: 8408023b787bb854ab7e2d0755273f65,
+  m_fontAsset: {fileID: 11400000, guid: 8b2340ebdcc6aa847923e5d1369f02f2, type: 2}
+  m_sharedMaterial: {fileID: 1083552824309404555, guid: 8b2340ebdcc6aa847923e5d1369f02f2,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -14344,7 +14344,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 50.75
+  m_fontSize: 32.8
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14585,10 +14585,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100000 GR
+  m_text: 111000 GR
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8408023b787bb854ab7e2d0755273f65, type: 2}
-  m_sharedMaterial: {fileID: -3984240550367233849, guid: 8408023b787bb854ab7e2d0755273f65,
+  m_fontAsset: {fileID: 11400000, guid: 8b2340ebdcc6aa847923e5d1369f02f2, type: 2}
+  m_sharedMaterial: {fileID: 1083552824309404555, guid: 8b2340ebdcc6aa847923e5d1369f02f2,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -14614,10 +14614,10 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 36
+  m_fontSize: 29.25
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

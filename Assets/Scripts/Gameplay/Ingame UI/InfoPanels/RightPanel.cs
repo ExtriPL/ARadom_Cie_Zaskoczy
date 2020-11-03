@@ -103,6 +103,15 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
 
     private void FillSender(Player player)
     {
+        myListings.ForEach((listing) => {
+            listing.DeInit();
+        });
+        myListings.Clear();
+
+        theirListings.ForEach((listing) => {
+            listing.DeInit();
+        });
+        theirListings.Clear();
         myMoney.text = "0";
         theirMoney.text = "0";
         mainTitle.text = lC.GetWord("MAKE_AN_OFFER_TO") + " " + player.GetName();
@@ -110,6 +119,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         myTitle.text = lC.GetWord("MY_BUILDINGS");
         closeButton.SetActive(true);
         sendButton.SetActive(true);
+        sendButton.GetComponent<Button>().interactable = true;
         addMyBuildingsButton.SetActive(true);
         addTheirBuildingsButton.SetActive(true);
         acceptDeclineGroup.SetActive(false);
@@ -124,11 +134,21 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         myTitle.text = lC.GetWord("MY_BUILDINGS");
         this.myMoney.text = myMoney.ToString();
         this.theirMoney.text = theirMoney.ToString();
+        myListings.ForEach((listing) => {
+            listing.DeInit();
+        });
+        myListings.Clear();
+
+        theirListings.ForEach((listing) => {
+            listing.DeInit();
+        });
+        theirListings.Clear();
 
         myBuildings.ForEach((building) =>
         {
             TradeListing t = myPool.TakeObject().GetComponent<TradeListing>();
             t.Init(this, myPool, building, true);
+            Debug.Log("THEIR: " + building.name);
             myListings.Add(t);
         });
 
@@ -136,6 +156,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         {
             TradeListing t = theirPool.TakeObject().GetComponent<TradeListing>();
             t.Init(this, theirPool, building, true);
+            Debug.Log("THEIR: " + building.name);
             theirListings.Add(t);
         });
 
@@ -175,7 +196,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
             listing.Init(this, myPool, field);
             myListings.Add(listing);
         }
-        else if(theirListings.Find(listing => listing.tradeField == field) == null)
+        if(player.NetworkPlayer != PhotonNetwork.LocalPlayer && theirListings.Find(listing => listing.tradeField == field) == null)
         {
             TradeListing listing = theirPool.TakeObject().GetComponent<TradeListing>();
             listing.Init(this, theirPool, field);
@@ -220,6 +241,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
 
             EventManager.instance.SendOnTradeOffer(senderNickName, senderBuildingNames, senderMoney, receiverNickName, receiverBuildingNames, receiverMoney);
             DeInit();
+            uIPanels.currentOpenPanel = UIPanels.InGameUIPanels.None;
         } 
     }
 
@@ -263,6 +285,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         gameObject.GetComponent<Animation>().Play("MiddleToBottom");
         uIPanels.bottomPanel.GetComponent<Animation>().Play("MiddleToBottom");
         DeInit();
+        uIPanels.currentOpenPanel = UIPanels.InGameUIPanels.None;
     }
 
 
@@ -301,11 +324,13 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
     public void SubscribeEvents()
     {
         EventManager.instance.onPlayerMoneyChanged += OnPlayerMoneyChanged;
+        EventManager.instance.onTurnChanged += OnTurnChanged;
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onPlayerMoneyChanged -= OnPlayerMoneyChanged;
+        EventManager.instance.onTurnChanged -= OnTurnChanged;
     }
 
 
@@ -324,6 +349,12 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
             theirCurrentMoney.text = "/ " + tradingPlayer.Money.ToString() + " GR";
             OnTheirMoneyInput(tradingPlayer.Money.ToString());
         }
+    }
+
+    private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
+    {
+        sendButton.GetComponent<Button>().interactable = false;
+        ClosePanel();
     }
 
     #endregion
