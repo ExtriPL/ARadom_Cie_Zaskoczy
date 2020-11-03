@@ -25,13 +25,12 @@ public class LeftPanel : MonoBehaviour, IInitiable<UIPanels>
     public void Init(UIPanels UIPanels)
     {
         this.UIPanels = UIPanels;
-        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
-        //foreach (string playerName in gc.session.playerOrder)
+        foreach (string playerName in gc.session.playerOrder)
         {
-            Player _player = GameplayController.instance.session.FindPlayer(player.NickName);
-            IngamePlayerListing listing = basePool.TakeObject().GetComponent<IngamePlayerListing>();
-            listing.Init(_player, UIPanels);
-            playerListings.Add(listing);
+        Player _player = GameplayController.instance.session.FindPlayer(playerName);
+        IngamePlayerListing listing = basePool.TakeObject().GetComponent<IngamePlayerListing>();
+        listing.Init(_player, UIPanels);
+        playerListings.Add(listing);
         }
     }
 

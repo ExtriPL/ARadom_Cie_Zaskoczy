@@ -47,7 +47,7 @@ public class LanguageController
 
     public bool IsPacked(string value)
     {
-        return value.Substring(0, 3).Equals("{t}");
+        return value.Length >= 3 && value.Substring(0, 3).Equals("{t}");
     }
 
     public string UnpackKey(string value)

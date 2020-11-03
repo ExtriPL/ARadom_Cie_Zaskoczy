@@ -116,8 +116,6 @@ MonoBehaviour:
     value: "Gra zosta\u0142a wstrzymana"
   - key: AUCTION_ENDED
     value: "Aukcja si\u0119 zako\u0144czy\u0142a"
-  - key: KICKED_FOR_INACTIVITY
-    value: " zosta\u0142 wyrzuconyt za nieaktywno\u015B\u0107."
   - key: REMEMBER ME
     value: "Zapami\u0119taj mnie"
   - key: NO_CONNECTION
@@ -418,8 +416,6 @@ MonoBehaviour:
     value: Zaakceptuj
   - key: DO_YOU_WANT_TO_SEE
     value: "Czy chcesz j\u0105 zobaczy\u0107?"
-  - key: YOU_GOT_AN_OFFER_FROM
-    value: " Dosta\u0142e\u015B ofert\u0119 od"
   - key: ACCEPTED_THE_OFFER
     value: "zaakceptowa\u0142 ofert\u0119."
   - key: REJECTED_THE_OFFER
@@ -478,3 +474,7 @@ MonoBehaviour:
     value: "Ilo\u015B\u0107 graczy (1-6)"
   - key: NOT_READY
     value: Nie gotowy
+  - key: YOU_GOT_AN_OFFER_FROM
+    value: " Dosta\u0142e\u015B ofert\u0119 od "
+  - key: KICKED_FOR_INACTIVITY
+    value: " zosta\u0142 wyrzucony za nieaktywno\u015B\u0107."

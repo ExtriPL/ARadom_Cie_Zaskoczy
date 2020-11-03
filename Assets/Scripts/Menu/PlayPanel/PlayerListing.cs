@@ -70,12 +70,13 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
         Hashtable table = new Hashtable();
         table.Add("Room_PlayerReady", ready);
         player.SetCustomProperties(table);
+        readyText.text = ready ? lC.GetWord("READY") : lC.GetWord("NOT_READY");
         if (player.IsLocal) EventManager.instance.SendOnPlayerReady(player.NickName, ready);
     }
 
     public void OnPlayerReady(string playerName, bool ready)
     {
-        if (player.NickName == playerName)//&& !player.IsLocal
+        if (player.NickName == playerName && !player.IsLocal)
         {
             readyButton.GetComponent<Toggle>().isOn = ready;
             readyText.text = ready ? lC.GetWord("READY") : lC.GetWord("NOT_READY");
