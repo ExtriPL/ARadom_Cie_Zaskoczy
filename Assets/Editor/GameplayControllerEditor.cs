@@ -26,6 +26,8 @@ public class GameplayControllerEditor : Editor
     string TeleportPlayerName = "";
     int TeleportPlaceId = 0;
 
+    int nextTierPlaceId;
+
     bool playersOpen = false;
     bool placesOpen = false;
     bool diceOpen = false;
@@ -318,6 +320,18 @@ public class GameplayControllerEditor : Editor
             }
 
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.LabelField("Next tier");
+            EditorGUILayout.LabelField("Place Id");
+            EditorGUILayout.BeginHorizontal();
+            nextTierPlaceId = EditorGUILayout.IntField(nextTierPlaceId);
+            if (GUILayout.Button("GO"))
+            {
+                BankingController bankingController = GameplayController.instance.banking;
+                FlowController flowController = gameplayController.flow;
+                bankingController.UpgradeBuilding(flowController.CurrentPlayer,nextTierPlaceId);
+            }
+            EditorGUILayout.EndHorizontal();
+
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
     }
