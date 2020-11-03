@@ -342,7 +342,8 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
             myCurrentMoney.text = "/ " + session.localPlayer.Money.ToString() + " GR";
             OnMyMoneyInput(session.localPlayer.Money.ToString());
         }
-        if (tradingPlayer.GetName() == playerName)
+
+        if (tradingPlayer != null && tradingPlayer.NetworkPlayer != null && tradingPlayer.GetName() == playerName)
         {
             theirCurrentMoney.text = "/ " + tradingPlayer.Money.ToString() + " GR";
             OnTheirMoneyInput(tradingPlayer.Money.ToString());
