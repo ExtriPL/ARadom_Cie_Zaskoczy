@@ -15,9 +15,13 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
     public GameObject kickButton;
     MainMenuController mainMenuController;
     public TextMeshProUGUI playerNickname;
+    public TextMeshProUGUI readyText;
+    private LanguageController lC;
+
     public void Init(MainMenuController mainMenuController, Photon.Realtime.Player player, BasePool pool)
     {
         this.mainMenuController = mainMenuController;
+        lC = SettingsController.instance.languageController;
         this.player = player;
         this.pool = pool;
         SubscribeEvents();
@@ -71,7 +75,11 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
 
     public void OnPlayerReady(string playerName, bool ready)
     {
-        if (player.NickName == playerName && !player.IsLocal) readyButton.GetComponent<Toggle>().isOn = ready;
+        if (player.NickName == playerName)//&& !player.IsLocal
+        {
+            readyButton.GetComponent<Toggle>().isOn = ready;
+            readyText.text = ready ? lC.GetWord("READY") : lC.GetWord("NOT_READY");
+        }
     }
 
     public void SubscribeEvents()

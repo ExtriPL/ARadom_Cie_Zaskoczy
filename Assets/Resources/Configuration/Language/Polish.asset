@@ -160,8 +160,6 @@ MonoBehaviour:
     value: "Stw\xF3rz Pok\xF3j"
   - key: ROOM_NAME
     value: Nazwa pokoju
-  - key: PLAYER_COUNT
-    value: "Ilo\u015B\u0107 graczy"
   - key: PASSWORD
     value: "Has\u0142o"
   - key: CREATE
@@ -476,3 +474,7 @@ MonoBehaviour:
     value: 'Runda: '
   - key: LOAD_FROM_SAVE
     value: Wczytaj
+  - key: PLAYER_COUNT
+    value: "Ilo\u015B\u0107 graczy (1-6)"
+  - key: NOT_READY
+    value: Nie gotowy

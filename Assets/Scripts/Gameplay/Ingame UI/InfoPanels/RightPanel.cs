@@ -110,6 +110,8 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         myTitle.text = lC.GetWord("MY_BUILDINGS");
         closeButton.SetActive(true);
         sendButton.SetActive(true);
+        addMyBuildingsButton.SetActive(true);
+        addTheirBuildingsButton.SetActive(true);
         acceptDeclineGroup.SetActive(false);
         this.myMoney.interactable = true;
         this.theirMoney.interactable = true;

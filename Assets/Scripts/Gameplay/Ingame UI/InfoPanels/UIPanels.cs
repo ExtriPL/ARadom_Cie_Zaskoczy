@@ -247,7 +247,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     public void OpenRightPanel(Player sender, List<Field> myBuildings, float myMoney, List<Field> theirBuildings, float theirMoney) 
     {
-        currentOpenPanel = InGameUIPanels.None;
+        currentOpenPanel = InGameUIPanels.RightPanel;
         rightPanel.DeInit();
         rightPanel.Init(sender, myBuildings, myMoney, theirBuildings, theirMoney); //Inicjalizacja panelu prawego z danymi przekazanego gracza
         rightPanel.GetComponent<Animation>().Play("BottomToMiddle");
@@ -259,6 +259,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
         currentOpenPanel = InGameUIPanels.LeftPanel;
         rightPanel.GetComponent<Animation>().Play("MiddleToRight");
         leftPanel.GetComponent<Animation>().Play("LeftToMiddle");
+        rightPanel.DeInit();
     }
 
     public void StartLoadingScreen()
@@ -326,15 +327,23 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     private void OnTradeResponseReceived(bool accepted, string senderNickName, string receiverNickName) 
     {
-        string response = accepted ? lC.GetWord("PLAYER") + " " + senderNickName + " " + lC.GetWord("ACCEPTED_THE_OFFER") : lC.GetWord("PLAYER") + " " + senderNickName + " " + lC.GetWord("REJECTED_THE_OFFER");
-        IconPopup tradeOfferResponseReceivedPopup = new IconPopup(IconPopupType.Trade, response);
+        if (receiverNickName == PhotonNetwork.LocalPlayer.NickName)
+        {
+            string response = accepted ? lC.GetWord("PLAYER") + " " + senderNickName + " " + lC.GetWord("ACCEPTED_THE_OFFER") : lC.GetWord("PLAYER") + " " + senderNickName + " " + lC.GetWord("REJECTED_THE_OFFER");
+            IconPopup tradeOfferResponseReceivedPopup = new IconPopup(IconPopupType.Trade, response);
 
-        PopupSystem.instance.AddPopup(tradeOfferResponseReceivedPopup);
+            PopupSystem.instance.AddPopup(tradeOfferResponseReceivedPopup);
+        }
     }
 
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
     {
         if (currentPlayerName == GameplayController.instance.session.localPlayer.GetName() && currentOpenPanel != InGameUIPanels.None) 
+        {
+            yourTurnNotification.SetActive(true);
+            yourTurnNotification.GetComponent<Animation>().Play("NotificationShow");
+        }
+        if (previousPlayerName == GameplayController.instance.session.localPlayer.GetName() && currentOpenPanel != InGameUIPanels.None) 
         {
             yourTurnNotification.SetActive(true);
             yourTurnNotification.GetComponent<Animation>().Play("NotificationShow");
