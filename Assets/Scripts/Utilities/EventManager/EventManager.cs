@@ -492,6 +492,7 @@ public class EventManager : MonoBehaviour, IOnEventCallback
                 break;
             case (byte)EventsId.Message:
                 {
+                    Debug.Log("Message Received");
                     object[] data = (object[])photonEvent.CustomData;
                     string[] message = (string[])data[0];
                     IconPopupType iconType = (IconPopupType)data[1];

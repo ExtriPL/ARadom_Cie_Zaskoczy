@@ -278,6 +278,9 @@ public class BankingController : IEventSubscribable
         if (auctionPopup != null) auctionPopup.onClose = null;
         if (bidders.Count > 0)
         {
+            string auctionEndedMessage = SettingsController.instance.languageController.GetWord("AUCTION_ENDED");
+            IconPopup auctionEnded = new IconPopup(IconPopupType.Auction, auctionEndedMessage);
+
             if (GameplayController.instance.session.FindPlayer(bidders[0]).NetworkPlayer.IsLocal)
             {
                 if (raisers.Contains(bidders[0]))
@@ -285,6 +288,7 @@ public class BankingController : IEventSubscribable
                 else if (offerForLastBidder && GameplayController.instance.session.FindPlayer(bidders[0]).Money >= bid)
                 {
                     string message = SettingsController.instance.languageController.GetWord("DO_YOU_WANT_TO_BUY") + GameplayController.instance.board.GetField(placeId).GetFieldName() + "\n" + SettingsController.instance.languageController.GetWord("PRICE") + ":" + bid + "?";
+                    
                     Popup.PopupAction yesAction = delegate (Popup source)
                     {
                         AquireBuilding(GameplayController.instance.session.localPlayer, placeId);
@@ -293,14 +297,11 @@ public class BankingController : IEventSubscribable
                     QuestionPopup buyQuestion = QuestionPopup.CreateYesNoDialog(message, yesAction);
                     PopupSystem.instance.AddPopup(buyQuestion);
                 }
-            }
-            else if(GameplayController.instance.session.playerCount > 2)
-            {
-                Debug.Log("Aukcja zakończyła się");
-                string message = SettingsController.instance.languageController.GetWord("AUCTION_ENDED");
-                IconPopup auctionEnded = new IconPopup(IconPopupType.Auction, message);
+
                 PopupSystem.instance.AddPopup(auctionEnded);
             }
+            else if(GameplayController.instance.session.playerCount > 2)
+                PopupSystem.instance.AddPopup(auctionEnded);
         }
 
         PopupSystem.instance.ClosePopup(auctionPopup);

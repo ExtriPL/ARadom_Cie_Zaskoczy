@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameKey: CHANCE_CARD_GRENADE_FACTORY_TITLE
   contentKey: CHANCE_CARD_GRENADE_FACTORY_CONTENT
-  active: 1
+  active: 0
   actionStrings:
   - actionType: 1
     variables:

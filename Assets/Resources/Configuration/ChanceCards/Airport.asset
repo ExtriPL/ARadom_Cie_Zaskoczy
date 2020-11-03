@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameKey: CHANCE_CARD_AIRPORT_TITLE
   contentKey: CHANCE_CARD_AIRPORT_CONTENT
-  active: 1
+  active: 0
   actionStrings:
   - actionType: 0
     variables:

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameKey: CHANCE_CARD_BIKE_LANE_TITLE
   contentKey: CHANCE_CARD_BIKE_LANE_CONTENT
-  active: 1
+  active: 0
   actionStrings:
   - actionType: 0
     variables:

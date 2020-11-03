@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardNameKey: CHANCE_CARD_BACKWARDS_TITLE
   contentKey: CHANCE_CARD_BACKWARDS_CONTENT
-  active: 1
+  active: 0
   actionStrings:
   - actionType: 2
     variables:
