@@ -83,14 +83,12 @@ public abstract class BuildingField : Field
         //Wiadomość o konieczności zapłaty
         string message = language.GetWord("YOU_MUST_PAY") + owner.GetName() + language.GetWord("FOR_STAY_ON_PLACE") + "\n" + language.GetWord("COST") + cost;
 
-        Popup.PopupAction onClose = delegate (Popup source)
+        Popup.PopupAction onOk = delegate (Popup source)
         {
             GameplayController.instance.banking.Pay(player, owner, cost);
         };
 
-        QuestionPopup payPopup = QuestionPopup.CreateOkDialog(message, Popup.Functionality.Destroy());
-
-        payPopup.onClose += onClose;
+        QuestionPopup payPopup = QuestionPopup.CreateOkDialog(message, onOk);
 
         PopupSystem.instance.AddPopup(payPopup);
     }

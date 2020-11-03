@@ -55,10 +55,14 @@ public class QuestionPopup : Popup
     public static QuestionPopup CreateYesNoDialog(string question, PopupAction yesAction = null, PopupAction noAction = null)
     {
         QuestionPopup popup = new QuestionPopup(question);
-        yesAction += Functionality.Destroy();
-        noAction += Functionality.Destroy();
+        yesAction += delegate (Popup source)
+        {
+            source.onClose = null;
+            Functionality.Destroy().Invoke(source);
+        };
+        popup.onClose += noAction;
         popup.AddButton(SettingsController.instance.languageController.GetWord("YES"), yesAction);
-        popup.AddButton(SettingsController.instance.languageController.GetWord("NO"), noAction);
+        popup.AddButton(SettingsController.instance.languageController.GetWord("NO"), Functionality.Destroy());
 
         return popup;
     }
@@ -72,12 +76,9 @@ public class QuestionPopup : Popup
     public static QuestionPopup CreateOkDialog(string question, PopupAction okAction = null)
     {
         QuestionPopup popup = new QuestionPopup(question);
-        if (okAction == null)
-            okAction = Functionality.Destroy();
-        else
-            okAction += Functionality.Destroy();
 
-        popup.AddButton("OK", okAction);
+        popup.AddButton("OK", Functionality.Destroy());
+        popup.onClose += okAction;
 
         return popup;
     }

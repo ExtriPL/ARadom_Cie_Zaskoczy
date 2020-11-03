@@ -296,6 +296,7 @@ public class BankingController : IEventSubscribable
             }
             else if(GameplayController.instance.session.playerCount > 2)
             {
+                Debug.Log("Aukcja zakończyła się");
                 string message = SettingsController.instance.languageController.GetWord("AUCTION_ENDED");
                 IconPopup auctionEnded = new IconPopup(IconPopupType.Auction, message);
                 PopupSystem.instance.AddPopup(auctionEnded);

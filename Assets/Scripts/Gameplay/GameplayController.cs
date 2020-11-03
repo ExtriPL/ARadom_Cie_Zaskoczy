@@ -276,6 +276,14 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         GameInitialized = true;
         StopCoroutine(masterInactiveCheck);
         StartGame();
+
+        IconPopup i1 = new IconPopup(IconPopupType.Key1, "Test1");
+        IconPopup i2 = new IconPopup(IconPopupType.ChestGold, "Test2");
+        IconPopup i3 = new IconPopup(IconPopupType.CastleGolden, "Test3");
+
+        PopupSystem.instance.AddPopup(i1);
+        PopupSystem.instance.AddPopup(i2);
+        PopupSystem.instance.AddPopup(i3);
     }
 
     /// <summary>

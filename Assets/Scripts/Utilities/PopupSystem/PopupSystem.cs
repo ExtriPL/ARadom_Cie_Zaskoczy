@@ -164,13 +164,15 @@ public class PopupSystem : MonoBehaviour
         foreach(Type type in boxTypes.Values)
         {
             int amount = CountShowedPopups(type);
+            int inQueue = CountPopupsInQueue(type);
 
             if (type.Equals(typeof(IconPopup)))
             {
-                if (amount < Keys.Popups.ICON_SHOWED_AMOUNT)
+                if (amount < Keys.Popups.ICON_SHOWED_AMOUNT && inQueue > 0)
                     ShowPopup(type);
-                else
+                else if(inQueue > 0)
                 {
+                    Debug.Log("Close");
                     CloseWhatNeeded(type);
                     if (amount < Keys.Popups.ICON_SHOWED_AMOUNT)
                         ShowPopup(type);
@@ -178,7 +180,7 @@ public class PopupSystem : MonoBehaviour
             }
             else
             {
-                if(CountPopupsInQueue(type) > 0)
+                if(inQueue > 0)
                     CloseWhatNeeded(type);
                 if (amount < 1)
                     ShowPopup(type);
@@ -219,7 +221,7 @@ public class PopupSystem : MonoBehaviour
         {
             if(box.source.GetType().Equals(type) && box.source.CloseMode <= AutoCloseMode.NewAppears)
             {
-                ClosePopup(box);
+                box.Close();
                 break;
             }
         }
