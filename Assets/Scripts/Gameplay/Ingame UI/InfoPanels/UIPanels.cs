@@ -12,6 +12,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     public LeftPanel leftPanel;
     public RightPanel rightPanel;
     public BuildingInfoPanel buildingInfo;
+    public PlayerOrderList playerOrderList;
 
     public GameObject yourTurnNotification;
     public GameObject button;
@@ -47,6 +48,8 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     private void OnDisable()
     {
         UnsubscribeEvents();
+        rightPanel.GetComponent<IEventSubscribable>().UnsubscribeEvents();
+        playerOrderList.GetComponent<IEventSubscribable>().UnsubscribeEvents();
     }
 
     public void SubscribeEvents()
@@ -71,12 +74,16 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
         lC = SettingsController.instance.languageController;
         currentOpenPanel = InGameUIPanels.None;
         SubscribeEvents();
+        rightPanel.GetComponent<IEventSubscribable>().SubscribeEvents();
+        playerOrderList.GetComponent<IEventSubscribable>().SubscribeEvents();
 
         //Przygotowywanie paneli
         bottomPanel.PreInit();
         leftPanel.PreInit();
         rightPanel.PreInit(this);
         buildingInfo.PreInit(this);
+        playerOrderList.PreInit(this);
+        playerOrderList.Init();
 
         //Włączanie przycisku otwierania panelu dolnego
         openMenuButton.SetActive(true);

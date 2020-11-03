@@ -482,3 +482,11 @@ MonoBehaviour:
     value: ' od banku'
   - key: YOU_PAID_FOR_PLAYER
     value: "Zap\u0142aci\u0142e\u015B graczowi "
+  - key: MY_ITEMS
+    value: Moje przedmioty
+  - key: IN_EXCHANGE_FOR_BUILDINGS_OF
+    value: W zamian za przedmioty gracza
+  - key: MONEY_IN_AMOUNT
+    value: "Pieni\u0105dze w kwocie"
+  - key: END_TURN
+    value: "Zako\u0144cz tur\u0119"

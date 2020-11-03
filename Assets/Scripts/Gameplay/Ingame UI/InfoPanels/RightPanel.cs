@@ -115,8 +115,8 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         myMoney.text = "0";
         theirMoney.text = "0";
         mainTitle.text = lC.GetWord("MAKE_AN_OFFER_TO") + " " + player.GetName();
-        theirTitle.text = lC.GetWord("PLAYERS_BUILDINGS") == "Budynki gracza" ? lC.GetWord("PLAYERS_BUILDINGS") + " " + player.GetName() : player.GetName() + lC.GetWord("PLAYERS_BUILDINGS");
-        myTitle.text = lC.GetWord("MY_BUILDINGS");
+        theirTitle.text = lC.GetWord("IN_EXCHANGE_FOR_BUILDINGS_OF") + " " + player.GetName();
+        myTitle.text = lC.GetWord("MY_ITEMS");
         closeButton.SetActive(true);
         sendButton.SetActive(true);
         sendButton.GetComponent<Button>().interactable = true;
@@ -130,8 +130,8 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
     private void FillReceiver(Player sender, List<Field> myBuildings, float myMoney, List<Field> theirBuildings, float theirMoney)
     {
         mainTitle.text = lC.GetWord("OFFER_FROM") + " " + sender.GetName();
-        theirTitle.text = lC.GetWord("PLAYERS_BUILDINGS") == "Budynki gracza" ? lC.GetWord("PLAYERS_BUILDINGS") + " " + sender.GetName() : sender.GetName() + lC.GetWord("PLAYERS_BUILDINGS");
-        myTitle.text = lC.GetWord("MY_BUILDINGS");
+        theirTitle.text = lC.GetWord("IN_EXCHANGE_FOR_BUILDINGS_OF") + " " + sender.GetName();
+        myTitle.text = lC.GetWord("MY_ITEMS");
         this.myMoney.text = myMoney.ToString();
         this.theirMoney.text = theirMoney.ToString();
         myListings.ForEach((listing) => {
@@ -148,7 +148,6 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         {
             TradeListing t = myPool.TakeObject().GetComponent<TradeListing>();
             t.Init(this, myPool, building, true);
-            Debug.Log("THEIR: " + building.name);
             myListings.Add(t);
         });
 
@@ -156,7 +155,6 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         {
             TradeListing t = theirPool.TakeObject().GetComponent<TradeListing>();
             t.Init(this, theirPool, building, true);
-            Debug.Log("THEIR: " + building.name);
             theirListings.Add(t);
         });
 
@@ -344,7 +342,8 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
             myCurrentMoney.text = "/ " + session.localPlayer.Money.ToString() + " GR";
             OnMyMoneyInput(session.localPlayer.Money.ToString());
         }
-        if (tradingPlayer.GetName() == playerName)
+
+        if (tradingPlayer != null && tradingPlayer.NetworkPlayer != null && tradingPlayer.GetName() == playerName)
         {
             theirCurrentMoney.text = "/ " + tradingPlayer.Money.ToString() + " GR";
             OnTheirMoneyInput(tradingPlayer.Money.ToString());
@@ -354,7 +353,7 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
     {
         sendButton.GetComponent<Button>().interactable = false;
-        ClosePanel();
+        if(uIPanels.currentOpenPanel == UIPanels.InGameUIPanels.RightPanel && previousPlayerName != "" && gC.session.FindPlayer(previousPlayerName).NetworkPlayer.IsLocal) ClosePanel();
     }
 
     #endregion
