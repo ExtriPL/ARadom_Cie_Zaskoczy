@@ -85,6 +85,7 @@ MonoBehaviour:
   soundEffectSource: {fileID: -487301375284459727}
   musics:
   - {fileID: 8300000, guid: 1de608c498c63fe4394b4821ec74b616, type: 3}
+  - {fileID: 8300000, guid: bdbf5019b68050b4dbffaa2131a42717, type: 3}
   effects:
   - {fileID: 8300000, guid: e896c5fb61defb141a20fe618e3d17ee, type: 3}
   - {fileID: 8300000, guid: 2fdcc6f11701faa49a4af9b1ba87e011, type: 3}
