@@ -381,7 +381,7 @@ public class Board : IEventSubscribable
                 else
                 {
                     if (placeFrom + 1 < Keys.Board.PLACE_COUNT) placesBetween.AddRange(Enumerable.Range(placeFrom + 1, Keys.Board.PLACE_COUNT - (placeFrom + 1)));
-                    if (placeTo > 0) placesBetween.AddRange(Enumerable.Range(0, placeTo + 1));
+                    if (placeTo >= 0) placesBetween.AddRange(Enumerable.Range(0, placeTo + 1));
                 }
             }
         }

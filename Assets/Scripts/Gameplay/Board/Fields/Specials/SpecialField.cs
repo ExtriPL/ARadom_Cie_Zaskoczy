@@ -11,7 +11,6 @@ public abstract class SpecialField : Field
     [SerializeField, Tooltip("Model budynku stojącego na polu")]
     private GameObject model;
     
-
     public override GameObject GetStartModel() => model;
 
     public override GameObject GetModel() => model;
