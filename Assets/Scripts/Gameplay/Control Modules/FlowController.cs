@@ -47,6 +47,7 @@ public class FlowController : IEventSubscribable
     /// Czas, który minął od rozpoczęcia tury obenego gracza
     /// </summary>
     private float TurnTime { get => Time.time - beginTime; }
+    public float turnTime;
 
     private List<Popup> closeOnDiceCloseList = new List<Popup>();
     private bool diceClosed;
@@ -76,6 +77,7 @@ public class FlowController : IEventSubscribable
 
     public void Update()
     {
+        turnTime = TurnTime;
         //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
         if (FlowStarted && gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
         {
@@ -320,7 +322,7 @@ public class FlowController : IEventSubscribable
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
     {
         //Gracz, który rozpoczął teraz turę, ma resetowane ustawienia FlowControllera
-        if (currentPlayerName.Equals(CurrentPlayer.GetName()))
+        if (CurrentPlayer.NetworkPlayer.IsLocal)
             ResetSettings();
     }
 }
