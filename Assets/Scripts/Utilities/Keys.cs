@@ -148,7 +148,7 @@ public static class Keys
         /// <summary>
         /// Array kolorów graczy
         /// </summary>
-        public static readonly Color[] PLAYER_COLORS = {new Color(1f, 0, 0), new Color(0, 1f, 0), new Color(0, 0, 1f), new Color(1f, 1f, 0), new Color(1f, 0, 1f), new Color(0, 1f, 1f)};
+        public static readonly Color[] PLAYER_COLORS = {new Color(214f/255f, 43f/255f, 14f/255f), new Color(0, 214f/255f, 5f/255f), new Color(9f/255f, 1f/255f, 240f/255f), new Color(250f/255f, 116f/255f, 0), new Color(250f/255f, 227f/255f, 1f/255f), new Color(250f/255f, 49f/255f, 231f/255f) };
         /// <summary>
         /// Docelowy framerate aplikacji
         /// </summary>
