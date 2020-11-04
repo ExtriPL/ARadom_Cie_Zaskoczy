@@ -10,10 +10,10 @@ using System.Linq;
 
 public class RoomListing: MonoBehaviourPunCallbacks
 {
-    private RoomInfo roomInfo;
+    public RoomInfo roomInfo;
     private BasePool pool;
     private MainMenuController mainMenuController;
-    PlayPanel playPanel;
+    private PlayPanel playPanel;
     public void Init(RoomInfo roomInfo, PlayPanel playPanel, BasePool pool, MainMenuController mainMenuController) 
     {
         this.mainMenuController = mainMenuController;
@@ -33,12 +33,12 @@ public class RoomListing: MonoBehaviourPunCallbacks
 
     public void Deinit() 
     {
-        playPanel.roomList.Remove(roomInfo);
+        playPanel.roomListings.Remove(this);
         roomInfo = null;
         pool.ReturnObject(gameObject);
     }
 
-    private void Refresh() 
+    public void Refresh() 
     {
         gameObject.GetComponentInChildren<TextMeshProUGUI>().text = roomInfo.Name;
         gameObject.GetComponentInChildren<TextMeshProUGUI>().text += " ";

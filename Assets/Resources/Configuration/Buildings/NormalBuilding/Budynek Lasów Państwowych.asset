@@ -19,7 +19,7 @@ MonoBehaviour:
     powsta\u0142 w 1938 roku.\r\nTen budynek by\u0142 \u015Bwiadkiem demonstracji
     czerwca 1976 roku w kt\xF3rym zosta\u0142 uszkodzony.\r\nZachowa\u0142 si\u0119
     jednak oryginalny wystr\xF3j elewacji.\r"
-  fieldImage: {fileID: 21300000, guid: fbf8d2857f597e244a9d84de2aeec63d, type: 3}
+  fieldImage: {fileID: 21300000, guid: 488c62b3511745d4285abe37fdcbd9d8, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

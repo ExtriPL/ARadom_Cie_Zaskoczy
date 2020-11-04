@@ -15,7 +15,7 @@ MonoBehaviour:
   fieldName: "Urz\u0105d Miejski \u017Beromskiego"
   canBePlaced: 1
   fieldHistory: 
-  fieldImage: {fileID: 21300000, guid: fa256bf87f056484c879ae77b1580edc, type: 3}
+  fieldImage: {fileID: 21300000, guid: 6cd314eef0715fd41a4c4b9159666476, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

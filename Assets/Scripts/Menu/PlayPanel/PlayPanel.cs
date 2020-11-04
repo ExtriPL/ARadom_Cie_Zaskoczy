@@ -3,13 +3,14 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
     private BasePool basePool;
     public GameObject content;
     public GameObject template;
-    public List<RoomInfo> roomList = new List<RoomInfo>();
+    public List<RoomListing> roomListings = new List<RoomListing>();
     MainMenuController mainMenuController;
 
 
@@ -22,10 +23,12 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     {
         this.mainMenuController = mainMenuController;
 
-        for (int i = 0; i < roomList.Count; i++) 
+        roomListings.RemoveAll(x => x.roomInfo.RemovedFromList);
+        roomListings.ForEach((roomListing) =>
         {
-            if (roomList[i].PlayerCount == 0) roomList.RemoveAt(i);
-        }
+            roomListing.Refresh();
+        });
+
         PhotonNetwork.JoinLobby();
     }
 
@@ -43,14 +46,15 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        foreach (RoomInfo roomInfo in roomList.ToArray())
+        foreach (RoomInfo roomInfo in roomList)
         {
-            if (!this.roomList.Contains(roomInfo))
+            if (roomListings.Find(x => x.roomInfo == roomInfo) == null)
             {
-                if (roomInfo.PlayerCount != 0)
+                if (!roomInfo.RemovedFromList)
                 {
-                    basePool.TakeObject().GetComponent<RoomListing>().Init(roomInfo, this, basePool, mainMenuController);
-                    this.roomList.Add(roomInfo);
+                    RoomListing rL = basePool.TakeObject().GetComponent<RoomListing>();
+                    rL.Init(roomInfo, this, basePool, mainMenuController);
+                    roomListings.Add(rL);
                 }
             }
         }

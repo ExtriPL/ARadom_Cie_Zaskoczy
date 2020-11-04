@@ -260,9 +260,6 @@ MonoBehaviour:
       kolejk\u0119."
   - key: CHANCE_CARD_AIRPORT_TITLE
     value: Lotnisko
-  - key: CHANCE_CARD_AIRPORT_CONTENT
-    value: "Modernizujesz lotnisko. Od ka\u017Cdego z graczy pobierasz 15 groszy
-      radomskich."
   - key: CHANCE_CARD_BIKE_LANE_TITLE
     value: "Droga dla rower\xF3w"
   - key: CHANCE_CARD_BIKE_LANE_CONTENT
@@ -288,9 +285,6 @@ MonoBehaviour:
     value: "Masz dzisiaj urodziny. Ka\u017Cdy z graczy podarowuje ci 50 groszy radomskich."
   - key: CHANCE_CARD_KEKE_TITLE
     value: "K\u0119ke"
-  - key: CHANCE_CARD_KEKE_CONTENT
-    value: "Spotka\u0142e\u015B K\u0119kiego i otrzyma\u0142e\u015B autograf na nowej
-      p\u0142ycie. Otrzymujesz dodatkowy rzut kostk\u0105."
   - key: CHANCE_CARD_MCDONALDS_TITLE
     value: McDonald's
   - key: CHANCE_CARD_MCDONALDS_CONTENT
@@ -496,3 +490,9 @@ MonoBehaviour:
       Zaczynajmy! "
   - key: CURRENT_PLAYER
     value: 'Obecny gracz:'
+  - key: CHANCE_CARD_KEKE_CONTENT
+    value: "Spotka\u0142e\u015B K\u0119kiego i otrzyma\u0142e\u015B autograf na nowej
+      p\u0142ycie. Otrzymujesz dodatkowy rzut kostk\u0105."
+  - key: CHANCE_CARD_AIRPORT_CONTENT
+    value: "Modernizujesz lotnisko. Od ka\u017Cdego z graczy pobierasz 150 groszy
+      radomskich."

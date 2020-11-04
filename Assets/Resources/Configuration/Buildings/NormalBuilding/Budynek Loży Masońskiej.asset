@@ -30,7 +30,7 @@ MonoBehaviour:
     cz\u0119\u015Bci \u015Ar\xF3dmie\u015Bcia. W okresie mi\u0119dzywojennym siedziba
     s\u0105du pokoju. W latach 1939\u20131973 budynek ponownie zajmowany by\u0142
     przez szpital. Od 1975 siedziba prokuratury okr\u0119gowej (do 1999 wojew\xF3dzkiej)."
-  fieldImage: {fileID: 21300000, guid: 5bf1eaf448a65bc4096fbbf20a6b03b1, type: 3}
+  fieldImage: {fileID: 21300000, guid: d03535ba8cc4425428a4e721e3a1be02, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

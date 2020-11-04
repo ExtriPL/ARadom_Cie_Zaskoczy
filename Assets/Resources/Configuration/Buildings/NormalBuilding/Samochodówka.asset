@@ -19,7 +19,7 @@ MonoBehaviour:
     1904 roku. W jego sk\u0142ad wchodz\u0105: technikum na podbudowie gimnazjum
     i zasadnicza szko\u0142a zawodowa na podbudowie gimnazjum. W dniu 13 maja 2013
     roku nadano szkole imi\u0119 rotmistrza Witolda Pileckiego."
-  fieldImage: {fileID: 21300000, guid: b1a158c811093e74c9c8e298d9630ba3, type: 3}
+  fieldImage: {fileID: 21300000, guid: 85e65f58dd0340d4999dc01b16561534, type: 3}
   tiers:
   - name: puste
     buyPrice: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Mazowieckie Centru Sztuki Wsp\xF3\u0142czesnej"
   m_EditorClassIdentifier: 
   fieldName: "Mazowieckie Centru Sztuki Wsp\xF3\u0142czesnej"
-  canBePlaced: 1
+  canBePlaced: 0
   fieldHistory: "Mazowieckie Centrum Sztuki Wsp\xF3\u0142czesnej \u201EElektrownia\u201D
     - zosta\u0142o wybudowane na terenie przedwojennej neogotyckiej elektrowni miejskiej,kt\xF3ra
     pracowa\u0142a do 1956 roku.\r\nOficjalnie za\u0142o\u017Cono je w czerwcu 2005
