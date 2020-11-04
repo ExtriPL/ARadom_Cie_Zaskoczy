@@ -47,6 +47,8 @@ public class RoomListing: MonoBehaviourPunCallbacks
         gameObject.GetComponentInChildren<TextMeshProUGUI>().text += roomInfo.PlayerCount;
         gameObject.GetComponentInChildren<TextMeshProUGUI>().text += "/";
         gameObject.GetComponentInChildren<TextMeshProUGUI>().text += roomInfo.MaxPlayers;
+        //Dałem tutaj >= bo boniu powiedzial: a co jeżeli będzie więcej osób niż się da?
+        if (roomInfo.PlayerCount >= roomInfo.MaxPlayers) Deinit();
     }
 
     public void JoinRoom() 
@@ -71,6 +73,12 @@ public class RoomListing: MonoBehaviourPunCallbacks
             PhotonNetwork.LocalPlayer.NickName += (sameNamePlayers - 1).ToString();
 
         mainMenuController.OpenPanel(8);  
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        base.OnJoinRoomFailed(returnCode, message);
+        mainMenuController.OpenPanel(4);
     }
 
     public void StartLoadingScreen() 
