@@ -20,17 +20,15 @@ public class RoomListing: MonoBehaviourPunCallbacks
         this.roomInfo = roomInfo;
         this.pool = pool;
         this.playPanel = playPanel;
-        Refresh();
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        if (roomList.Contains(roomInfo) && roomList.Find(x=>x.Equals(roomInfo)).RemovedFromList)
+        if (roomList.Contains(roomInfo))
         {
-            Deinit();
-        }
-        else
-        {
-            Refresh();
+            roomInfo = roomList.Find(x => x.Equals(roomInfo));
+
+            if (roomInfo.RemovedFromList) Deinit();
+            else Refresh();
         }
     }
 
