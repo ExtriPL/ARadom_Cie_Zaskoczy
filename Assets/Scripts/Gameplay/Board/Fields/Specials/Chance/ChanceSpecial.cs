@@ -9,6 +9,7 @@ public class ChanceSpecial : SpecialField
 {
     [SerializeField, Tooltip("Lista możliwych do wylosowania kart")]
     private List<ChanceCard> chanceCards = new List<ChanceCard>();
+    private List<ChanceCard> cards;
 
     public override void OnEnter(Player player, PlaceVisualiser visualiser)
     {
@@ -20,8 +21,9 @@ public class ChanceSpecial : SpecialField
 
     private void ShowRandomCard(Player player)
     {
-        List<ChanceCard> cards = new List<ChanceCard>(chanceCards);
-        while(cards.Count > 0)
+        if(cards == null && cards.Count == 0) cards = new List<ChanceCard>(chanceCards);
+        
+        while (cards.Count > 0)
         {
             int index = Random.Range(0, cards.Count - 1);
             ChanceCard card = cards[index];
