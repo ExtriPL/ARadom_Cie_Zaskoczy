@@ -24,7 +24,10 @@ public class RoomListing: MonoBehaviourPunCallbacks
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        if (!(roomList.Contains(roomInfo)) || (roomList.Find(x => x.Name == roomInfo.Name).RemovedFromList)) Deinit();
+        if (roomInfo.RemovedFromList)
+        {
+            Deinit();
+        }
         else
         {
             Refresh();

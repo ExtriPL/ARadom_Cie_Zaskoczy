@@ -37,10 +37,6 @@ MonoBehaviour:
     surname: Kustra
     proffesion: 1
     website: 
-  - name: Mateusz
-    surname: Ciupa
-    proffesion: 1
-    website: 
   - name: Martin
     surname: Gregorczyk
     proffesion: 1

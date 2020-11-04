@@ -24,6 +24,7 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
         this.mainMenuController = mainMenuController;
 
         roomListings.RemoveAll(x => x.roomInfo.RemovedFromList);
+        roomListings.RemoveAll(x => x.roomInfo.PlayerCount == x.roomInfo.MaxPlayers);
         roomListings.ForEach((roomListing) =>
         {
             roomListing.Refresh();
@@ -48,9 +49,9 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     {
         foreach (RoomInfo roomInfo in roomList)
         {
-            if (roomListings.Find(x => x.roomInfo == roomInfo) == null)
+            if (roomListings.FirstOrDefault(x => x.roomInfo.Equals(roomInfo)) == null)
             {
-                if (!roomInfo.RemovedFromList)
+                if (!roomInfo.RemovedFromList && roomInfo.PlayerCount != roomInfo.MaxPlayers)
                 {
                     RoomListing rL = basePool.TakeObject().GetComponent<RoomListing>();
                     rL.Init(roomInfo, this, basePool, mainMenuController);
