@@ -3445,7 +3445,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 0
+  m_Spacing: 20
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -14415,6 +14415,7 @@ MonoBehaviour:
   content: {fileID: 330734208}
   template: {fileID: 6989373068738306810, guid: 714e25c73afb03f43807cd578324f7cf,
     type: 3}
+  roomListings: []
 --- !u!1 &1794724516
 GameObject:
   m_ObjectHideFlags: 0
