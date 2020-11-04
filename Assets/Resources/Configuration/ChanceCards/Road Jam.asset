@@ -18,5 +18,5 @@ MonoBehaviour:
   actionStrings:
   - actionType: 1
     variables:
-    - Others
+    - Player
     - 1
