@@ -230,6 +230,7 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     public void EndTurn()
     {
         GameplayController.instance.flow.EndTurn();
+        SetActiveNextTurnButton(false);
     }
 
     #endregion Obsłuiga przycisków menu
