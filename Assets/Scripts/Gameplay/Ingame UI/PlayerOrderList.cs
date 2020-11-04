@@ -1,18 +1,22 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerOrderList : MonoBehaviour, IEventSubscribable
 {
     public GameObject content;
     public List<GameObject> playerElements;
+    public GameObject openPanel;
 
 
     private GameplayController gC;
     private UIPanels uIPanels;
     private int playerCount;
     private int currentPlayerId;
+    private bool open = false;
 
     public void PreInit(UIPanels controller)
     {
@@ -27,13 +31,16 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
         
         int i = 0;
 
+        openPanel.GetComponent<RectTransform>().anchorMin = new Vector2(openPanel.GetComponent<RectTransform>().anchorMin.x, 1 - playerCount);
+            
+
         gC.session.playerOrder.ForEach((playerNick) =>
         {
             playerElements[i].GetComponent<TextMeshProUGUI>().text = playerNick;
             playerElements[i].GetComponent<TextMeshProUGUI>().color = gC.session.FindPlayer(playerNick).MainColor;
+            playerElements[i].SetActive(true);
             i++;
         });
-
         NextPlayer();
     }
 
@@ -59,20 +66,6 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
         EventManager.instance.onPlayerLostGame -= OnPlayerLost;
     }
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) 
-        {
-            NextPlayer();
-        }
-    }
-
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
     {
         currentPlayerId = gC.session.playerOrder.IndexOf(gC.board.dice.currentPlayer);
@@ -81,27 +74,31 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
 
     private void NextPlayer() 
     {
-        StartCoroutine(Transition());
+        if(gameObject.activeInHierarchy) StartCoroutine(Transition());
     }
 
     private IEnumerator Transition() 
     {
-        Vector3 contentPos = content.GetComponent<RectTransform>().anchoredPosition;
+        Vector3 contentPos = openPanel.GetComponent<RectTransform>().anchoredPosition;
         float tempPosition = contentPos.y;
         int targetPostition = 60 * currentPlayerId;
 
-        if (currentPlayerId == 0) content.GetComponent<RectTransform>().anchoredPosition = new Vector3(contentPos.x, 0, contentPos.z);
-        else
+        while (tempPosition < targetPostition)
         {
-            while (tempPosition != targetPostition)
-            {
-                contentPos = new Vector3(contentPos.x, tempPosition, contentPos.z);
-                tempPosition += 5;
-                content.GetComponent<RectTransform>().anchoredPosition = contentPos;
-                yield return new WaitForSeconds(0.05f);
-            }
-            yield return null;
+            tempPosition += 5;
+            contentPos = new Vector3(contentPos.x, tempPosition, contentPos.z);
+            openPanel.GetComponent<RectTransform>().anchoredPosition = contentPos;
+            yield return new WaitForSeconds(0.05f);
         }
+        while (tempPosition > targetPostition)
+        {
+            tempPosition -= 5;
+            contentPos = new Vector3(contentPos.x, tempPosition, contentPos.z);
+            openPanel.GetComponent<RectTransform>().anchoredPosition = contentPos;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        yield return null;
     }
 
     private void OnPlayerLost(string name) 
@@ -109,4 +106,23 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
         DeInit();
         Init();
     }
+
+    public void ToggleOpen() 
+    {
+        if (open)
+        {
+            //zamykamy
+            gameObject.GetComponent<Animation>().Play("PlayerOrderListClose");
+            gameObject.GetComponent<RectMask2D>().enabled = true;
+            open = false;
+        }
+        else 
+        {
+            //otwieramy
+            gameObject.GetComponent<Animation>().Play("PlayerOrderListOpen");
+            gameObject.GetComponent<RectMask2D>().enabled = false;
+            open = true;
+        }
+    }
+
 }
