@@ -20,6 +20,7 @@ public class RoomListing: MonoBehaviourPunCallbacks
         this.roomInfo = roomInfo;
         this.pool = pool;
         this.playPanel = playPanel;
+        Refresh();
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
