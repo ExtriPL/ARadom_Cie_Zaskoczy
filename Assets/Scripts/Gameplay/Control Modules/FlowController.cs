@@ -103,10 +103,12 @@ public class FlowController : IEventSubscribable
             {
                 foreach (Popup popup in closeOnDiceCloseList)
                     PopupSystem.instance.ClosePopup(popup);
-                if(PopupSystem.instance.DiceBox != null)
+
+                IconBox diceBox = PopupSystem.instance.DiceBox;
+                if(diceBox != null)
                 {
                     diceClosed = true;
-                    PopupSystem.instance.DiceBox.Close();
+                    PopupSystem.instance.ClosePopup(diceBox.source);
                 }
             }
         }
@@ -320,7 +322,7 @@ public class FlowController : IEventSubscribable
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
     {
         //Gracz, który rozpoczął teraz turę, ma resetowane ustawienia FlowControllera
-        if (currentPlayerName.Equals(CurrentPlayer.GetName()))
+        if (CurrentPlayer.NetworkPlayer.IsLocal)
             ResetSettings();
     }
 }

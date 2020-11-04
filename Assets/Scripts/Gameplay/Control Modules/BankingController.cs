@@ -297,10 +297,9 @@ public class BankingController : IEventSubscribable
                     QuestionPopup buyQuestion = QuestionPopup.CreateYesNoDialog(message, yesAction);
                     PopupSystem.instance.AddPopup(buyQuestion);
                 }
-
-                PopupSystem.instance.AddPopup(auctionEnded);
             }
-            else if(GameplayController.instance.session.playerCount > 2)
+            
+            if(GameplayController.instance.session.playerCount > 2)
                 PopupSystem.instance.AddPopup(auctionEnded);
         }
 
