@@ -79,6 +79,7 @@ public class RoomListing: MonoBehaviourPunCallbacks
     {
         base.OnJoinRoomFailed(returnCode, message);
         mainMenuController.OpenPanel(4);
+        mainMenuController.EndLoadingScreen();
     }
 
     public void StartLoadingScreen() 
