@@ -271,10 +271,8 @@ public class GameSession : IEventSubscribable
     /// <returns>Gracz o podanej nazwie</returns>
     public Player FindPlayer(string name)
     {
-        if (playerOrder.Contains(name))
-        {
+        if (playerOrder.Contains(name) || players.ContainsKey(name))
             return players[name];
-        }
         return null;
     }
 
