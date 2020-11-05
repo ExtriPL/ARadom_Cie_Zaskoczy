@@ -64,11 +64,13 @@ public class FlowController : IEventSubscribable
     public void SubscribeEvents() 
     {
         EventManager.instance.onTurnChanged += OnTurnChanged;
+        EventManager.instance.onPlayerLostGame += OnPlayerLost;
     }
 
     public void UnsubscribeEvents() 
     {
         EventManager.instance.onTurnChanged -= OnTurnChanged;
+        EventManager.instance.onPlayerLostGame -= OnPlayerLost;
     }
 
     public void StartGame()
@@ -342,6 +344,13 @@ public class FlowController : IEventSubscribable
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
     {
         //Gracz, który rozpoczął teraz turę, ma resetowane ustawienia FlowControllera
+        if (CurrentPlayer != null && CurrentPlayer.NetworkPlayer.IsLocal)
+            ResetSettings();
+    }
+
+    private void OnPlayerLost(string playerName)
+    {
+        //Gracz, który przegrał ma resetowane ustawienia
         if (CurrentPlayer != null && CurrentPlayer.NetworkPlayer.IsLocal)
             ResetSettings();
     }
