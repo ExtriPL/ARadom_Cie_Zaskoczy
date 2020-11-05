@@ -149,11 +149,11 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -200, y: 20, z: 0}
-  m_EntryPosition: {x: -250, y: 130, z: 0}
+  m_AnyStatePosition: {x: -260, y: -100, z: 0}
+  m_EntryPosition: {x: -210, y: 10, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -8345375570432544454}
+  m_DefaultState: {fileID: 5919377027639347484}
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
