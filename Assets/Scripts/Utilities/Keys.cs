@@ -153,11 +153,6 @@ public static class Keys
         /// Docelowy framerate aplikacji
         /// </summary>
         public const int TARGET_FRAMERATE = 60;
-
-        /// <summary>
-        /// Ilość czasu, którą gracze mają na przeczytanie opisu gry.
-        /// </summary>
-        public const int TUTORIAL_WAIT_TIME = 15;
         /// <summary>
         /// Ilość pieniędzy, jaką dostają gracze na start.
         /// </summary>
@@ -185,6 +180,7 @@ public static class Keys
 
         public const int AUTOSAVE_COUNT = 3;
         public const string AUTOSAVE_NAME = "AutoSave";
+        public const int TUTORIAL_WAIT_TIME = 15;
     }
 
     public static class Files
