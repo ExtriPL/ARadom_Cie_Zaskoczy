@@ -58,12 +58,14 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
     {
         EventManager.instance.onTurnChanged += OnTurnChanged;
         EventManager.instance.onPlayerLostGame += OnPlayerLost;
+        EventManager.instance.onPlayerQuited += OnPlayerLeft;
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onTurnChanged -= OnTurnChanged;
         EventManager.instance.onPlayerLostGame -= OnPlayerLost;
+        EventManager.instance.onPlayerQuited -= OnPlayerLeft;
     }
 
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
@@ -102,6 +104,12 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
     }
 
     private void OnPlayerLost(string name) 
+    {
+        DeInit();
+        Init();
+    }
+
+    private void OnPlayerLeft(string name)
     {
         DeInit();
         Init();

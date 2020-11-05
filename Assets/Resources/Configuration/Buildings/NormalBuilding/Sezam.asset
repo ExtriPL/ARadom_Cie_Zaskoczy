@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Sezam
   canBePlaced: 1
-  fieldHistory: "Sp\xF3\u0142dzielczy Dom Handlowy \u201CSEZAM\u201D - jest to dom
-    handlowy wybudowany w 1966 roku na polecenie PSS \u201ESpo\u0142em\u201D w Radomiu.
-    Projekt budynku zosta\u0142 zaprojektowany przez Grzegorza Bauera i Ma\u0107ka
-    Paterkowskiego. Na placu znajduje si\u0119 rze\u017Aba przedstawiaj\u0105ca pude\u0142ko
-    serka produkowanego przez \u201ERolmlecz\u201D"
+  fieldHistory: "Sp\xF3\u0142dzielczy Dom Handlowy SEZAM - jest to dom handlowy wybudowany
+    w 1966 roku na polecenie PSS \u201ESpo\u0142em\u201D w Radomiu. Projekt budynku
+    zosta\u0142 zaprojektowany przez Grzegorza Bauera i Ma\u0107ka Paterkowskiego.
+    Na placu znajduje si\u0119 rze\u017Aba przedstawiaj\u0105ca pude\u0142ko serka
+    produkowanego przez \u201ERolmlecz\u201D."
   fieldImage: {fileID: 21300000, guid: bb27a4765c519384db9b5dd92e7b92db, type: 3}
   tiers:
   - name: puste

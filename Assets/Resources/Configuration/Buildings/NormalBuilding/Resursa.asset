@@ -14,14 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Resursa
   canBePlaced: 1
-  fieldHistory: "Resursa Obywatelska w Radomiu powsta\u0142a w 1852. Pierwotnie mia\u0142
-    by\u0107 to neorenesansowy budynek,kt\xF3rego niestety oryginalny wystr\xF3j
-    nie przetrwa\u0142. P\xF3\u017Aniej wynaj\u0119\u0142a go Resursa Obywatelska.
-    Przez pierwsz\u0105 wojn\u0119 \u015Bwiatow\u0105 i wojn\u0119 polsko-bolszewick\u0105
-    znajdowa\u0142 si\u0119 tu szpital.\r\nW czasie drugiej wojny by\u0142 to niemiecki
-    dom kultury,a w po wojnie znajdowa\u0142a si\u0119 siedziba dom\xF3w kultury
-    zak\u0142ad\xF3w przemys\u0142owych. Obecnie jest to O\u015Brodek Kultury i Sztuki
-    \u201EResursa Obywatelska\u201D\r"
+  fieldHistory: "Resursa Obywatelska w Radomiu, czyli lokal klubu towarzyskiego kupc\xF3w,
+    obywateli ziemskich, powsta\u0142a w 1852. Zosta\u0142a wzniesiona w stylu neorenesansowym.
+    Na frontonie umieszczono pos\u0105gi trzech muz: Euterpe (poezja liryczna), Melpomene
+    (tragedia i \u015Bpiew) i Talia (muza komedii), natomiast w tympanonie-p\u0142askorze\u017Ab\u0119
+    Caritas (mi\u0142osierdzie). W 1861 roku Resurs\u0119 zamkni\u0119to, umieszczaj\u0105c
+    w gmachu kancelari\u0119 naczelnika wojennego gen. A. Uszakowa (st\u0142umi\u0142
+    on powstanie styczniowe na ziemi radomskiej). Podczas I wojny \u015Bwiatowej
+    znajdowa\u0142 si\u0119 tu lazaret wojskowy (czyli szpital wojskowy), w kt\xF3rym
+    opiekowano si\u0119 m.in. rannymi legionistami J\xF3zefa Pi\u0142sudskiego po
+    bitwie pod Anusinem i Laskami ko\u0142o Garbatki. Po wojnie przebywa\u0142 w
+    budynku mi\u0119dzy innymi J\xF3zef Pi\u0142sudski (1924) oraz aktorzy- Eugeniusz
+    Bodo oraz Mieczys\u0142awa \u0106wikli\u0144ska. Podczas II wojny \u015Bwiatowej
+    znajdowa\u0142 si\u0119 tutaj \u201CDeutsche Haus\u201D, czyli lokal rozrywkowy
+    dla Niemc\xF3w. W 1943r. Gwardia Ludowa dokona\u0142a zamachu na budynek. Obecnie
+    jest to O\u015Brodek Kultury i Sztuki \u201EResursa Obywatelska\u201D."
   fieldImage: {fileID: 21300000, guid: 36859eb09aa2acb4d8ccee4c4fa11186, type: 3}
   tiers:
   - name: puste

@@ -16,7 +16,7 @@ MonoBehaviour:
   canBePlaced: 0
   fieldHistory: "Dom Glogier\xF3w w Radomiu \u2013 powsta\u0142y w 1914 by\u0142
     projektem J\xF3zefa Piusa Dzieko\u0144skiego, by\u0142 on przedstawicielem polskiego
-    historyzmu i by\u0142 na zlecenie senatora II RP, Macieja Glogiera"
+    historyzmu i by\u0142 na zlecenie senatora II RP, Macieja Glogiera."
   fieldImage: {fileID: 21300000, guid: e02dc684be455b141bb75488ceed91bf, type: 3}
   tiers:
   - name: puste

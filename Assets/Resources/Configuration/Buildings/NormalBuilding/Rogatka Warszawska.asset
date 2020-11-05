@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: Rogatka Warszawska
   canBePlaced: 0
-  fieldHistory: "Rogatka warszawska powsta\u0142a z za\u0142o\u017Ce\u0144 planu
-    regulacyjnego z 1822 roku.\r\nTa kwadratowa,klasycystyczna budowla zacz\u0119\u0142a
-    powstawa\u0107 w 1820 jako drewniana rogatka ale w 1834 zast\u0105piono j\u0105
+  fieldHistory: "Rogatka Warszawska powsta\u0142a z za\u0142o\u017Ce\u0144 planu
+    regulacyjnego z 1822 roku.\r\nTa kwadratowa, klasycystyczna budowla zacz\u0119\u0142a
+    powstawa\u0107 w 1820 jako drewniana rogatka, ale w 1834 zast\u0105piono j\u0105
     dzisiaj znanym stylem. Od okresu mi\u0119dzywojennego do dzi\u015B pe\u0142ni\u0142
-    r\xF3\u017Cne funkcj\u0119 m.in. kostnic\u0119 . Obecnie to jest Galeria Rogatka
-    Wydzia\u0142u Sztuki UTH.\r"
+    r\xF3\u017Cne funkcje, m.in.kostnicy .  Obecnie to jest Galeria Rogatka Wydzia\u0142u
+    Sztuki UTH.\r"
   fieldImage: {fileID: 21300000, guid: e968bc19e2b278e40b6a46da0cf74ef3, type: 3}
   tiers:
   - name: puste

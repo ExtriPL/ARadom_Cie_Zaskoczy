@@ -33,6 +33,7 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
         MenuPanel.SetActive(false);
         menuPanelOpen = false;
         AdminPanelButton.gameObject.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
+        ResumeButton.GetComponent<Button>().interactable = PhotonNetwork.LocalPlayer.IsMasterClient;
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep; //Gdy menu jest wyłączone, ekran nigdy się nie wygasza 
     }
@@ -40,11 +41,13 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
     public void SubscribeEvents()
     {
         EventManager.instance.onGameStateChanged += OnGameStateChanged;
+        EventManager.instance.onPlayerQuited += OnPlayerLeft;
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onGameStateChanged -= OnGameStateChanged;
+        EventManager.instance.onPlayerQuited -= OnPlayerLeft;
     }
 
     #endregion Inicjalizacja
@@ -77,6 +80,12 @@ public class GameMenu : MonoBehaviour, IEventSubscribable
 
             ResumeButton.GetComponentInChildren<TextMeshProUGUI>().text = SettingsController.instance.languageController.GetWord("PAUSE");
         }
+    }
+
+    private void OnPlayerLeft(string name) 
+    {
+        AdminPanelButton.gameObject.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
+        ResumeButton.GetComponent<Button>().interactable = PhotonNetwork.LocalPlayer.IsMasterClient;
     }
 
     #endregion

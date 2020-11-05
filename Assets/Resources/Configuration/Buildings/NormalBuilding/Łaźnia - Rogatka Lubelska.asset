@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "\u0141a\u017Ania - Rogatka Lubelska"
   canBePlaced: 1
-  fieldHistory: ". Rogatka Lubelska  powsta\u0142a w 1829 r. Ten zabytek stoj\u0105cy
-    przy zbiegu Ul. \u017Beromskiego i S\u0142owackiego, by\u0142 skutkiem planu
-    regulacyjnego Radomia z 1822.\r\nKiedy\u015B to by\u0142a rogatka(punkt poboru
-    op\u0142at celnych),p\xF3\u017Aniej w roku 1926 \u0142a\u017Ania.\r\nObecnie
-    jest to dwupi\u0119trowy\r\n modernistyczny budynek w kt\xF3rym fasada jest jedynym
-    elementem dawnej rogatki.\r"
+  fieldHistory: "Rogatka Lubelska powsta\u0142a w 1829 r. Ten zabytek stoj\u0105cy
+    przy zbiegu Ul. \u017Beromskiego i S\u0142owackiego (kiedy\u015B Skaryszewska),
+    by\u0142 skutkiem planu regulacyjnego Radomia z 1822.\r\nKiedy\u015B to by\u0142a
+    rogatka(punkt poboru op\u0142at celnych),p\xF3\u017Aniej,  w roku 1926- \u0142a\u017Ania.\r\nObecnie
+    jest to dwupi\u0119trowy modernistyczny budynek, w kt\xF3rym fasada jest jedynym
+    elementem dawnej rogatki. Mie\u015Bci si\u0119 tam Klub \u015Arodowisk Tw\xF3rczych
+    \u0141a\u017Ania.\r"
   fieldImage: {fileID: 21300000, guid: a28156d820b3ecf41868ac83e5139ece, type: 3}
   tiers:
   - name: puste

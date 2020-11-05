@@ -149,8 +149,6 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
                 case InGameUIPanels.BuildingInfoPanel:
                     buildingInfo.Close();
                     break;
-                case InGameUIPanels.None:
-                    break;
                 default:
                     break;
             }

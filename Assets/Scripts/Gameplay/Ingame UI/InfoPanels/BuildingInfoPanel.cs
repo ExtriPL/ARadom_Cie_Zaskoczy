@@ -39,11 +39,19 @@ public class BuildingInfoPanel : MonoBehaviour
             int placeId = GameplayController.instance.board.GetPlaceIndex(normalbuilding);
             string type = lC.GetWord("NORMAL_BUILDING");
             string tier = lC.GetWord("LEVEL") + ": " + GameplayController.instance.board.GetTier(placeId).ToString();
-            string price1 = GameplayController.instance.board.GetTier(placeId) == 0 ? lC.GetWord("PRICE") + ": " : lC.GetWord("UPGRADE_COST") + ": ";
-            string price2 = normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId) + 1].buyPrice.ToString();
+            
+            string prices = lC.GetWord("PRICE") + ": " + normalbuilding.tiers[1].buyPrice.ToString();
+            if(GameplayController.instance.board.GetOwner(placeId) != null) prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId)].enterCost.ToString();
+
+            if (GameplayController.instance.board.GetOwner(placeId) != null && GameplayController.instance.board.GetOwner(placeId).NetworkPlayer.IsLocal)
+            {
+                if (GameplayController.instance.board.GetTier(placeId) != normalbuilding.tiersCount - 1) prices += "<br>" + lC.GetWord("UPGRADE_COST") +  normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId) + 1].buyPrice.ToString();
+                if (GameplayController.instance.board.GetTier(placeId) != normalbuilding.tiersCount - 1) prices += "<br>" + lC.GetWord("NEXT_TIER_ENTER_COST")+": " + normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId) + 1].enterCost.ToString();
+            }
+
             string owner1 = lC.GetWord("OWNER") + ": ";
             string owner2 = GameplayController.instance.board.GetOwner(placeId) != null ? (GameplayController.instance.board.GetOwner(placeId)).GetName() : "--";
-            string buildingInfoText = type + "<br>" + tier + "<br>" + price1 + price2 + "<br>" + owner1 + owner2;
+            string buildingInfoText = type + "<br>" + tier + "<br>" + prices + "<br>" + owner1 + owner2;
             buildingName.GetComponent<TextMeshProUGUI>().text = normalbuilding.name;
 
             buildingInfo.GetComponent<TextMeshProUGUI>().text = buildingInfoText;
@@ -52,13 +60,18 @@ public class BuildingInfoPanel : MonoBehaviour
         else if (field is ChurchStacking churchStacking)
         {
             int placeId = GameplayController.instance.board.GetPlaceIndex(churchStacking);
+            Player owner = GameplayController.instance.board.GetOwner(placeId);
 
             string type = lC.GetWord("CHURCH_STACKING");
-            string price1 = lC.GetWord("PRICE") + ": ";
-            string price2 = churchStacking.BuyPrice.ToString();
+
+            string prices = lC.GetWord("PRICE") + ": " + churchStacking.BuyPrice.ToString();
+            if(owner != null) prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + churchStacking.GetEnterCost(placeId).ToString();
+
+            if (owner != null) prices += "<br>" + lC.GetWord("OWNED_BY_PLAYER") + " " + GameplayController.instance.board.CountPlacesOfType(owner, churchStacking.GetType());
+
             string owner1 = lC.GetWord("OWNER") + ": ";
             string owner2 = GameplayController.instance.board.GetOwner(placeId) != null ? (GameplayController.instance.board.GetOwner(placeId)).GetName() : "--";
-            string buildingInfoText = type + "<br>" + price1 + price2 + "<br>" + owner1 + owner2;
+            string buildingInfoText = type + "<br>" + prices + "<br>" + owner1 + owner2;
             buildingName.GetComponent<TextMeshProUGUI>().text = churchStacking.name;
 
             buildingInfo.GetComponent<TextMeshProUGUI>().text = buildingInfoText;
@@ -101,7 +114,6 @@ public class BuildingInfoPanel : MonoBehaviour
         if (!gameObject.GetComponent<Animation>().isPlaying)
         {
             gameObject.GetComponent<Animation>().Play("MiddleToLeft");
-            
         }
     }
 

@@ -14,11 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Budynek Las\xF3w Pa\u0144stwowych"
   canBePlaced: 1
-  fieldHistory: "Modernistyczny,zaprojektowany przez in\u017C. Walerego Sahajdakowskiego
-    Gmach Dyrekcji Las\xF3w Pa\u0144stwowych w Radomiu stoj\u0105cy przy Ul. 25 Czerwca
-    powsta\u0142 w 1938 roku.\r\nTen budynek by\u0142 \u015Bwiadkiem demonstracji
-    czerwca 1976 roku w kt\xF3rym zosta\u0142 uszkodzony.\r\nZachowa\u0142 si\u0119
-    jednak oryginalny wystr\xF3j elewacji.\r"
+  fieldHistory: "Gmach Dyrekcji Las\xF3w Pa\u0144stwowych w Radomiu, stoj\u0105cy
+    przy Ul. 25 Czerwca, powsta\u0142 w 1938 roku.\r\nTen budynek by\u0142 \u015Bwiadkiem
+    demonstracji czerwca 1976 roku, w kt\xF3rym zosta\u0142 uszkodzony.\r\nZachowa\u0142
+    si\u0119 jednak oryginalny wystr\xF3j elewacji.\r"
   fieldImage: {fileID: 21300000, guid: 488c62b3511745d4285abe37fdcbd9d8, type: 3}
   tiers:
   - name: puste

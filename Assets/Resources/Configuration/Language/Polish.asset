@@ -497,3 +497,9 @@ MonoBehaviour:
     value: "Spotka\u0142e\u015B nauczyciela, kt\xF3ry pom\xF3g\u0142 ci rozwi\u0105za\u0107
       problem z okularami VR. Rozdajesz je innym graczom, zafascynowani rozgrywk\u0105
       zapominaj\u0105 o swoich kolejkach."
+  - key: ENTER_COST
+    value: "Koszt wej\u015Bcia"
+  - key: NEXT_TIER_ENTER_COST
+    value: "Koszt wej\u015Bcia po ulepszeniu"
+  - key: OWNED_BY_PLAYER
+    value: "Posiadane przez w\u0142a\u015Bciciela:"
