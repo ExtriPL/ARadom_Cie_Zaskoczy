@@ -16,6 +16,8 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
     public FlowController flow = new FlowController();
     public DiceController diceController;
 
+    public GameObject GameSaveText;
+
     [SerializeField]
     private TutorialScreen tutorialScreen;
     [SerializeField]
@@ -185,6 +187,15 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         save.roomName = PhotonNetwork.CurrentRoom.Name;
 
         FileManager.SaveGame(save, PhotonNetwork.CurrentRoom.Name);
+
+        StartCoroutine(GameSavedText());
+    }
+
+    private IEnumerator GameSavedText()
+    {
+        GameSaveText.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        GameSaveText.SetActive(false);
     }
 
     private void MakeAutosave()
