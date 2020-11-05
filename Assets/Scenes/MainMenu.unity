@@ -17293,6 +17293,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsController
       objectReference: {fileID: 0}
+    - target: {fileID: 4258102740588293419, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d,
+        type: 3}
+      propertyPath: languageController.languages.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258102740588293419, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d,
+        type: 3}
+      propertyPath: languageController.languages.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d, type: 3}
 --- !u!114 &3083240555682174160
