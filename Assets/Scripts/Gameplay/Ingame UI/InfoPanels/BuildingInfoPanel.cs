@@ -41,7 +41,7 @@ public class BuildingInfoPanel : MonoBehaviour
             string tier = lC.GetWord("LEVEL") + ": " + GameplayController.instance.board.GetTier(placeId).ToString();
             
             string prices = lC.GetWord("PRICE") + ": " + normalbuilding.tiers[1].buyPrice.ToString();
-            if(GameplayController.instance.board.GetOwner(placeId) != null) prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId)].enterCost.ToString();
+            prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + normalbuilding.tiers[GameplayController.instance.board.GetTier(placeId)].enterCost.ToString();
 
             if (GameplayController.instance.board.GetOwner(placeId) != null && GameplayController.instance.board.GetOwner(placeId).NetworkPlayer.IsLocal)
             {
@@ -65,7 +65,7 @@ public class BuildingInfoPanel : MonoBehaviour
             string type = lC.GetWord("CHURCH_STACKING");
 
             string prices = lC.GetWord("PRICE") + ": " + churchStacking.BuyPrice.ToString();
-            if(owner != null) prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + churchStacking.GetEnterCost(placeId).ToString();
+            prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + churchStacking.GetEnterCost(placeId).ToString();
 
             if (owner != null) prices += "<br>" + lC.GetWord("OWNED_BY_PLAYER") + " " + GameplayController.instance.board.CountPlacesOfType(owner, churchStacking.GetType());
 

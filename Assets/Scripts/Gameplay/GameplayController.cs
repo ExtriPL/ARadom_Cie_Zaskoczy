@@ -231,7 +231,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
     private IEnumerator TutorialTime() 
     {
-        int timer = 10;
+        int timer = Keys.Gameplay.TUTORIAL_WAIT_TIME;
         while (timer > 0)
         {
             yield return new WaitForSeconds(1);
