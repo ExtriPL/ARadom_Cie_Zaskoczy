@@ -234,7 +234,7 @@ public class BankingController : IEventSubscribable
             bidders.Remove(passPlayerName); //Usuwanie gracza, który pasuje
         }
 
-        bidders.RemoveAll(bidder => (GameplayController.instance.session.FindPlayer(bidder)?.Money <= bid));
+        bidders.RemoveAll(b => (GameplayController.instance.session.FindPlayer(b)?.Money <= bid));
 
         if (bidders.Count > 1)
             AuctionFlow(playerName, placeId, bidder, bid, passPlayerName);
