@@ -53,7 +53,7 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAuction += OnAuction;
         EventManager.instance.onPlayerQuited += OnPlayerQuit;
         EventManager.instance.onPlayerLostGame += OnPlayerLostGame;
-        EventManager.instance.onTurnChanged += OnTurnChanged;
+        //EventManager.instance.onTurnChanged += OnTurnChanged;
     }
 
     public void UnsubscribeEvents()
@@ -62,7 +62,7 @@ public class BankingController : IEventSubscribable
         EventManager.instance.onAuction -= OnAuction;
         EventManager.instance.onPlayerQuited -= OnPlayerQuit;
         EventManager.instance.onPlayerLostGame -= OnPlayerLostGame;
-        EventManager.instance.onTurnChanged -= OnTurnChanged;
+        //EventManager.instance.onTurnChanged -= OnTurnChanged;
     }
 
     #endregion Inicjalizacja
@@ -226,6 +226,7 @@ public class BankingController : IEventSubscribable
     {
         auctionData = Tuple.Create(playerName, placeId, bidder, bid, passPlayerName);
         CloseEarlierAuction();
+        GameplayController.instance.flow.Pause();
 
         if (bidders.Contains(passPlayerName)) 
             bidders.Remove(passPlayerName); //Usuwanie gracza, który pasuje
@@ -246,11 +247,11 @@ public class BankingController : IEventSubscribable
         RemoveFromAuction(playerName);
     }
 
-    private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
-    {
-        if (auctionPopup != null)
-            EndAuction(auctionData.Item2, auctionData.Item4, false);
-    }
+    //private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
+    //{
+    //    if (auctionPopup != null)
+    //        EndAuction(auctionData.Item2, auctionData.Item4, false);
+    //}
 
     #endregion Obsługa eventów
 
@@ -305,6 +306,7 @@ public class BankingController : IEventSubscribable
 
         PopupSystem.instance.ClosePopup(auctionPopup);
         ClearAuction();
+        GameplayController.instance.flow.Resume();
     }
 
     public void ClearAuction()
