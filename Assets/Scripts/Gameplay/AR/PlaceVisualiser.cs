@@ -513,11 +513,14 @@ public class PlaceVisualiser : Visualiser
             ShowBacklights();
         else
             HideBacklights();
+
+        RecreateLights();
     }
 
     public void Highlight()
     {
-        if(!arrowAnimator.GetCurrentAnimatorStateInfo(0).IsName("PointingArrow")) arrowAnimator.SetTrigger("Start");
+        if(!arrowAnimator.GetCurrentAnimatorStateInfo(0).IsName("PointingArrow")) 
+            arrowAnimator.SetTrigger("Start");
     }
 
     public void Explosion() 

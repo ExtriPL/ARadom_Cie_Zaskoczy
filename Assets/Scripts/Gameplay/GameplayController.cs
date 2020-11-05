@@ -326,7 +326,6 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
     private void OnMessageArrival(string[] message, IconPopupType iconType)
     {
-        Debug.Log("Message Arrived");
         string unpackedMessage = "";
         LanguageController lang = SettingsController.instance.languageController;
 
