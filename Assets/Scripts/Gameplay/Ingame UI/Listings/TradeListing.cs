@@ -20,7 +20,6 @@ public class TradeListing : MonoBehaviour
         tradeField = field;
         removeButton.gameObject.SetActive(!received);
 
-
         nameText.text = tradeField.GetFieldName();
     }
 

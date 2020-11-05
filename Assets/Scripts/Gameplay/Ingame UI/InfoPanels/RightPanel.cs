@@ -144,14 +144,14 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
         });
         theirListings.Clear();
 
-        myBuildings.ForEach((building) =>
+        myBuildings?.ForEach((building) =>
         {
             TradeListing t = myPool.TakeObject().GetComponent<TradeListing>();
             t.Init(this, myPool, building, true);
             myListings.Add(t);
         });
 
-        theirBuildings.ForEach((building) =>
+        theirBuildings?.ForEach((building) =>
         {
             TradeListing t = theirPool.TakeObject().GetComponent<TradeListing>();
             t.Init(this, theirPool, building, true);

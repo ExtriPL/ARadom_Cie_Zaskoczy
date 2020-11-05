@@ -311,7 +311,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
                 List<Field> myBuildings = new List<Field>();
                 foreach (string name in receiverBuildingNames) 
                 {
-                    myBuildings.Add(gC.board.GetField(name));
+                    if (gC.board.GetField(name) != null) myBuildings.Add(gC.board.GetField(name));
                 }
 
                 Player receiver = gC.session.FindPlayer(receiverNickName);
@@ -319,7 +319,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
                 List<Field> theirBuildings = new List<Field>();
                 foreach (string name in senderBuildingNames)
                 {
-                    theirBuildings.Add(gC.board.GetField(name));
+                    if(gC.board.GetField(name) != null) theirBuildings.Add(gC.board.GetField(name));
                 }
 
                 OpenRightPanel(sender, myBuildings, receiverMoney, theirBuildings, senderMoney);
