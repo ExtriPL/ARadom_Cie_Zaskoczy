@@ -23,14 +23,11 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     {
         this.mainMenuController = mainMenuController;
 
-        roomListings.RemoveAll(x => x.roomInfo.RemovedFromList);
-        roomListings.RemoveAll(x => x.roomInfo.PlayerCount == x.roomInfo.MaxPlayers);
-        roomListings.ForEach((roomListing) =>
+        if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
+        else 
         {
-            roomListing.Refresh();
-        });
-
-        PhotonNetwork.JoinLobby();
+            PhotonNetwork.JoinLobby();
+        }
     }
 
     public void DeInit() {}
@@ -38,6 +35,12 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(1);
+    }
+
+    public override void OnLeftLobby()
+    {
+        base.OnLeftLobby();
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnConnectedToMaster()
@@ -59,5 +62,12 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
                 }
             }
         }
+
+        roomListings.RemoveAll(x => x.roomInfo.RemovedFromList);
+        roomListings.RemoveAll(x => x.roomInfo.PlayerCount == x.roomInfo.MaxPlayers);
+        roomListings.ForEach((roomListing) =>
+        {
+            roomListing.Refresh();
+        });
     }
 }
