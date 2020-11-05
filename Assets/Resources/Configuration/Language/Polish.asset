@@ -503,3 +503,5 @@ MonoBehaviour:
     value: "Koszt wej\u015Bcia po ulepszeniu"
   - key: OWNED_BY_PLAYER
     value: "Posiadane przez w\u0142a\u015Bciciela:"
+  - key: GAME_SAVED
+    value: "Gra zosta\u0142a zapisana"
