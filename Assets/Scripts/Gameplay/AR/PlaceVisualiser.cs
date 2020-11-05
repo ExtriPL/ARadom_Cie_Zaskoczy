@@ -513,6 +513,8 @@ public class PlaceVisualiser : Visualiser
             ShowBacklights();
         else
             HideBacklights();
+
+        RecreateLights();
     }
 
     public void Highlight()
