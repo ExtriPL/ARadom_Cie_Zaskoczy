@@ -3,6 +3,7 @@ using Photon.Pun;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class GameSession : IEventSubscribable
@@ -242,10 +243,12 @@ public class GameSession : IEventSubscribable
     /// <param name="playerName">Nazwa gracza na liście</param>
     private void OnPlayerQuit(string playerName)
     {
-        if (playerName != localPlayer.GetName())
+        if (playerName != PhotonNetwork.LocalPlayer.NickName)
         {
             string message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("PLAYER_LEFT");
-            if (FindPlayer(playerName).NetworkPlayer.IsInactive) message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("KICKED_FOR_INACTIVITY");
+            Photon.Realtime.Player player = PhotonNetwork.PlayerList.First(p => p.NickName == playerName);
+            if (player != null && player.IsInactive) 
+                message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("KICKED_FOR_INACTIVITY");
             RemovePlayer(playerName);
             IconPopup playerLeft = new IconPopup(IconPopupType.PlayerLeft, message);
             PopupSystem.instance.AddPopup(playerLeft);
@@ -324,7 +327,6 @@ public class GameSession : IEventSubscribable
             playerOrder.Remove(name);
             this.playerOrder = playerOrder;
         }
-        else Debug.LogError("Gracz o podanej nazwie(" + name + ") nie istnieje");
     }
 
     /// <summary>
@@ -361,16 +363,15 @@ public class GameSession : IEventSubscribable
     /// <param name="player"></param>
     public void KickPlayer(Player player) 
     {
-        if (GameplayController.instance.board.dice.currentPlayer == player.GetName())
+        Debug.Log("Kick: " + player.GetName());
+        GameplayController.instance.LosePlayer(player);
+
+        if (GameplayController.instance.session.playerCount <= 1)
         {
-            GameplayController.instance.LosePlayer(player);
-
-            //Jeżeli obecny gracz nie istnieje, zmienia na następnego by nie było błędów
-            if (GameplayController.instance.flow.CurrentPlayer == null)
-                GameplayController.instance.board.dice.NextTurn();
-
+            Debug.Log("Hello Kick!");
             GameplayController.instance.flow.CheckWin();
         }
+        
         EventManager.instance.SendOnPlayerQuited(player.GetName());
     }
 

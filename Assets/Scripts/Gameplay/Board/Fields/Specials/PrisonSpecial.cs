@@ -25,6 +25,7 @@ public class PrisonSpecial : SpecialField
                 {
                     QuestionPopup free = QuestionPopup.CreateOkDialog(language.GetWord("YOU_ARE_FREE"));
                     GameplayController.instance.flow.RollResult().Invoke(source);
+                    player.Imprisoned = false;
                     PopupSystem.instance.AddPopup(free);
                 }
                 else

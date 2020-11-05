@@ -231,9 +231,9 @@ public class PopupSystem : MonoBehaviour
         IconPopup dicePopup = new IconPopup(IconPopupType.Dice, diceAction);
 
         GameObject dice = boxPools[typeof(IconBox)].TakeObject();
+        dice.GetComponent<Animator>().SetBool("Dice", true);
         DiceBox = dice.GetComponent<IconBox>();
         DiceBox.Init(dicePopup);
-        dice.GetComponent<Animator>().SetBool("Dice", true);
     }
 
     /// <summary>

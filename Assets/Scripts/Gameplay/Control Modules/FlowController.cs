@@ -37,7 +37,13 @@ public class FlowController : IEventSubscribable
     /// </summary>
     public Player CurrentPlayer
     {
-        get => gameplayController.session.FindPlayer(gameplayController.board.dice.currentPlayer);
+        get
+        {
+            if (gameplayController == null)
+                gameplayController = GameplayController.instance;
+
+            return gameplayController.session.FindPlayer(gameplayController.board.dice.currentPlayer);
+        }
     }
     /// <summary>
     /// Flaga określająca, czy przepływ jest w tej chwili zastopowany
@@ -76,39 +82,45 @@ public class FlowController : IEventSubscribable
 
     public void Update()
     {
-        //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
-        if (FlowStarted && gameplayController.session.gameState == GameState.running && CurrentPlayer.NetworkPlayer.IsLocal)
+        if (FlowStarted && gameplayController.session.gameState == GameState.running)
         {
-            if (!FlowPaused)
+            if (CurrentPlayer == null || CurrentPlayer.IsLoser)
+                return;
+
+            //Przepływem zajmuje się tylko i wyłącznie gracz, którego jest obecnie tura
+            if (CurrentPlayer.NetworkPlayer.IsLocal)
             {
-                timePassed += Time.deltaTime;
-
-                //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
-                if (timePassed >= showTime)
-                    GameplayController.instance.menu.SetActiveNextTurnButton(true);
-
-                //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
-                if (timePassed >= endTime - countingTime)
+                if (!FlowPaused)
                 {
-                    GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - timePassed));
-                    GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
+                    timePassed += Time.deltaTime;
+
+                    //Po minięciu czasu pokazuje się przycisk, umożliwiający zmienienie tury
+                    if (timePassed >= showTime)
+                        GameplayController.instance.menu.SetActiveNextTurnButton(true);
+
+                    //Po minięciu czasu pokazuje się timer, który wskazuje ile czasu zostało do automatycznego zakończenia tury
+                    if (timePassed >= endTime - countingTime)
+                    {
+                        GameplayController.instance.menu.SetNextTurnButtonTimer((int)Mathf.Ceil(endTime - timePassed));
+                        GameplayController.instance.menu.SetActiveNextTurnButtonTimer(true);
+                    }
+
+                    //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
+                    if (timePassed >= endTime)
+                        EndTurn();
                 }
 
-                //Po minięciu odpowiedniej ilości czasu, automatycznie kończy rundę
-                if (timePassed >= endTime)
-                    EndTurn();
-            }
-
-            if (TurnTime > autoDiceRollTime && !diceClosed)
-            {
-                foreach (Popup popup in closeOnDiceCloseList)
-                    PopupSystem.instance.ClosePopup(popup);
-
-                IconBox diceBox = PopupSystem.instance.DiceBox;
-                if(diceBox != null)
+                if (TurnTime > autoDiceRollTime && !diceClosed)
                 {
-                    diceClosed = true;
-                    PopupSystem.instance.ClosePopup(diceBox.source);
+                    foreach (Popup popup in closeOnDiceCloseList)
+                        PopupSystem.instance.ClosePopup(popup);
+
+                    IconBox diceBox = PopupSystem.instance.DiceBox;
+                    if (diceBox != null)
+                    {
+                        diceClosed = true;
+                        PopupSystem.instance.ClosePopup(diceBox.source);
+                    }
                 }
             }
         }
@@ -181,13 +193,19 @@ public class FlowController : IEventSubscribable
     /// <summary>
     /// Końcowa faza zakończenia rundy
     /// </summary>
-    private void End()
+    public void End()
     {
-        PopupSystem.instance.ClosePopups(AutoCloseMode.EndOfTurn);
-        GameplayController.instance.menu.SetActiveNextTurnButton(false);
-        GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
-        DefaultEnding();
-        NextTurn();
+        if (CurrentPlayer != null && CurrentPlayer.NetworkPlayer != null)
+        {
+            PopupSystem.instance.ClosePopups(AutoCloseMode.EndOfTurn);
+            GameplayController.instance.menu.SetActiveNextTurnButton(false);
+            GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
+            DefaultEnding();
+            ResetSettings();
+            NextTurn();
+        }
+        else
+            NextTurn();
     }
 
     /// <summary>
@@ -261,6 +279,7 @@ public class FlowController : IEventSubscribable
     /// </summary>
     public void CheckWin()
     {
+        Debug.Log("CheckWin: " + gameplayController.WinnerExists());
         if (gameplayController.WinnerExists())
         {
             //Informacja o wygranej jakiegoś gracza
@@ -323,7 +342,7 @@ public class FlowController : IEventSubscribable
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName)
     {
         //Gracz, który rozpoczął teraz turę, ma resetowane ustawienia FlowControllera
-        if (CurrentPlayer.NetworkPlayer.IsLocal)
+        if (CurrentPlayer != null && CurrentPlayer.NetworkPlayer.IsLocal)
             ResetSettings();
     }
 }

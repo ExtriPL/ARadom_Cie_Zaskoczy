@@ -298,6 +298,9 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
         Player player = session.FindPlayer(playerName);
         LanguageController language = SettingsController.instance.languageController;
 
+        if (player == null)
+            return;
+
         //Gracz, który przegrał, jest graczem lokalnym
         if (player.NetworkPlayer.IsLocal)
         {
@@ -373,6 +376,7 @@ public class GameplayController : MonoBehaviour, IEventSubscribable
 
         player.ClearOwnership();
         player.PlaceId = -1;
+        session.RemovePlayer(player);
 
         EventManager.instance.SendOnPlayerLostGame(player.GetName());
     }

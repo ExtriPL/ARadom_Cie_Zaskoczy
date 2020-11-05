@@ -30,9 +30,9 @@ MonoBehaviour:
     model: {fileID: -927199367670048503, guid: b225dd54788e59b4e969e6c327881250, type: 3}
   - name: Tier 2
     buyPrice: 700
-    enterCost: 10700
+    enterCost: 700
     model: {fileID: -927199367670048503, guid: c09ab52e5bbe9754b83764dc592320cf, type: 3}
   - name: Tier 3
     buyPrice: 1050
-    enterCost: 100
+    enterCost: 1000
     model: {fileID: -927199367670048503, guid: 4a2e002a84a0f5c4ebed62d423bab024, type: 3}
