@@ -218,13 +218,8 @@ MonoBehaviour:
       skosztowa\u0107 jego s\u0142ynnej opowie\u015Bci i czeka\u0107 jedn\u0105 kolejk\u0119"
   - key: CHANCE_CARD_GRENADE_FACTORY_TITLE
     value: "Wytw\xF3rnia granat\xF3w"
-  - key: CHANCE_CARD_GRENADE_FACTORY_CONTENT
-    value: "Znalaz\u0142e\u015B wej\u015Bcie do starej wytw\xF3rni granat\xF3w. Otrzymujesz
-      dodatkowy rzut kostk\u0105."
   - key: CHANCE_CARD_ROAD_JAM_TITLE
     value: Korek drogowy
-  - key: CHANCE_CARD_ROAD_JAM_CONTENT
-    value: "Niestety napotka\u0142e\u015B korek i czekasz kolejk\u0119."
   - key: CHANCE_CARD_TICKET_INSPECTION_TITLE
     value: "Kontrola bilet\xF3w"
   - key: CHANCE_CARD_TICKET_INSPECTION_CONTENT
@@ -267,9 +262,6 @@ MonoBehaviour:
       groszy radomskich."
   - key: CHANCE_CARD_VR_GOGGLES_TITLE
     value: Gogle VR
-  - key: CHANCE_CARD_VR_GOGGLES_CONTENT
-    value: "Spotka\u0142e\u015B nauczyciela, kt\xF3ry pom\xF3g\u0142 ci rozwi\u0105za\u0107
-      problem z okularami VR. Dostajesz dodatkowy rzut kostk\u0105"
   - key: CHANCE_CARD_SPEED_CAMERA_TITLE
     value: Fotoradar
   - key: CHANCE_CARD_SPEED_CAMERA_CONTENT
@@ -338,9 +330,6 @@ MonoBehaviour:
     value: Otrzymujesz w spadku 650 groszy radomskich.
   - key: CHANCE_CARD_SHOPPING_MALL_TITLE
     value: "Galeria S\u0142oneczna"
-  - key: CHANCE_CARD_SHOPPING_MALL_CONTENT
-    value: "Poszed\u0142e\u015B do GS i znalaz\u0142e\u015B rabat w kieszeni. Otrzymujesz
-      dodatkowy rzut kostk\u0105"
   - key: CHANCE_CARD_THEATER_TITLE
     value: Teatr
   - key: CHANCE_CARD_THEATER_CONTENT
@@ -458,8 +447,6 @@ MonoBehaviour:
     value: 'Runda: '
   - key: LOAD_FROM_SAVE
     value: Wczytaj
-  - key: PLAYER_COUNT
-    value: "Ilo\u015B\u0107 graczy (1-6)"
   - key: NOT_READY
     value: Nie gotowy
   - key: YOU_GOT_AN_OFFER_FROM
@@ -490,9 +477,23 @@ MonoBehaviour:
       Zaczynajmy! "
   - key: CURRENT_PLAYER
     value: 'Obecny gracz:'
-  - key: CHANCE_CARD_KEKE_CONTENT
-    value: "Spotka\u0142e\u015B K\u0119kiego i otrzyma\u0142e\u015B autograf na nowej
-      p\u0142ycie. Otrzymujesz dodatkowy rzut kostk\u0105."
   - key: CHANCE_CARD_AIRPORT_CONTENT
     value: "Modernizujesz lotnisko. Od ka\u017Cdego z graczy pobierasz 150 groszy
       radomskich."
+  - key: PLAYER_COUNT
+    value: "Ilo\u015B\u0107 graczy (2-6)"
+  - key: CHANCE_CARD_GRENADE_FACTORY_CONTENT
+    value: "Znalaz\u0142e\u015B wej\u015Bcie do starej wytw\xF3rni granat\xF3w. Rzucasz
+      w innych graczy granatami, unikanie zabiera im jedn\u0105 kolejk\u0119."
+  - key: CHANCE_CARD_KEKE_CONTENT
+    value: "Spotka\u0142e\u015B K\u0119kiego i otrzyma\u0142e\u015B autograf na nowej
+      p\u0142ycie. Reszta graczy z zazdro\u015Bci czeka jedn\u0105 kolejk\u0119."
+  - key: CHANCE_CARD_ROAD_JAM_CONTENT
+    value: "Niestety napotka\u0142e\u015B korek i czekasz kolejk\u0119."
+  - key: CHANCE_CARD_SHOPPING_MALL_CONTENT
+    value: "Poszed\u0142e\u015B do Galerii S\u0142onecznej i znalaz\u0142e\u015B
+      rabat w kieszeni. Zabierasz innych graczy na zakupy, trac\u0105 przez to kolejk\u0119."
+  - key: CHANCE_CARD_VR_GOGGLES_CONTENT
+    value: "Spotka\u0142e\u015B nauczyciela, kt\xF3ry pom\xF3g\u0142 ci rozwi\u0105za\u0107
+      problem z okularami VR. Rozdajesz je innym graczom, zafascynowani rozgrywk\u0105
+      zapominaj\u0105 o swoich kolejkach."

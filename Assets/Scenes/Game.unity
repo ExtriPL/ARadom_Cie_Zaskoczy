@@ -7669,10 +7669,10 @@ RectTransform:
   m_Father: {fileID: 1144346335}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 347, y: 0}
+  m_SizeDelta: {x: 694, y: 671.38}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &767609805
 MonoBehaviour:
@@ -13397,10 +13397,10 @@ RectTransform:
   m_Father: {fileID: 927649332}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 289, y: -542.27}
+  m_SizeDelta: {x: 578, y: 1084.54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1423796381
 MonoBehaviour:
@@ -13903,7 +13903,7 @@ PrefabInstance:
     - target: {fileID: 4258102740588293419, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d,
         type: 3}
       propertyPath: languageController.languages.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4258102740588293419, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d,
         type: 3}
@@ -13930,8 +13930,7 @@ PrefabInstance:
         type: 3}
       propertyPath: languageController.languages.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: b93d5a82a72b79546b4acae25290779a,
-        type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d56ce7bc9c900849a7abb0ebf6d5f0d, type: 3}
 --- !u!1 &1472031913
