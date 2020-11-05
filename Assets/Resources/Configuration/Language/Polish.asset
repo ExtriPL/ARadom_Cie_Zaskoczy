@@ -178,8 +178,6 @@ MonoBehaviour:
     value: " za stani\u0119cie na twoim polu."
   - key: YOU_RECEIVED
     value: "Otrzyma\u0142e\u015B "
-  - key: FOR_PASSING_START
-    value: " za przej\u015Bcie przez start"
   - key: KICK
     value: "Wyrzu\u0107"
   - key: READY
@@ -505,3 +503,5 @@ MonoBehaviour:
     value: "Posiadane przez w\u0142a\u015Bciciela:"
   - key: GAME_SAVED
     value: "Gra zosta\u0142a zapisana"
+  - key: FOR_PASSING_START
+    value: "+ od rz\u0105du!"
