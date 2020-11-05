@@ -343,12 +343,12 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
 
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
     {
-        if (currentPlayerName == GameplayController.instance.session.localPlayer.GetName() && currentOpenPanel != InGameUIPanels.None) 
+        if (currentPlayerName == PhotonNetwork.LocalPlayer.NickName && currentOpenPanel != InGameUIPanels.None) 
         {
             yourTurnNotification.SetActive(true);
             yourTurnNotification.GetComponent<Animation>().Play("NotificationShow");
         }
-        if (previousPlayerName == GameplayController.instance.session.localPlayer.GetName() && currentOpenPanel != InGameUIPanels.None) 
+        if (previousPlayerName == PhotonNetwork.LocalPlayer.NickName && currentOpenPanel != InGameUIPanels.None) 
         {
             yourTurnNotification.SetActive(true);
             yourTurnNotification.GetComponent<Animation>().Play("NotificationShow");

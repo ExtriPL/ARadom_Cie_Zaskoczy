@@ -197,17 +197,18 @@ public class FlowController : IEventSubscribable
     /// </summary>
     public void End()
     {
-        if (CurrentPlayer != null && CurrentPlayer.NetworkPlayer != null)
+        Resume();
+
+        if (CurrentPlayer != null && CurrentPlayer.NetworkPlayer != null && !CurrentPlayer.IsLoser)
         {
             PopupSystem.instance.ClosePopups(AutoCloseMode.EndOfTurn);
             GameplayController.instance.menu.SetActiveNextTurnButton(false);
             GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
             DefaultEnding();
-            ResetSettings();
-            NextTurn();
         }
-        else
-            NextTurn();
+
+        ResetSettings();
+        NextTurn();
     }
 
     /// <summary>
@@ -218,6 +219,7 @@ public class FlowController : IEventSubscribable
     {
         if (CurrentPlayer.Money < 0f)
         {
+            Pause();
             //Przegrana gracza przez bankructwo
 
             //Jeżeli gracz może zaciągnąć pożyczkę
