@@ -187,6 +187,7 @@ public class FlowController : IEventSubscribable
         GameplayController.instance.menu.SetActiveNextTurnButton(false);
         GameplayController.instance.arController.centerBuilding.GetComponent<CenterVisualiser>().ToggleVisibility(false);
         DefaultEnding();
+        ResetSettings();
         NextTurn();
     }
 
