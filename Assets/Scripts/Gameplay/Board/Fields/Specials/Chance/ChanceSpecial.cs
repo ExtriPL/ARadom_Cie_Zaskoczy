@@ -21,7 +21,8 @@ public class ChanceSpecial : SpecialField
 
     private void ShowRandomCard(Player player)
     {
-        if(cards == null && cards.Count == 0) cards = new List<ChanceCard>(chanceCards);
+        if(cards == null || cards.Count == 0)
+            cards = new List<ChanceCard>(chanceCards);
         
         while (cards.Count > 0)
         {
