@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 [System.Serializable]
 public class BankingController : IEventSubscribable
@@ -228,8 +229,12 @@ public class BankingController : IEventSubscribable
         CloseEarlierAuction();
         GameplayController.instance.flow.Pause();
 
-        if (bidders.Contains(passPlayerName)) 
+        if (bidders.Contains(passPlayerName))
+        {
             bidders.Remove(passPlayerName); //Usuwanie gracza, który pasuje
+        }
+
+        bidders.RemoveAll(bidder => (GameplayController.instance.session.FindPlayer(bidder)?.Money <= bid));
 
         if (bidders.Count > 1)
             AuctionFlow(playerName, placeId, bidder, bid, passPlayerName);
