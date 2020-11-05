@@ -178,8 +178,6 @@ MonoBehaviour:
     value: " za stani\u0119cie na twoim polu."
   - key: YOU_RECEIVED
     value: "Otrzyma\u0142e\u015B "
-  - key: FOR_PASSING_START
-    value: " za przej\u015Bcie przez start"
   - key: KICK
     value: "Wyrzu\u0107"
   - key: READY
@@ -500,6 +498,8 @@ MonoBehaviour:
     value: "Posiadane przez w\u0142a\u015Bciciela:"
   - key: GAME_SAVED
     value: "Gra zosta\u0142a zapisana"
+  - key: FOR_PASSING_START
+    value: "+ od rz\u0105du!"
   - key: CHANCE_CARD_PRISON_CONTENT
     value: "Idziesz do wi\u0119zienia. Przechodz\u0105c przez start nie otrzymujesz
       pieni\u0119dzy. Aby si\u0119 wydosta\u0107 musisz wyrzuci\u0107 tyle samo oczek
