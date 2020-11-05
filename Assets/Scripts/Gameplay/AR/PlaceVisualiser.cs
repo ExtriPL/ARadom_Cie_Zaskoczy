@@ -519,7 +519,8 @@ public class PlaceVisualiser : Visualiser
 
     public void Highlight()
     {
-        if(!arrowAnimator.GetCurrentAnimatorStateInfo(0).IsName("PointingArrow")) arrowAnimator.SetTrigger("Start");
+        if(!arrowAnimator.GetCurrentAnimatorStateInfo(0).IsName("PointingArrow")) 
+            arrowAnimator.SetTrigger("Start");
     }
 
     public void Explosion() 
