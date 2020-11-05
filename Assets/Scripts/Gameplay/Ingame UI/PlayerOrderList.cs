@@ -27,7 +27,20 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
     public void Init()
     {
         playerCount = gC.session.playerOrder.Count;
-        currentPlayerId = gC.session.playerOrder.IndexOf(gC.board.dice.currentPlayer);
+        if (gC.session.playerOrder.Contains(gC.board.dice.currentPlayer))
+        {
+            currentPlayerId = gC.session.playerOrder.IndexOf(gC.board.dice.currentPlayer);
+        }
+        else
+        {
+            for (int i1 = 0; i1 < playerElements.Count; i1++)
+            {
+                if (!(gC.session.playerOrder.Contains(playerElements[i1].GetComponent<TextMeshProUGUI>().text)))
+                {
+                    if (i1 < currentPlayerId) currentPlayerId--;
+                }
+            }
+        }
         
         int i = 0;
 
@@ -103,8 +116,9 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
         yield return null;
     }
 
-    private void OnPlayerLost(string name) 
+    private void OnPlayerLost(string name)
     {
+
         DeInit();
         Init();
     }
