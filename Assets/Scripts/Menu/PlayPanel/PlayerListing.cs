@@ -33,8 +33,8 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
 
         if (player.CustomProperties.ContainsKey("Room_PlayerReady"))
         {
-            readyButton.GetComponent<Toggle>().isOn = (bool)player.CustomProperties["Room_PlayerReady"];
             readyText.text = (bool)player.CustomProperties["Room_PlayerReady"] ? lC.GetWord("READY") : lC.GetWord("NOT_READY");
+            readyButton.GetComponent<Toggle>().isOn = (bool)player.CustomProperties["Room_PlayerReady"];
         }
         else
         {
