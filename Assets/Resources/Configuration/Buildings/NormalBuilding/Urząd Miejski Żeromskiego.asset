@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Urz\u0105d Miejski \u017Beromskiego"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Urz\u0105d Miejski na ul. Kili\u0144skiego - Monumentalny, klasycystyczny
+    dwupi\u0119trowy budynek zaprojektowany przez archotekta Antonio Corazziego,
+    wzniesiony w latach 1825\u20131827 przy trakcie Lubelskim. W XIX wieku siedziba
+    komisji wojew\xF3dzkich oraz rz\u0105d\xF3w gubernialnych. Rozbudowany w latach
+    1938\u20131942. O monumentalnym charakterze budynku \u015Bwiadczy pi\u0119tnastoosiowa
+    fasada, wzbogacona trzema ryzalitami ozdobionymi portykiem toska\u0144skim i
+    pilastrami oraz fryzem tryglifowym. Fasada parteru dekorowana boniowaniem."
   fieldImage: {fileID: 21300000, guid: 6cd314eef0715fd41a4c4b9159666476, type: 3}
   tiers:
   - name: puste
