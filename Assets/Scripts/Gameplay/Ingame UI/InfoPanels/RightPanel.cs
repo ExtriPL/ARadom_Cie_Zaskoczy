@@ -289,13 +289,18 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
 
     public void OnMyMoneyInput(string input) 
     {
-        if (float.Parse(theirMoney.text) >= GameplayController.instance.session.localPlayer.Money)
+        if (tradingPlayer != null)
         {
-            sendButton.GetComponent<Button>().interactable = false;
-        }
-        else
-        {
-            sendButton.GetComponent<Button>().interactable = true;
+            int m;
+            int.TryParse(myMoney.text, out m);
+            if (m >= GameplayController.instance.session.localPlayer.Money)
+            {
+                sendButton.GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                sendButton.GetComponent<Button>().interactable = true;
+            }
         }
     }
 
@@ -303,7 +308,9 @@ public class RightPanel : MonoBehaviour, IEventSubscribable
     {
         if (tradingPlayer != null)
         {
-            if (int.Parse(theirMoney.text) >= tradingPlayer.Money)
+            int m;
+            int.TryParse(theirMoney.text, out m);
+            if (m >= tradingPlayer.Money)
             {
                 sendButton.GetComponent<Button>().interactable = false;
             }

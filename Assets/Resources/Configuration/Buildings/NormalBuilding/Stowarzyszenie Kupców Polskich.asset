@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldName: "Stowarzyszenie Kupc\xF3w Polskich"
   canBePlaced: 1
-  fieldHistory: 
+  fieldHistory: "Budynek Karola Ludwika Lorentza (Stowarzyszenie Kupc\xF3w) - to
+    by\u0142o pocz\u0105tkowo sze\u015Bcioletnie gimnazjum kt\xF3re Karol Ludwik
+    Lorentz za\u0142o\u017Cy\u0142 w Radomiu w 1896 roku. Po czterech latach przy
+    obecnej ul. Traugutta 61 powsta\u0142 nowoczesny ,bogato zdobiony gmach.\r\nAle
+    ju\u017C w 1901 roku w\u0142adze carskie zamkn\u0119li szko\u0142\u0119 za propagowanie
+    patriotyzmu.\r\nPo odzyskaniu niepodleg\u0142o\u015Bci koncesj\u0119 na prowadzenie
+    plac\xF3wki o\u015Bwiatowej udzielono Stowarzyszeniu Kupc\xF3w Polskich.\r\nPo
+    Drugiej Wojnie \u015Awiatowej w tym budynku znajdowa\u0142y si\u0119 r\xF3\u017Cne
+    szko\u0142y mi\u0119dzy innymi Technikum Finansowe.\r"
   fieldImage: {fileID: 21300000, guid: 88718fbe20d39f4419be584eb9b22fc4, type: 3}
   tiers:
   - name: puste
