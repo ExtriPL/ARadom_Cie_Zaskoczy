@@ -27,17 +27,18 @@ public class LeftPanel : MonoBehaviour, IInitiable<UIPanels>
         this.UIPanels = UIPanels;
         foreach (string playerName in gc.session.playerOrder)
         {
-        Player _player = GameplayController.instance.session.FindPlayer(playerName);
-        IngamePlayerListing listing = basePool.TakeObject().GetComponent<IngamePlayerListing>();
-        listing.Init(_player, UIPanels);
-        playerListings.Add(listing);
+            Player _player = GameplayController.instance.session.FindPlayer(playerName);
+            IngamePlayerListing listing = basePool.TakeObject().GetComponent<IngamePlayerListing>();
+            listing.Init(_player, UIPanels);
+            playerListings.Add(listing);
         }
     }
 
     public void DeInit()
     {
-        foreach (IngamePlayerListing player in playerListings)
+        for (int i = playerListings.Count - 1; i >= 0; i--)
         {
+            IngamePlayerListing player = playerListings[i];
             player.DeInit();
             basePool.ReturnObject(player.gameObject);
         }

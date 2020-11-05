@@ -76,8 +76,9 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
 
     public void DeInit() 
     {
-        foreach(BuildingListing building in buildingListings)
+        for (int i = buildingListings.Count - 1; i >= 0; i--)
         {
+            BuildingListing building = buildingListings[i];
             building.DeInit();
             buildingsPool.ReturnObject(building.gameObject);
         }
