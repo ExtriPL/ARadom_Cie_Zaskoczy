@@ -31,8 +31,16 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
         int sameNamePlayers = PhotonNetwork.CurrentRoom.Players.Where(p => p.Value.NickName.Equals(PhotonNetwork.LocalPlayer.NickName)).Count();
         playerNickname.text = sameNamePlayers > 1 ? player.NickName + (sameNamePlayers - 1) : player.NickName;
 
-        if (player.CustomProperties.ContainsKey("Room_PlayerReady")) readyButton.GetComponent<Toggle>().isOn = (bool)player.CustomProperties["Room_PlayerReady"];
-        else readyButton.GetComponent<Toggle>().isOn = false;
+        if (player.CustomProperties.ContainsKey("Room_PlayerReady"))
+        {
+            readyButton.GetComponent<Toggle>().isOn = (bool)player.CustomProperties["Room_PlayerReady"];
+            readyText.text = (bool)player.CustomProperties["Room_PlayerReady"] ? lC.GetWord("READY") : lC.GetWord("NOT_READY");
+        }
+        else
+        {
+            readyButton.GetComponent<Toggle>().isOn = false;
+            readyText.text = lC.GetWord("NOT_READY");
+        }
 
         if (player.IsLocal)
         {
