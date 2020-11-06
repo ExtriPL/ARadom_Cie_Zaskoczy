@@ -243,8 +243,6 @@ public class FlowController : IEventSubscribable
     /// </summary>
     private void NextTurn()
     {
-        
-
         Board board = gameplayController.board;
         string previousPlayer = board.dice.currentPlayer;
         board.dice.NextTurn();
