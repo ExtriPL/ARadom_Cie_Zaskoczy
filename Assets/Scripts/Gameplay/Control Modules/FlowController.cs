@@ -264,13 +264,11 @@ public class FlowController : IEventSubscribable
         {
             gameplayController.banking.TakeLoan(CurrentPlayer);
             End();
-            Popup.Functionality.Destroy().Invoke(source);
         };
         Popup.PopupAction noAction = delegate (Popup source)
         {
             gameplayController.LosePlayer(CurrentPlayer);
             CheckWin();
-            Popup.Functionality.Destroy().Invoke(source);
         };
 
         QuestionPopup lastChange = QuestionPopup.CreateYesNoDialog(message, yesAction, noAction);
@@ -283,7 +281,6 @@ public class FlowController : IEventSubscribable
     /// </summary>
     public void CheckWin()
     {
-        Debug.Log("CheckWin: " + gameplayController.WinnerExists());
         if (gameplayController.WinnerExists())
         {
             //Informacja o wygranej jakiegoś gracza
