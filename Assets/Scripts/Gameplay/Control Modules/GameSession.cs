@@ -365,6 +365,8 @@ public class GameSession : IEventSubscribable
 
         if (GameplayController.instance.session.playerCount <= 1 || GameplayController.instance.flow.CurrentPlayer == null || GameplayController.instance.flow.CurrentPlayer.IsLoser)
             GameplayController.instance.flow.CheckWin();
+
+        GameplayController.instance.board.dice.RecalculateCurrentIndex();
         
         EventManager.instance.SendOnPlayerQuited(player.GetName());
     }

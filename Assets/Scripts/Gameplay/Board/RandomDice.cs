@@ -151,6 +151,13 @@ public class RandomDice
         amountOfRolls++;
     }
 
+    public void RecalculateCurrentIndex()
+    {
+        GameSession session = GameplayController.instance.session;
+        if (session.playerOrder.Contains(currentPlayer))
+            currentPlayerIndex = session.playerOrder.IndexOf(currentPlayer);
+    }
+
     /// <summary>
     /// Przekazuje kolejke następnemu graczowi.
     /// </summary>
