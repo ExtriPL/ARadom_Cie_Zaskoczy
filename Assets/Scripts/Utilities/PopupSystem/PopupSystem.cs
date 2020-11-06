@@ -115,8 +115,8 @@ public class PopupSystem : MonoBehaviour
         if(showedPopups.Contains(box)) 
            showedPopups.Remove(box);
         boxPools[box.GetType()].ReturnObject(box.gameObject);
-        CheckScreenAccessibility();
         RepositionPopups();
+        CheckScreenAccessibility();
     }
 
     /// <summary>
@@ -170,7 +170,7 @@ public class PopupSystem : MonoBehaviour
             {
                 if (amount < Keys.Popups.ICON_SHOWED_AMOUNT && inQueue > 0)
                     ShowPopup(type);
-                else if(inQueue > 0)
+                else if (inQueue > 0)
                 {
                     CloseWhatNeeded(type);
                     if (amount < Keys.Popups.ICON_SHOWED_AMOUNT)
