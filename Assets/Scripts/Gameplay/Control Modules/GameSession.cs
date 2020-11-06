@@ -363,7 +363,7 @@ public class GameSession : IEventSubscribable
     {
         GameplayController.instance.LosePlayer(player);
 
-        if (GameplayController.instance.session.playerCount <= 1 || GameplayController.instance.flow.CurrentPlayer == null)
+        if (GameplayController.instance.session.playerCount <= 1 || GameplayController.instance.flow.CurrentPlayer == null || GameplayController.instance.flow.CurrentPlayer.IsLoser)
             GameplayController.instance.flow.CheckWin();
         
         EventManager.instance.SendOnPlayerQuited(player.GetName());
