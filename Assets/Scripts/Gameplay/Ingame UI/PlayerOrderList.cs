@@ -27,21 +27,8 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
     public void Init()
     {
         playerCount = gC.session.playerOrder.Count;
-        if (gC.session.playerOrder.Contains(gC.board.dice.currentPlayer))
-        {
-            currentPlayerId = gC.session.playerOrder.IndexOf(gC.board.dice.currentPlayer);
-        }
-        else
-        {
-            for (int i1 = 0; i1 < playerElements.Count; i1++)
-            {
-                if (!(gC.session.playerOrder.Contains(playerElements[i1].GetComponent<TextMeshProUGUI>().text)))
-                {
-                    if (i1 < currentPlayerId) currentPlayerId--;
-                }
-            }
-        }
-        
+        currentPlayerId = gC.board.dice.currentPlayerIndex;
+
         int i = 0;
 
         openPanel.GetComponent<RectTransform>().anchorMin = new Vector2(openPanel.GetComponent<RectTransform>().anchorMin.x, 1 - playerCount);
@@ -70,14 +57,12 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
     public void SubscribeEvents()
     {
         EventManager.instance.onTurnChanged += OnTurnChanged;
-        EventManager.instance.onPlayerLostGame += OnPlayerLost;
         EventManager.instance.onPlayerQuited += OnPlayerLeft;
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.instance.onTurnChanged -= OnTurnChanged;
-        EventManager.instance.onPlayerLostGame -= OnPlayerLost;
         EventManager.instance.onPlayerQuited -= OnPlayerLeft;
     }
 
@@ -114,13 +99,6 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
         }
 
         yield return null;
-    }
-
-    private void OnPlayerLost(string name)
-    {
-
-        DeInit();
-        Init();
     }
 
     private void OnPlayerLeft(string name)
