@@ -246,8 +246,8 @@ public class GameSession : IEventSubscribable
         if (playerName != PhotonNetwork.LocalPlayer.NickName)
         {
             string message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("PLAYER_LEFT");
-            Photon.Realtime.Player player = PhotonNetwork.PlayerList.First(p => p.NickName == playerName);
-            if (player != null && player.IsInactive) 
+            Player player = FindPlayer(playerName);
+            if (player != null && player.NetworkPlayer.IsInactive) 
                 message = SettingsController.instance.languageController.GetWord("PLAYER") + playerName + SettingsController.instance.languageController.GetWord("KICKED_FOR_INACTIVITY");
             RemovePlayer(playerName);
             IconPopup playerLeft = new IconPopup(IconPopupType.PlayerLeft, message);
