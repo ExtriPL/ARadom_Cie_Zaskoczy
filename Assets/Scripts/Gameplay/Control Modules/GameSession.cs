@@ -320,7 +320,7 @@ public class GameSession : IEventSubscribable
     {
         if (playerOrder.Contains(name))
         {
-            players.Remove(name);
+            //players.Remove(name);
             List<string> playerOrder = this.playerOrder;
             playerOrder.Remove(name);
             this.playerOrder = playerOrder;
@@ -361,14 +361,10 @@ public class GameSession : IEventSubscribable
     /// <param name="player"></param>
     public void KickPlayer(Player player) 
     {
-        Debug.Log("Kick: " + player.GetName());
         GameplayController.instance.LosePlayer(player);
 
         if (GameplayController.instance.session.playerCount <= 1)
-        {
-            Debug.Log("Hello Kick!");
             GameplayController.instance.flow.CheckWin();
-        }
         
         EventManager.instance.SendOnPlayerQuited(player.GetName());
     }

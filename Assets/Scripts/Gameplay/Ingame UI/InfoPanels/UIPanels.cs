@@ -293,7 +293,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     {
         GameSession session = GameplayController.instance.session;
 
-        if (session.localPlayer.GetName().Equals(playerName))
+        if (PhotonNetwork.NickName.Equals(playerName))
         {
             money.text = session.localPlayer.Money.ToString() + " GR";
             bottomPanel.moneyText.text = session.localPlayer.Money.ToString() + " GR";
