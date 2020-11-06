@@ -158,19 +158,17 @@ public class RandomDice
     {
         GameSession session = GameplayController.instance.session;
         do
-        {          
-            if (currentPlayerIndex < GameplayController.instance.session.playerCount - 1)
-            {
-                if (GameplayController.instance.session.playerOrder.Contains(currentPlayer))
-                    currentPlayer = session.playerOrder[++currentPlayerIndex];
-                else
-                    currentPlayer = session.playerOrder[currentPlayerIndex];
-            }
+        {
+            bool contains = GameplayController.instance.session.playerOrder.Contains(currentPlayer);
+
+            if (contains && currentPlayerIndex < GameplayController.instance.session.playerCount - 1)
+                currentPlayer = session.playerOrder[++currentPlayerIndex];
+            else if(!contains && currentPlayerIndex < GameplayController.instance.session.playerCount)
+                currentPlayer = session.playerOrder[currentPlayerIndex];
             else
             {
                 currentPlayer = session.playerOrder[0];
                 currentPlayerIndex = 0;
-                round++;
             }
             if (GameplayController.instance.session.FindPlayer(currentPlayer).TurnsToSkip != 0)
             {
@@ -178,6 +176,7 @@ public class RandomDice
             }
             else if(!session.FindPlayer(currentPlayer).IsLoser)
             {
+                round++;
                 break;
             }
         }
