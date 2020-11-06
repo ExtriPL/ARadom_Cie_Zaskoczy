@@ -68,8 +68,8 @@ public class PlayerOrderList : MonoBehaviour, IEventSubscribable
 
     private void OnTurnChanged(string previousPlayerName, string currentPlayerName) 
     {
-        currentPlayerId = gC.board.dice.currentPlayerIndex;
-        NextPlayer();
+        DeInit();
+        Init();
     }
 
     private void NextPlayer() 
