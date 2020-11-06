@@ -64,6 +64,20 @@ public class RandomDice
         }
     }
 
+    public int currentPlayerIndex
+    {
+        get
+        {
+            return (int)PhotonNetwork.CurrentRoom.CustomProperties["dice_currentPlayerIndex"];
+        }
+        private set
+        {
+            Hashtable table = new Hashtable();
+            table.Add("dice_currentPlayerIndex", value);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(table);
+        }
+    }
+
     /// <summary>
     /// Ilość rzutów kostką.
     /// </summary>
@@ -121,6 +135,7 @@ public class RandomDice
         this.last1 = last1;
         this.last2 = last2;
         this.currentPlayer = currentPlayer;
+        this.currentPlayerIndex = 0;
         this.amountOfRolls = amountOfRolls;
         this.round = round;
     }
@@ -143,14 +158,18 @@ public class RandomDice
     {
         GameSession session = GameplayController.instance.session;
         do
-        {
-            if (session.playerOrder.IndexOf(currentPlayer) < GameplayController.instance.session.playerCount - 1)
+        {          
+            if (currentPlayerIndex < GameplayController.instance.session.playerCount - 1)
             {
-                currentPlayer = session.playerOrder[session.playerOrder.IndexOf(currentPlayer) + 1];
+                if (GameplayController.instance.session.playerOrder.Contains(currentPlayer))
+                    currentPlayer = session.playerOrder[++currentPlayerIndex];
+                else
+                    currentPlayer = session.playerOrder[currentPlayerIndex];
             }
             else
             {
                 currentPlayer = session.playerOrder[0];
+                currentPlayerIndex = 0;
                 round++;
             }
             if (GameplayController.instance.session.FindPlayer(currentPlayer).TurnsToSkip != 0)
