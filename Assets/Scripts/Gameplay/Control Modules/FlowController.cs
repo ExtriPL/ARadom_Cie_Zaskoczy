@@ -252,8 +252,6 @@ public class FlowController : IEventSubscribable
 
         string nextPlayer = board.dice.currentPlayer;
 
-        Debug.Log("Next Turn, previous: " + previousPlayer + ", nextPlayer: " + nextPlayer);
-
         EventManager.instance.SendOnTurnChanged(previousPlayer, nextPlayer);
     }
 
