@@ -61,19 +61,12 @@ public class IconBox : PopupBox
         base.Reposition();
         List<int> positions = pSystem.GetShowedPositions(GetType());
         int smaller = 0;
-
-        Debug.Log("-------Reposition---------");
-
         foreach(int position in positions)
         {
             if (position < CurrentPosition)
                 smaller++;
             Debug.Log("Position: " + position);
         }
-
-        Debug.Log("Reposition: " + smaller + ", current: " + CurrentPosition);
-        Debug.Log("----------------------");
-
         //Jeżeli liczba mniejszych indeksów jest mniejsza, od obecnego indeksu oznacza to, że niżej zrobiło sie miejsce
         int target = smaller < CurrentPosition ? CurrentPosition - 1 : CurrentPosition;
         boxAnimator.SetInteger("targetPosition", target);
