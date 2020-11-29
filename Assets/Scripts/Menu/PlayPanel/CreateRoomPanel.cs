@@ -14,17 +14,19 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuCon
     public TMP_InputField playerCountInputField;
     public TMP_InputField passwordInputField;
     public GameObject createButton;
-    public void Init(MainMenuController mainMenuController)
+    public void Init()
     {
-        this.mainMenuController = mainMenuController;
         nameInputField.text = PhotonNetwork.NickName + "'s Room";
         playerCountInputField.text = Keys.Menu.MIN_PLAYERS_COUNT.ToString();
         createButton.GetComponent<Button>().interactable = true;
+
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(4);
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+            mainMenuController.OpenPanel(Panel.PlayPanel);
     }
 
     public void OnPlayersCountChanged(string playerCountText)
@@ -54,15 +56,15 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuCon
     public override void OnJoinedRoom()
     {
         PhotonNetwork.CurrentRoom.PlayerTtl = Keys.Session.PLAYER_TTL;
-        mainMenuController.OpenPanel(8);
+        mainMenuController.OpenPanelWithoutLoading(Panel.RoomPanel);
     }
 
     public void Create()
     {
-        mainMenuController.StartLoadingScreen();
         createButton.GetComponent<Button>().interactable = false;
+        mainMenuController.loadingScreen.onLoadingInMiddle += delegate { StartCoroutine(WaitForLobby()); };
 
-        StartCoroutine(WaitForLobby());
+        mainMenuController.loadingScreen.StartLoading();
     }
 
     private IEnumerator WaitForLobby()
@@ -74,7 +76,10 @@ public class CreateRoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuCon
         PhotonNetwork.CreateRoom(nameInputField.text, roomOptions, null);
     }
 
-    public void PreInit() {}
+    public void PreInit(MainMenuController mainMenuController) 
+    {
+        this.mainMenuController = mainMenuController;
+    }
 
     public void DeInit() {}
 }

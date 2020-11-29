@@ -78,8 +78,8 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
         playerOrderList.GetComponent<IEventSubscribable>().SubscribeEvents();
 
         //Przygotowywanie paneli
-        bottomPanel.PreInit();
-        leftPanel.PreInit();
+        bottomPanel.PreInit(this);
+        leftPanel.PreInit(this);
         rightPanel.PreInit(this);
         buildingInfo.PreInit(this);
         playerOrderList.PreInit(this);
@@ -164,7 +164,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     {
         currentOpenPanel = InGameUIPanels.BottomPanel;
         bottomPanel.DeInit(); // Czyszczenie panelu
-        bottomPanel.Init(this, GameplayController.instance.session.localPlayer); //Inicjalizacja panelu z danymi lokalnego gracza
+        bottomPanel.Init(GameplayController.instance.session.localPlayer); //Inicjalizacja panelu z danymi lokalnego gracza
         bottomPanel.GetComponent<Animation>().Play("BottomToMiddle"); //animacja
     }
 
@@ -176,7 +176,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     {
         currentOpenPanel = InGameUIPanels.BottomPanel;
         bottomPanel.DeInit(); //Czyszczenie
-        bottomPanel.Init(this, player); //Inicjalizacja panelu z podanym graczem
+        bottomPanel.Init(player); //Inicjalizacja panelu z podanym graczem
     }
 
     /// <summary>
@@ -186,7 +186,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     {
         currentOpenPanel = InGameUIPanels.BottomPanelBuildingChoice;
         bottomPanel.DeInit(); //Czyszczenie
-        bottomPanel.Init(this, player, trading); //Inicjalizacja panelu z podanym graczem
+        bottomPanel.Init(player, trading); //Inicjalizacja panelu z podanym graczem
         rightPanel.GetComponent<Animation>().Play("MiddleToRight");
         bottomPanel.GetComponent<Animation>().Play("LeftToMiddle");
     }
@@ -211,7 +211,7 @@ public class UIPanels : MonoBehaviour, IEventSubscribable
     {
         currentOpenPanel = InGameUIPanels.LeftPanel;
         leftPanel.DeInit(); //Czyszczenie
-        leftPanel.Init(this); //Inicjalizacja
+        leftPanel.Init(); //Inicjalizacja
         leftPanel.GetComponent<Animation>().Play("LeftToMiddle"); //Animacja otwierania lewego panelu
         bottomPanel.GetComponent<Animation>().Play("MiddleToRight"); //Animacja zamykania dolnego panelu
     }

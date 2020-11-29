@@ -65,7 +65,7 @@ public class PlayerListing : MonoBehaviourPunCallbacks, IEventSubscribable
     {
         Deinit();
         PhotonNetwork.LeaveLobby();
-        mainMenuController.OpenPanel(4);
+        mainMenuController.OpenPanel(Panel.PlayPanel);
     }
 
     public void KickPlayer() 

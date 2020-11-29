@@ -9,14 +9,14 @@ public class MainMenuController : MonoBehaviour
 
     public List<GameObject> panels = new List<GameObject>();
 
-    [SerializeField] public GameObject loadingScreen;
+    public LoadingPanel loadingScreen;
 
     public void Start()
     {
-        Connect();
         SettingsController.instance.Init();
         PreInitPanels();
-        OpenPanel(0);
+        OpenPanelWithoutLoading(0);
+        Connect();
     }
 
     private void Update()
@@ -29,7 +29,7 @@ public class MainMenuController : MonoBehaviour
     {
         foreach (GameObject panel in panels) 
         {
-            panel.GetComponent<IInitiable<MainMenuController>>().PreInit();
+            panel.GetComponent<IInitiable<MainMenuController>>().PreInit(this);
         }
     }
     private void Connect()
@@ -57,32 +57,51 @@ public class MainMenuController : MonoBehaviour
     #endregion Input
 
     #region Kontrola Paneli
-    public void OpenPanel(int panelId)
+
+    private void OpenPanelWithoutLoading(int panelId)
     {
-        foreach (GameObject panel in panels) 
+        foreach (GameObject panel in panels)
         {
-            if (panel.GetComponent<IInitiable<MainMenuController>>() is IEventSubscribable) panel.GetComponent<IEventSubscribable>().UnsubscribeEvents();
+            if (panel.GetComponent<IInitiable<MainMenuController>>() is IEventSubscribable)
+                panel.GetComponent<IEventSubscribable>().UnsubscribeEvents();
             panel.SetActive(false);
         }
         //przejscie
         panels[panelId].SetActive(true);
-        if (panels[panelId].GetComponent<IInitiable<MainMenuController>>() is IEventSubscribable) panels[panelId].GetComponent<IEventSubscribable>().SubscribeEvents();
-        panels[panelId].GetComponent<IInitiable<MainMenuController>>().Init(this);
-        //EndLoadingScreen();
-        //Animacja
+        if (panels[panelId].GetComponent<IInitiable<MainMenuController>>() is IEventSubscribable)
+            panels[panelId].GetComponent<IEventSubscribable>().SubscribeEvents();
+        panels[panelId].GetComponent<IInitiable<MainMenuController>>().Init();
     }
 
-    public void StartLoadingScreen()
+    public void OpenPanelWithoutLoading(Panel panelId)
     {
-        loadingScreen.SetActive(true);
-        loadingScreen.GetComponent<Animation>().Play("LeftToMiddle");
+        OpenPanelWithoutLoading((int)panelId);
     }
 
-    public void EndLoadingScreen() 
+    public void OpenPanel(int panelId)
     {
-        loadingScreen.GetComponent<Animation>().Play("MiddleToRight");
+        loadingScreen.onLoadingInMiddle += delegate { OpenPanelWithoutLoading(panelId); };
+        loadingScreen.StartLoading();
+    }
+
+    public void OpenPanel(Panel panelId)
+    {
+        OpenPanel((int)panelId);
     }
 
     #endregion Kontrola Paneli
+}
 
+[System.Serializable]
+public enum Panel
+{
+    LoginPanel,
+    MenuPanel,
+    SettingsPanel,
+    AuthorsPanel,
+    PlayPanel,
+    CreateRoomPanel,
+    SavePanel,
+    PasswordPanel,
+    RoomPanel
 }

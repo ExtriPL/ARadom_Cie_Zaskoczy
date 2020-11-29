@@ -43,23 +43,28 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControll
         if (SettingsController.instance.settings.playerNickname != Keys.Menu.DEFAULT_USERNAME)
         {
             OnLogin();
-            mainMenuController.OpenPanel(1);
+            mainMenuController.OpenPanel(Panel.MenuPanel);
         }
     }
     #endregion Photon
 
     #region Inicjalizacja
-    public void Init(MainMenuController mainMenuController)
+    public void Init()
     {
-        this.mainMenuController = mainMenuController;
         loginButton.interactable = false;
         if (SettingsController.instance.settings.playerNickname != Keys.Menu.DEFAULT_USERNAME) rememberMe.isOn = true;
         else rememberMe.isOn = false;
         nickInput.text = SettingsController.instance.settings.playerNickname;
         if(!PhotonNetwork.IsConnectedAndReady)connectingText.SetActive(true);
+
+        if(mainMenuController.loadingScreen.IsLoading)
+            mainMenuController.loadingScreen.EndLoading();
     }
 
-    public void PreInit() {}
+    public void PreInit(MainMenuController mainMenuController) 
+    {
+        this.mainMenuController = mainMenuController;
+    }
 
     public void DeInit() {}
     #endregion Inicjalizacja

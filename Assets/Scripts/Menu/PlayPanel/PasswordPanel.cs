@@ -5,9 +5,17 @@ using UnityEngine;
 
 public class PasswordPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuController>
 {
-    public void Init(MainMenuController mainMenuController) {}
+    private MainMenuController mainMenuController;
 
-    public void PreInit() {}
+    public void Init() 
+    {
+        mainMenuController.loadingScreen.EndLoading();
+    }
+
+    public void PreInit(MainMenuController mainMenuController) 
+    {
+        this.mainMenuController = mainMenuController;
+    }
 
     public void DeInit() {}
 

@@ -53,13 +53,16 @@ public class RoomListing: MonoBehaviourPunCallbacks
 
     public void JoinRoom() 
     {
-        StartCoroutine(WaitForLobby());
+        Debug.Log("Joining Room");
+        mainMenuController.loadingScreen.onLoadingInMiddle += delegate { StartCoroutine(WaitForLobby()); };
+        mainMenuController.loadingScreen.StartLoading();
     }
 
     private IEnumerator WaitForLobby()
     {
-        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
-
+        Debug.Log("WaitForLobby");
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby);
+        Debug.Log("AfterWait");
         Hashtable table = new Hashtable();
         table.Add("Room_PlayerReady", false);
         PhotonNetwork.LocalPlayer.SetCustomProperties(table);
@@ -68,22 +71,21 @@ public class RoomListing: MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        if (!PhotonNetwork.CurrentRoom.Name.Equals(roomInfo.Name))
+            return;
+
         int sameNamePlayers = PhotonNetwork.CurrentRoom.Players.Where(player => player.Value.NickName.Equals(PhotonNetwork.LocalPlayer.NickName)).Count();
         if (sameNamePlayers > 1)
             PhotonNetwork.LocalPlayer.NickName += (sameNamePlayers - 1).ToString();
 
-        mainMenuController.OpenPanel(8);  
+        mainMenuController.OpenPanelWithoutLoading(Panel.RoomPanel);  
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         base.OnJoinRoomFailed(returnCode, message);
-        mainMenuController.OpenPanel(4);
-        mainMenuController.EndLoadingScreen();
-    }
-
-    public void StartLoadingScreen() 
-    {
-        mainMenuController.StartLoadingScreen();
+        mainMenuController.OpenPanelWithoutLoading(Panel.PlayPanel);
+        mainMenuController.loadingScreen.EndLoading();
     }
 }

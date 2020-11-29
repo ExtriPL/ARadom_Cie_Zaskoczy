@@ -9,23 +9,26 @@ public class SavePanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     public GameObject content;
     public GameObject template;
 
-    public void PreInit()
+    public void PreInit(MainMenuController mainMenuController)
     {
+        this.mainMenuController = mainMenuController;
         basePool = new BasePool(content, template, 3);
         basePool.Init();
     }
 
-    public void Init(MainMenuController mainMenuController)
+    public void Init()
     {
-        this.mainMenuController = mainMenuController;
         ListItems();
+
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     public void DeInit() {}
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(4);
+        if (Input.GetKeyDown(KeyCode.Escape))
+            mainMenuController.OpenPanel(Panel.PlayPanel);
     }
 
     public void ListItems()

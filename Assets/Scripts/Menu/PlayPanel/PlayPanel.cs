@@ -14,27 +14,29 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     MainMenuController mainMenuController;
 
 
-    public void PreInit()
+    public void PreInit(MainMenuController mainMenuController)
     {
+        this.mainMenuController = mainMenuController;
         basePool = new BasePool(content, template, 3);
         basePool.Init();
     }
-    public void Init(MainMenuController mainMenuController)
+    public void Init()
     {
-        this.mainMenuController = mainMenuController;
-
         if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
         else 
         {
             PhotonNetwork.JoinLobby();
         }
+
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     public void DeInit() {}
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) mainMenuController.OpenPanel(1);
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+            mainMenuController.OpenPanel(Panel.MenuPanel);
     }
 
     public override void OnLeftLobby()

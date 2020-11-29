@@ -62,7 +62,7 @@ public class SaveListing : MonoBehaviourPunCallbacks
         };
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(table);
-        mainMenuController.OpenPanel(8);
+        mainMenuController.OpenPanel(Panel.RoomPanel);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

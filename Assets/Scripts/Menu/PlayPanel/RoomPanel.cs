@@ -2,6 +2,7 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -14,16 +15,16 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     public GameObject startGameButton;
     MainMenuController mainMenuController;
 
-    public void PreInit()
+    public void PreInit(MainMenuController mainMenuController)
     {
+        this.mainMenuController = mainMenuController;
+
         basePool = new BasePool(content, template, Keys.Menu.MAX_PLAYERS_COUNT);
         basePool.Init();
     }
 
-    public void Init(MainMenuController mainMenuController)
+    public void Init()
     {
-        this.mainMenuController = mainMenuController;
-
         //Ustawianie przycisku rozpoczęcia gry na nieaktywny dla graczy, którzy nie są masterem
         startGameButton.SetActive(PhotonNetwork.LocalPlayer.IsMasterClient);
         //Wyłączanie możliwości rozpoczęcia gry bez spełnienia wymagań co do  ilości i gotowości graczy
@@ -36,7 +37,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
         }
 
         //animacja konca ladowania
-        mainMenuController.EndLoadingScreen();
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     public void DeInit() {}
@@ -63,13 +64,18 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     {
         EventManager.instance.SendOnMasterStartedGame();
         startGameButton.GetComponent<Button>().interactable = false;
-        mainMenuController.StartLoadingScreen();
-        Hashtable table = new Hashtable();
-        table.Add("LevelLoader_startMasterName", PhotonNetwork.MasterClient.NickName);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(table);
-        PhotonNetwork.CurrentRoom.IsOpen = false;
-        PhotonNetwork.CurrentRoom.IsVisible = false;
-        PhotonNetwork.LoadLevel(Keys.SceneNames.GAME);
+
+        mainMenuController.loadingScreen.onLoadingInMiddle += delegate 
+        {
+            Hashtable table = new Hashtable();
+            table.Add("LevelLoader_startMasterName", PhotonNetwork.MasterClient.NickName);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(table);
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.LoadLevel(Keys.SceneNames.GAME);
+        };
+
+        mainMenuController.loadingScreen.StartLoading();
     }
 
     public void LeaveRoom()
@@ -92,10 +98,6 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
         startGameButton.GetComponent<Button>().interactable = PhotonNetwork.CurrentRoom.PlayerCount >= Keys.Menu.MIN_PLAYERS_COUNT && readyPlayerCount >= PhotonNetwork.CurrentRoom.PlayerCount/2.0f;
     }
 
-//#if UNITY_EDITOR || DEVELOPMENT_BUILD
-//startGameButton.GetComponent<Button>().interactable = true;
-//#endif
-
     public void SubscribeEvents()
     {
         EventManager.instance.onPlayerReady += null;
@@ -111,6 +113,6 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
     private void OnMasterStartedGame() 
     {
-        mainMenuController.StartLoadingScreen();
+        mainMenuController.loadingScreen.StartLoading();
     }
 }

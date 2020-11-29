@@ -24,26 +24,26 @@ public class BottomPanel : MonoBehaviour, IInitiable<UIPanels>
     private List<BuildingListing> buildingListings;
     private LanguageController lC;
 
-    public void PreInit()
+    public void PreInit(UIPanels UIPanels)
     {
+        this.UIPanels = UIPanels;
         buildingListings = new List<BuildingListing>();
         buildingsPool = new BasePool(buildingsInfoHolder, buildingListing, Keys.Board.PLACE_COUNT / 2);
         buildingsPool.Init();
         lC = SettingsController.instance.languageController;
     }
 
-    public void Init(UIPanels UIPanels)
+    public void Init()
     {
-        this.UIPanels = UIPanels;
         gc = GameplayController.instance;
         closeButton.SetActive(true);
         confirmSeletionButton.SetActive(false);
     }
 
-    public void Init(UIPanels UIPanels, Player player, bool trading = false)
+    public void Init(Player player, bool trading = false)
     {
         this.player = player;
-        Init(UIPanels);
+        Init();
         FillContent(player, trading);
         closeButton.SetActive(!trading);
         confirmSeletionButton.SetActive(trading);

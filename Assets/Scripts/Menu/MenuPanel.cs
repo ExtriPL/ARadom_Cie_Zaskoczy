@@ -11,19 +11,23 @@ public class MenuPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
 
     #region Inicjalizacja
-    public void PreInit() {}
-
-    public void Init(MainMenuController mainMenuController)
+    public void PreInit(MainMenuController mainMenuController) 
     {
         this.mainMenuController = mainMenuController;
+    }
+
+    public void Init()
+    {
         welcomePlayer.text = SettingsController.instance.languageController.GetWord("WELCOME") +" "+ PhotonNetwork.LocalPlayer.NickName + "!";
+
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     public void DeInit() {}
     #endregion Inicjalizacja
 
     #region Przyciski
-    public void Logout() 
+    public void Logout()
     {
         SettingsController.instance.settings.playerNickname = Keys.Menu.DEFAULT_USERNAME;
         SettingsController.instance.SaveSettingsToFile();

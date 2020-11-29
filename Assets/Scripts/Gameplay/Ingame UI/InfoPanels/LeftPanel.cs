@@ -14,17 +14,17 @@ public class LeftPanel : MonoBehaviour, IInitiable<UIPanels>
     private GameplayController gc;
 
 
-    public void PreInit()
+    public void PreInit(UIPanels UIPanels)
     {
+        this.UIPanels = UIPanels;
         playerListings = new List<IngamePlayerListing>();
         basePool = new BasePool(content, template, Keys.Menu.MAX_PLAYERS_COUNT);
         basePool.Init();
         gc = GameplayController.instance;
     }
 
-    public void Init(UIPanels UIPanels)
+    public void Init()
     {
-        this.UIPanels = UIPanels;
         foreach (string playerName in gc.session.playerOrder)
         {
             Player _player = GameplayController.instance.session.FindPlayer(playerName);

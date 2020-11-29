@@ -25,10 +25,9 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuContr
     private bool restartGame = false;
 
     #region Inicjalizacja
-    public void Init(MainMenuController mainMenuController)
+    public void Init()
     {
         //Ustawianie zmiennych pomocniczych
-        this.mainMenuController = mainMenuController;
         langController = SettingsController.instance.languageController;
 
         //Przygotowywanie sliderów: muzyka, efekty dźwiękowe
@@ -36,6 +35,8 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuContr
 
         //Przygotowywanie Dropdownu z językami
         SetupLanguageDropDown();
+
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     private void SetupSliders() 
@@ -67,7 +68,10 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuContr
         //Ustawianie początkowej etykiety dropdownu na nazwę ustawionego języka
         languageDropDown.captionText.text = SettingsController.instance.languageController.GetWord(SettingsController.instance.settings.language.ToString());
     }
-    public void PreInit() {}
+    public void PreInit(MainMenuController mainMenuController) 
+    {
+        this.mainMenuController = mainMenuController;
+    }
 
     public void DeInit() {}
 
@@ -103,7 +107,7 @@ public class SettingsPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuContr
         }
         else //Jeżeli nie, przechodzimy do MenuPanelu
         {
-            mainMenuController.OpenPanel(1);
+            mainMenuController.OpenPanel(Panel.MenuPanel);
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IInitiable<T>
 {
-    void PreInit();
-    void Init(T controller);
+    void PreInit(T controller);
+    void Init();
     void DeInit();
 }
