@@ -100,7 +100,6 @@ public class RoomPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
 
     public void SubscribeEvents()
     {
-        EventManager.instance.onPlayerReady += null;
         EventManager.instance.onPlayerReady += OnPlayerReady;
         EventManager.instance.onMasterStartedGame += OnMasterStartedGame;
     }

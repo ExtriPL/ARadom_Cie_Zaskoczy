@@ -27,8 +27,6 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
         {
             PhotonNetwork.JoinLobby();
         }
-
-        mainMenuController.loadingScreen.EndLoading();
     }
 
     public void DeInit() {}
@@ -71,5 +69,11 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
         {
             roomListing.Refresh();
         });
+    }
+
+    public override void OnJoinedLobby()
+    {
+        base.OnJoinedLobby();
+        mainMenuController.loadingScreen.EndLoading();
     }
 }
