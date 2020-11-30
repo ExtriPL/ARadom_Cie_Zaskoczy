@@ -14,6 +14,9 @@ public class StackingSettings : ScriptableObject
     private List<float> enterCost = new List<float>();  
     [SerializeField, Tooltip("Grupa budynków specjalnych, do których należy pole")]
     private StackingBuildingType stackingType;
+    [SerializeField, Tooltip("Klucz służący do przetłumaczenia nazwy grupy")]
+    private string translateTypeName;
+    public string TranslateTypeName => translateTypeName;
     
     /// <summary>
     /// Cena zakupu pola

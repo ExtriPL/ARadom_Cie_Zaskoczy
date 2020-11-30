@@ -20,3 +20,4 @@ MonoBehaviour:
   - 800
   - 1800
   stackingType: 0
+  translateTypeName: CHURCH_STACKING

@@ -57,25 +57,25 @@ public class BuildingInfoPanel : MonoBehaviour
             buildingInfo.GetComponent<TextMeshProUGUI>().text = buildingInfoText;
             buildingHistory.GetComponent<TextMeshProUGUI>().text = normalbuilding.FieldHistory;
         }
-        else if (field is ChurchStacking churchStacking)
+        else if (field is StackingBuilding stackingBuilding)
         {
-            int placeId = GameplayController.instance.board.GetPlaceIndex(churchStacking);
+            int placeId = GameplayController.instance.board.GetPlaceIndex(stackingBuilding);
             Player owner = GameplayController.instance.board.GetOwner(placeId);
 
-            string type = lC.GetWord("CHURCH_STACKING");
+            string type = lC.GetWord(stackingBuilding.TranslateTypeName);
 
-            string prices = lC.GetWord("PRICE") + ": " + churchStacking.BuyPrice.ToString();
-            prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + churchStacking.GetEnterCost(placeId).ToString();
+            string prices = lC.GetWord("PRICE") + ": " + stackingBuilding.BuyPrice.ToString();
+            prices += "<br>" + lC.GetWord("ENTER_COST") + ": " + stackingBuilding.GetEnterCost(placeId).ToString();
 
-            if (owner != null) prices += "<br>" + lC.GetWord("OWNED_BY_PLAYER") + " " + GameplayController.instance.board.CountPlacesOfType(owner, churchStacking.GetType());
+            if (owner != null) prices += "<br>" + lC.GetWord("OWNED_BY_PLAYER") + " " + GameplayController.instance.board.CountPlacesOfType(owner, stackingBuilding.GetType());
 
             string owner1 = lC.GetWord("OWNER") + ": ";
             string owner2 = GameplayController.instance.board.GetOwner(placeId) != null ? (GameplayController.instance.board.GetOwner(placeId)).GetName() : "--";
             string buildingInfoText = type + "<br>" + prices + "<br>" + owner1 + owner2;
-            buildingName.GetComponent<TextMeshProUGUI>().text = churchStacking.name;
+            buildingName.GetComponent<TextMeshProUGUI>().text = stackingBuilding.name;
 
             buildingInfo.GetComponent<TextMeshProUGUI>().text = buildingInfoText;
-            buildingHistory.GetComponent<TextMeshProUGUI>().text = churchStacking.FieldHistory;
+            buildingHistory.GetComponent<TextMeshProUGUI>().text = stackingBuilding.FieldHistory;
         }
         else if (field is StartSpecial startSpecial)
         {

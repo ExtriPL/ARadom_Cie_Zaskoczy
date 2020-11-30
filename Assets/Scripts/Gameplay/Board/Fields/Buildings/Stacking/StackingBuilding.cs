@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class StackingBuilding : BuildingField
+[CreateAssetMenu(fileName = "Stacking", menuName = "ARadom/Field/Building/Stacking/StackingBuilding")]
+public class StackingBuilding : BuildingField
 {
     /// <summary>
     /// Model budynku stojącego na polu
@@ -29,6 +30,7 @@ public abstract class StackingBuilding : BuildingField
     /// </summary>
     /// <returns>Grupa budynku specjalnego</returns>
     public StackingBuildingType StackingType { get => stackingSettings.StackingType; }
+    public string TranslateTypeName => stackingSettings.TranslateTypeName;
 
     public override float GetInitialPrice() => BuyPrice;
 
