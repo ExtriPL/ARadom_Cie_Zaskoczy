@@ -26,6 +26,8 @@ public class AuthorsPanel : MonoBehaviour, IInitiable<MainMenuController>
                 professionContainers[i].GetComponent<TextMeshProUGUI>().text += randomAuthors[i][j].website;
             }
         }
+
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     public void PreInit(MainMenuController mainMenuController) 

@@ -57,8 +57,7 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControll
         nickInput.text = SettingsController.instance.settings.playerNickname;
         if(!PhotonNetwork.IsConnectedAndReady)connectingText.SetActive(true);
 
-        if(mainMenuController.loadingScreen.IsLoading)
-            mainMenuController.loadingScreen.EndLoading();
+        mainMenuController.loadingScreen.EndLoading();
     }
 
     public void PreInit(MainMenuController mainMenuController) 

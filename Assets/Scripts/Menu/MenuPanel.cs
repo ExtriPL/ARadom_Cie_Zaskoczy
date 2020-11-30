@@ -31,7 +31,7 @@ public class MenuPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     {
         SettingsController.instance.settings.playerNickname = Keys.Menu.DEFAULT_USERNAME;
         SettingsController.instance.SaveSettingsToFile();
-        mainMenuController.OpenPanel(0);
+        mainMenuController.OpenPanel(Panel.LoginPanel);
     }
 
     public void Exit() 

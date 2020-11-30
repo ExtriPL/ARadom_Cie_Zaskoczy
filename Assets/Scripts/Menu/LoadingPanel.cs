@@ -12,6 +12,7 @@ public class LoadingPanel : MonoBehaviour
     /// Flaga określająca, czy ekran ładowania nadal wsuwa się na ekran
     /// </summary>
     public bool IsLoading { get; private set; }
+    private bool loadingStarted;
     /// <summary>
     /// Akcje wywoływane gdy ekran ładowania jest w pełni wsunięty
     /// </summary>
@@ -21,6 +22,7 @@ public class LoadingPanel : MonoBehaviour
     {
         loadingAnimator = GetComponent<Animation>();
         IsLoading = false;
+        loadingStarted = false;
     }
 
     /// <summary>
@@ -28,6 +30,7 @@ public class LoadingPanel : MonoBehaviour
     /// </summary>
     public void StartLoading()
     {
+        loadingStarted = true;
         IsLoading = true;
         loadingAnimator.Play("LeftToMiddle");
     }
@@ -37,10 +40,16 @@ public class LoadingPanel : MonoBehaviour
     /// </summary>
     public void EndLoading()
     {
-        if (!IsLoading)
-            loadingAnimator.Play("MiddleToRight");
-        else
-            onLoadingInMiddle += delegate { loadingAnimator.Play("MiddleToRight"); };
+        if (loadingStarted)
+        {
+            if (!IsLoading)
+            {
+                loadingStarted = false;
+                loadingAnimator.Play("MiddleToRight");
+            }
+            else
+                onLoadingInMiddle += delegate { loadingAnimator.Play("MiddleToRight"); loadingStarted = false; };
+        }
     }
 
     /// <summary>

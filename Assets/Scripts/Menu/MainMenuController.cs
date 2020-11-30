@@ -15,7 +15,7 @@ public class MainMenuController : MonoBehaviour
     {
         SettingsController.instance.Init();
         PreInitPanels();
-        OpenPanelWithoutLoading(0);
+        OpenPanelWithoutLoading(Panel.LoginPanel);
         Connect();
     }
 
