@@ -64,6 +64,7 @@ public class Board : IEventSubscribable
     private List<Type> mandatoryFields = new List<Type>()
     {
         typeof(PrisonSpecial),
+        typeof(ChanceSpecial),
         typeof(ChanceSpecial)
     };
 
