@@ -53,16 +53,13 @@ public class RoomListing: MonoBehaviourPunCallbacks
 
     public void JoinRoom() 
     {
-        Debug.Log("Joining Room");
         mainMenuController.loadingScreen.onLoadingInMiddle += delegate { StartCoroutine(WaitForLobby()); };
         mainMenuController.loadingScreen.StartLoading();
     }
 
     private IEnumerator WaitForLobby()
     {
-        Debug.Log("WaitForLobby");
         yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InLobby);
-        Debug.Log("AfterWait");
         Hashtable table = new Hashtable();
         table.Add("Room_PlayerReady", false);
         PhotonNetwork.LocalPlayer.SetCustomProperties(table);

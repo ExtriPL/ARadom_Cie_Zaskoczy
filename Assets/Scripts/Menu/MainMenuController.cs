@@ -32,7 +32,7 @@ public class MainMenuController : MonoBehaviour
             panel.GetComponent<IInitiable<MainMenuController>>().PreInit(this);
         }
     }
-    private void Connect()
+    public void Connect()
     {
         if (!PhotonNetwork.IsConnected)
         {

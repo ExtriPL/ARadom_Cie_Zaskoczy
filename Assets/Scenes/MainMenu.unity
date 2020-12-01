@@ -13145,8 +13145,6 @@ GameObject:
   - component: {fileID: 1567397881}
   - component: {fileID: 1567397886}
   - component: {fileID: 1567397885}
-  - component: {fileID: 1567397884}
-  - component: {fileID: 1567397883}
   - component: {fileID: 1567397882}
   - component: {fileID: 1567397887}
   m_Layer: 5
@@ -13195,31 +13193,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &1567397883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567397880}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ddacbf9c7a51ad499c27ce380dc95ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  key: PLAY
---- !u!114 &1567397884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567397880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85916c7965b84b044ba745d578af8413, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1567397885
 MonoBehaviour:
   m_ObjectHideFlags: 0

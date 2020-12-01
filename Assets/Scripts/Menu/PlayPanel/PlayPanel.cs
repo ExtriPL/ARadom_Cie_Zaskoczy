@@ -22,14 +22,32 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
     }
     public void Init()
     {
-        if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
-        else 
-        {
-            PhotonNetwork.JoinLobby();
-        }
+        Debug.Log("PlayPanel - Init");
+        StartCoroutine(WaitForJoin());
+        //if (PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
+        //else 
+        //{
+        //    PhotonNetwork.JoinLobby();
+        //}
     }
 
     public void DeInit() {}
+
+    private IEnumerator WaitForJoin()
+    {
+        Debug.Log("WaitForJoin");
+        if(!PhotonNetwork.IsConnected)
+            mainMenuController.Connect();
+
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+
+        if (!PhotonNetwork.InLobby)
+            PhotonNetwork.JoinLobby();
+
+        yield return new WaitUntil(() => PhotonNetwork.InLobby);
+
+        mainMenuController.loadingScreen.EndLoading();
+    }
 
     private void Update()
     {
@@ -37,17 +55,6 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
             mainMenuController.OpenPanel(Panel.MenuPanel);
     }
 
-    public override void OnLeftLobby()
-    {
-        base.OnLeftLobby();
-        PhotonNetwork.JoinLobby();
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        base.OnConnectedToMaster();
-        PhotonNetwork.JoinLobby();
-    }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         foreach (RoomInfo roomInfo in roomList)
@@ -69,11 +76,5 @@ public class PlayPanel : MonoBehaviourPunCallbacks, IInitiable<MainMenuControlle
         {
             roomListing.Refresh();
         });
-    }
-
-    public override void OnJoinedLobby()
-    {
-        base.OnJoinedLobby();
-        mainMenuController.loadingScreen.EndLoading();
     }
 }
