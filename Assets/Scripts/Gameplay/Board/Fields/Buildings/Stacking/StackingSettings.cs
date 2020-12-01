@@ -39,3 +39,9 @@ public class StackingSettings : ScriptableObject
         return enterCost[index];
     }
 }
+
+public enum StackingBuildingType
+{
+    Church,
+    Apartment
+}
